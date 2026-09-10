@@ -22,7 +22,7 @@ function bloco(valorTexto) {
     };
 }
 
-const MODELOS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash'];
+const MODELOS = ['gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
 
 async function chamarGemini(modelo, texto, apiKey) {
     const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + modelo + ':generateContent?key=' + apiKey;
@@ -69,6 +69,21 @@ export default async function handler(req, res) {
 
     const body = req.body || {};
     const acao = req.method === 'GET' ? req.query.acao : body.acao;
+
+    if (acao === 'modelos') {
+        const apiKey = process.env.GEMINI_API_KEY;
+        if (!apiKey) return res.status(500).json({ error: 'GEMINI_API_KEY não configurada.' });
+        try {
+            const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models?key=' + apiKey);
+            const data = await r.json();
+            const nomes = (data.models || [])
+                .filter((m) => (m.supportedGenerationMethods || []).includes('generateContent'))
+                .map((m) => m.name);
+            return res.json({ modelos: nomes });
+        } catch (err) {
+            return res.status(500).json({ error: err.message });
+        }
+    }
 
     if (acao === 'gerar') {
         const apiKey = process.env.GEMINI_API_KEY;
