@@ -41,7 +41,10 @@ async function upsExec(comandos) {
         },
         body: JSON.stringify(comandos),
     });
-    if (!resp.ok) throw new Error('Upstash HTTP ' + resp.status);
+    if (!resp.ok) {
+        const texto = (await resp.text()).slice(0, 300);
+        throw new Error('Upstash HTTP ' + resp.status + ': ' + texto);
+    }
     return resp.json();
 }
 
