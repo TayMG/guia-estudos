@@ -22,6 +22,8 @@ function bloco(valorTexto) {
     };
 }
 
+const MODELOS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash'];
+
 async function chamarGemini(modelo, texto, apiKey) {
     const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + modelo + ':generateContent?key=' + apiKey;
     return fetch(url, {
@@ -49,7 +51,7 @@ async function upsCmd(cmd) {
 
 async function listarBlocos() {
     const r = await upsCmd(['LRANGE', CHAVE_BLOCOS, '0', '-1']);
-    const arr = Array.isArray(r) ? r : [];
+    const arr = (r && r.result) || [];
     return arr
         .map((s) => {
             try { return JSON.parse(s); } catch (e) { return null; }
@@ -71,13 +73,21 @@ export default async function handler(req, res) {
     if (acao === 'gerar') {
         const apiKey = process.env.GEMINI_API_KEY;
         if (!apiKey) return res.status(500).json({ error: 'GEMINI_API_KEY não configurada no Vercel.' });
-        const modelo = body.modelo === 'gemini-1.5-flash' ? 'gemini-1.5-flash' : 'gemini-2.0-flash';
+        const pedido = body.modelo || 'gemini-2.5-flash';
+        const fila = MODELOS.includes(pedido) ? [pedido, ...MODELOS.filter((m) => m !== pedido)] : MODELOS;
         try {
-            let r = await chamarGemini(modelo, body.texto || '', apiKey);
-            if (r.status === 404 && modelo === 'gemini-2.0-flash') {
-                r = await chamarGemini('gemini-1.5-flash', body.texto || '', apiKey);
+            let data = null;
+            let erroDel = null;
+            for (const mdl of fila) {
+                const r = await chamarGemini(mdl, body.texto || '', apiKey);
+                if (r.status === 404) { erroDel = await r.json(); continue; }
+                data = await r.json();
+                break;
             }
-            const data = await r.json();
+            if (!data) {
+                const msg = (erroDel && erroDel.error && erroDel.error.message) || 'Modelo não disponível.';
+                return res.status(404).json({ error: msg });
+            }
             let txt = '';
             if (data.candidates && data.candidates[0] && data.candidates[0].content) {
                 txt = (data.candidates[0].content.parts || []).map((p) => p.text || '').join('');
