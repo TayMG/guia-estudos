@@ -428,21 +428,6 @@
             line-height: 1.35;
         }
 
-        .blocos-turma { margin-top: 2.5rem; }
-        .blocos-turma h2 {
-            display: flex; align-items: center; gap: .5rem;
-            border-bottom: 2px solid var(--accent);
-            padding-bottom: .4rem;
-        }
-        .blocos-turma .contador-blocos {
-            font-size: .7rem; font-weight: 600; color: #fff;
-            background: var(--accent); border-radius: 999px;
-            padding: 1px 10px;
-        }
-        .blocos-vazios {
-            color: var(--text-muted); font-size: .85rem;
-            font-style: italic; margin: 1rem 0;
-        }
         .gpt-block .meta-blocos {
             font-size: .72rem; color: var(--text-muted);
             margin-top: .6rem; border-top: 1px dashed var(--border);
@@ -1906,12 +1891,8 @@
     (Rodízio: um processo por vez no processador)</div>
     </div>
 
-    <!-- ==================== BLOCOS DA TURMA ==================== -->
-    <section class="blocos-turma" id="blocos-turma" aria-label="Blocos compartilhados da turma">
-        <h2>Blocos da turma <span class="contador-blocos" id="blocosContador">0</span></h2>
-        <p class="blocos-vazios" id="blocosVazios">Ainda não há blocos compartilhados. Gere um pelo botão ✨ e clique em "Salvar para todos".</p>
-        <div id="blocosTurmaLista"></div>
-    </section>
+    <!-- ==================== BLOCOS COMPARTILHADOS (integrados ao guia) ==================== -->
+    <div id="blocosIntegrados"></div>
 
     <!-- ==================== PAINEL GEMINI ==================== -->
     <button class="gemini-fab" id="geminiFab" title="Gerar bloco com IA" aria-label="Gerar bloco com IA">✨</button>
@@ -1995,8 +1976,7 @@
     var btnGen    = document.getElementById('geminiGerar');
     var btnIns    = document.getElementById('geminiInserir');
     var status    = document.getElementById('geminiStatus');
-    var preview   = document.getElementById('geminiPreview');
-    var secTurma  = document.getElementById('blocos-turma');
+var preview   = document.getElementById('geminiPreview');
 
     var pendingHtml   = '';
     var pendingTitulo = '';
@@ -2015,8 +1995,7 @@
         keyLabel.style.display = 'none';
         if (note) note.style.display = '';
         btnIns.textContent = 'Salvar para todos';
-    } else {
-        if (secTurma) secTurma.style.display = 'none';
+} else {
         btnIns.textContent = 'Inserir na pÃ¡gina';
         var savedKey = localStorage.getItem('gemini_api_key');
         if (savedKey) keyIn.value = savedKey;
@@ -2182,16 +2161,12 @@
             .catch(function () { /* ainda sem resposta (env faltando) */ });
     }
 
-    /* â”€â”€â”€ Render da lista compartilhada â”€â”€â”€ */
+/* â”€â”€â”€ Render dos blocos compartilhados (integrados ao guia) â”€â”€â”€ */
     function renderBlocos() {
-        var lista = document.getElementById('blocosTurmaLista');
-        var cont  = document.getElementById('blocosContador');
-        var vazio = document.getElementById('blocosVazios');
+        var lista = document.getElementById('blocosIntegrados');
         if (!lista) return;
 
         lista.innerHTML = '';
-        cont.textContent = String(blocosState.length);
-        vazio.style.display = blocosState.length ? 'none' : '';
 
         blocosState.forEach(function (b) {
             var wrap = document.createElement('div');
