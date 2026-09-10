@@ -1,0 +1,2294 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitetura de Computadores</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface2: #334155;
+            --border: #475569;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent2: #818cf8;
+            --prova-bg: #422006;
+            --prova-border: #f59e0b;
+            --prova-text: #fde68a;
+            --dica-bg: #042f2e;
+            --dica-border: #2dd4bf;
+            --tabela-header: #1e3a5f;
+            --tabela-row: #1e293b;
+            --tabela-row-alt: #253349;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 2rem;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; overflow-wrap: break-word; }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 240px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 1.2rem 0.8rem;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--surface2);
+            z-index: 100;
+        }
+
+        .sidebar .logo {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-align: center;
+            padding-bottom: 1rem;
+            margin-bottom: 0.8rem;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .sidebar .logo small { display: block; font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
+
+        .sidebar a {
+            display: block;
+            padding: 0.45rem 0.7rem;
+            margin-bottom: 0.2rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            color: var(--text);
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+
+        .sidebar a:hover { background: var(--surface2); color: var(--accent); border-left-color: var(--accent); }
+
+        .sidebar a.atual {
+            background: var(--surface2);
+            color: var(--accent);
+            border-left-color: var(--accent);
+            font-weight: 600;
+        }
+
+        body { padding-left: 240px; }
+
+        @media (max-width: 800px) {
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+                max-height: 40vh;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            body { padding-left: 0; }
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitulo {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            font-size: 0.95rem;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--accent2);
+            margin-top: 1.5rem;
+            margin-bottom: 0.6rem;
+        }
+
+        p, li {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        ul { padding-left: 1.5rem; }
+        li { margin-bottom: 0.3rem; }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .card-prova {
+            background: var(--prova-bg);
+            border: 2px solid var(--prova-border);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+
+        .card-prova::before {
+            content: "⚠ QUESTÃO DE PROVA";
+            display: block;
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: var(--prova-border);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+            background: rgba(245, 158, 11, 0.15);
+            padding: 0.3rem 0.7rem;
+            border-radius: 6px;
+            width: fit-content;
+        }
+
+        .card-prova p, .card-prova li { color: var(--prova-text); }
+
+        .card-prova .card-importante {
+            background: rgba(124, 58, 237, 0.15);
+            border-color: rgba(124, 58, 237, 0.5);
+        }
+
+        .card-prova .card-importante::before {
+            color: #c4b5fd;
+        }
+
+        .card-dica {
+            background: var(--dica-bg);
+            border-left: 4px solid var(--dica-border);
+            border-radius: 0 12px 12px 0;
+            padding: 1rem 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-dica::before {
+            content: "💡 DICA";
+            display: block;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--dica-border);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+        }
+
+        .card-importante {
+            background: #1a0a2e;
+            border: 1px solid #7c3aed;
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .card-importante::before {
+            content: "📌 IMPORTANTE";
+            display: block;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #a78bfa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: var(--tabela-header);
+            color: var(--accent);
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        td {
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border);
+        }
+
+        tr:nth-child(even) td { background: var(--tabela-row-alt); }
+        tr:nth-child(odd) td { background: var(--tabela-row); }
+
+        code {
+            background: var(--surface2);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: var(--accent);
+        }
+
+        .diagrama {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            white-space: pre;
+            overflow-x: auto;
+            color: var(--text);
+        }
+
+        .glossario dt {
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 0.8rem;
+        }
+
+        .glossario dd {
+            margin-left: 1rem;
+            margin-bottom: 0.3rem;
+            color: var(--text-muted);
+        }
+
+        .passo-lista {
+            counter-reset: passo;
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .passo-lista li {
+            counter-increment: passo;
+            padding: 1rem 1rem 1rem 3.8rem;
+            margin-bottom: 0.8rem;
+            background: var(--surface);
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .passo-lista li::before {
+            content: "Passo " counter(passo);
+            position: absolute;
+            left: 0.8rem;
+            top: 1rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        @media print {
+            body { background: white; color: #1a1a1a; padding: 1rem; padding-left: 1rem; }
+            .sidebar { display: none; }
+            .card, .card-prova, .card-dica, .card-importante { break-inside: avoid; }
+            h2 { color: #1a1a1a; border-bottom-color: #1a1a1a; }
+            h3 { color: #333; }
+            .card-prova { border: 2px solid #b45309; background: #fef3c7; }
+            .card-prova::before { color: #92400e; background: rgba(180,83,9,0.1); }
+            .card-prova p, .card-prova li { color: #451a03; }
+            .card-dica { background: #f0fdfa; border-left-color: #0d9488; }
+            .card-dica::before { color: #0d9488; }
+            .card-importante { background: #f5f3ff; border-color: #7c3aed; }
+            .card-importante::before { color: #6d28d9; }
+            th { background: #e2e8f0; color: #1a1a1a; }
+            td { background: white; color: #1a1a1a; }
+            .diagrama { background: #f1f5f9; color: #1a1a1a; }
+            code { background: #e2e8f0; color: #1a1a1a; }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           PAINEL GEMINI — CSS
+           ═══════════════════════════════════════════════════ */
+        .gemini-fab {
+            position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 1100;
+            width: 52px; height: 52px; border-radius: 50%;
+            background: var(--accent); color: #fff; border: none;
+            font-size: 1.4rem; cursor: pointer; box-shadow: var(--shadow);
+            display: flex; align-items: center; justify-content: center;
+            transition: transform .2s;
+        }
+        .gemini-fab:hover { transform: scale(1.1); }
+
+        .gemini-panel {
+            position: fixed; bottom: 5.5rem; right: 1.5rem; z-index: 1100;
+            width: 420px; max-height: 70vh; overflow-y: auto;
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 12px; box-shadow: var(--shadow-lg);
+            padding: 1.2rem; display: none;
+            font-family: inherit;
+        }
+        .gemini-panel.aberto { display: block; }
+
+        .gemini-panel h3 {
+            margin: 0 0 .6rem; font-size: 1rem; color: var(--heading);
+        }
+
+        .gemini-panel label {
+            display: block; font-size: .8rem; color: var(--text-muted);
+            margin-bottom: .2rem;
+        }
+
+        .gemini-panel input,
+        .gemini-panel select,
+        .gemini-panel textarea {
+            width: 100%; box-sizing: border-box;
+            padding: .45rem .6rem; margin-bottom: .6rem;
+            border: 1px solid var(--border); border-radius: 6px;
+            font: inherit; font-size: .85rem;
+            background: var(--body-bg); color: var(--text);
+        }
+
+        .gemini-panel textarea {
+            min-height: 110px; resize: vertical;
+        }
+
+        .gemini-panel .btn-row {
+            display: flex; gap: .5rem; margin-top: .4rem;
+        }
+
+        .gemini-btn {
+            flex: 1; padding: .5rem .8rem;
+            background: var(--accent); color: #fff; border: none;
+            border-radius: 6px; font: inherit; font-size: .85rem;
+            cursor: pointer; transition: opacity .2s;
+        }
+        .gemini-btn:disabled { opacity: .5; cursor: wait; }
+
+        .gemini-status {
+            font-size: .78rem; color: var(--text-muted); margin-top: .5rem;
+            min-height: 1.2rem;
+        }
+        .gemini-status.erro { color: var(--vermelho); }
+
+        .gemini-preview {
+            margin-top: .6rem; padding: .6rem; border-radius: 6px;
+            background: var(--body-bg); border: 1px solid var(--border);
+            font-size: .82rem; display: none;
+        }
+        .gemini-preview.visivel { display: block; }
+
+        .gpt-block {
+            background: var(--card-bg); border: 1px solid var(--accent);
+            border-left: 4px solid var(--accent); border-radius: 8px;
+            padding: 1rem 1.2rem; margin: 1.5rem 0; position: relative;
+        }
+        .gpt-block::before {
+            content: 'Gerado por IA';
+            position: absolute; top: -10px; left: 12px;
+            background: var(--accent); color: #fff; font-size: .65rem;
+            padding: 1px 8px; border-radius: 4px; font-weight: 600;
+        }
+        .gpt-block .remover-ia {
+            position: absolute; top: 6px; right: 10px;
+            background: none; border: none; cursor: pointer;
+            font-size: .9rem; color: var(--text-muted); line-height: 1;
+        }
+        .gemini-note {
+            font-size: .75rem; color: var(--verde);
+            background: rgba(16, 185, 129, .08);
+            border: 1px solid rgba(16, 185, 129, .35);
+            border-radius: 6px; padding: .45rem .6rem; margin-bottom: .6rem;
+            line-height: 1.35;
+        }
+
+        .blocos-turma { margin-top: 2.5rem; }
+        .blocos-turma h2 {
+            display: flex; align-items: center; gap: .5rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: .4rem;
+        }
+        .blocos-turma .contador-blocos {
+            font-size: .7rem; font-weight: 600; color: #fff;
+            background: var(--accent); border-radius: 999px;
+            padding: 1px 10px;
+        }
+        .blocos-vazios {
+            color: var(--text-muted); font-size: .85rem;
+            font-style: italic; margin: 1rem 0;
+        }
+        .gpt-block .meta-blocos {
+            font-size: .72rem; color: var(--text-muted);
+            margin-top: .6rem; border-top: 1px dashed var(--border);
+            padding-top: .4rem;
+        }
+
+        .gpt-block .remover-ia:hover { color: var(--vermelho); }
+
+        @media (max-width: 520px) {
+            .gemini-panel { width: calc(100vw - 2rem); right: 1rem; bottom: 5rem; }
+            .gemini-fab { bottom: 1rem; right: 1rem; }
+        }
+        @media print { .gemini-fab, .gemini-panel { display: none !important; } }
+    </style>
+</head>
+<body>
+<nav class="sidebar" aria-label="Navegação">
+    <div class="logo">Arquitetura de Computadores<small>Navegação rápida</small></div>
+    <a href="#sec-1">1. Fundamentos</a>
+    <a href="#sec-2">2. Arquitetura x64</a>
+    <a href="#sec-3">3. Modo Protegido</a>
+    <a href="#sec-4">4. Registradores</a>
+    <a href="#sec-5">5. Endereçamento</a>
+    <a href="#sec-6">6. Segmentos</a>
+    <a href="#sec-7">7. Descritores</a>
+    <a href="#sec-8">8. Processos</a>
+    <a href="#sec-9">9. Seletores</a>
+    <a href="#sec-10">10. 5 Passos</a>
+    <a href="#sec-101">10.1 Exemplos</a>
+    <a href="#sec-11">11. PUSH/POP</a>
+    <a href="#sec-12">12. Glossário</a>
+    <a href="#sec-13">13. Cheat Sheet</a>
+    <a href="#sec-14">14. Mapa Mental</a>
+</nav>
+<div class="container">
+
+    <h1>Arquitetura de Computadores</h1>
+    <p class="subtitulo">Guia de Estudo &mdash; Arquitetura Intel x86/x64 &mdash; material didático com explicações, tabelas e questões de prova</p>
+
+    <!-- ==================== BLOCO 1: FUNDAMENTOS ==================== -->
+    <h2 id="sec-1">1. Fundamentos do Computador</h2>
+
+    <p>Antes de entender como a arquitetura Intel funciona, precisamos saber como um computador se comunica internamente. Existem 3 blocos fundamentais:</p>
+
+    <div class="diagrama">
+  ┌──────────────────────────────────────────────────────────────┐
+  │                       BARRAMENTO (BUS)                       │
+  │   ┌───────────────┐  ┌───────────────┐  ┌───────────────┐    │
+  │   │   Endereço    │  │     Dados     │  │   Controle    │    │
+  │   └───────────────┘  └───────────────┘  └───────────────┘    │
+  │        ▼                  ▼                  ▼               │
+  │   ┌───────────────┐  ┌───────────────┐  ┌───────────────┐    │
+  │   │      CPU      │  │    MEMÓRIA    │  │      E/S      │    │
+  │   │  (UC / ULA)   │  │               │  │  (In / Out)   │    │
+  │   └───────────────┘  └───────────────┘  └───────────────┘    │
+  └──────────────────────────────────────────────────────────────┘</div>
+
+    <h3>1.1 Barramento (Bus)</h3>
+    <div class="card">
+        <p><strong>O que é:</strong> É o "caminho" por onde viajam as informações entre os componentes do computador. Pense nele como uma autovia com 3 faixas:</p>
+        <table>
+            <tr><th>Faixa</th><th>O que transporta</th><th>Por que existe</th></tr>
+            <tr><td><strong>Endereço</strong></td><td>Indica ONDE na memória o dado está ou deve ser gravado</td><td>Sem ela, o processador não saberia onde ler/escrever</td></tr>
+            <tr><td><strong>Dados</strong></td><td>Os valores reais (números, instruções, etc.)</td><td>É a "carga" que está sendo transportada</td></tr>
+            <tr><td><strong>Controle</strong></td><td>Sinais de comando (ler, escrever, clock)</td><td>Coordena quem fala, quem ouve e quando</td></tr>
+        </table>
+    </div>
+
+    <h3>1.2 CPU (Unidade Central de Processamento)</h3>
+    <div class="card">
+        <p>O "cérebro" do computador. Suas principais partes:</p>
+        <table>
+            <tr><th>Componente</th><th>Função</th></tr>
+            <tr><td><strong>UC (Unidade de Controle)</strong></td><td>Busca, decodifica e coordena a execução das instruções. É o "maestro".</td></tr>
+            <tr><td><strong>ULA (Unidade Lógica e Aritmética)</strong></td><td>Realiza cálculos (soma, subtração, AND, OR, etc.).</td></tr>
+            <tr><td><strong>PPU</strong></td><td>Processamento auxiliar (frequentemente associado a operações de ponto flutuante).</td></tr>
+            <tr><td><strong>MMU (Memory Management Unit)</strong></td><td>Gerencia a tradução de endereços lógicos → físicos (segmentação e paginação).</td></tr>
+            <tr><td><strong>Registradores</strong></td><td>Memórias ultrarrápidas internas da CPU. Guardam dados, endereços e estado da execução.</td></tr>
+        </table>
+
+        <div class="card-dica">
+            A CPU também se comunica pelo barramento: envia <strong>endereço</strong> e <strong>controle</strong> e recebe/envia <strong>dados</strong>.
+        </div>
+    </div>
+
+    <h3>1.3 Memória</h3>
+    <div class="card">
+        <table>
+            <tr><th>Tipo</th><th>Tecnologia</th><th>Características</th><th>Por que importa</th></tr>
+            <tr><td><strong>Principal (RAM)</strong></td><td>DRAM (Dynamic RAM)</td><td>Grande capacidade, mais barata, precisa de refresh constante</td><td>Armazena programas e dados em execução</td></tr>
+            <tr><td><strong>Cache</strong></td><td>SRAM (Static RAM)</td><td>Pequena capacidade, muito rápida, não precisa de refresh</td><td>Reduz a espera da CPU por dados da RAM</td></tr>
+        </table>
+        <p><strong>Níveis de Cache:</strong></p>
+        <ul>
+            <li><strong>L1</strong> &mdash; Dentro do core, mais rápida (cerca de 1-4 ns), menor capacidade (~32-64 KB)</li>
+            <li><strong>L2</strong> &mdash; Pode ser dentro ou fora do core, intermediária (~10 ns, 256 KB-1 MB)</li>
+            <li><strong>L3</strong> &mdash; Compartilhada entre cores, maior (~30 ns, 2-64 MB)</li>
+        </ul>
+        <div class="card-dica">
+            Quanto mais perto da CPU, mais rápida e mais cara é a memória. A cache "aproxima" os dados frequentes da CPU para não ficar esperando a RAM lenta.
+        </div>
+    </div>
+
+    <h3>1.4 Entrada/Saída (I/O)</h3>
+    <div class="card">
+        <p>São os dispositivos que permitem ao computador receber dados (input) e enviar dados (output) &mdash; teclado, mouse, monitor, disco rígido, rede, etc.</p>
+    </div>
+
+    <!-- ==================== BLOCO 2: ARQUITETURA INTEL x64 ==================== -->
+    <h2 id="sec-2">2. Arquitetura Intel x64</h2>
+
+    <h3>2.1 Conceitos Fundamentais</h3>
+
+    <div class="card-prova">
+        <p><strong>Tamanho da palavra:</strong> É a <strong>capacidade mínima de bits</strong> para representar a instrução mais simples do processador. Ela também define a quantidade mínima de bits que a unidade decodificadora processa <strong>a cada ciclo de decodificação</strong>.</p>
+    </div>
+
+    <div class="card-dica">
+        <strong>Por que isso importa?</strong> Se o processador decodifica de 8 em 8 bits, então a palavra mínima é de 8 bits. Uma instrução como <code>ADD END1, END2</code> é quebrada em pedaços de 8 bits para ser interpretada. Uma palavra maior permite instruções mais complexas e endereçamento maior, mas exige circuitos mais sofisticados.
+    </div>
+
+    <div class="diagrama">
+  Instrução:  ADD  END1, END2   →   END1 ← END1 + END2
+
+   ┌─────────────┐  ┌─────────────┐
+   │   Opcode    │  │  Operandos  │
+   │ (operador)  │  │ (endereços) │
+   └──────┬──────┘  └──────┬──────┘
+          │                │
+          ▼                ▼
+     Decodifica      Decodifica
+      de 8 em 8       de 8 em 8
+  Se a palavra = 8 bits, cada ciclo lê/decodifica 8 bits</div>
+
+    <div class="card-importante">
+        <strong>Relação:</strong> <code>+ tamanho da palavra = + núcleos simultâneos de decodificação</code><br>
+        Uma palavra maior permite que a CPU decodifique mais instruções ao mesmo tempo, aumentando o paralelismo interno.
+    </div>
+
+    <div class="card">
+        <h3>Compatibilidade Binária</h3>
+        <p>Dois processadores possuem <strong>compatibilidade binária</strong> se:</p>
+        <ul>
+            <li>Possuem o <strong>mesmo conjunto de instruções</strong> (ISA &mdash; Instruction Set Architecture)</li>
+            <li>Possuem a <strong>mesma representação em bits</strong> para essas instruções</li>
+        </ul>
+        <div class="card-importante" style="margin-top:1rem;">
+            <strong>OBS:</strong> TODAS as instruções devem ser iguais. Se apenas uma for diferente, <strong>toda</strong> a compatibilidade binária se perde. Um programa compilado para um não roda no outro.
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Capacidade de Endereçamento</h3>
+        <p>É a <strong>capacidade máxima de endereços</strong> que um processador consegue gerar em um sistema de memória.</p>
+        <ul>
+            <li>Na maioria dos sistemas, <strong>cada endereço armazena 1 byte</strong> (8 bits) de informação.</li>
+            <li>Se o processador usa <strong>N bits</strong> para formar um endereço, ele consegue endereçar <strong>2<sup>N</sup> bytes</strong>.</li>
+        </ul>
+        <table>
+            <tr><th>Bits de endereço</th><th>Espaço endereçável</th><th>Exemplo de uso</th></tr>
+            <tr><td>16 bits</td><td>2¹⁶ = 64 KB</td><td>8086</td></tr>
+            <tr><td>20 bits</td><td>2²⁰ = 1 MB</td><td>80286 (modo real)</td></tr>
+            <tr><td>32 bits</td><td>2³² = 4 GB</td><td>80386+</td></tr>
+            <tr><td>64 bits</td><td>2⁶⁴ = 16 EB</td><td>Arquitetura x64 moderna</td></tr>
+        </table>
+    </div>
+
+    <div class="card">
+        <h3>Clock (Frequência do Processador)</h3>
+        <p>O <strong>clock</strong> é o "batimento cardíaco" do processador. É um sinal elétrico que pulsa em uma frequência fixa, e <strong>a cada pulso (ciclo)</strong> o processador executa uma operação básica.</p>
+        <table>
+            <tr><th>Conceito</th><th>O que é</th><th>Exemplo</th></tr>
+            <tr><td><strong>Frequência de clock</strong></td><td>Quantos milhões/bilhões de ciclos por segundo (MHz/GHz)</td><td>3.5 GHz = 3.500.000.000 ciclos/segundo</td></tr>
+            <tr><td><strong>Ciclo de clock</strong></td><td>Tempo entre dois pulsos consecutivos</td><td>Em 3.5 GHz: ~0.28 nanosegundos por ciclo</td></tr>
+            <tr><td><strong>CPI (Cycles Per Instruction)</strong></td><td>Quantos ciclos uma instrução leva para executar</td><td>Uma instrução simples pode levar 1 ciclo; complexa, vários</td></tr>
+        </table>
+        <div class="card-dica">
+            <strong>Velocidade ≠ Clock sozinho.</strong> Dois processadores com o mesmo clock podem ter velocidades diferentes por causa da arquitetura interna (pipeline, cache, número de núcleos). Mas, tudo o mais constante, <strong>maior clock = mais operações por segundo</strong>.
+        </div>
+        <div class="card-importante">
+            <strong>Relação com o tamanho da palavra:</strong> Um processador com palavra de 64 bits processa mais dados por ciclo que um de 32 bits, mesmo no mesmo clock. A velocidade real depende de: <code>Velocidade = Clock × Bits da palavra / CPI</code>
+        </div>
+    </div>
+
+    <h3>2.2 Evolução da Arquitetura Intel</h3>
+    <table>
+        <tr><th>Geração</th><th>Processadores</th><th>Bits</th><th>Modos Implementados</th></tr>
+        <tr>
+            <td><strong>1ª (16 bits)</strong></td>
+            <td>8086 → 80286</td>
+            <td>16</td>
+            <td>Modo real; 80286 adicionou modo protegido 16 bits</td>
+        </tr>
+        <tr>
+            <td><strong>2ª (32 bits)</strong></td>
+            <td>80386 → ...</td>
+            <td>32</td>
+            <td>Modo real 16 bits, modo protegido 32 bits, modo virtual 8086</td>
+        </tr>
+        <tr>
+            <td><strong>3ª (64 bits)</strong></td>
+            <td>Arquitetura x64 moderna</td>
+            <td>64</td>
+            <td>Submodo <strong>IA-32e compatibilidade</strong> (roda programas de 32 bits) e submodo <strong>IA-32e 64 bits</strong> (programas nativos de 64 bits)</td>
+        </tr>
+    </table>
+
+    <h3>2.3 Registradores da Arquitetura 64 Bits</h3>
+    <div class="card">
+        <p>Na arquitetura <strong>x64 (64 bits)</strong>, existem <strong>16 registradores de propósito geral</strong>, cada um com 64 bits. Os 8 primeiros mantêm os nomes clássicos e os 8 restantes são numerados de R8 a R15:</p>
+
+        <table>
+            <tr><th>#</th><th>Nome (64 bits)</th><th>Nome (32 bits)</th><th>Nome (16 bits)</th><th>Nome (8 bits baixos)</th></tr>
+            <tr><td>1</td><td><code>RAX</code></td><td><code>EAX</code></td><td><code>AX</code></td><td><code>AL</code></td></tr>
+            <tr><td>2</td><td><code>RBX</code></td><td><code>EBX</code></td><td><code>BX</code></td><td><code>BL</code></td></tr>
+            <tr><td>3</td><td><code>RCX</code></td><td><code>ECX</code></td><td><code>CX</code></td><td><code>CL</code></td></tr>
+            <tr><td>4</td><td><code>RDX</code></td><td><code>EDX</code></td><td><code>DX</code></td><td><code>DL</code></td></tr>
+            <tr><td>5</td><td><code>RSI</code></td><td><code>ESI</code></td><td><code>SI</code></td><td><code>SIL</code></td></tr>
+            <tr><td>6</td><td><code>RDI</code></td><td><code>EDI</code></td><td><code>DI</code></td><td><code>DIL</code></td></tr>
+            <tr><td>7</td><td><code>RBP</code></td><td><code>EBP</code></td><td><code>BP</code></td><td><code>BPL</code></td></tr>
+            <tr><td>8</td><td><code>RSP</code></td><td><code>ESP</code></td><td><code>SP</code></td><td><code>SPL</code></td></tr>
+            <tr><td>9-16</td><td><code>R8</code> a <code>R15</code></td><td><code>R8D</code> a <code>R15D</code></td><td><code>R8W</code> a <code>R15W</code></td><td><code>R8B</code> a <code>R15B</code></td></tr>
+        </table>
+
+        <div class="card-dica">
+            <strong>Padrão:</strong> Os 8 primeiros mantêm nomes clássicos (RAX, RBX...). Os 8 novos são numerados: <code>R8</code> a <code>R15</code>. Para acessar porções menores: <code>R8D</code> = 32 bits, <code>R8W</code> = 16 bits, <code>R8B</code> = 8 bits.
+        </div>
+
+        <p style="margin-top:1rem;"><strong>Registradores especiais de 64 bits:</strong></p>
+        <table>
+            <tr><th>Registrador</th><th>Tamanho</th><th>Função</th></tr>
+            <tr><td><code>RIP</code></td><td>64 bits</td><td>Instruction Pointer (equivalente ao EIP em 64 bits)</td></tr>
+            <tr><td><code>RFLAGS</code></td><td>64 bits</td><td>Registrador de flags estendido para 64 bits</td></tr>
+            <tr><td><code>Rt</code></td><td>64 bits</td><td>Registrador de teste (usado em instruções de teste)</td></tr>
+            <tr><td>Seletores de segmento</td><td>16 bits</td><td>Continuam com 16 bits (CS, DS, SS, ES, FS, GS)</td></tr>
+        </table>
+    </div>
+
+    <div class="card-prova">
+        <p><strong>Modo de Compatibilidade (32 bits dentro de 64 bits):</strong></p>
+        <ul>
+            <li>São utilizados apenas os <strong>8 primeiros registradores</strong> de propósito geral (RAX-RSP) na sua versão de <strong>32 bits</strong> (EAX, EBX...)</li>
+            <li>O <code>RIP</code> também opera como <code>EIP</code> (32 bits)</li>
+            <li>O <code>RFLAGS</code> opera como <code>EFLAGS</code> (32 bits)</li>
+            <li>Os <strong>seletores de segmento continuam com 16 bits</strong> sempre</li>
+            <li>Programas compilados para 32 bits rodam normalmente nesse modo</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>Velocidade vs Software</h3>
+        <p>Uma distinção importante feita pelo professor:</p>
+        <table>
+            <tr><th>Aspecto</th><th>Domínio</th><th>O que define</th></tr>
+            <tr><td><strong>Velocidade</strong></td><td>Hardware / Circuito</td><td>Physicamente quão rápido o processador opera (clock, pipeline, cache)</td></tr>
+            <tr><td><strong>Praticidade e modificação</strong></td><td>Programa / Software</td><td>Como o código é escrito, otimizado e facilmente alterável</td></tr>
+        </table>
+        <div class="card-dica">
+            Hardware define o <strong>limite máximo</strong> de velocidade. Software define o <strong>quão eficientemente</strong> esse limite é aproveitado.
+        </div>
+    </div>
+
+    <!-- ==================== BLOCO 3: MODO PROTEGIDO ==================== -->
+    <h2 id="sec-3">3. Modo Protegido</h2>
+
+    <div class="card">
+        <p>O <strong>modo protegido</strong> é o modo de operação principal dos processadores Intel modernos (a partir do 80286, consolidado no 80386). Nele, o sistema operacional controla o acesso à memória e protege processos uns dos outros.</p>
+        <p>Quando processadores de 64 bits operam no modo protegido (compatibilidade x86), eles têm estas características:</p>
+        <ul>
+            <li>Endereços de <strong>32 bits</strong> → espaço de endereçamento de <strong>2³² = 4 GB</strong></li>
+            <li>Registradores operam com <strong>32 bits</strong></li>
+            <li>Os registradores estão distribuídos em <strong>3 grupos</strong></li>
+        </ul>
+    </div>
+
+    <div class="card-prova">
+        <p><strong>Os 3 grupos de registradores no modo protegido:</strong></p>
+        <ol>
+            <li><strong>Registradores Gerais</strong> (EAX, EBX, ECX, EDX, etc.)</li>
+            <li><strong>Registradores de Deslocamento/Offset</strong> (EIP, ESP, EBP, ESI, EDI)</li>
+            <li><strong>Registrador de Flags</strong> (EFLAG)</li>
+        </ol>
+        <p style="margin-top:0.8rem;">Além disso, os <strong>seletores de segmento</strong> operam com <strong>16 bits</strong>.</p>
+    </div>
+
+    <div class="card">
+        <h3>Formas de gerenciar o espaço de endereçamento:</h3>
+        <table>
+            <tr><th>Método</th><th>Como funciona</th><th>Quando usado</th></tr>
+            <tr><td><strong>Segmentação</strong></td><td>A memória é dividida em blocos (segmentos) de tamanhos variados</td><td>Sempre ativo no modo protegido</td></tr>
+            <tr><td><strong>Paginação</strong></td><td>A memória é dividida em páginas de tamanho fixo (tipicamente 4 KB)</td><td>Opcional, gerenciado pelo SO</td></tr>
+            <tr><td><strong>Segmentação + Paginação</strong></td><td>Primeiro segmenta, depois pagina</td><td>Combinação dos dois métodos</td></tr>
+        </table>
+    </div>
+
+    <!-- ==================== BLOCO 4: REGISTRADORES ==================== -->
+    <h2 id="sec-4">4. Registradores (Modo Protegido)</h2>
+
+    <h3>4.1 Registradores Gerais</h3>
+    <p>Cada registrador geral pode ser acessado de <strong>4 formas diferentes</strong>, dependendo de quantos bits você precisa usar:</p>
+
+    <div class="card-prova">
+        <table>
+            <tr><th>Forma</th><th>Tamanho</th><th>Como acessar (ex: registrador A)</th><th>O que representa</th></tr>
+            <tr><td>1ª</td><td>8 bits (menos significativos)</td><td><code>AL</code>, <code>BL</code>, <code>CL</code>, <code>DL</code></td><td>Byte baixo</td></tr>
+            <tr><td>2ª</td><td>8 bits (mais significativos)</td><td><code>AH</code>, <code>BH</code>, <code>CH</code>, <code>DH</code></td><td>Byte alto</td></tr>
+            <tr><td>3ª</td><td>16 bits</td><td><code>AX</code>, <code>BX</code>, <code>CX</code>, <code>DX</code></td><td>Meia palavra</td></tr>
+            <tr><td>4ª</td><td>32 bits</td><td><code>EAX</code>, <code>EBX</code>, <code>ECX</code>, <code>EDX</code></td><td>Palavra completa</td></tr>
+        </table>
+    </div>
+
+    <div class="diagrama">
+  Registrador EAX (32 bits):
+  ┌───────────────────┬───────────────────┐
+  │        AH         │        AL         │  ← 8 bits cada
+  ├───────────────────────────────────────┤
+  │      AX (16 bits)                     │  ← meia palavra
+  ├───────────────────────────────────────┤
+  │     EAX (32 bits)                     │  ← palavra completa
+  └───────────────────────────────────────┘
+   bit 31                              bit 0</div>
+
+    <h3>4.2 Funções de Cada Registrador</h3>
+    <table>
+        <tr><th>Registrador</th><th>Nome / Apelido</th><th>Função Principal</th><th>Por que importa</th></tr>
+        <tr><td><strong>EAX</strong></td><td>Acumulador</td><td>Armazena dados trazidos da memória e o <strong>resultado</strong> da maioria das instruções</td><td>É o registrador MAIS usado; todo cálculo passa por ele</td></tr>
+        <tr><td><strong>EBX</strong></td><td>Base</td><td>Armazena dados e participa de cálculos de endereçamento</td><td>Útil quando se precisa de um "ponteiro" para acessar dados</td></tr>
+        <tr><td><strong>ECX</strong></td><td>Contador</td><td>Armazena dados e conta repetições em loops</td><td>O hardware decrementa ECX automaticamente em cada iteração</td></tr>
+        <tr><td><strong>EDX</strong></td><td>Dados</td><td>Armazena dados auxiliares (operações com double, E/S, etc.)</td><td>Complementa EAX em operações complexas</td></tr>
+    </table>
+
+    <h3>4.3 Registrador EFLAG</h3>
+    <div class="card">
+        <p>Cada <strong>bit</strong> desse registrador sinaliza algo sobre a <strong>última instrução executada</strong>. Os bits mais importantes:</p>
+        <table>
+            <tr><th>Bit</th><th>Sigla</th><th>Significado</th></tr>
+            <tr><td>0</td><td>CF</td><td><strong>Carry Flag</strong> &mdash; houve transporte (overflow) em unsigned</td></tr>
+            <tr><td>2</td><td>PF</td><td><strong>Parity Flag</strong> &mdash; número de bits 1 no byte baixo é par</td></tr>
+            <tr><td>6</td><td>ZF</td><td><strong>Zero Flag</strong> &mdash; resultado da operação foi zero</td></tr>
+            <tr><td>7</td><td>SF</td><td><strong>Sign Flag</strong> &mdash; resultado é negativo (bit de sinal = 1)</td></tr>
+            <tr><td>11</td><td>OF</td><td><strong>Overflow Flag</strong> &mdash; houve overflow em signed</td></tr>
+        </table>
+        <div class="card-dica">
+            Os flags são usados em <strong>instruções de salto condicional</strong> (JE, JNE, JG, JL...). Exemplo: após um <code>CMP</code>, se os valores forem iguais, o ZF fica em 1, e o <code>JE</code> (Jump if Equal) usa esse flag para decidir se pula.
+        </div>
+    </div>
+
+    <!-- ==================== BLOCO 5: ENDEREÇAMENTO ==================== -->
+    <h2 id="sec-5">5. Endereçamento de Memória no Modo Protegido</h2>
+
+    <div class="card-prova">
+        <p><strong>Existem 3 tipos de endereçamento:</strong></p>
+        <ol>
+            <li><strong>Endereço Lógico (Virtual)</strong> = par (Seletor : Offset)</li>
+            <li><strong>Endereço Linear</strong> = Endereço base do segmento + Offset</li>
+            <li><strong>Endereço Físico</strong> = o endereço real na RAM</li>
+        </ol>
+    </div>
+
+    <div class="diagrama">
+┌────────────────────────┐
+│      Endereço Lógico   │   Seletor : Offset
+│   (CS:EIP,  SS:ESP)    │
+└────────────┬───────────┘
+             │  ← Unidade de Segmentação (soma base + offset)
+             ▼
+┌────────────────────────┐
+│      Endereço Linear   │   Base do segmento + Offset
+└────────────┬───────────┘
+             │
+      ┌──────┴───────┐
+      │  Paginação?  │
+      ├─ Não ────────┤──→ Físico = Linear
+      └─ Sim ────────┘──→ Físico = via tabela de páginas
+             │
+             ▼
+┌────────────────────────┐
+│     Endereço Físico    │   → vai para a RAM
+└────────────────────────┘
+</div>
+
+    <h3>5.1 Pares de Endereçamento (Seletor : Offset)</h3>
+    <div class="card-prova">
+        <table>
+            <tr><th>Seletor</th><th>Registrador Offset</th><th>Segmento</th><th>O que indica</th></tr>
+            <tr><td><strong>CS</strong></td><td><strong>EIP</strong></td><td>Código</td><td>Endereço da <strong>próxima instrução</strong> a ser executada</td></tr>
+            <tr><td><strong>SS</strong></td><td><strong>ESP</strong></td><td>Pilha</td><td>Topo da pilha</td></tr>
+            <tr><td><strong>SS</strong></td><td><strong>EBP</strong></td><td>Pilha</td><td>Base da pilha (acesso sem desempilhar)</td></tr>
+            <tr><td><strong>DS</strong></td><td><strong>ESI / EDI</strong></td><td>Dados</td><td>Seletor de dados — pode trabalhar com ambos</td></tr>
+            <tr><td><strong>ES</strong></td><td><strong>ESI / EDI</strong></td><td>Dados extra</td><td>Seletor de dados extra — pode trabalhar com ambos</td></tr>
+            <tr><td><strong>FS</strong></td><td><strong>ESI / EDI</strong></td><td>Dados extra</td><td>Seletor de dados extra — pode trabalhar com ambos</td></tr>
+            <tr><td><strong>GS</strong></td><td><strong>ESI / EDI</strong></td><td>Dados extra</td><td>Seletor de dados extra — pode trabalhar com ambos</td></tr>
+        </table>
+    </div>
+
+    <div class="card-dica">
+        <strong>Por que esses pares?</strong> A arquitetura Intel separa endereços por FINALIDADE. Código, dados e pilha ficam em segmentos diferentes para que um programa não consiga sobrescrever seu próprio código acidentalmente (proteção).<br><br>
+        <strong>Importante:</strong> Qualquer seletor de dados (DS, ES, FS, GS) pode ser pareado com <strong>tanto ESI quanto EDI</strong>. A escolha depende de qual seletor o SO alocou para o segmento que está sendo acessado.
+    </div>
+
+    <h3>5.2 Como Identificar Qual Usar (Guia Prático)</h3>
+
+    <div class="card-prova">
+        <p><strong>Regra de ouro:</strong> O <strong>enunciado da questão</strong> te diz QUAL operação está sendo feita. A operação define o registrador. O registrador define o seletor.</p>
+    </div>
+
+    <p>A tabela abaixo é a sua "chave de resolução". Sempre que aparecer uma questão prática, refaça essa pergunta:</p>
+
+    <div class="card">
+        <table>
+            <tr><th style="width:30%;">O enunciado diz...</th><th style="width:20%;">Operação</th><th style="width:15%;">Registrador</th><th style="width:15%;">Seletor</th><th style="width:20%;">Por quê?</th></tr>
+            <tr>
+                <td>"próxima instrução"<br>"busca de instrução"<br>"executar instrução"<br>"o processador vai buscar"</td>
+                <td><strong>Código</strong></td>
+                <td><code>EIP</code></td>
+                <td><code>CS</code></td>
+                <td>EIP sempre aponta para a próxima instrução a executar</td>
+            </tr>
+            <tr>
+                <td>"ler dado"<br>"buscar dado da memória"<br>"operando de leitura"<br>"trazer dado para o processador"</td>
+                <td><strong>Leitura</strong></td>
+                <td><code>ESI</code></td>
+                <td><code>DS</code> (ou ES/FS/GS)</td>
+                <td>ESI = Source Index = índice de ORIGEM. O seletor depende de qual segmento o SO alocou</td>
+            </tr>
+            <tr>
+                <td>"escrever dado"<br>"gravar resultado"<br>"armazenar em memória"<br>"operando de escrita"</td>
+                <td><strong>Escrita</strong></td>
+                <td><code>EDI</code></td>
+                <td><code>ES</code> (ou DS/FS/GS)</td>
+                <td>EDI = Destination Index = índice de DESTINO. O seletor depende de qual segmento o SO alocou</td>
+            </tr>
+            <tr>
+                <td>"PUSH"<br>"empilhar"<br>"topo da pilha"<br>"desempilhar" (no topo)</td>
+                <td><strong>Pilha (topo)</strong></td>
+                <td><code>ESP</code></td>
+                <td><code>SS</code></td>
+                <td>ESP = Stack Pointer = aponta para o TOPO da pilha</td>
+            </tr>
+            <tr>
+                <td>"EBP"<br>"base da pilha"<br>"frame de função"<br>"acesso à pilha sem desempilhar"</td>
+                <td><strong>Pilha (base)</strong></td>
+                <td><code>EBP</code></td>
+                <td><code>SS</code></td>
+                <td>EBP = Base Pointer = ponto fixo para acessar dados na pilha</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="card">
+        <h3>Como Decidir na Prática (Fluxograma Mental)</h3>
+        <div class="diagrama">
+  ┌──────────────────────────────────────────────────────────┐
+  │  O ENUNCADO MENCIONA...                                  │
+  │                                                          │
+  │  "próxima instrução" / "buscar instrução"                │
+  │  → EIP + CS                                              │
+  │                                                          │
+  │  "ler dado" / "buscar dado" / "operando de leitura"      │
+  │  → ESI + DS (ou ES/FS/GS, depende do enunciado)          │
+  │                                                          │
+  │  "escrever" / "gravar" / "armazenar resultado"           │
+  │  → EDI + ES (ou DS/FS/GS, depende do enunciado)          │
+  │                                                          │
+  │  "PUSH" / "empilhar" / "topo da pilha"                   │
+  │  → ESP + SS                                              │
+  │                                                          │
+  │  "POP" / "desempilhar"                                   │
+  │  → ESP + SS  (primeiro incrementa, depois le)            │
+  │                                                          │
+  │  "acesso à pilha" / "EBP" / "frame"                      │
+  │  → EBP + SS                                              │
+  │                                                          │
+  │  NÃO MENCIONA NADA ESPECÍFICO?                           │
+  │  → Pergunte: qual registrador de deslocamento aparece?   │
+  │    Use a tabela de pares para descobrir o seletor        │
+  │    (DS/ES/FS/GS funcionam com ESI e EDI)                 │
+  └──────────────────────────────────────────────────────────┘</div>
+    </div>
+
+    <div class="card-dica">
+        <strong>Atalho mental para não errar:</strong>
+        <ul style="margin-top:0.5rem;">
+            <li><strong>EIP</strong> = Instruction Pointer → <strong>Código</strong> → <strong>CS</strong></li>
+            <li><strong>ESI</strong> = <u>S</u>ource Index → <u>S</u>aída (origem) → <strong>Leitura</strong> → <strong>DS</strong> (ou ES/FS/GS)</li>
+            <li><strong>EDI</strong> = <u>D</u>estination Index → <u>D</u>estino → <strong>Escrita</strong> → <strong>ES</strong> (ou DS/FS/GS)</li>
+            <li><strong>ESP</strong> = <u>S</u>tack <u>P</u>ointer → <strong>Pilha (topo)</strong> → <strong>SS</strong></li>
+            <li><strong>EBP</strong> = <u>B</u>ase <u>P</u>ointer → <strong>Pilha (base)</strong> → <strong>SS</strong></li>
+        </ul>
+        <p style="margin-top:0.8rem;"><strong>Lembre-se:</strong> DS, ES, FS e GS são <strong>intercambiáveis</strong> — qualquer um deles pode trabalhar com ESI ou EDI. O enunciado da questão sempre diz qual seletor usar.</p>
+    </div>
+
+    <h3>5.3 Exemplo Rápido de Identificação</h3>
+    <div class="card">
+        <p><strong>Pergunta:</strong> "Dado um PUSH EAX, onde ESP = 0x00C00FF0, identifique os 5 passos."</p>
+        <p><strong>Passo 1:</strong> O enunciado diz <strong>"PUSH"</strong> → operação de <strong>pilha</strong> → registrador = <code>ESP</code></p>
+        <p><strong>Passo 2:</strong> ESP trabalha com <code>SS</code> → vá à tabela de descritores e ache qual seletor é o de pilha</p>
+        <p>A partir daqui é só aplicar a fórmula: <code>Linear = Base + ESP</code></p>
+
+        <div class="card-dica">
+            Se o enunciado <strong>não diz explicitamente</strong> qual operação é, procure o <strong>nome do registrador</strong> que aparece no enunciado. Ex: se aparece <code>ESI = 0x12345</code>, automaticamente é leitura de dados. O seletor pode ser DS, ES, FS ou GS — o enunciado sempre diz qual.
+        </div>
+    </div>
+
+    <!-- ==================== BLOCO 6: SEGMENTOS ==================== -->
+    <h2 id="sec-6">6. Segmentos de Memória</h2>
+
+    <p>Quando um programa é executado no modo protegido, o SO aloca <strong>segmentos</strong> na memória para ele:</p>
+
+    <table>
+        <tr><th>Tipo</th><th>Quantidade por programa</th><th>Função</th><th>Tamanho</th></tr>
+        <tr>
+            <td><strong>Código (CS)</strong></td>
+            <td>1 apenas</td>
+            <td>Armazena as instruções do programa</td>
+            <td>1 byte a 4 GB</td>
+        </tr>
+        <tr>
+            <td><strong>Pilha (SS)</strong></td>
+            <td>1 apenas</td>
+            <td>Cálculos intermediários e troca de contexto</td>
+            <td>1 byte a 4 GB</td>
+        </tr>
+        <tr>
+            <td><strong>Dados (DS, ES, FS, GS)</strong></td>
+            <td>Até 4</td>
+            <td>Armazena as variáveis do programa</td>
+            <td>1 byte a 4 GB cada</td>
+        </tr>
+    </table>
+
+    <div class="card-dica">
+        <strong>Por que separar?</strong> A separação permite que o SO aplique <strong>permissões diferentes</strong> a cada segmento. Por exemplo: o segmento de código pode ser "somente leitura" (não pode ser modificado), evitando que o programa corrompa suas próprias instruções.
+    </div>
+
+    <!-- ==================== BLOCO 7: TABELA DE DESCRITORES ==================== -->
+    <h2 id="sec-7">7. Tabela de Descritores de Segmento</h2>
+
+    <div class="card">
+        <p>É a tabela que o SO usa para <strong>definir cada segmento</strong> na memória. Cada entrada (descritor) contém 4 campos:</p>
+        <table>
+            <tr><th>Campo</th><th>Descrição</th><th>Por que importa</th></tr>
+            <tr><td><strong>Seletor</strong></td><td>Número único de 8 bits que identifica o segmento na tabela</td><td>É como um "ID" &mdash; não pode se repetir</td></tr>
+            <tr><td><strong>Endereço Base</strong></td><td>Primeiro endereço do segmento na memória</td><td>Usado no cálculo: <code>Linear = Base + Offset</code></td></tr>
+            <tr><td><strong>Endereço Limite</strong></td><td>Último endereço permitido do segmento</td><td>Usado para <strong>verificação de segurança</strong></td></tr>
+            <tr><td><strong>Direito de Acesso</strong></td><td>Define a camada do SO à qual o segmento pertence</td><td>Controla quem pode acessar (ver item abaixo)</td></tr>
+        </table>
+    </div>
+
+    <div class="card-prova">
+        <p><strong>TESTE DE SEGURANÇA:</strong> Toda vez que o endereço linear é calculado, ele é comparado com o endereço limite. Se <strong>endereço linear > endereço limite</strong>, ocorre <strong>GPF (General Protection Fault)</strong> &mdash; falha de proteção geral. O programa é <strong>abortado</strong> imediatamente.</p>
+    </div>
+
+    <div class="card">
+        <h3>Exemplo de Tabela de Descritores (Professor)</h3>
+        <p>Dois processos definidos na memória: <strong>P1</strong> e <strong>P2</strong>. Todos com direito de acesso 3 (Ring 3 = aplicativo).</p>
+        <table>
+            <tr><th>Seletor</th><th>End. Base</th><th>End. Limite</th><th>Acesso</th><th>Processo</th></tr>
+            <tr><td><code>0001</code></td><td><code>0000 1a00</code></td><td><code>0004 DFFD</code></td><td>3</td><td rowspan="4" style="vertical-align:middle; font-weight:700; color:var(--accent);">P1</td></tr>
+            <tr><td><code>0002</code></td><td><code>0004 defe</code></td><td><code>000a 0000</code></td><td>3</td></tr>
+            <tr><td><code>0003</code></td><td><code>000a 0001</code></td><td><code>0000 0fff</code></td><td>3</td></tr>
+            <tr><td><code>0004</code></td><td><code>000d 1000</code></td><td><code>000c 7800</code></td><td>3</td></tr>
+            <tr style="border-top:3px solid var(--border);"><td><code>0140</code></td><td><code>0034 1000</code></td><td><code>004e ffff</code></td><td>3</td><td rowspan="4" style="vertical-align:middle; font-weight:700; color:var(--accent);">P2</td></tr>
+            <tr><td><code>024a</code></td><td><code>004f 0000</code></td><td><code>0081 8000</code></td><td>3</td></tr>
+            <tr><td><code>037a</code></td><td><code>0051 8001</code></td><td><code>0070 000b</code></td><td>3</td></tr>
+            <tr><td><code>037b</code></td><td><code>0070 000f</code></td><td><code>0078 00ff</code></td><td>3</td></tr>
+        </table>
+    </div>
+
+    <div class="card-dica">
+        <strong>Como identificar qual segmento é qual?</strong> Analise os endereços base. Sequentes = mesmo processo. A ordem típica na memória (de endereço baixo para alto) é: <strong>Código → Pilha → Dados → Extra</strong>. O primeiro seletor (0001 para P1, 0140 para P2) é sempre o de <strong>código</strong>.
+    </div>
+
+    <div class="card">
+        <h3>Camadas do Sistema Operacional (Direito de Acesso)</h3>
+        <p>O SO é implementado em <strong>camadas (rings)</strong>, de 0 a 3:</p>
+        <table>
+            <tr><th>Ring</th><th>Camada</th><th>Prioridade</th><th>Exemplo</th></tr>
+            <tr><td><strong>Ring 0</strong></td><td>Kernel</td><td>MÁXIMA</td><td>Núcleo do SO, drivers</td></tr>
+            <tr><td>Ring 1</td><td>Serviços do SO</td><td>Alta</td><td>Serviços intermediários</td></tr>
+            <tr><td>Ring 2</td><td>Serviços do SO</td><td>Média</td><td>Bibliotecas do sistema</td></tr>
+            <tr><td><strong>Ring 3</strong></td><td>Aplicativos (APPS)</td><td>MÍNIMA</td><td>Programas de usuário</td></tr>
+        </table>
+        <div class="card-dica">
+            Um segmento com direito de acesso "Ring 3" <strong>não pode</strong> acessar um segmento com "Ring 0". Isso protege o kernel de programas com bugs ou maliciosos.
+        </div>
+    </div>
+
+    <div class="card-prova">
+        <p><strong>Tamanho da Tabela de Descritores e Multitarefa:</strong></p>
+        <ul>
+            <li>Cada tabela de descritores de segmento tem <strong>8 KBytes</strong> de tamanho</li>
+            <li>Existem <strong>várias tabelas</strong> de descritores na memória, definidas pelo SO</li>
+            <li>Isso permite que <strong>vários segmentos</strong> estejam definidos simultaneamente</li>
+            <li>Essa estrutura viabiliza a criação de <strong>sistemas operacionais multitarefa</strong> na arquitetura PC</li>
+            <li>Porém, <strong>apenas um processo por vez</strong> está sendo executado pelo processador (rodízio)</li>
+        </ul>
+        <div class="card-dica">
+            <strong>Na prova:</strong> Se perguntarem "por que a arquitetura Intel suporta multitarefa?", a resposta é: porque existem várias tabelas de descritores de 8KB cada, permitindo que múltiplos segmentos de múltiplos processos estejam definidos na memória ao mesmo tempo, com o SO rodiziando entre eles.
+        </div>
+    </div>
+
+    <h3>7.1 Diagrama de Memória (Exemplo do Professor)</h3>
+    <div class="card">
+        <p>Abaixo temos a representação da memória com os 2 processos definidos na tabela de descritores. Cada bloco representa um segmento, com seu endereço base (início) e limite (fim):</p>
+        <div class="diagrama">
+  MEMÓRIA (endereços em hexadecimal)
+  ─────────────────────────────────────────────────────────────
+
+  46 bytes (espaço livre no topo da memória)
+  0078 00ff ┐
+            │  Extra (P2)     seletor 037b
+  0070 000f ┘
+
+  0070 000b ┐
+            │  Dados (P2)     seletor 037a
+  0051 8001 ┘
+
+  0081 8000 ┐
+            │  Pilha (P2)     seletor 024a
+  004f 0000 ┘
+
+  004e ffff ┐
+            │  Código (P2)    seletor 0140
+  0034 1000 ┘
+
+  ═══════════════════════════════════════════════════════════════
+
+  000d 1000 ┐
+            │  Extra (P1)     seletor 0004
+  000c 7800 ┘
+
+  0000 0fff ┐
+            │  Dados (P1)     seletor 0003
+  000a 0001 ┘
+
+  000a 0000 ┐
+            │  Pilha (P1)     seletor 0002
+  0004 defe ┘
+
+  0004 DFFD ┐
+            │  Código (P1)    seletor 0001
+  0000 1a00 ┘
+  0 bytes (espaço livre no fim da memória)
+
+  ─────────────────────────────────────────────────────────────</div>
+        <div class="card-dica">
+            <strong>Observe:</strong> O endereço base de cada segmento é o primeiro byte. O endereço limite é o último byte permitido. Quando o professor escreve <code>0004 defe</code> como base da pilha de P1, significa que a pilha começa nesse endereço e vai até <code>000a 0000</code>.
+        </div>
+    </div>
+
+    <h3>7.2 Tabela de Conversão: Binário ↔ Hexadecimal</h3>
+    <div class="card">
+        <p>Essa tabela é <strong>fundamental</strong> para resolver questões de prova. Cada dígito hexadecimal corresponde a <strong>4 bits</strong> em binário:</p>
+        <table>
+            <tr><th>Hex</th><th>Binário</th><th>Hex</th><th>Binário</th></tr>
+            <tr><td><code>0</code></td><td><code>0000</code></td><td><code>8</code></td><td><code>1000</code></td></tr>
+            <tr><td><code>1</code></td><td><code>0001</code></td><td><code>9</code></td><td><code>1001</code></td></tr>
+            <tr><td><code>2</code></td><td><code>0010</code></td><td><code>A</code></td><td><code>1010</code></td></tr>
+            <tr><td><code>3</code></td><td><code>0011</code></td><td><code>B</code></td><td><code>1011</code></td></tr>
+            <tr><td><code>4</code></td><td><code>0100</code></td><td><code>C</code></td><td><code>1100</code></td></tr>
+            <tr><td><code>5</code></td><td><code>0101</code></td><td><code>D</code></td><td><code>1101</code></td></tr>
+            <tr><td><code>6</code></td><td><code>0110</code></td><td><code>E</code></td><td><code>1110</code></td></tr>
+            <tr><td><code>7</code></td><td><code>0111</code></td><td><code>F</code></td><td><code>1111</code></td></tr>
+        </table>
+        <p style="margin-top:1rem;"><strong>Como usar:</strong> Para converter <code>0x1A00</code> para binário, basta substituir cada dígito:</p>
+        <div class="diagrama">
+  Hex:    1       A       0       0
+          ↓       ↓       ↓       ↓
+  Bin:  0001    1010    0000    0000
+
+  Resultado: 0001 1010 0000 0000</div>
+        <div class="card-dica">
+            <strong>Atalho:</strong> Para memorizar: 0-9 são os mesmos números (em 4 bits). A=10, B=11, C=12, D=13, E=14, F=15. Se o professor pedir "converta 0x3F para binário", é só: 3=<code>0011</code>, F=<code>1111</code> → <code>0011 1111</code>.
+        </div>
+    </div>
+
+    <!-- ==================== BLOCO 8: PROCESSOS E CONTEXTO ==================== -->
+    <h2 id="sec-8">8. Processos e Escalonamento</h2>
+
+    <div class="card">
+        <p><strong>Processo:</strong> É um programa que está <strong>em execução</strong>. Vários processos podem estar definidos na memória, mas apenas <strong>um por vez</strong> está sendo executado pelo processador.</p>
+        <p><strong>Escalonamento:</strong> O SO decide qual processo usa o processador e por quanto tempo (rodízio / time-sharing).</p>
+    </div>
+
+    <div class="card-prova">
+        <p><strong>Contexto de Hardware:</strong> É o conjunto de informações dos registradores internos do processador para um dado processo. Quando o processo é trocado:</p>
+        <ul>
+            <li>O contexto do processo antigo é <strong>salvo</strong> no segmento <strong>TSS</strong> (Task State Segment) na memória principal</li>
+            <li>O contexto do novo processo é <strong>restaurado</strong> do TSS dele</li>
+        </ul>
+        <p><strong>Fórmula:</strong> <code>Contexto do Processo = Contexto de Software + Contexto de Hardware</code></p>
+        <p>Quando o processo retoma, ele continua <strong>exatamente de onde parou</strong>.</p>
+    </div>
+
+    <div class="diagrama">
+  Processo P1 em execução      Processo P2 em execução
+  ┌─────────────────┐              ┌─────────────────┐
+  │  Registradores: │   Troca      │  Registradores: │
+  │  EAX = 5        │ ┌──────────┐ │  EAX = 10       │
+  │  EBX = 3        │ │ (salva P1│ │  EBX = 7        │
+  │  EIP = 0x40100  │ │  restaura│ │  EIP = 0x50200  │
+  │  ESP = 0xC0100  │ │    P2)   │ │  ESP = 0xC0200  │
+  └─────────────────┘ └──────────┘ └─────────────────┘
+           │                                │
+           ↓                                ↓
+    ┌────────────┐                   ┌────────────┐
+    │  TSS de P1 │                   │  TSS de P2 │
+    └────────────┘                   └────────────┘</div>
+
+    <!-- ==================== BLOCO 9: SELETORES DETALHADOS ==================== -->
+    <h2 id="sec-9">9. Detalhamento dos Seletores e Registradores</h2>
+
+    <h3>9.1 CS : EIP (Código)</h3>
+    <div class="card">
+        <p><strong>CS</strong> (Code Segment) &mdash; seletor de código. Identifica o segmento onde está o código do programa em execução.</p>
+        <p><strong>EIP</strong> (Instruction Pointer) &mdash; armazena o endereço da <strong>próxima instrução</strong> a ser executada.</p>
+        <ul>
+            <li>A cada instrução executada, o EIP é <strong>atualizado automaticamente</strong> (incrementado de 4 em 4 bytes na arquitetura 32 bits)</li>
+            <li>O EIP é um <strong>ponteiro</strong>: é inicializado pelo programa e alterado por saltos (JMP, CALL, RET)</li>
+        </ul>
+    </div>
+
+    <h3>9.2 SS : ESP (Pilha &mdash; Topo)</h3>
+
+    <div class="card-prova">
+        <p><strong>Registrador ESP</strong> (Extended Stack Pointer) &mdash; ponteiro de pilha.</p>
+        <ul>
+            <li>Armazena o endereço lógico do <strong>topo da pilha</strong></li>
+            <li>Na arquitetura Intel, a pilha <strong>cresce de cabeça para baixo</strong> (endereços decrescentes)</li>
+            <li><strong>Empilhar (PUSH):</strong> o dado é colocado no endereço apontado por ESP, depois o ESP é <strong>pós-decrementado em 4 bytes</strong></li>
+            <li><strong>Desempilhar (POP):</strong> o ESP é <strong>pré-incrementado em 4 bytes</strong>, depois o dado é lido da nova posição</li>
+        </ul>
+    </div>
+
+    <div class="diagrama">
+  PILHA NA ARQUITETURA INTEL (cresce para BAIXO)
+
+  Endereço alto (início da pilha)
+  ┌─────────────┐ 0x00C01000
+  │  Dado 1     │
+  ├─────────────┤ 0x00C00FFC   ← ESP apontava aqui antes do PUSH
+  │  Dado 2     │
+  ├─────────────┤ 0x00C00FF8
+  │  Dado 3     │
+  ├─────────────┤ 0x00C00FF4
+  │  (vazio)    │ ← ESP aponta para VAZIO (topo)
+  └─────────────┘ 0x00C00FF0
+  Endereço baixo
+
+  PUSH 5:
+    1. Coloca 5 no endereço 0x00C00FF0
+    2. ESP = ESP - 4 → agora ESP = 0x00C00FEC
+
+  POP:
+    1. ESP = ESP + 4 → agora ESP = 0x00C00FF0
+    2. Lê o dado de 0x00C00FF0</div>
+
+    <div class="card-dica">
+        <strong>Por que a pilha cresce para baixo?</strong> É uma convenção da arquitetura Intel. Isso significa que empilhar DECREMENTA o ESP e desempilhar INCREMENTA o ESP. Não confunda!
+    </div>
+
+    <h3>9.3 SS : EBP (Pilha &mdash; Base)</h3>
+    <div class="card">
+        <p><strong>EBP</strong> (Extended Base Pointer) &mdash; ponteiro base de pilha.</p>
+        <p>É um <strong>ponteiro auxiliar</strong> que permite acessar dados dentro da pilha <strong>sem precisar desempilhar</strong>. É como uma "janela" fixa para olhar dentro da pilha.</p>
+        <div class="card-dica">
+            Muito usado em <strong>frames de função</strong>: quando uma função começa, EBP salva o topo antigo da pilha e ESP desce para alocar espaço local. Assim, os parâmetros e variáveis locais ficam acessíveis via EBP com offset fixo.
+        </div>
+    </div>
+
+    <h3>9.4 DS/ES/FS/GS : ESI/EDI (Dados)</h3>
+    <div class="card">
+        <table>
+            <tr><th>Seletor</th><th>Nome</th><th>Função</th></tr>
+            <tr><td><strong>DS</strong></td><td>Data Segment</td><td>Seletor principal de dados</td></tr>
+            <tr><td><strong>ES</strong></td><td>Extra Segment</td><td>Segmento de dados extra</td></tr>
+            <tr><td><strong>FS, GS</strong></td><td>Extra segments</td><td>Segmentos de dados adicionais (usados pelo SO para TLS, etc.)</td></tr>
+        </table>
+        <p style="margin-top:1rem;"><strong>ESI</strong> (Source Index) &mdash; armazena o endereço de <strong>leitura</strong> de dados.</p>
+        <p><strong>EDI</strong> (Destination Index) &mdash; armazena o endereço de <strong>escrita</strong> de dados.</p>
+        <div class="card-dica">
+            Juntos, ESI e EDI são usados em instruções como <code>MOVS</code> (movimentar dados de um endereço para outro), onde ESI aponta para a origem e EDI para o destino.
+        </div>
+    </div>
+
+    <!-- ==================== BLOCO 10: OS 5 PASSOS DA EXECUÇÃO ==================== -->
+    <h2 id="sec-10">10. Os 5 Passos da Execução de uma Instrução</h2>
+
+    <div class="card-prova" style="border-width:3px;">
+        <p style="font-size:1.05rem; font-weight:700; margin-bottom:1rem;">QUANDO UM PROCESSADOR VAI EXECUTAR UMA INSTRUÇÃO, ESTES SÃO OS 5 PASSOS:</p>
+
+        <ol class="passo-lista">
+            <li>
+                <strong>Identificar os registradores de deslocamento</strong><br>
+                De acordo com a instrução, identifica quais registradores de deslocamento (offset) ela utilizará. Ex: se é uma instrução de código, usará EIP; se acessa dados, usará ESI ou EDI.
+            </li>
+            <li>
+                <strong>Identificar os seletores de segmento</strong><br>
+                Identifica quais seletores de segmento estão associados aos registradores de deslocamento. Ex: se o offset é EIP, o seletor é CS; se é ESI, o seletor é DS.
+            </li>
+            <li>
+                <strong>Calcular o endereço linear</strong><br>
+                Localiza na <strong>tabela de descritores de segmento</strong> o endereço base correspondente ao seletor, e soma com o offset:<br>
+                <code>Endereço Linear = Endereço Base do Segmento + Offset</code>
+            </li>
+            <li>
+                <strong>Teste de segurança (Limite)</strong><br>
+                Compara o endereço linear com o endereço limite. Se <strong>linear &gt; limite → GPF</strong> e o programa é abortado.
+            </li>
+            <li>
+                <strong>Definir o endereço físico</strong><br>
+                Se a paginação estiver <strong>desativada</strong>: endereço físico = endereço linear.<br>
+                Se a paginação estiver <strong>ativa</strong>: o endereço linear é traduzido usando tabelas de páginas para obter o endereço físico.
+            </li>
+        </ol>
+    </div>
+
+    <div class="card-dica">
+        <strong>Resumo visual:</strong>
+        <code>Seletor:Offset</code> → <code>Linear = Base + Offset</code> → <code>Teste do Limite</code> → <code>Físico</code> → <strong>RAM</strong>
+    </div>
+
+    <!-- ==================== BLOCO 10.1: EXEMPLOS PRÁTICOS ==================== -->
+    <h2 id="sec-101">10.1 Exemplos Práticos &mdash; Resolução Completa (Estilo Prova)</h2>
+
+    <p>Usaremos a <strong>tabela de descritores real do professor</strong> com os processos P1 e P2. Memorize-a: ela aparece em toda questão prática.</p>
+
+    <div class="card-prova">
+        <table>
+            <tr><th>Seletor</th><th>End. Base</th><th>End. Limite</th><th>Acesso</th><th>Processo</th></tr>
+            <tr><td><code>0001</code></td><td><code>0000 1a00</code></td><td><code>0004 DFFD</code></td><td>3</td><td rowspan="4" style="vertical-align:middle; font-weight:700; color:var(--prova-text);">P1</td></tr>
+            <tr><td><code>0002</code></td><td><code>0004 defe</code></td><td><code>000a 0000</code></td><td>3</td></tr>
+            <tr><td><code>0003</code></td><td><code>000a 0001</code></td><td><code>0000 0fff</code></td><td>3</td></tr>
+            <tr><td><code>0004</code></td><td><code>000d 1000</code></td><td><code>000c 7800</code></td><td>3</td></tr>
+            <tr style="border-top:3px solid var(--prova-border);"><td><code>0140</code></td><td><code>0034 1000</code></td><td><code>004e ffff</code></td><td>3</td><td rowspan="4" style="vertical-align:middle; font-weight:700; color:var(--prova-text);">P2</td></tr>
+            <tr><td><code>024a</code></td><td><code>004f 0000</code></td><td><code>0081 8000</code></td><td>3</td></tr>
+            <tr><td><code>037a</code></td><td><code>0051 8001</code></td><td><code>0070 000b</code></td><td>3</td></tr>
+            <tr><td><code>037b</code></td><td><code>0070 000f</code></td><td><code>0078 00ff</code></td><td>3</td></tr>
+        </table>
+    </div>
+
+    <div class="card-dica">
+        <strong>Como identificar qual segmento é qual (P1):</strong> Analise a ordem dos endereços base: 00001a00 → 0004defe → 000a0001 → 000d1000. Na memória, a ordem é <strong>Código → Pilha → Dados → Extra</strong>. Então: 0001=Código, 0002=Pilha, 0003=Dados, 0004=Extra. Para P2 segue a mesma lógica.
+    </div>
+
+    <!-- EXEMPLO 1 -->
+    <h3>Exemplo 1: Buscando a Próxima Instrução do P1 (CS : EIP)</h3>
+    <div class="card">
+        <p><strong>Enunciado:</strong> O processador está executando o processo P1. O registrador <code>EIP = 0000 3000</code>. Execute os 5 passos.</p>
+
+        <p style="margin-top:1rem; font-weight:600; color:var(--accent);">Resolução passo a passo:</p>
+
+        <p><strong>▸ Passo 1 &mdash; Identificar o registrador de deslocamento</strong></p>
+        <p>A instrução está no <strong>segmento de código</strong>. O registrador de deslocamento é <code>EIP</code> (Instruction Pointer).</p>
+
+        <p><strong>▸ Passo 2 &mdash; Identificar o seletor de segmento</strong></p>
+        <p>EIP trabalha com <code>CS</code>. No P1, o seletor de código é <code>0001</code>. Pela tabela: Base = <code>0000 1a00</code>, Limite = <code>0004 DFFD</code>.</p>
+
+        <p><strong>▸ Passo 3 &mdash; Calcular o endereço linear</strong></p>
+        <div class="diagrama">
+  Fórmula: Endereço Linear = Endereço Base + Offset
+  Endereço Linear = 0000 1a00 + 0000 3000
+  Endereço Linear = 0000 4a00</div>
+
+        <p><strong>▸ Passo 4 &mdash; Teste de limite</strong></p>
+        <div class="diagrama">
+  Linear calculado:  0000 4a00
+  Limite do seg.:    0004 DFFD
+
+  0000 4a00 ≤ 0004 DFFD → ✅ OK! (não há GPF)</div>
+
+        <p><strong>▸ Passo 5 &mdash; Endereço físico</strong></p>
+        <p>Sem paginação: <code>Endereço Físico = 0000 4a00</code></p>
+    </div>
+
+    <!-- EXEMPLO 2 -->
+    <h3>Exemplo 2: Lendo Dados do P1 (DS : ESI)</h3>
+    <div class="card">
+        <p><strong>Enunciado:</strong> O processador vai ler um dado do processo P1. O registrador <code>ESI = 0000 0500</code>. Execute os 5 passos.</p>
+
+        <p style="margin-top:1rem; font-weight:600; color:var(--accent);">Resolução passo a passo:</p>
+
+        <p><strong>▸ Passo 1</strong> &mdash; Registrador de deslocamento: <code>ESI</code> (leitura de dados).</p>
+
+        <p><strong>▸ Passo 2</strong> &mdash; Seletor: <code>DS</code>. No P1, o segmento de dados é seletor <code>0003</code>. Base = <code>000a 0001</code>, Limite = <code>0000 0fff</code>.</p>
+
+        <p><strong>▸ Passo 3</strong></p>
+        <div class="diagrama">
+  Endereço Linear = 000a 0001 + 0000 0500
+  Endereço Linear = 000a 0501</div>
+
+        <p><strong>▸ Passo 4</strong></p>
+        <div class="diagrama">
+  Linear:  000a 0501
+  Limite:  0000 0fff
+
+  000a 0501 > 0000 0fff → ❌ GPF! Abortado!</div>
+
+        <p style="font-weight:700; color:#ef4444;">⛔ O endereço linear excede o limite do segmento de dados. O programa é abortado.</p>
+        <p><strong>Por quê?</strong> O offset 0500 é maior que o limite 0fff do segmento de dados do P1. O processador bloqueia o acesso.</p>
+    </div>
+
+    <!-- EXEMPLO 3 -->
+    <h3>Exemplo 3: Escrevendo Dados no P2 (ES : EDI)</h3>
+    <div class="card">
+        <p><strong>Enunciado:</strong> O processador vai escrever no segmento extra do processo P2. <code>EDI = 0000 1000</code>. Execute os 5 passos.</p>
+
+        <p style="margin-top:1rem; font-weight:600; color:var(--accent);">Resolução passo a passo:</p>
+
+        <p><strong>▸ Passo 1</strong> &mdash; Registrador de deslocamento: <code>EDI</code> (escrita de dados).</p>
+
+        <p><strong>▸ Passo 2</strong> &mdash; Seletor: <code>ES</code>. No P2, o segmento extra é seletor <code>037b</code>. Base = <code>0070 000f</code>, Limite = <code>0078 00ff</code>.</p>
+
+        <p><strong>▸ Passo 3</strong></p>
+        <div class="diagrama">
+  Endereço Linear = 0070 000f + 0000 1000
+  Endereço Linear = 0071 000f</div>
+
+        <p><strong>▸ Passo 4</strong></p>
+        <div class="diagrama">
+  Linear:  0071 000f
+  Limite:  0078 00ff
+
+  0071 000f ≤ 0078 00ff → ✅ OK!</div>
+
+        <p><strong>▸ Passo 5</strong> &mdash; Endereço físico = <code>0071 000f</code> (sem paginação).</p>
+    </div>
+
+    <!-- EXEMPLO 4 -->
+    <h3>Exemplo 4: Empilhando no P1 (SS : ESP &mdash; PUSH)</h3>
+    <div class="card">
+        <p><strong>Enunciado:</strong> Vamos executar <code>PUSH EAX</code> no processo P1, com <code>EAX = 42</code> e <code>ESP = 0006 0000</code>. Execute os 5 passos.</p>
+
+        <p style="margin-top:1rem; font-weight:600; color:var(--accent);">Resolução passo a passo:</p>
+
+        <p><strong>▸ Passo 1</strong> &mdash; PUSH acessa a pilha → registrador = <code>ESP</code>.</p>
+
+        <p><strong>▸ Passo 2</strong> &mdash; Seletor: <code>SS</code>. No P1, a pilha é seletor <code>0002</code>. Base = <code>0004 defe</code>, Limite = <code>000a 0000</code>.</p>
+
+        <p><strong>▸ Passo 3</strong></p>
+        <div class="diagrama">
+  Endereço Linear = 0004 defe + 0006 0000
+  Endereço Linear = 000a de fe  (soma hex: 4+6=A, de+00=de, fe+00=fe)</div>
+
+        <p><strong>▸ Passo 4</strong></p>
+        <div class="diagrama">
+  Linear:  000a defe
+  Limite:  000a 0000
+
+  000a defe > 000a 0000 → ❌ GPF! Abortado!</div>
+
+        <p style="font-weight:700; color:#ef4444;">⛔ O ESP aponta para um endereço acima do limite da pilha.</p>
+        <p><strong>O que aconteceu?</strong> O valor de ESP (0006 0000) somado à base (0004 defe) resultou em um endereço linear que ultrapassa o limite da pilha (000a 0000). Isso pode indicar overflow de pilha.</p>
+
+        <p style="margin-top:1rem;"><strong>O que acontece DEPOIS do cálculo (a instrução em si):</strong></p>
+        <div class="diagrama">
+  1. Escreve o valor 42 no endereço 000a defe
+  2. ESP = ESP - 4 = 0005 fffe  (pós-decremento)
+
+  Estado da pilha:
+  ┌─────────────┐ 000a de fe + 4
+  │  (antigo)   │
+  ├─────────────┤ 000a de fe  ← estava aqui, agora gravou 42
+  │     42      │
+  ├─────────────┤ 0005 fffe   ← ESP agora aponta aqui (vazio)
+  └─────────────┘</div>
+
+        <h3 style="margin-top:1.5rem;">Endereços Explícitos vs Implícitos no PUSH/POP</h3>
+        <div class="card-importante" style="margin-top:0.8rem;">
+            <p>Uma-instrução PUSH ou POP manipula <strong>DOIS endereços lógicos simultaneamente</strong>:</p>
+            <table>
+                <tr><th>Tipo</th><th>O que é</th><th>Em PUSH</th><th>Em POP</th></tr>
+                <tr>
+                    <td><strong>Explícito</strong></td>
+                    <td>O endereço que aparece <strong>escrito na instrução</strong></td>
+                    <td>O endereço SRC (origem dos dados) — pertence ao <strong>segmento de dados</strong></td>
+                    <td>O endereço DST (destino) — pertence ao <strong>segmento de dados</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Implícito</strong></td>
+                    <td>O endereço que está <strong>escondido no registrador ESP</strong> — não aparece na instrução</td>
+                    <td>O topo da pilha (<strong>SS:ESP</strong>) — onde o dado será gravado</td>
+                    <td>O topo da pilha (<strong>SS:ESP</strong>) — de onde o dado será lido</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="diagrama">
+  PUSH EAX
+  ┌────────────────────────────────────────────────────────────┐
+  │  EXPLÍCITO:  EAX (dado vindo do segmento de dados)         │
+  │  IMPLÍCITO:  SS:ESP (topo da pilha — não aparece na inst.) │
+  │                                                            │
+  │  → Transfere 4 bytes de EAX para [SS:ESP]                  │
+  │  → Depois decrementa ESP em 4                              │
+  └────────────────────────────────────────────────────────────┘
+
+  POP EBX
+  ┌────────────────────────────────────────────────────────────┐
+  │  EXPLÍCITO:  EBX (destino no segmento de dados)            │
+  │  IMPLÍCITO:  SS:ESP (topo da pilha — não aparece na inst.) │
+  │                                                            │
+  │  → Primeiro incrementa ESP em 4                            │
+  │  → Depois transfere 4 bytes de [SS:ESP] para EBX           │
+  └────────────────────────────────────────────────────────────┘</div>
+
+        <div class="card-dica">
+            <strong>Na prova:</strong> Se perguntarem "quais endereços lógicos uma instrução PUSH manipula?", a resposta é: o endereço <strong>explícito</strong> (SRC no segmento de dados) e o endereço <strong>implícito</strong> (SS:ESP no topo da pilha). O mesmo vale para POP, mas com DST como explícito.
+        </div>
+    </div>
+
+    <!-- EXEMPLO 5: GPF -->
+    <h3>Exemplo 5: GPF &mdash; Acessando Segmento Errado no P2</h3>
+    <div class="card-prova">
+        <p><strong>Enunciado:</strong> O processador vai acessar um dado usando o segmento de código do P2 (seletor <code>0140</code>) com <code>ESI = 0020 0000</code>. O que acontece?</p>
+
+        <p style="margin-top:1rem; font-weight:600;">Resolução passo a passo:</p>
+
+        <p><strong>▸ Passo 1</strong> &mdash; Registrador de deslocamento: <code>ESI</code></p>
+        <p><strong>▸ Passo 2</strong> &mdash; Seletor: <code>0140</code> (Código do P2)</p>
+
+        <p><strong>▸ Passo 3</strong></p>
+        <div class="diagrama" style="background:rgba(0,0,0,0.3); color:var(--prova-text);">
+  Endereço Linear = 0034 1000 + 0020 0000
+  Endereço Linear = 0054 1000</div>
+
+        <p><strong>▸ Passo 4</strong></p>
+        <div class="diagrama" style="background:rgba(0,0,0,0.3); color:var(--prova-text);">
+  Linear:  0054 1000
+  Limite:  004e ffff
+
+  0054 1000 > 004e ffff → ❌ GPF!</div>
+
+        <p style="margin-top:1rem; font-weight:700; color:#ef4444;">⛔ FALHA DE PROTEÇÃO GERAL (GPF)! O programa é ABORTADO imediatamente.</p>
+
+        <p><strong>Por quê?</strong> O endereço linear <code>0054 1000</code> é <strong>maior</strong> que o limite <code>004e ffff</code> do segmento de código do P2. Isso significa que o programa tentou acessar uma área de memória fora do seu segmento.</p>
+    </div>
+
+    <!-- EXEMPLO 6: RESUMO RÁPIDO -->
+    <h3>Exemplo 6: Resumo Rápido para Prova (Fórmula de Bolso)</h3>
+    <div class="card">
+        <p>Quando cair uma questão prática, siga este roteiro:</p>
+
+        <div class="diagrama">
+  ┌──────────────────────────────────────────────────────────┐
+  │  PASSO A PASSO - ROTEIRO DE PROVA                        │
+  │                                                          │
+  │  1. QUAL operação o enunciado descreve?                  │
+  │     → "próxima instrução" / "buscar"       → EIP + CS    │
+  │     → "ler dado" / "buscar dado"          → ESI + DS     │
+  │     → "escrever" / "gravar resultado"     → EDI + ES     │
+  │     → "PUSH" / "empilhar" / "topo pilha"  → ESP + SS     │
+  │     → "POP" / "desempilhar"               → ESP + SS     │
+  │     → "base da pilha" / "frame"           → EBP + SS     │
+  │                                                          │
+  │  2. QUAL seletor?                                        │
+  │     → Vá à TABELA DE DESCRITORES dada no enunciado       │
+  │     → Ache a linha cujo TIPO bate (código, dados, pilha) │
+  │     → Pegue o valor do seletor e o endereço base         │
+  │                                                          │
+  │  3. CALCULAR: Linear = Base (da tabela) + Offset (reg.)  │
+  │     → Use a tabela de conversão Hex ↔ Bin se necessário  │
+  │                                                          │
+  │  4. TESTAR: Linear ≤ Limite (da tabela)?                 │
+  │     → Sim: OK, continua                                  │
+  │     → Não: GPF! Programa abortado!                       │
+  │                                                          │
+  │  5. ENDEREÇO FÍSICO:                                     │
+  │     → Sem paginação: Físico = Linear                     │
+  │     → Com paginação: traduz via tabela de páginas        │
+  └──────────────────────────────────────────────────────────┘</div>
+    </div>
+
+    <!-- EXEMPLO DO PROFESSOR -->
+    <h3>Exemplo exato do Professor (passo a passo)</h3>
+    <div class="card-prova">
+        <p><strong>Enunciado do professor:</strong> Processo P1 em execução. <code>EIP = 0000 003A</code>. Resolva os 5 passos.</p>
+
+        <p style="margin-top:1rem; font-weight:600; color:var(--prova-text);">Resolução (conforme o professor fez no quadro):</p>
+
+        <p><strong>▸ Passo 1 &mdash; Identificar o registrador de deslocamento</strong></p>
+        <p>A instrução pertence ao segmento de código. Registrador de deslocamento = <code>EIP</code>.</p>
+
+        <p><strong>▸ Passo 2 &mdash; Identificar o seletor de segmento</strong></p>
+        <p>O par é <code>CS : EIP</code>. Seletor = <code>0001</code> (código do P1).</p>
+
+        <p><strong>▸ Passo 3 &mdash; Calcular o endereço linear</strong></p>
+        <div class="diagrama">
+  Endereço Linear = Endereço Base + Offset
+  Endereço Linear = 0000 1A00 + 0000 003A
+  Endereço Linear = 0000 1A3A</div>
+
+        <p><strong>▸ Passo 4 &mdash; Teste de limite</strong></p>
+        <div class="diagrama">
+  Linear calculado:  0000 1A3A
+  Limite do seg.:    0004 DFFD
+
+  0000 1A3A &lt; 0004 DFFD → ✅ OK! (não há GPF)</div>
+
+        <p><strong>▸ Passo 5 &mdash; Endereço físico</strong></p>
+        <div class="diagrama">
+  Endereço Físico = 0000 1A3A  (sem paginação)</div>
+
+        <div class="card-dica">
+            <strong>Compare:</strong> No meu Exemplo 1 eu usei EIP = 0000 3000 (Linear = 0000 4A00). O professor usou EIP = 0000 003A (Linear = 0000 1A3A). Ambos passam no teste de limite. A lógica é idêntica, só muda o offset.
+        </div>
+    </div>
+
+    <!-- OBSERVAÇÃO: OPERAÇÕES DE DOIS ENDEREÇOS -->
+    <h3>Observação: Passo 4 em Operações com Dois Endereços</h3>
+    <div class="card-importante">
+        <p>Quando uma instrução como <code>MOV [EDI], [ESI]</code> envolve <strong>dois endereços</strong> (SRC e DST), o Passo 4 funciona assim:</p>
+
+        <div class="diagrama">
+  ┌────────────────────────────────────────────────────────────┐
+  │  OPERAÇÃO COM DOIS ENDEREÇOS (ex: MOV DST, SRC)            │
+  │                                                            │
+  │  PASSO 3: calcular AMBOS os endereços lineares             │
+  │    Linear SRC  = BaseSRC + OffsetSRC                       │
+  │    Linear DST  = BaseDST + OffsetDST                       │
+  │                                                            │
+  │  PASSO 4: cada endereço é comparado com o SEU próprio      │
+  │           limite (da tabela de descritores):               │
+  │    Linear SRC ≤ LimiteSRC?  → se não, GPF!                 │
+  │    Linear DST ≤ LimiteDST?  → se não, GPF!                 │
+  │                                                            │
+  │  ⚠️ NÃO se compara Linear SRC com Linear DST!              │
+  │  ⚠️ Cada endereço é testado contra o limite do SEU         │
+  │     segmento de origem/destino.                            │
+  └────────────────────────────────────────────────────────────┘</div>
+
+        <p><strong>Exemplo:</strong> Se o professor fizer <code>MOV [EDI], [ESI]</code> no P1:</p>
+        <ul>
+            <li>ESI = 0000 0500 → Linear SRC = 000a 0501 (segmento 0003, limite 0000 0fff) → ❌ GPF!</li>
+            <li>EDI = 0000 0100 → Linear DST = 000d 1100 (segmento 0004, limite 000c 7800) → ❌ GPF!</li>
+        </ul>
+        <p>Como o SRC já deu GPF, a instrução é abortada antes mesmo de calcular o DST.</p>
+    </div>
+
+    <!-- EXERCÍCIO RESOLVIDO -->
+    <h3>Exercício Resolvido &mdash; Tente Fazer Antes de Ver</h3>
+    <div class="card" style="border-color: var(--accent2);">
+        <p><strong>Enunciado:</strong> Usando a tabela de descritores do professor (P1 e P2), resolva os 5 passos para cada caso:</p>
+
+        <p><strong>Caso A:</strong> <code>EIP = 0002 0000</code> no processo P1</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">▶ Ver resolução</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Passo 1:</strong> Registrador = <code>EIP</code> (código)</p>
+                <p><strong>Passo 2:</strong> Seletor = <code>0001</code> (código P1) → Base = 0000 1a00, Limite = 0004 DFFD</p>
+                <p><strong>Passo 3:</strong> Linear = 0000 1a00 + 0002 0000 = <code>0003 1a00</code></p>
+                <p><strong>Passo 4:</strong> 0003 1a00 ≤ 0004 DFFD → ✅ OK</p>
+                <p><strong>Passo 5:</strong> Físico = <code>0003 1a00</code> (sem paginação)</p>
+            </div>
+        </details>
+
+        <p><strong>Caso B:</strong> <code>ESI = 0000 0800</code> (leitura de dados) no processo P1</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">▶ Ver resolução</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Passo 1:</strong> Registrador = <code>ESI</code> (leitura)</p>
+                <p><strong>Passo 2:</strong> Seletor = <code>0003</code> (dados P1) → Base = 000a 0001, Limite = 0000 0fff</p>
+                <p><strong>Passo 3:</strong> Linear = 000a 0001 + 0000 0800 = <code>000a 0801</code></p>
+                <p><strong>Passo 4:</strong> 000a 0801 > 0000 0fff → ❌ <strong style="color:#ef4444;">GPF! Abortado!</strong></p>
+                <p>O offset 0800 é maior que o limite 0fff do segmento de dados.</p>
+            </div>
+        </details>
+
+        <p><strong>Caso C:</strong> <code>EIP = 0005 0000</code> no processo P2</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">▶ Ver resolução</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Passo 1:</strong> Registrador = <code>EIP</code> (código)</p>
+                <p><strong>Passo 2:</strong> Seletor = <code>0140</code> (código P2) → Base = 0034 1000, Limite = 004e ffff</p>
+                <p><strong>Passo 3:</strong> Linear = 0034 1000 + 0005 0000 = <code>0039 1000</code></p>
+                <p><strong>Passo 4:</strong> 0039 1000 ≤ 004e ffff → ✅ OK</p>
+                <p><strong>Passo 5:</strong> Físico = <code>0039 1000</code></p>
+            </div>
+        </details>
+
+        <p><strong>Caso D:</strong> <code>EDI = 0000 2000</code> (escrita) no segmento extra do P2</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">▶ Ver resolução</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Passo 1:</strong> Registrador = <code>EDI</code> (escrita)</p>
+                <p><strong>Passo 2:</strong> Seletor = <code>037b</code> (extra P2) → Base = 0070 000f, Limite = 0078 00ff</p>
+                <p><strong>Passo 3:</strong> Linear = 0070 000f + 0000 2000 = <code>0072 000f</code></p>
+                <p><strong>Passo 4:</strong> 0072 000f ≤ 0078 00ff → ✅ OK</p>
+                <p><strong>Passo 5:</strong> Físico = <code>0072 000f</code></p>
+            </div>
+        </details>
+
+        <p><strong>Caso E:</strong> Converta <code>0x1A00</code> para binário</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">▶ Ver resolução</summary>
+            <div style="margin-top:0.8rem;">
+                <p>1 = <code>0001</code>, A = <code>1010</code>, 0 = <code>0000</code>, 0 = <code>0000</code></p>
+                <p>Resultado: <code>0001 1010 0000 0000</code></p>
+            </div>
+        </details>
+
+        <p style="margin-top:1.2rem; padding-top:1rem; border-top:2px dashed var(--border);"><strong>Caso F (exato do professor):</strong> <code>EIP = 0000 003A</code> no processo P1</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--prova-text); cursor:pointer;">▶ Ver resolução (professor)</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Passo 1:</strong> Registrador = <code>EIP</code> (código)</p>
+                <p><strong>Passo 2:</strong> Seletor = <code>0001</code> (código P1) → Base = 0000 1a00, Limite = 0004 DFFD</p>
+                <p><strong>Passo 3:</strong> Linear = 0000 1a00 + 0000 003A = <code>0000 1A3A</code></p>
+                <p><strong>Passo 4:</strong> 0000 1A3A ≤ 0004 DFFD → ✅ OK</p>
+                <p><strong>Passo 5:</strong> Físico = <code>0000 1A3A</code> (sem paginação)</p>
+                <p style="margin-top:0.5rem; color:var(--text-muted); font-size:0.85rem;"><em>Este é o exemplo exato que o professor fez no quadro. Note que o offset 003A é bem pequeno — a instrução está no início do segmento de código.</em></p>
+            </div>
+        </details>
+
+        <p><strong>Caso G (dois endereços):</strong> <code>MOV [EDI], [ESI]</code> no P1, com ESI = 0000 0100 e EDI = 0000 0200</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">▶ Ver resolução (dois endereços)</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Passo 1:</strong> Registradores = <code>EDI</code> (escrita) + <code>ESI</code> (leitura)</p>
+                <p><strong>Passo 2:</strong> DS/ES → ambos são dados P1: seletor <code>0003</code> (dados) e <code>0004</code> (extra)</p>
+                <p style="margin-top:0.5rem;"><strong>Passo 3 &mdash; SRC (ESI + DS):</strong></p>
+                <p style="margin-left:1rem;">Linear SRC = 000a 0001 + 0000 0100 = <code>000a 0101</code></p>
+                <p style="margin-top:0.5rem;"><strong>Passo 3 &mdash; DST (EDI + ES):</strong></p>
+                <p style="margin-left:1rem;">Linear DST = 000d 1000 + 0000 0200 = <code>000d 1200</code></p>
+                <p style="margin-top:0.5rem;"><strong>Passo 4 &mdash; Cada endereço contra o SEU limite:</strong></p>
+                <p style="margin-left:1rem;">SRC: 000a 0101 ≤ 0000 0fff → ❌ <strong style="color:#ef4444;">GPF!</strong></p>
+                <p style="margin-left:1rem;">DST: 000d 1200 ≤ 000c 7800 → ❌ <strong style="color:#ef4444;">GPF!</strong></p>
+                <p style="margin-top:0.5rem; color:#ef4444; font-weight:600;">Ambos falharam! A instrução é abortada.</p>
+                <p style="color:var(--text-muted); font-size:0.85rem;"><em>Note: o SRC falhou primeiro. Na prática, o processador testa o SRC antes do DST.</em></p>
+            </div>
+        </details>
+    </div>
+
+    <div class="card-dica">
+        <strong>Dica de prova:</strong> Se o professor der a tabela de descritores e pedir "analise o endereçamento", sempre comece identificando QUAL registrador de deslocamento a instrução usa. Depois ache o seletor correto na tabela. Use a tabela de conversão hex/bin se precisar. Não pule nenhum passo!
+    </div>
+
+    <!-- ==================== BLOCO 11: PUSH E POP ==================== -->
+    <h2 id="sec-11">11. Instruções PUSH e POP</h2>
+
+    <div class="card">
+        <table>
+            <tr><th>Instrução</th><th>O que faz</th><th>Endereço lógico explícito</th><th>Endereço lógico implícito</th></tr>
+            <tr>
+                <td><strong>PUSH SRC</strong></td>
+                <td>Transfere 4 bytes do endereço SRC (dados) para o topo da pilha</td>
+                <td>SRC (segmento de dados)</td>
+                <td>Topo da pilha (SS:ESP)</td>
+            </tr>
+            <tr>
+                <td><strong>POP DST</strong></td>
+                <td>Retira 4 bytes do topo da pilha e envia para DST (dados)</td>
+                <td>DST (segmento de dados)</td>
+                <td>Topo da pilha (SS:ESP)</td>
+            </tr>
+        </table>
+
+        <h3 style="margin-top:1.2rem;">Exemplo Prático (P1 do professor):</h3>
+        <div class="diagrama">
+  Estado inicial: EAX = 10, ESP = 0006 0000
+  Segmento de pilha P1: Base = 0004 defe, Limite = 000a 0000
+
+  PUSH EAX          ; Coloca 10 na pilha
+    → Linear = 0004 defe + 0006 0000 = 000a defe
+    → [000a defe] = 10
+    → ESP = ESP - 4 = 0005 fffe
+
+  PUSH 25           ; Coloca 25 na pilha
+    → Linear = 0004 defe + 0005 fffe = 000a dffe
+    → [000a dffe] = 25
+    → ESP = ESP - 4 = 0005 fffa
+
+  POP EBX           ; Remove topo da pilha → EBX
+    → ESP = ESP + 4 = 000a dffe → 0005 fffe
+    → EBX = 25
+
+  POP ECX           ; Remove topo da pilha → ECX
+    → ESP = ESP + 4 = 000a defe → 0006 0000
+    → ECX = 10</div>
+
+        <h3 style="margin-top:1.5rem;">Endereços Explícitos vs Implícitos no PUSH/POP</h3>
+        <div class="card-importante" style="margin-top:0.8rem;">
+            <p>Uma-instrução PUSH ou POP manipula <strong>DOIS endereços lógicos simultaneamente</strong>:</p>
+            <table>
+                <tr><th>Tipo</th><th>O que é</th><th>Em PUSH</th><th>Em POP</th></tr>
+                <tr>
+                    <td><strong>Explícito</strong></td>
+                    <td>O endereço que aparece <strong>escrito na instrução</strong></td>
+                    <td>O endereço SRC (origem dos dados) — pertence ao <strong>segmento de dados</strong></td>
+                    <td>O endereço DST (destino) — pertence ao <strong>segmento de dados</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Implícito</strong></td>
+                    <td>O endereço que está <strong>escondido no registrador ESP</strong> — não aparece na instrução</td>
+                    <td>O topo da pilha (<strong>SS:ESP</strong>) — onde o dado será gravado</td>
+                    <td>O topo da pilha (<strong>SS:ESP</strong>) — de onde o dado será lido</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="diagrama">
+  PUSH EAX
+  ┌────────────────────────────────────────────────────────────┐
+  │  EXPLÍCITO:  EAX (dado vindo do segmento de dados)         │
+  │  IMPLÍCITO:  SS:ESP (topo da pilha — não aparece na inst.) │
+  │                                                            │
+  │  → Transfere 4 bytes de EAX para [SS:ESP]                  │
+  │  → Depois decrementa ESP em 4                              │
+  └────────────────────────────────────────────────────────────┘
+
+  POP EBX
+  ┌────────────────────────────────────────────────────────────┐
+  │  EXPLÍCITO:  EBX (destino no segmento de dados)            │
+  │  IMPLÍCITO:  SS:ESP (topo da pilha — não aparece na inst.) │
+  │                                                            │
+  │  → Primeiro incrementa ESP em 4                            │
+  │  → Depois transfere 4 bytes de [SS:ESP] para EBX           │
+  └────────────────────────────────────────────────────────────┘</div>
+
+        <div class="card-dica">
+            <strong>Na prova:</strong> Se perguntarem "quais endereços lógicos uma instrução PUSH manipula?", a resposta é: o endereço <strong>explícito</strong> (SRC no segmento de dados) e o endereço <strong>implícito</strong> (SS:ESP no topo da pilha). O mesmo vale para POP, mas com DST como explícito.
+        </div>
+    </div>
+
+    <!-- ==================== BLOCO 12: GLOSSÁRIO ==================== -->
+    <h2 id="sec-12">12. Glossário de Termos</h2>
+
+    <div class="card">
+        <dl class="glossario">
+            <dt>GPF (General Protection Fault)</dt>
+            <dd>Falha de proteção geral. Ocorre quando o processador detecta uma violação de memória (endereço fora do limite, acesso não autorizado, etc.) e aborta o programa.</dd>
+
+            <dt>TSS (Task State Segment)</dt>
+            <dd>Segmento na memória onde o contexto de hardware de um processo é salvo quando ele é trocado pelo escalonador.</dd>
+
+            <dt>Contexto de Hardware</dt>
+            <dd>Conjunto de valores dos registradores internos do processador para um processo específico.</dd>
+
+            <dt>Contexto do Processo</dt>
+            <dd>= Contexto de Software + Contexto de Hardware. Representa todo o estado de um processo.</dd>
+
+            <dt>Escalonamento</dt>
+            <dd>Serviço do SO que decide qual processo executa e por quanto tempo (round-robin, prioridades, etc.).</dd>
+
+            <dt>Processo</dt>
+            <dd>Programa que está em execução. Quando definido na memória mas não está rodando, é chamado de "programa".</dd>
+
+            <dt>Endereço Lógico / Virtual</dt>
+            <dd>Par (Seletor : Offset) que representa o endereço "visto" pelo programa. Traduzido pelo hardware para endereço físico.</dd>
+
+            <dt>Segmentação</dt>
+            <dd>Técnica de dividir a memória em blocos de tamanho variável (segmentos), cada um com permissões próprias.</dd>
+
+            <dt>Paginação</dt>
+            <dd>Técnica de dividir a memória em páginas de tamanho fixo (tipicamente 4 KB) para gerenciamento eficiente.</dd>
+
+            <dt>Ring (Anel)</dt>
+            <dd>Nível de privilégio no modo protegido. Ring 0 = kernel (máxima privilégio), Ring 3 = aplicativos (mínima).</dd>
+
+            <dt>Clock</dt>
+            <dd>Frequência do processador em Hz/MHz/GHz. Cada ciclo permite uma operação básica. Maior clock = mais operações/segundo (tudo o mais constante).</dd>
+
+            <dt>CPI (Cycles Per Instruction)</dt>
+            <dd>Número médio de ciclos de clock que uma instrução leva para executar.</dd>
+
+            <dt>ISA (Instruction Set Architecture)</dt>
+            <dd>Conjunto de instruções que um processador consegue executar. Define a compatibilidade binária entre processadores.</dd>
+
+            <dt>Modo de Compatibilidade</dt>
+            <dd>Submodo de 64 bits que roda programas de 32 bits. Usa apenas os 8 primeiros registradores (versão de 32 bits).</dd>
+
+            <dt>Explicit vs Implícito</dt>
+            <dd>Em PUSH/POP, o endereço "explícito" aparece na instrução (segmento de dados). O "implícito" está escondido no registrador ESP (segmento de pilha).</dd>
+        </dl>
+    </div>
+
+    <!-- ==================== CHEAT SHEET ==================== -->
+    <h2 id="sec-13">13. Cheat Sheet &mdash; Resumo para Prova</h2>
+
+    <div class="card" style="border:2px solid var(--accent); padding:1.5rem;">
+        <h3 style="margin-top:0;">Tudo em Uma Página</h3>
+
+        <table>
+            <tr><th style="width:35%;">Assunto</th><th>Resumo Rápido</th></tr>
+            <tr><td><strong>Barramento</strong></td><td>3 faixas: Endereço (onde), Dados (o quê), Controle (quando/como)</td></tr>
+            <tr><td><strong>CPU</strong></td><td>UC (maestro), ULA (calcula), MMU (traduz endereços), Registradores</td></tr>
+            <tr><td><strong>Memória</strong></td><td>RAM = DRAM (lenta, barata, grande) | Cache = SRAM (rápida, cara, pequena: L1/L2/L3)</td></tr>
+            <tr><td><strong>Palavra</strong></td><td>Mínimo de bits que a UC decodifica por ciclo. +palavra = +paralelismo</td></tr>
+            <tr><td><strong>Compat. binária</strong></td><td>Mesmo ISA + mesma representação em bits. Se UMA instrução difere, perde tudo</td></tr>
+            <tr><td><strong>Endereçamento</strong></td><td>N bits → 2^N endereços. 32 bits = 4GB, 64 bits = 16 EB</td></tr>
+            <tr><td><strong>Clock</strong></td><td>Ciclos/segundo (GHz). Define velocidade máxima do hardware</td></tr>
+            <tr><td><strong>Modo Protegido</strong></td><td>32 bits, registradores em 3 grupos, seletores de 16 bits, proteção de memória</td></tr>
+            <tr><td><strong>Reg. Gerais</strong></td><td>4 formas: AL(8b) AH(8b) AX(16b) EAX(32b) RAX(64b)</td></tr>
+            <tr><td><strong>EAX</strong></td><td>Acumulador — resultado da maioria das instruções</td></tr>
+            <tr><td><strong>EBX</strong></td><td>Base — dados + endereçamento</td></tr>
+            <tr><td><strong>ECX</strong></td><td>Contador — loops (decrementa sozinho)</td></tr>
+            <tr><td><strong>EDX</strong></td><td>Dados auxiliares</td></tr>
+            <tr><td><strong>EFLAG</strong></td><td>Bits de sinalização: CF, ZF, SF, OF (resultado da última instrução)</td></tr>
+            <tr><td><strong>Arq. 64 bits</strong></td><td>16 reg. gerais (8 nomeados RAX-RSP + 8 numerados R8-R15). RIP, RFLAGS. Modo compat: só 8 primeiros em 32 bits</td></tr>
+            <tr><td><strong>3 tipos endereç.</strong></td><td>Lógico (Seletor:Offset) → Linear (Base+Offset) → Físico (com ou sem paginação)</td></tr>
+            <tr><td><strong>Pares</strong></td><td>CS:EIP (código) | SS:ESP/EBP (pilha) | DS/ES/FS/GS:ESI/EDI (dados — qualquer par funciona)</td></tr>
+            <tr><td><strong>Segmentos</strong></td><td>Código (1) + Pilha (1) + Dados (até 4) | Tamanho: 1 byte a 4 GB cada</td></tr>
+            <tr><td><strong>Descritores</strong></td><td>Seletor (ID único) + Base + Limite + Acesso | Tabela: 8KB → viabiliza multitarefa</td></tr>
+            <tr><td><strong>GPF</strong></td><td>Linear > Limite → programa ABORTADO</td></tr>
+            <tr><td><strong>Rings</strong></td><td>Ring 0 (kernel) → Ring 3 (apps). Menor não acessa maior</td></tr>
+            <tr><td><strong>Processo</strong></td><td>Programa em execução. Trocado pelo escalonador. Contexto salvo no TSS</td></tr>
+            <tr><td><strong>PUSH</strong></td><td>Dado em SRC (explícito, dados) → topo pilha [SS:ESP] (implícito). ESP -= 4</td></tr>
+            <tr><td><strong>POP</strong></td><td>Topo pilha (implícito) → DST (explícito, dados). ESP += 4 primeiro</td></tr>
+            <tr><td><strong>Pilha Intel</strong></td><td>Cresce para BAIXO. PUSH decrementa, POP incrementa. ESP sempre aponta para VAZIO</td></tr>
+            <tr><td><strong>Tabela Real (P1)</strong></td><td>0001:Code 0002:Stack 0003:Data 0004:Extra (Base: 1a00→4defe→a0001→d1000, LimCode: DFFD)</td></tr>
+            <tr><td><strong>Tabela Real (P2)</strong></td><td>0140:Code 024a:Stack 037a:Data 037b:Extra (Base: 341000→4f0000→518001→70000f)</td></tr>
+            <tr><td><strong>Hex ↔ Bin</strong></td><td>Cada dígito hex = 4 bits binários (A=1010, F=1111, etc.). Tabela no passo 7.2</td></tr>
+            <tr><td><strong>5 Passos</strong></td><td>1.Reg.Offset → 2.Seletor → 3.Linear=Base+Offset → 4.Teste ≤ Limite → 5.Físico</td></tr>
+        </table>
+    </div>
+
+    <!-- ==================== BLOCO 14: MAPA MENTAL ==================== -->
+    <h2 id="sec-14">14. Mapa de Relações entre Conceitos</h2>
+
+    <div class="card" style="padding:2rem;">
+        <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
+  BARRAMENTO (addr, data, ctrl)
+        │
+        ├──→ CPU
+        │     ├── UC (controla tudo)
+        │     ├── ULA (calcula)
+        │     ├── MMU (traduz endereços)
+        │     ├── Registradores
+        │     │     ├── Gerais (EAX, EBX, ECX, EDX)
+        │     │     │     └── 4 formas de acesso (8/8/16/32 bits)
+        │     │     ├── Deslocamento (EIP, ESP, EBP, ESI, EDI)
+        │     │     └── EFLAG (sinais de resultado)
+        │     └── Cache (L1/L2/L3 → SRAM)
+        │
+        ├──→ MEMÓRIA
+        │     ├── Principal (DRAM)
+        │     └── Segmentos por programa:
+        │           ├── Código (CS:EIP) → 1 por programa
+        │           ├── Pilha  (SS:ESP/EBP) → 1 por programa
+        │           └── Dados  (DS:ESI, ES:EDI) → até 4
+        │
+        └──→ E/S (Input/Output)
+
+  ─────────────────────────────────────────────
+
+  Modo Protegido:
+    Tabela de Descritores → define segmentos (seletor, base, limite, acesso)
+        │
+        ├── Seletor:Offset → Endereço Lógico
+        │
+        ├── Base + Offset → Endereço Linear
+        │     └── Teste: Linear ≤ Limite? ── Não ──→ GPF (aborta!)
+        │              │
+        │             Sim
+        │              │
+        └── Linear → [Paginação?] → Endereço Físico → RAM
+
+  Processos:
+    SO escalona processos → salva/restaura contexto no TSS
+    (Rodízio: um processo por vez no processador)</div>
+    </div>
+
+    <!-- ==================== BLOCOS DA TURMA ==================== -->
+    <section class="blocos-turma" id="blocos-turma" aria-label="Blocos compartilhados da turma">
+        <h2>Blocos da turma <span class="contador-blocos" id="blocosContador">0</span></h2>
+        <p class="blocos-vazios" id="blocosVazios">Ainda não há blocos compartilhados. Gere um pelo botão ✨ e clique em "Salvar para todos".</p>
+        <div id="blocosTurmaLista"></div>
+    </section>
+
+    <!-- ==================== PAINEL GEMINI ==================== -->
+    <button class="gemini-fab" id="geminiFab" title="Gerar bloco com IA" aria-label="Gerar bloco com IA">✨</button>
+    <div class="gemini-panel" id="geminiPanel">
+        <h3>Gerar bloco didático com IA</h3>
+
+        <div class="gemini-note" id="geminiNote" style="display:none;">API compartilhada: não precisa informar chave. Os blocos salvos aparecem para todos no link.</div>
+
+        <label for="geminiKey" id="geminiKeyLabel">API Key do Gemini</label>
+        <input type="password" id="geminiKey" placeholder="Cole sua API Key aqui" autocomplete="off">
+
+        <label for="geminiModel">Modelo</label>
+        <select id="geminiModel">
+            <option value="gemini-2.0-flash" selected>gemini-2.0-flash</option>
+            <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+        </select>
+
+        <label for="geminiInput">Suas anotações</label>
+        <textarea id="geminiInput" placeholder="Cole ou digite suas anotações brutas sobre o tema...&#10;&#10;Exemplo: mov eax, 5 → copia valor 5 para registrador EAX&#10;add eax, 3 → soma 5+3=8 e guarda em EAX"></textarea>
+
+        <div class="btn-row">
+            <button class="gemini-btn" id="geminiGerar">Gerar bloco</button>
+            <button class="gemini-btn" id="geminiInserir" style="display:none; background:var(--verde);">Inserir na página</button>
+        </div>
+
+        <div class="gemini-status" id="geminiStatus"></div>
+        <div class="gemini-preview" id="geminiPreview"></div>
+    </div>
+
+    <!-- ==================== RODAPÉ ==================== -->
+    <div style="text-align:center; margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border); color:var(--text-muted); font-size:0.85rem;">
+        Arquitetura de Computadores &mdash; Guia de Estudo<br>
+        Material elaborado a partir das anotações de aula. Para uso pessoal.<br>
+        Para salvar como PDF: <code>Ctrl + P</code> → Salvar como PDF
+    </div>
+
+</div>
+</body>
+<script>
+(function () {
+    /* â”€â”€â”€ Scroll-spy dinÃ¢mico â”€â”€â”€ */
+    function bindSpy() {
+        var links = Array.prototype.slice.call(document.querySelectorAll('.sidebar a[href^="#"]'));
+        var secs = links.map(function (a) {
+            var el = document.getElementById(a.getAttribute('href').slice(1));
+            return el ? { link: a, el: el } : null;
+        }).filter(Boolean);
+        if (!secs.length) return;
+        function spy() {
+            var pos = window.scrollY + 90;
+            var atual = 0;
+            for (var i = 0; i < secs.length; i++) {
+                var top = secs[i].el.getBoundingClientRect().top + window.scrollY;
+                if (top <= pos) atual = i;
+            }
+            for (var j = 0; j < secs.length; j++) {
+                secs[j].link.classList.toggle('atual', j === atual);
+            }
+        }
+        window.addEventListener('scroll', spy, { passive: true });
+        window.addEventListener('resize', spy);
+        spy();
+    }
+    bindSpy();
+
+    /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+       MODO ONLINE (hospedado no Vercel) vs OFFLINE (file://)
+       Online = API universal + blocos compartilhados (Upstash)
+       Offline = API key do usuÃ¡rio + blocos locais (localStorage)
+       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+    var ONLINE = location.protocol !== 'file:';
+
+    var fab       = document.getElementById('geminiFab');
+    var panel     = document.getElementById('geminiPanel');
+    var note      = document.getElementById('geminiNote');
+    var keyLabel  = document.getElementById('geminiKeyLabel');
+    var keyIn     = document.getElementById('geminiKey');
+    var modelIn   = document.getElementById('geminiModel');
+    var textIn    = document.getElementById('geminiInput');
+    var btnGen    = document.getElementById('geminiGerar');
+    var btnIns    = document.getElementById('geminiInserir');
+    var status    = document.getElementById('geminiStatus');
+    var preview   = document.getElementById('geminiPreview');
+    var secTurma  = document.getElementById('blocos-turma');
+
+    var pendingHtml   = '';
+    var pendingTitulo = '';
+    var blocosState   = [];
+
+    var SYSTEM_PROMPT =
+        'VocÃª Ã© um assistente de estudo de Arquitetura de Computadores (Intel x86/x64). ' +
+        'Organize as anotaÃ§Ãµes em seÃ§Ãµes claras, "mastigue" (simplifique) conceitos difÃ­ceis, ' +
+        'destaque pontos-chave com <mark> e <strong>, use classes HTML existentes do site: ' +
+        '.card, .card-dica, .card-importante, .card-prova, .diagrama, <table>, e dÃª exemplos prÃ¡ticos. ' +
+        'Retorne APENAS um JSON vÃ¡lido: {"titulo":"TÃ­tulo do bloco","html":"<div>...</div>"}';
+
+    /* â”€â”€â”€ ConfiguraÃ§Ã£o por modo â”€â”€â”€ */
+    if (ONLINE) {
+        keyIn.style.display = 'none';
+        keyLabel.style.display = 'none';
+        if (note) note.style.display = '';
+        btnIns.textContent = 'Salvar para todos';
+    } else {
+        if (secTurma) secTurma.style.display = 'none';
+        btnIns.textContent = 'Inserir na pÃ¡gina';
+        var savedKey = localStorage.getItem('gemini_api_key');
+        if (savedKey) keyIn.value = savedKey;
+    }
+
+    /* â”€â”€â”€ Toggle painel â”€â”€â”€ */
+    fab.addEventListener('click', function () {
+        panel.classList.toggle('aberto');
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') panel.classList.remove('aberto');
+    });
+
+    function setStatus(msg, erro) {
+        status.className = erro ? 'gemini-status erro' : 'gemini-status';
+        status.textContent = msg;
+    }
+
+    function montarPreview(titulo, html) {
+        preview.className = 'gemini-preview visivel';
+        preview.innerHTML = '<strong>' + titulo + '</strong><hr style="margin:.4rem 0;border-color:var(--border)">' + html;
+        btnIns.style.display = '';
+    }
+
+    /* â”€â”€â”€ GeraÃ§Ã£o de bloco (com fallback de modelo) â”€â”€â”€ */
+    function chamarGerar(modelo, texto) {
+        if (ONLINE) {
+            /* proxy no Vercel usa a chave universal (escondida) */
+            return fetch('/api/gemini', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ acao: 'gerar', modelo: modelo, texto: texto })
+            })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (data.error) throw new Error(data.error);
+                var resp = data.texto || '';
+                var jsonMatch = resp.match(/\{[\s\S]*"titulo"[\s\S]*"html"[\s\S]*\}/);
+                if (!jsonMatch) throw new Error('A resposta nÃ£o contÃ©m JSON com titulo/html.');
+                var parsed = JSON.parse(jsonMatch[0]);
+                return { titulo: parsed.titulo || 'Bloco gerado', html: parsed.html || '' };
+            });
+        }
+
+        /* offline: chamada direta ao Google com a key do usuÃ¡rio */
+        var key = keyIn.value.trim();
+        var corpo = function (mdl) {
+            return {
+                systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+                contents: [{ parts: [{ text: texto }] }],
+                generationConfig: { temperature: 0.5, maxOutputTokens: 4096 }
+            };
+        };
+        var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + modelo + ':generateContent?key=' + key;
+        return fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(corpo(modelo))
+        })
+        .then(function (r) {
+            if (r.status === 404 && modelo === 'gemini-2.0-flash') {
+                var u2 = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + key;
+                return fetch(u2, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(corpo('gemini-1.5-flash'))
+                });
+            }
+            return r;
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            var textResp = '';
+            if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                textResp = (data.candidates[0].content.parts || []).map(function (p) { return p.text || ''; }).join('');
+            }
+            if (!textResp) {
+                var msg = (data.error && data.error.message) || 'Resposta vazia da API.';
+                throw new Error(msg);
+            }
+            var jsonMatch = textResp.match(/\{[\s\S]*"titulo"[\s\S]*"html"[\s\S]*\}/);
+            if (!jsonMatch) throw new Error('A resposta nÃ£o contÃ©m JSON com titulo/html.');
+            var parsed = JSON.parse(jsonMatch[0]);
+            return { titulo: parsed.titulo || 'Bloco gerado', html: parsed.html || '' };
+        });
+    }
+
+    btnGen.addEventListener('click', function () {
+        var modelo = modelIn.value;
+        var texto  = textIn.value.trim();
+
+        if (!texto) { setStatus('Cole suas anotaÃ§Ãµes.', true); return; }
+        if (!ONLINE && !keyIn.value.trim()) { setStatus('Informe a API Key.', true); return; }
+        if (!ONLINE) localStorage.setItem('gemini_api_key', keyIn.value.trim());
+
+        setStatus('Gerando bloco... aguarde.');
+        btnGen.disabled = true;
+        btnIns.style.display = 'none';
+        preview.className = 'gemini-preview';
+        pendingHtml = '';
+
+        chamarGerar(modelo, texto)
+            .then(function (res) {
+                pendingTitulo = res.titulo;
+                pendingHtml   = res.html;
+                montarPreview(res.titulo, res.html);
+                setStatus('Bloco gerado com sucesso!');
+            })
+            .catch(function (err) {
+                setStatus('Erro: ' + err.message, true);
+            })
+            .finally(function () {
+                btnGen.disabled = false;
+            });
+    });
+
+    /* â”€â”€â”€ Compartilhar (online / Upstash) â”€â”€â”€ */
+    function copiarAutor() {
+        var a = localStorage.getItem('gemini_autor');
+        if (!a) {
+            a = prompt('Seu nome (aparece no bloco compartilhado):') || 'anÃ´nimo';
+            localStorage.setItem('gemini_autor', a);
+        }
+        return a;
+    }
+
+    function salvarBlocoCompartilhado(titulo, html) {
+        return fetch('/api/gemini', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ acao: 'salvar', titulo: titulo, html: html, autor: copiarAutor() })
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            if (data.error) throw new Error(data.error);
+            blocosState.push(data.bloco);
+            renderBlocos();
+        });
+    }
+
+    function removerBlocoCompartilhado(id) {
+        return fetch('/api/gemini', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ acao: 'remover', id: id })
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            if (data.error) throw new Error(data.error);
+            blocosState = blocosState.filter(function (b) { return b.id !== id; });
+            renderBlocos();
+        });
+    }
+
+    function carregarBlocosCompartilhados() {
+        fetch('/api/gemini?acao=listar')
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (data.error) throw new Error(data.error);
+                blocosState = data.blocos || [];
+                renderBlocos();
+            })
+            .catch(function () { /* ainda sem resposta (env faltando) */ });
+    }
+
+    /* â”€â”€â”€ Render da lista compartilhada â”€â”€â”€ */
+    function renderBlocos() {
+        var lista = document.getElementById('blocosTurmaLista');
+        var cont  = document.getElementById('blocosContador');
+        var vazio = document.getElementById('blocosVazios');
+        if (!lista) return;
+
+        lista.innerHTML = '';
+        cont.textContent = String(blocosState.length);
+        vazio.style.display = blocosState.length ? 'none' : '';
+
+        blocosState.forEach(function (b) {
+            var wrap = document.createElement('div');
+            wrap.className = 'gpt-block';
+
+            var del = document.createElement('button');
+            del.className = 'remover-ia';
+            del.title = 'Remover este bloco para todos';
+            del.textContent = '\u2715';
+            del.addEventListener('click', function () {
+                if (!confirm('Remover este bloco para todos?')) return;
+                removerBlocoCompartilhado(b.id).catch(function () {});
+            });
+            wrap.appendChild(del);
+
+            wrap.insertAdjacentHTML('beforeend', b.html || '');
+
+            var dataTxt = '';
+            if (b.data) { try { dataTxt = ' â€¢ ' + new Date(b.data).toLocaleString('pt-BR'); } catch (e) {} }
+            var meta = document.createElement('div');
+            meta.className = 'meta-blocos';
+            meta.textContent = 'Criado por ' + (b.autor || 'anÃ´nimo') + dataTxt;
+            wrap.appendChild(meta);
+
+            lista.appendChild(wrap);
+        });
+        bindSpy();
+    }
+
+    /* â”€â”€â”€ Salvar / inserir â”€â”€â”€ */
+    btnIns.addEventListener('click', function () {
+        if (!pendingHtml) return;
+        var htmlAtual = pendingHtml;
+
+        if (ONLINE) {
+            salvarBlocoCompartilhado(pendingTitulo, htmlAtual)
+                .then(function () { setStatus('Bloco salvo para todos!'); })
+                .catch(function (err) { setStatus('Erro ao salvar: ' + err.message, true); });
+        } else {
+            var container = document.querySelector('.container') || document.body;
+            criarBlocoLocal(container, htmlAtual, true, htmlAtual);
+            setStatus('Bloco inserido na pÃ¡gina!');
+        }
+
+        textIn.value = '';
+        preview.className = 'gemini-preview';
+        preview.innerHTML = '';
+        btnIns.style.display = 'none';
+        pendingHtml = '';
+    });
+
+    /* â”€â”€â”€ Blocos locais (offline) â”€â”€â”€ */
+    var STORAGE_KEY = 'gemini_blocos_salvos';
+    function carregarLocais() {
+        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+        catch (e) { return []; }
+    }
+    function salvarLocais(arr) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+    }
+
+    function criarBlocoLocal(container, html, salvar, identificador) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'gpt-block';
+
+        var del = document.createElement('button');
+        del.className = 'remover-ia';
+        del.title = 'Remover este bloco';
+        del.textContent = '\u2715';
+        del.addEventListener('click', function () {
+            if (!confirm('Remover este bloco gerado por IA?')) return;
+            wrapper.remove();
+            var arr = carregarLocais().filter(function (h) { return h !== identificador; });
+            salvarLocais(arr);
+            bindSpy();
+        });
+        wrapper.appendChild(del);
+        wrapper.insertAdjacentHTML('beforeend', html);
+        container.appendChild(wrapper);
+
+        if (salvar) {
+            var arr = carregarLocais();
+            arr.push(identificador);
+            salvarLocais(arr);
+        }
+        bindSpy();
+    }
+
+    /* â”€â”€â”€ Restaurar blocos locais (offline) â”€â”€â”€ */
+    if (!ONLINE) {
+        var container = document.querySelector('.container') || document.body;
+        carregarLocais().forEach(function (html) {
+            criarBlocoLocal(container, html, false, html);
+        });
+    }
+
+    /* â”€â”€â”€ Carregar blocos compartilhados (online) â”€â”€â”€ */
+    if (ONLINE) carregarBlocosCompartilhados();
+})();
+</script>
+</html>
