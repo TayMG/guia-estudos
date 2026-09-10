@@ -31,15 +31,14 @@ async function chamarGemini(modelo, texto, apiKey) {
     });
 }
 
-/* Executa comandos REST do Upstash (formato array de comandos) */
-async function upsExec(comandos) {
-    const resp = await fetch(process.env.UPSTASH_REDIS_REST_URL, {
+/* Executa um comando no Upstash usando o formato path-style da REST API.
+   Ex: rpush/gemini_blocos/<valor-url-encoded> */
+async function upsCmd(cmd) {
+    const base = String(process.env.UPSTASH_REDIS_REST_URL || '').replace(/\/+$/, '');
+    const path = cmd.map(encodeURIComponent).join('/');
+    const resp = await fetch(base + '/' + path, {
         method: 'POST',
-        headers: {
-            Authorization: 'Bearer ' + process.env.UPSTASH_REDIS_REST_TOKEN,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(comandos),
+        headers: { Authorization: 'Bearer ' + process.env.UPSTASH_REDIS_REST_TOKEN },
     });
     if (!resp.ok) {
         const texto = (await resp.text()).slice(0, 300);
@@ -49,8 +48,8 @@ async function upsExec(comandos) {
 }
 
 async function listarBlocos() {
-    const r = await upsExec([['LRANGE', CHAVE_BLOCOS, '0', '-1']]);
-    const arr = r[0] || [];
+    const r = await upsCmd(['LRANGE', CHAVE_BLOCOS, '0', '-1']);
+    const arr = Array.isArray(r) ? r : [];
     return arr
         .map((s) => {
             try { return JSON.parse(s); } catch (e) { return null; }
@@ -110,7 +109,7 @@ export default async function handler(req, res) {
             data: new Date().toISOString(),
         };
         try {
-            await upsExec([['RPUSH', CHAVE_BLOCOS, JSON.stringify(blocoNovo)]]);
+            await upsCmd(['RPUSH', CHAVE_BLOCOS, JSON.stringify(blocoNovo)]);
             return res.json({ bloco: blocoNovo });
         } catch (err) {
             return res.status(500).json({ error: 'Falha ao salvar bloco: ' + err.message });
@@ -122,7 +121,7 @@ export default async function handler(req, res) {
         try {
             const blocos = await listarBlocos();
             const alvo = blocos.find((b) => b.id === body.id);
-            if (alvo) await upsExec([['LREM', CHAVE_BLOCOS, '0', JSON.stringify(alvo)]]);
+            if (alvo) await upsCmd(['LREM', CHAVE_BLOCOS, '0', JSON.stringify(alvo)]);
             return res.json({ ok: true });
         } catch (err) {
             return res.status(500).json({ error: 'Falha ao remover: ' + err.message });
