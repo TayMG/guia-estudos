@@ -273,6 +273,67 @@
             color: var(--text);
         }
 
+        .fluxo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        .fluxo .seta {
+            font-size: 0.95rem;
+            line-height: 1.1;
+            margin: 0.3rem 0;
+            color: var(--accent);
+        }
+        .fluxo .fb {
+            border-radius: 8px;
+            padding: 0.45rem 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 210px;
+            max-width: 340px;
+            box-sizing: border-box;
+        }
+        .fluxo .fb.oval { border: 3px solid var(--accent); border-radius: 40px; color: var(--accent); }
+        .fluxo .fb.ret { border: 2px solid var(--border); background: rgba(255,255,255,0.4); color: var(--text); }
+        .fluxo .fb.par { border: 2px solid #e5980d; background: rgba(245,158,11,0.10); color: var(--prova-text); transform: skewX(-8deg); }
+        .fluxo .fb.par span { display: inline-block; transform: skewX(8deg); }
+        .fluxo .fb.loz { border: 3px solid #8b5cf6; background: rgba(139,92,246,0.10); color: #7c3aed; }
+        .fluxo .fb.nota { border: 1.5px dashed var(--border); color: var(--text-muted); font-weight: 500; font-size: 0.85rem; }
+        .fluxo .fb.volta { border: 1.5px dashed var(--accent); background: rgba(59,130,246,0.06); color: var(--accent); font-weight: 600; }
+        .fluxo .fb.volta b { font-size: 1.25rem; line-height: 1; display: block; margin-bottom: 0.15rem; }
+        .fluxo .rotulo { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; padding: 0.2rem 0.6rem; border-radius: 6px; }
+        .fluxo .rotulo.sim { background: rgba(34,197,94,0.15); color: #16a34a; }
+        .fluxo .rotulo.nao { background: rgba(239,68,68,0.12); color: #dc2626; }
+        .fluxo .fork { display: flex; width: 100%; justify-content: center; gap: 1.5rem; margin-top: 0.4rem; flex-wrap: wrap; }
+        .fluxo .fork .col { display: flex; flex-direction: column; align-items: center; flex: 1 1 220px; }
+        .fluxo .legenda { margin-top: 0.8rem; font-size: 0.78rem; color: var(--text-muted); text-align: center; }
+
+        .fc {
+            display: block;
+            width: 100%;
+            max-width: 720px;
+            height: auto;
+            margin: 1rem auto;
+            font-family: 'Inter', sans-serif;
+        }
+        .fc text { fill: var(--text); font-size: 13px; font-weight: 600; text-anchor: middle; dominant-baseline: middle; }
+        .fc .sh { fill: var(--surface); stroke: var(--text); stroke-width: 2; }
+        .fc .sh.io { fill: rgba(245,158,11,0.10); stroke: #e5980d; }
+        .fc .sh.doc { fill: rgba(245,158,11,0.10); stroke: #e5980d; }
+        .fc .sh.dec { fill: rgba(139,92,246,0.12); stroke: #a78bfa; }
+        .fc .sh.term { fill: rgba(56,189,248,0.10); stroke: var(--accent); }
+        .fc .ln { fill: none; stroke: var(--text); stroke-width: 2; }
+        .fc .arrow { fill: var(--text); }
+        .fc .lb { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
+        .fc .lb.sim { fill: #22c55e; }
+        .fc .lb.nao { fill: #f87171; }
+
         .glossario dt {
             font-weight: 600;
             color: var(--accent);
@@ -332,115 +393,6 @@
             .diagrama { background: #f1f5f9; color: #1a1a1a; }
             code { background: #e2e8f0; color: #1a1a1a; }
         }
-
-        /* ═══════════════════════════════════════════════════
-           PAINEL GEMINI — CSS
-           ═══════════════════════════════════════════════════ */
-        .gemini-fab {
-            position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 1100;
-            width: 52px; height: 52px; border-radius: 50%;
-            background: var(--accent); color: #fff; border: none;
-            font-size: 1.4rem; cursor: pointer; box-shadow: var(--shadow);
-            display: flex; align-items: center; justify-content: center;
-            transition: transform .2s;
-        }
-        .gemini-fab:hover { transform: scale(1.1); }
-
-        .gemini-panel {
-            position: fixed; bottom: 5.5rem; right: 1.5rem; z-index: 1100;
-            width: 420px; max-height: 70vh; overflow-y: auto;
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: 12px; box-shadow: var(--shadow-lg);
-            padding: 1.2rem; display: none;
-            font-family: inherit;
-        }
-        .gemini-panel.aberto { display: block; }
-
-        .gemini-panel h3 {
-            margin: 0 0 .6rem; font-size: 1rem; color: var(--heading);
-        }
-
-        .gemini-panel label {
-            display: block; font-size: .8rem; color: var(--text-muted);
-            margin-bottom: .2rem;
-        }
-
-        .gemini-panel input,
-        .gemini-panel select,
-        .gemini-panel textarea {
-            width: 100%; box-sizing: border-box;
-            padding: .45rem .6rem; margin-bottom: .6rem;
-            border: 1px solid var(--border); border-radius: 6px;
-            font: inherit; font-size: .85rem;
-            background: var(--bg); color: var(--text);
-        }
-
-        .gemini-panel textarea {
-            min-height: 110px; resize: vertical;
-        }
-
-        .gemini-panel .btn-row {
-            display: flex; gap: .5rem; margin-top: .4rem;
-        }
-
-        .gemini-btn {
-            flex: 1; padding: .5rem .8rem;
-            background: var(--accent); color: #fff; border: none;
-            border-radius: 6px; font: inherit; font-size: .85rem;
-            cursor: pointer; transition: opacity .2s;
-        }
-        .gemini-btn:disabled { opacity: .5; cursor: wait; }
-
-        .gemini-status {
-            font-size: .78rem; color: var(--text-muted); margin-top: .5rem;
-            min-height: 1.2rem;
-        }
-        .gemini-status.erro { color: var(--vermelho); }
-
-        .gemini-preview {
-            margin-top: .6rem; padding: .6rem; border-radius: 6px;
-            background: var(--bg); border: 1px solid var(--border);
-            font-size: .82rem; display: none;
-        }
-        .gemini-preview.visivel { display: block; }
-
-        .gpt-block {
-            background: var(--surface); border: 1px solid var(--accent);
-            border-left: 4px solid var(--accent); border-radius: 8px;
-            padding: 1rem 1.2rem; margin: 1.5rem 0; position: relative;
-        }
-        .gpt-block::before {
-            content: 'Gerado por IA';
-            position: absolute; top: -10px; left: 12px;
-            background: var(--accent); color: #fff; font-size: .65rem;
-            padding: 1px 8px; border-radius: 4px; font-weight: 600;
-        }
-        .gpt-block .remover-ia {
-            position: absolute; top: 6px; right: 10px;
-            background: none; border: none; cursor: pointer;
-            font-size: .9rem; color: var(--text-muted); line-height: 1;
-        }
-        .gemini-note {
-            font-size: .75rem; color: var(--verde);
-            background: rgba(16, 185, 129, .08);
-            border: 1px solid rgba(16, 185, 129, .35);
-            border-radius: 6px; padding: .45rem .6rem; margin-bottom: .6rem;
-            line-height: 1.35;
-        }
-
-        .gpt-block .meta-blocos {
-            font-size: .72rem; color: var(--text-muted);
-            margin-top: .6rem; border-top: 1px dashed var(--border);
-            padding-top: .4rem;
-        }
-
-        .gpt-block .remover-ia:hover { color: var(--vermelho); }
-
-        @media (max-width: 520px) {
-            .gemini-panel { width: calc(100vw - 2rem); right: 1rem; bottom: 5rem; }
-            .gemini-fab { bottom: 1rem; right: 1rem; }
-        }
-        @media print { .gemini-fab, .gemini-panel { display: none !important; } }
     </style>
 </head>
 <body>
@@ -461,6 +413,10 @@
     <a href="#sec-12">12. Glossário</a>
     <a href="#sec-13">13. Cheat Sheet</a>
     <a href="#sec-14">14. Mapa Mental</a>
+    <a href="#sec-15">15. Instruções x86</a>
+    <a href="#sec-16">16. Como Interpretar</a>
+    <a href="#sec-17">17. Controle de Fluxo</a>
+    <a href="#sec-18">18. Questões de Prova</a>
 </nav>
 <div class="container">
 
@@ -1802,6 +1758,24 @@
 
             <dt>Explicit vs Implícito</dt>
             <dd>Em PUSH/POP, o endereço "explícito" aparece na instrução (segmento de dados). O "implícito" está escondido no registrador ESP (segmento de pilha).</dd>
+
+            <dt>DST vs SRC</dt>
+            <dd>DST = destino, SRC = origem. Na sintaxe Intel o destino vem primeiro: <code>MOV DST,SRC</code> copia de SRC para DST.</dd>
+
+            <dt>Constante (#)</dt>
+            <dd>Operando com <code>#</code> ou entre aspas é um valor literal (constante). Sem <code>#</code>, é o conteúdo de um endereço na memória.</dd>
+
+            <dt>JUMP (salto)</dt>
+            <dd>Instrução que altera o fluxo de execução mudando o EIP. Incondicional: <code>JMP</code>. Condicional: <code>Jxx</code> (testa flags).</dd>
+
+            <dt>Jxx</dt>
+            <dd>Saltos condicionais: JE (=), JNE (&ne;), JG (&gt;), JGE (&ge;), JL (&lt;), JLE (&le;). Usados logo após um CMP.</dd>
+
+            <dt>IN / OUT</dt>
+            <dd>Instruções de entrada/saída. <code>IN AX,port</code> lê do dispositivo para AX; <code>OUT port,AX</code> envia AX ao dispositivo.</dd>
+
+            <dt>MUL / DIV (implícitos)</dt>
+            <dd>MUL usa EAX implicitamente (EAX = EAX × SRC). DIV divide AX por SRC (AL = quociente, AH = resto). Não têm operando DST.</dd>
         </dl>
     </div>
 
@@ -1842,6 +1816,12 @@
             <tr><td><strong>Tabela Real (P2)</strong></td><td>0140:Code 024a:Stack 037a:Data 037b:Extra (Base: 341000→4f0000→518001→70000f)</td></tr>
             <tr><td><strong>Hex ↔ Bin</strong></td><td>Cada dígito hex = 4 bits binários (A=1010, F=1111, etc.). Tabela no passo 7.2</td></tr>
             <tr><td><strong>5 Passos</strong></td><td>1.Reg.Offset → 2.Seletor → 3.Linear=Base+Offset → 4.Teste ≤ Limite → 5.Físico</td></tr>
+            <tr><td><strong>MOV DST,SRC</strong></td><td>Copia SRC → DST (destino primeiro!). # = constante; sem # = conteúdo de endereço</td></tr>
+            <tr><td><strong>Arithmetic</strong></td><td>ADD/SUB (DST±SRC), INC/DEC (±1), NEG (-DST), MUL (EAX=EAX×SRC), DIV (AL=AX/SRC, AH=resto)</td></tr>
+            <tr><td><strong>Boolean</strong></td><td>AND/OR/XOR/NOT — bit a bit, resultado em DST</td></tr>
+            <tr><td><strong>CMP + Jxx</strong></td><td>CMP faz A−B em segredo; Jxx pula conforme ordem: JE(=), JNE(≠), JG(&gt;), JGE(≥), JL(&lt;), JLE(≤)</td></tr>
+            <tr><td><strong>IN / OUT</strong></td><td>IN AX,port = entrada (AX recebe); OUT port,AX = saída (AX envia)</td></tr>
+            <tr><td><strong>JMP</strong></td><td>Salto incondicional: DST = novo EIP (frente ou trás)</td></tr>
         </table>
     </div>
 
@@ -1891,36 +1871,741 @@
     (Rodízio: um processo por vez no processador)</div>
     </div>
 
-    <!-- ==================== BLOCOS COMPARTILHADOS (integrados ao guia) ==================== -->
-    <div id="blocosIntegrados"></div>
+    <!-- ==================== BLOCO 15: INSTRUÇÕES X86 (PDF) ==================== -->
+    <h2 id="sec-15">15. Instruções x86 &mdash; Tabelas do Professor</h2>
 
-    <!-- ==================== PAINEL GEMINI ==================== -->
-    <button class="gemini-fab" id="geminiFab" title="Gerar bloco com IA" aria-label="Gerar bloco com IA">✨</button>
-    <div class="gemini-panel" id="geminiPanel">
-        <h3>Gerar bloco didático com IA</h3>
+    <div class="card-importante">
+        <p><strong>FONTE:</strong> arquivo <code>Instruções x86.pdf</code>. O professor disse que a prova vai te pedir para <strong>interpretar estas tabelas</strong>. Aqui elas estão transcritas <strong>fiéis ao PDF</strong>; o detalhamento com os focos que o professor pediu está na seção 16.</p>
+    </div>
 
-        <div class="gemini-note" id="geminiNote" style="display:none;">API compartilhada: não precisa informar chave. Os blocos salvos aparecem para todos no link.</div>
+    <h3>15.1 Tabela 1 &mdash; MOVES (movimentação de dados)</h3>
+    <div class="card">
+        <table>
+            <tr><th>Instrução</th><th>O que faz (como está no PDF)</th></tr>
+            <tr><td><code>MOV DST,SRC</code></td><td>Move SRC to DST &mdash; copia o valor de SRC para DST</td></tr>
+            <tr><td><code>PUSH SRC</code></td><td>Push SRC onto the stack &mdash; empurra SRC para a pilha</td></tr>
+            <tr><td><code>POP DST</code></td><td>Pop a word from the stack to DST &mdash; retira um dado da pilha e coloca em DST</td></tr>
+            <tr><td><code>XCHG DS1,DS2</code></td><td>Exchange DS1 and DS2 &mdash; troca o conteúdo dos dois</td></tr>
+        </table>
+        <div class="card-dica">Foco do professor = <strong>1ª linha da 1ª tabela (<code>MOV</code>)</strong>. Detalhamento completo na seção 16.1.</div>
+    </div>
 
-        <label for="geminiKey" id="geminiKeyLabel">API Key do Gemini</label>
-        <input type="password" id="geminiKey" placeholder="Cole sua API Key aqui" autocomplete="off">
+    <h3>15.2 Tabela 2 &mdash; ARITHMETIC (aritmética)</h3>
+    <div class="card">
+        <table>
+            <tr><th>Instrução</th><th>O que faz (como está no PDF)</th><th>Efeito real</th></tr>
+            <tr><td><code>ADD DST,SRC</code></td><td>Add SRC to DST</td><td><code>DST = DST + SRC</code></td></tr>
+            <tr><td><code>SUB DST,SRC</code></td><td>Subtract DST from SRC (*)</td><td><code>DST = DST &minus; SRC</code></td></tr>
+            <tr><td><code>MUL SRC</code></td><td>Multiply EAX by SRC (unsigned)</td><td><code>EAX = EAX × SRC</code></td></tr>
+            <tr><td><code>INC DST</code></td><td>Add 1 to DST</td><td><code>DST = DST + 1</code></td></tr>
+            <tr><td><code>DEC DST</code></td><td>Subtract 1 from DST</td><td><code>DST = DST &minus; 1</code></td></tr>
+            <tr><td><code>NEG DST</code></td><td>Negate DST (subtract it from 0)</td><td><code>DST = 0 &minus; DST = &minus;DST</code></td></tr>
+            <tr><td><code>DIV SRC</code></td><td><code>AL = AX/SRC</code></td><td><code>AL = quociente</code>, <code>AH = resto</code> (modulus)</td></tr>
+        </table>
+        <p style="margin-top:0.8rem; font-size:0.85rem; color:var(--text-muted);">(*) O PDF escreve "Subtract DST from SRC", mas na convenção Intel o efeito é <strong>DST = DST &minus; SRC</strong> (o resultado fica sempre em DST). Atenção a essa pegadinha de leitura.</p>
+        <div class="card-dica">Foco do professor = <strong>esta tabela inteira</strong>. Detalhamento na seção 16.2.</div>
+    </div>
 
-        <label for="geminiModel">Modelo</label>
-        <select id="geminiModel">
-            <option value="gemini-3.6-flash" selected>gemini-3.6-flash</option>
-            <option value="gemini-3.5-flash">gemini-3.5-flash</option>
-            <option value="gemini-2.5-flash">gemini-2.5-flash</option>
-        </select>
+    <h3>15.3 Tabela 3 &mdash; BOOLEAN (lógica)</h3>
+    <div class="card">
+        <table>
+            <tr><th>Instrução</th><th>O que faz (como está no PDF)</th><th>Efeito real</th></tr>
+            <tr><td><code>AND DST,SRC</code></td><td>Boolean AND SRC into DST</td><td><code>DST = DST AND SRC</code></td></tr>
+            <tr><td><code>OR DST,SRC</code></td><td>Boolean OR SRC into DST</td><td><code>DST = DST OR SRC</code></td></tr>
+            <tr><td><code>XOR DST,SRC</code></td><td>Boolean Exclusive OR SRC to DST</td><td><code>DST = DST XOR SRC</code></td></tr>
+            <tr><td><code>NOT DST</code></td><td>Replace DST with 1&rsquo;s complement</td><td><code>DST = ~DST</code> (inverte todos os bits)</td></tr>
+        </table>
+        <div class="card-dica">Foco do professor = <strong>esta tabela inteira</strong>. Detalhamento na seção 16.3.</div>
+    </div>
 
-        <label for="geminiInput">Suas anotações</label>
-        <textarea id="geminiInput" placeholder="Cole ou digite suas anotações brutas sobre o tema...&#10;&#10;Exemplo: mov eax, 5 → copia valor 5 para registrador EAX&#10;add eax, 3 → soma 5+3=8 e guarda em EAX"></textarea>
+    <h3>15.4 Tabela 4 &mdash; TEST/COMPARE + CONTROLE + ENTRADA/SAÍDA</h3>
+    <div class="card">
+        <table>
+            <tr><th>Instrução</th><th>O que faz (como está no PDF)</th></tr>
+            <tr><td><code>CMP SRC1,SRC2</code></td><td>Set flags based on SRC1 &ndash; SRC2 (compara sem guardar resultado)</td></tr>
+            <tr><td><code>JMP ADDR</code></td><td>Jump to ADDR (salto incondicional)</td></tr>
+            <tr><td><code>Jxx ADDR</code></td><td>Conditional jumps based on flags (salto condicional)</td></tr>
+            <tr><td><code>CALL ADDR</code></td><td>Call procedure at ADDR (chama sub-rotina)</td></tr>
+            <tr><td><code>RET</code></td><td>Return from procedure (volta da sub-rotina)</td></tr>
+            <tr><td><code>IRET</code></td><td>Return from interrupt (volta de interrupção)</td></tr>
+            <tr><td><code>LOOPxx</code></td><td>Loop until condition met (loop com condição)</td></tr>
+            <tr><td><code>IN AX,port</code></td><td>Input from port number to AX (lê do dispositivo para AX)</td></tr>
+            <tr><td><code>OUT port, AX</code></td><td>Out from AX to port number (envia AX para o dispositivo)</td></tr>
+        </table>
+        <div class="card-dica">Foco do professor = <strong>as 3 primeiras linhas (<code>CMP</code>, <code>JMP</code>, <code>Jxx</code>)</strong> e <strong>as 2 últimas linhas (<code>IN</code>, <code>OUT</code>)</strong>. Detalhamento na seção 16.4.</div>
+    </div>
 
-        <div class="btn-row">
-            <button class="gemini-btn" id="geminiGerar">Gerar bloco</button>
-            <button class="gemini-btn" id="geminiInserir" style="display:none; background:var(--verde);">Inserir na página</button>
+    <h3>15.5 Jxx &mdash; Salto Condicional</h3>
+    <div class="card-prova">
+        <table>
+            <tr><th>Jxx</th><th>Operador</th><th>Significado</th><th>Salta quando...</th></tr>
+            <tr><td><code>JE</code></td><td><strong>=</strong></td><td>Jump if Equal</td><td>resultado da comparação é <strong>igual</strong> (ZF = 1)</td></tr>
+            <tr><td><code>JNE</code></td><td><strong>&ne;</strong></td><td>Jump if Not Equal</td><td>resultado é <strong>diferente</strong> (ZF = 0)</td></tr>
+            <tr><td><code>JG</code></td><td><strong>&gt;</strong></td><td>Jump if Greater</td><td>primeiro é <strong>maior</strong> (com sinal)</td></tr>
+            <tr><td><code>JGE</code></td><td><strong>&ge;</strong></td><td>Jump if Greater or Equal</td><td>primeiro é maior <strong>ou igual</strong></td></tr>
+            <tr><td><code>JL</code></td><td><strong>&lt;</strong></td><td>Jump if Less</td><td>primeiro é <strong>menor</strong> (com sinal)</td></tr>
+            <tr><td><code>JLE</code></td><td><strong>&le;</strong></td><td>Jump if Less or Equal</td><td>primeiro é menor <strong>ou igual</strong></td></tr>
+        </table>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Truque de memorização:</strong> <code>J</code> = Jump. Depois: <code>E</code> (Equal = igual), <code>NE</code> (Not Equal = diferente), <code>G</code> (Greater = maior), <code>L</code> (Less = menor). J = "pula se". Ex.: <code>JGE</code> = pula se o primeiro for maior ou igual.
         </div>
+    </div>
 
-        <div class="gemini-status" id="geminiStatus"></div>
-        <div class="gemini-preview" id="geminiPreview"></div>
+    <!-- ==================== BLOCO 16: COMO INTERPRETAR ==================== -->
+    <h2 id="sec-16">16. Como Interpretar as Tabelas (Focos do Professor)</h2>
+
+    <div class="card">
+        <p><strong>Como usar as tabelas do professor (guia rápido):</strong> o site mostra as mesmas tabelas em 4 "visões", cada uma com um objetivo:</p>
+        <ul>
+            <li><strong>§15 Tabelas fiéis</strong> &rarr; para <strong>reconhecer</strong> na prova: se a questão mostrar uma dessas tabelas, você já sabe o que é.</li>
+            <li><strong>§16 Como interpretar</strong> &rarr; a seção principal de estudo: cada elemento explicado em português (o que faz e como escrever).</li>
+            <li><strong>§13 Cola rápida</strong> &rarr; resumo de 1 página para revisar na véspera / minutos antes da prova.</li>
+            <li><strong>§17 e §18 Exemplos e questões</strong> &rarr; para ver a aplicação (as tabelas viram código).</li>
+        </ul>
+        <p><strong>Quais elementos usar? (focos do professor)</strong></p>
+        <ul>
+            <li>1ª tabela: só o <code>MOV</code>.</li>
+            <li>2ª (Arithmetic): a tabela inteira &mdash; <code>ADD, SUB, INC, DEC, NEG, MUL, DIV</code>.</li>
+            <li>3ª (Boolean): a tabela inteira &mdash; <code>AND, OR, XOR, NOT</code>.</li>
+            <li>4ª: as 3 primeiras linhas (<code>CMP, JMP, Jxx</code>) + as 2 últimas (<code>IN, OUT</code>).</li>
+        </ul>
+        <p><strong>Traduza a pergunta em ação:</strong></p>
+        <table>
+            <tr><th>A questão diz...</th><th>Uso da tabela</th></tr>
+            <tr><td>"ler do teclado"</td><td><code>IN</code></td></tr>
+            <tr><td>"mostrar/escrever no monitor"</td><td><code>OUT</code></td></tr>
+            <tr><td>"copiar/atribuir/guardar"</td><td><code>MOV</code></td></tr>
+            <tr><td>"somar" / "subtrair"</td><td><code>ADD</code> / <code>SUB</code></td></tr>
+            <tr><td>"somar 1" / "tirar 1"</td><td><code>INC</code> / <code>DEC</code></td></tr>
+            <tr><td>"multiplicar" / "dividir"</td><td><code>MUL</code> / <code>DIV</code></td></tr>
+            <tr><td>"até", "enquanto", "se for &lt; &gt; ="</td><td><code>CMP</code> + <code>Jxx</code></td></tr>
+            <tr><td>"voltar" / "repetir"</td><td><code>JMP</code></td></tr>
+        </table>
+        <p><strong>Se a questão der fluxograma, use os símbolos:</strong></p>
+        <ul>
+            <li>paralelogramo / documento com onda (entrada e saída) &rarr; <code>IN</code> e <code>OUT</code>.</li>
+            <li>retângulo (processo) &rarr; <code>MOV</code>, <code>ADD</code>, <code>INC</code> etc.</li>
+            <li>losango (decisão) &rarr; <code>CMP</code> + <code>Jxx</code>.</li>
+            <li>seta de volta &rarr; <code>JMP</code>.</li>
+        </ul>
+    </div>
+    <div class="card-dica">
+        <strong>Sequência de estudo recomendada:</strong> §15 (reconhecer, uns 5 minutos) &rarr; §16 (entender) &rarr; §17 (aplicar com endereços e saltos) &rarr; §18 (treinar com as questões resolvidas) &rarr; §13 no fim (revisar a cola rápida).
+    </div>
+
+    <div class="card-importante">
+        <p><strong>Regra de ouro:</strong> no salto condicional, <code>CMP A, B</code> computa <strong>A &minus; B</strong> (sem guardar o resultado). Depois, o <code>Jxx</code> testa essa subtração <strong>na ordem em que os operandos aparecem no CMP</strong>:</p>
+        <p style="font-size:1.05rem; text-align:center;"><code>CMP A, B</code> &rarr; <code>JGE</code> pula se <strong>A &#8805; B</strong>.</p>
+        <p>Quem decide "A vs B" é a <strong>ordem dentro do CMP</strong> &mdash; não a ordem do texto da questão.</p>
+    </div>
+
+    <h3>16.1 &mdash; 1ª linha da 1ª tabela: <code>MOV DST,SRC</code> (o foco principal)</h3>
+    <div class="card-prova">
+        <p><strong>MOV DST, SRC</strong> &rarr; copia o valor de <strong>SRC</strong> para <strong>DST</strong>.</p>
+        <ul>
+            <li><strong>DST vem primeiro</strong> (sintaxe Intel). A direção é sempre <strong>SRC &rarr; DST</strong>.</li>
+            <li>SRC pode ser uma <strong>constante</strong> (com <code>#</code> ou aspas) ou o <strong>conteúdo de um endereço</strong> de memória.</li>
+            <li>Se o destino é um registrador: <code>MOV EAX, 0000A14B</code> copia para EAX o <strong>conteúdo do endereço</strong> <code>0000A14B</code> (sem <code>#</code>, não é o número literal).</li>
+            <li>Não altera flags &mdash; só copia o dado.</li>
+        </ul>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Nas anotações do professor:</strong> <code>MOV contador, #0</code> (inicializa contador com 0) e <code>MOV EAX, 0000A14B</code> (copia o valor da memória para EAX). O <code>#</code> marca <strong>constante</strong> &mdash; sem <code>#</code> é o <strong>conteúdo de um endereço</strong>.
+        </div>
+    </div>
+
+    <h3>16.2 &mdash; 2ª tabela completa: ARITHMETIC</h3>
+    <div class="card">
+        <p>Cada instrução conforme o esperado na prova:</p>
+        <table>
+            <tr><th>Instrução</th><th>Ler como</th><th>Exemplo</th></tr>
+            <tr><td><code>ADD DST,SRC</code></td><td>"Soma SRC em DST", resultado fica em DST</td><td><code>ADD contador, incremento</code></td></tr>
+            <tr><td><code>SUB DST,SRC</code></td><td>"Subtrai SRC de DST" (cuidado com a pegadinha do PDF)</td><td><code>SUB contador, #1</code></td></tr>
+            <tr><td><code>MUL SRC</code></td><td><strong>Uso implícito de EAX:</strong> multiplica EAX por SRC</td><td><code>MUL contador</code> &rarr; EAX = EAX × contador</td></tr>
+            <tr><td><code>INC DST</code></td><td>Incrementa em 1</td><td><code>INC contador</code></td></tr>
+            <tr><td><code>DEC DST</code></td><td>Decrementa em 1</td><td><code>DEC contador</code></td></tr>
+            <tr><td><code>NEG DST</code></td><td>Inverte o sinal (0 &minus; DST)</td><td><code>NEG EAX</code> &rarr; EAX = &minus;EAX</td></tr>
+            <tr><td><code>DIV SRC</code></td><td>Divida AX por SRC: <strong>AL</strong> = quociente, <strong>AH</strong> = resto</td><td><code>DIV #2</code> &rarr; AH = resto (par/ímpar!)</td></tr>
+        </table>
+        <div class="card-importante" style="margin-top:1rem;">
+            <strong>Pegadinha que cai na prova:</strong> <code>MUL</code> e <code>DIV</code> <strong>NÃO têm DST</strong> &mdash; usam registradores implícitos (<code>EAX</code> / <code>AX</code>). Enquanto <code>ADD</code>/<code>SUB</code> recebem dois operandos, <code>MUL</code>/<code>DIV</code> recebem só um (o <code>SRC</code>).
+        </div>
+        <div class="card-dica">
+            <strong>DIV é a chave da questão "par ou ímpar":</strong> <code>MOV AX, N</code> &rarr; <code>DIV 2</code>. Se o <strong>resto (AH) = 0</strong> o número é par; se <strong>AH = 1</strong> é ímpar.
+        </div>
+    </div>
+
+    <h3>16.3 &mdash; 3ª tabela completa: BOOLEAN</h3>
+    <div class="card">
+        <p>Todas operam <strong>bit a bit</strong> sobre os dois operadores, guardando o resultado em DST:</p>
+        <table>
+            <tr><th>Instrução</th><th>Tabela-verdade (por bit)</th><th>Quando usar</th></tr>
+            <tr><td><code>AND</code></td><td>1 AND 1 = 1; o resto = 0</td><td>"Mascaramento" &mdash; zerar bits que você quer desligar</td></tr>
+            <tr><td><code>OR</code></td><td>0 OR 0 = 0; o resto = 1</td><td>"Ligar" bits à força (set)</td></tr>
+            <tr><td><code>XOR</code></td><td>iguais &rarr; 0; diferentes &rarr; 1</td><td>Comparar se dois valores são diferentes bit a bit</td></tr>
+            <tr><td><code>NOT</code></td><td>vira 1 se era 0, e vice-versa</td><td>Complemento de 1 (inverter tudo)</td></tr>
+        </table>
+        <div class="card-dica">
+            <strong>Memorização rápida:</strong> <code>AND</code> = "liga o que eu deixar ligado"; <code>OR</code> = "liga se qualquer um ligar"; <code>XOR</code> = "liga se forem diferentes"; <code>NOT</code> = "inverte tudo".
+        </div>
+    </div>
+
+    <h3>16.4 &mdash; 4ª tabela: 3 primeiras linhas (<code>CMP</code>, <code>JMP</code>, <code>Jxx</code>) e 2 últimas (<code>IN</code>, <code>OUT</code>)</h3>
+    <div class="card">
+        <table>
+            <tr><th>Instrução</th><th>Interpretação para a prova</th></tr>
+            <tr><td><code>CMP SRC1,SRC2</code></td><td>Subtrai SRC1 &minus; SRC2 <strong>em segredo</strong> e atualiza os flags. Não armazena resultado. Prepara o terreno para o Jxx.</td></tr>
+            <tr><td><code>JMP ADDR</code></td><td>Salto <strong>incondicional</strong>: pula SEMPRE para ADDR. Não consulta flags.</td></tr>
+            <tr><td><code>Jxx ADDR</code></td><td>Salto <strong>condicional</strong>: pula SE a condição dos flags for verdadeira. Sempre usado logo após um <code>CMP</code>.</td></tr>
+            <tr><td><code>IN AX,port</code></td><td><strong>Entrada</strong>: lê um valor do dispositivo (ex.: teclado) e coloca em <strong>AX</strong>. "Dado entra".</td></tr>
+            <tr><td><code>OUT port, AX</code></td><td><strong>Saída</strong>: envia o valor de <strong>AX</strong> para o dispositivo (ex.: monitor). "Dado sai".</td></tr>
+        </table>
+        <div class="card-dica">
+            <strong>Para lembrar IN vs OUT:</strong> <code>IN AX, teclado</code> &rarr; AX <strong>recebe</strong> (entrada). <code>OUT monitor, AX</code> &rarr; monitor <strong>recebe</strong> (saída). Sempre uma "porta" no meio.
+        </div>
+        <div class="card-importante">
+            <strong>Como CMP + Jxx funcionam juntos (a dupla que resolve loops e decisões):</strong><br>
+            <code>CMP N, contador</code> &rarr; calcula <code>N &minus; contador</code> em segredo.<br>
+            <code>JGE alvo</code> &rarr; se <code>N &#8805; contador</code>, pula para <code>alvo</code>. Se não, executa a próxima instrução.<br>
+            <span style="color:var(--accent);">Tudo o que o professor faz em laços é: <strong>teste sempre com CMP + JUMP condicional</strong>.</span>
+        </div>
+    </div>
+
+    <h3>16.5 &mdash; Jxx: qual usar depois de um <code>CMP A, B</code></h3>
+    <div class="card-prova">
+        <p style="font-weight:700;">Depois do <code>CMP A, B</code> (que fez A &minus; B):</p>
+        <table>
+            <tr><th>Quero pular quando...</th><th>Uso</th><th>Flag que confirma</th></tr>
+            <tr><td>A é igual a B</td><td><code>JE</code></td><td>ZF = 1 (subtração deu zero)</td></tr>
+            <tr><td>A é diferente de B</td><td><code>JNE</code></td><td>ZF = 0</td></tr>
+            <tr><td>A &gt; B (com sinal)</td><td><code>JG</code></td><td>ZF = 0 e SF = OF</td></tr>
+            <tr><td>A &#8805; B</td><td><code>JGE</code></td><td>SF = OF (ou ZF = 1)</td></tr>
+            <tr><td>A &lt; B (com sinal)</td><td><code>JL</code></td><td>SF &ne; OF</td></tr>
+            <tr><td>A &#8804; B</td><td><code>JLE</code></td><td>ZF = 1 ou SF &ne; OF</td></tr>
+        </table>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Regra prática:</strong> para <strong>igualdade</strong> use <code>JE</code>/<code>JNE</code> (não importa o sinal). Para <strong>maior/menor</strong>, o professor usa <code>JG/JGE/JL/JLE</code> como se fossem "&gt;, &ge;, &lt;, &le;". Memória de bolso: <strong>JGE = "Jump se o primeiro for &ge; o segundo"</strong>.
+        </div>
+    </div>
+
+    <!-- ==================== BLOCO 17: CONTROLE DE FLUXO ==================== -->
+    <h2 id="sec-17">17. Controle de Fluxo &mdash; JUMP, CMP e Constantes</h2>
+
+    <p>Estas anotações vêm do bloco de notas do professor. Todo o material de <strong>estruturas de repetição</strong> (while / do&nbsp;while) e <strong>seleção</strong> (if / then / else) é montado com <strong>JUMP + CMP</strong>.</p>
+
+    <h3>17.1 JUMP Incondicional</h3>
+    <div class="card-prova">
+        <p>O <strong>JUMP incondicional</strong> é aquele que, ao ser executado, <strong>altera a sequência do fluxo de instruções de forma OBRIGATÓRIA</strong> &mdash; ou seja, sempre pula, sem perguntar nada.</p>
+        <p><strong>Formato:</strong> <code>JUMP DST</code> (opcode de 4 bytes + destino de 4 bytes)</p>
+        <div class="diagrama">
+  JUMP      DST
+|---------|---------|
+ 4 bytes | 4 bytes
+              |
+              v
+  DST = endereço lógico do segmento de CÓDIGO
+  para onde ocorrerá o salto</div>
+        <ul>
+            <li>DST representa um <strong>novo valor do registrador EIP</strong>.</li>
+            <li>O salto pode ocorrer para um endereço <strong>posterior (para frente)</strong> ou <strong>anterior (para trás)</strong> &mdash; é assim que se "volta" num laço.</li>
+        </ul>
+    </div>
+
+    <h3>17.2 JUMP Condicional (2 instruções)</h3>
+    <div class="card">
+        <p>O JUMP condicional é implementado com <strong>1 comparação + 1 salto</strong>:</p>
+        <table>
+            <tr><th>Passo</th><th>Instrução</th><th>O que faz</th></tr>
+            <tr><td>1º</td><td><code>CMP END1, END2</code></td><td>Compara o conteúdo de 2 endereços do segmento de <strong>dados</strong>, ou 1 endereço com uma <strong>constante</strong>.</td></tr>
+            <tr><td>2º</td><td><code>Jxx DST</code></td><td>Testa o resultado da comparação (flag). <strong>Verdadeiro</strong> &rarr; salta para DST. <strong>Falso</strong> &rarr; executa a próxima instrução.</td></tr>
+        </table>
+        <p><strong>Formatos (cada campo tem 4 bytes):</strong></p>
+        <div class="diagrama">
+  Comparação (dados):
+|---------|---------|---------|
+  CMP    END1      END2      ; END1 e END2 no segmento de dados
+
+  Salto (código):
+|---------|---------|
+   Jxx      DST       ; DST = endereço de destino do salto
+        </div>
+    </div>
+
+    <h3>17.3 Constante: <code>#</code> ou aspas</h3>
+    <div class="card-prova">
+        <p><strong>OBS:</strong> se o operando tiver <code>#</code> ou estiver entre <strong>aspas</strong>, é uma <strong>constante</strong> (valor literal). Sem <code>#</code>, é o <strong>conteúdo de um endereço de memória</strong>.</p>
+        <p><strong>Exemplo do bloco de notas (comparação com constante):</strong></p>
+        <div class="diagrama" style="background:rgba(0,0,0,0.3); color:var(--prova-text);">
+  CMP #0000A14B, 00B2A000     ; compara a CONSTANTE 0000A14B com o conteúdo do endereço 00B2A000
+  JGE 0000A14B                ; se a condição for verdadeira, salta para 0000A14B (segmento de código)
+  MOV EAX, 0000A14B           ; copia o valor do endereço 0000A14B para EAX
+        </div>
+        <ul>
+            <li><code>#0000A14B</code> = o valor literal <code>0000A14B</code> é a constante da comparação.</li>
+            <li><code>00B2A000</code> (sem #) = endereço de dados, usamos o <strong>conteúdo</strong> dele.</li>
+            <li>O <code>JGE</code> salta para o <strong>endereço de código</strong> <code>0000A14B</code> &mdash; o destino de um salto é sempre no segmento de código.</li>
+        </ul>
+    </div>
+
+    <h3>17.4 Exemplo 1 &mdash; Contador até N (Do&nbsp;While com JNE)</h3>
+    <div class="card">
+        <p><strong>Enunciado:</strong> ler N via teclado, incrementar um contador de 1 em 1 até chegar em N, e exibir o contador.</p>
+        <div class="diagrama">
+  0000 0000  IN N, teclado
+  0000 000C  MOV contador, #0
+  0000 0018  INC contador
+  0000 0020  CMP N, contador
+  0000 002C  JNE 0000 0018
+  0000 0034  OUT monitor, contador
+        </div>
+        <div class="card-dica">
+            <strong>Como saber o endereço da PRÓXIMA instrução (regra de ouro):</strong>
+            <p>Cada pedaço ocupa <strong>4 bytes</strong>: 4 bytes para a própria instrução + 4 bytes por operando. Basta contar os operandos:</p>
+            <ul style="margin:0.6rem 0 0 1.2rem;">
+                <li><strong>1 operando</strong> (ex.: <code>INC contador</code>, <code>JMP 0000 0024</code>) &rarr; 2 pedaços &rarr; 2&times;4 = <strong>8 bytes</strong> &rarr; some <strong>+8</strong> no endereço (em hexadecimal escreve-se <code>+0x8</code>).</li>
+                <li><strong>2 operandos</strong> (ex.: <code>IN N, teclado</code>, <code>CMP N, contador</code>) &rarr; 3 pedaços &rarr; 3&times;4 = <strong>12 bytes</strong> &rarr; some <strong>+12</strong> no endereço (em hexadecimal escreve-se <code>+0xC</code>).</li>
+            </ul>
+            <p style="margin-top:0.5rem;"><strong>Muito importante:</strong> os endereços estão em <strong>hexadecimal</strong>. Por isso <strong>8</strong> é escrito <code>0x8</code> e <strong>12</strong> é escrito <code>0xC</code>.</p>
+        </div>
+        <p><strong>Vendo na memória (cada célula = 4 bytes):</strong></p>
+        <div class="diagrama">
+  0000 0000 | IN       |  instrução
+  0000 0004 | N        |  operando 1
+  0000 0008 | teclado  |  operando 2
+  0000 000C | MOV      |  próxima instrução (0000 + 0C = 000C)
+        </div>
+        <div class="card">
+            <p><strong>Detalhando um salto de endereço &mdash; de <code>0000 000C</code> para <code>0000 0018</code>:</strong></p>
+            <p>A instrução em <code>0000 000C</code> é <code>MOV contador, #0</code>, que tem <strong>2 operandos</strong>.</p>
+            <ol>
+                <li><strong>Quanto ela ocupa?</strong> 2 operandos &rarr; 12 bytes.</li>
+                <li><strong>Onde ela começa?</strong> Em <code>000C</code>.</li>
+                <li><strong>Onde começa a próxima?</strong> Em <code>000C + 12</code>.</li>
+                <li><strong>Converta para decimal (facilita):</strong> <code>000C</code> = 12 &rarr; 12 + 12 = <strong>24</strong>.</li>
+                <li><strong>Volte para hexadecimal:</strong> 24 = <code>18</code> &rarr; próxima em <code>0000 0018</code>.</li>
+            </ol>
+            <p><strong>Por que 24 vira <code>18</code>?</strong> Hexadecimal é base 16 (conta até F, não até 9):</p>
+            <div class="diagrama">
+  0x0F = 15
+  0x10 = 16
+  0x11 = 17
+  0x12 = 18
+  0x13 = 19
+  0x14 = 20
+  0x15 = 21
+  0x16 = 22
+  0x17 = 23
+  0x18 = 24   &larr; é aqui!
+            </div>
+            <p><strong>Ou pelo "vai 1":</strong> <code>C + C</code> &rarr; <code>C</code> = 12, então 12 + 12 = 24. Um dígito hexadecimal só vai até 15, então 24 = 16 + 8 &rarr; escreve <strong>8</strong> e "vai 1" para a esquerda &rarr; <code>18</code>.</p>
+        </div>
+        <div class="card-dica">
+            <strong>Macetes para não errar:</strong>
+            <ul style="margin:0.6rem 0 0 1.2rem;">
+                <li><strong>Conte os operandos e pronto:</strong> 1 operando &rarr; <code>+0x8</code>; 2 operandos &rarr; <code>+0x0C</code>.</li>
+                <li><strong>Quem tem 1 operando:</strong> os saltos (<code>JMP</code>, <code>JNE</code>, <code>JE</code>, <code>JGE</code>...) e <code>INC</code>/<code>DEC</code>. O resto (<code>IN</code>, <code>MOV</code>, <code>CMP</code>, <code>ADD</code>, <code>OUT</code>) tem 2.</li>
+                <li><strong>Letras do hexadecimal:</strong> A=10, B=11, C=12, D=13, E=14, F=15.</li>
+                <li><strong>Passou de 15?</strong> Tire 16 e "vai 1" para a esquerda (ex.: C+C = 24 = 16+8 &rarr; 18).</li>
+                <li><strong>Na dúvida, converta:</strong> passe o endereço para decimal, some o tamanho e volte para hexadecimal.</li>
+            </ul>
+        </div>
+        <p><strong>O mesmo cálculo, linha por linha (Exemplo 1):</strong></p>
+        <table>
+            <tr><th>Endereço</th><th>Instrução</th><th>Conta</th><th>Próximo</th></tr>
+            <tr><td><code>0000 0000</code></td><td><code>IN N, teclado</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 000C</code></td></tr>
+            <tr><td><code>0000 000C</code></td><td><code>MOV contador, #0</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 0018</code></td></tr>
+            <tr><td><code>0000 0018</code></td><td><code>INC contador</code></td><td>1 operando &rarr; +0x8</td><td><code>0000 0020</code></td></tr>
+            <tr><td><code>0000 0020</code></td><td><code>CMP N, contador</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 002C</code></td></tr>
+            <tr><td><code>0000 002C</code></td><td><code>JNE 0000 0018</code></td><td>1 operando &rarr; +0x8</td><td><code>0000 0034</code></td></tr>
+            <tr><td><code>0000 0034</code></td><td><code>OUT monitor, contador</code></td><td>2 operandos &rarr; +0x0C (fim)</td><td><code>0000 0040</code></td></tr>
+        </table>
+        <p><strong>Traduzindo os endereços para decimal (Exemplo 1):</strong> o <code>0000</code> da esquerda (segmento) é zero em todos, então basta traduzir a parte da direita. Para ler um hex de 4 dígitos <code>x y z w</code>: <code>x&times;4096 + y&times;256 + z&times;16 + w</code> &mdash; aqui <code>x</code> e <code>y</code> são 0, então sobra só <code>z&times;16 + w</code>.</p>
+        <table>
+            <tr><th>Endereço (hex)</th><th>Conta</th><th>Decimal</th><th>Instrução</th></tr>
+            <tr><td><code>0000 0000</code></td><td>0</td><td><strong>0</strong></td><td><code>IN N, teclado</code></td></tr>
+            <tr><td><code>0000 000C</code></td><td>C = 12</td><td><strong>12</strong></td><td><code>MOV contador, #0</code></td></tr>
+            <tr><td><code>0000 0018</code></td><td>1&times;16 + 8</td><td><strong>24</strong></td><td><code>INC contador</code></td></tr>
+            <tr><td><code>0000 0020</code></td><td>2&times;16 + 0</td><td><strong>32</strong></td><td><code>CMP N, contador</code></td></tr>
+            <tr><td><code>0000 002C</code></td><td>2&times;16 + 12</td><td><strong>44</strong></td><td><code>JNE 0000 0018</code></td></tr>
+            <tr><td><code>0000 0034</code></td><td>3&times;16 + 4</td><td><strong>52</strong></td><td><code>OUT monitor, contador</code></td></tr>
+        </table>
+        <p><strong>Os saltos em decimal (posição &rarr; próxima):</strong></p>
+        <div class="diagrama">
+  0  ->  12   (+12)
+  12 ->  24   (+12)
+  24 ->  32   (+8)    &lt;- INC tem 1 operando
+  32 ->  44   (+12)
+  44 ->  52   (+8)    &lt;- JNE tem 1 operando
+  52 ->  64   (+12)   &lt;- fim (0000 0040 = 64)
+        </div>
+        <p><strong>Agora o "porquê" de cada instrução &mdash; pense no programa como uma receita:</strong></p>
+        <ul>
+            <li><code>IN</code> = <strong>pegar o ingrediente</strong>: lê um valor do teclado.</li>
+            <li><code>MOV</code> = <strong>guardar num pote</strong>: coloca um valor numa variável (ex.: <code>contador = 0</code>).</li>
+            <li><code>CMP</code> = <strong>comparar</strong> duas coisas (não muda nada, só prepara a decisão do losango).</li>
+            <li><code>JGE</code> / <code>JNE</code> = <strong>"se acontecer X, pule para tal lugar"</strong> (a decisão do losango vira um salto condicional).</li>
+            <li><code>JMP</code> = <strong>"volte para o começo"</strong>, sem condição &mdash; é o que fecha o loop.</li>
+            <li><code>INC</code> / <code>ADD</code> = <strong>somar</strong> 1 ou um valor (o retângulo de processo).</li>
+            <li><code>OUT</code> = <strong>servir o prato</strong>: mostra o resultado no monitor.</li>
+        </ul>
+        <div class="card-dica">
+            <strong>Por que isso cai na prova:</strong> o professor dá um fluxograma e pede o código correspondente, ou dá o código e pergunta "o que cada faixa de endereço representa?". A divisão é sempre: <strong>instrução (4 bytes) + operando 1 (4 bytes) + operando 2 (4 bytes)</strong>.
+        </div>
+    </div>
+
+    <h3>17.4.1 Como descobrir para onde um salto aponta (código, tabela e fluxograma)</h3>
+    <div class="card-prova">
+        <p>Todo salto (<code>JMP</code>, <code>JNE</code>, <code>JGE</code>...) leva o programa para o <strong>endereço escrito do lado dele</strong>. Mas "para onde isso é" só se descobre olhando o resto do código. Use os 3 passos:</p>
+        <ol>
+            <li><strong>Monte a tabela de endereços:</strong> liste as instruções em ordem e calcule o endereço de cada uma (<code>+0x8</code> se tiver 1 operando, <code>+0x0C</code> se tiver 2).</li>
+            <li><strong>Pegue o número do salto</strong> (ex.: <code>0000 0018</code>).</li>
+            <li><strong>Procure esse número na coluna de endereços:</strong> a instrução que começa nele é o destino.</li>
+        </ol>
+        <p><strong>Exemplo 1 &mdash; encontrando o alvo do <code>JNE</code>:</strong></p>
+        <div class="diagrama">
+  0000 0000  IN N, teclado
+  0000 000C  MOV contador, #0
+  0000 0018  INC contador          &larr; é aqui que o JNE cai
+  0000 0020  CMP N, contador
+  0000 002C  JNE 0000 0018
+  0000 0034  OUT monitor, contador
+        </div>
+        <p><code>JNE 0000 0018</code> &rarr; procuro <code>0018</code> na tabela &rarr; é o <code>INC contador</code>. Logo: <strong>enquanto NÃO for igual, volta a incrementar</strong>.</p>
+        <p><strong>Exemplo 2 &mdash; encontrando os alvos do <code>JMP</code> e do <code>JGE</code>:</strong></p>
+        <div class="diagrama">
+  0000 0024  CMP N, contador        &larr; alvo do JMP
+  0000 0030  JGE 0000 003C
+  0000 0038  ADD contador, incremento
+  0000 0044  JMP 0000 0024
+  0000 004C  OUT monitor, incremento
+        </div>
+        <ul>
+            <li><code>JMP 0000 0024</code> &rarr; procuro <code>0024</code> &rarr; é o <code>CMP N, contador</code> (o teste). É a <strong>volta do loop</strong>.</li>
+            <li><code>JGE 0000 003C</code> &rarr; procuro <code>003C</code> &rarr; <strong>não existe</strong> instrução começando em <code>003C</code> (o <code>ADD</code> vai de <code>0038</code> a <code>0043</code>). Por isso está errado; a saída do loop seria <code>0000 004C</code> (o <code>OUT</code>).</li>
+        </ul>
+    </div>
+    <div class="card">
+        <p><strong>O que preciso saber/entender para achar o alvo:</strong></p>
+        <ul>
+            <li>Os endereços estão em <strong>hexadecimal</strong>.</li>
+            <li>Endereço da próxima instrução = atual <code>+0x8</code> (1 operando) ou <code>+0x0C</code> (2 operandos).</li>
+            <li>O alvo de um salto <strong>sempre cai no início de uma instrução</strong> &mdash; nunca no meio dela.</li>
+            <li><code>JMP</code> salta <strong>sempre</strong> (fecha o loop). <code>JNE</code>/<code>JGE</code>/<code>JE</code> só saltam <strong>se a condição for verdadeira</strong> (decisão do losango).</li>
+        </ul>
+        <p><strong>Como achar na tabela:</strong> procure o número do salto na coluna <strong>Endereço</strong> &mdash; a instrução daquela linha é o destino.</p>
+        <p><strong>Como achar no fluxograma:</strong> cada salto é uma <strong>seta</strong>:</p>
+        <ul>
+            <li><code>JMP</code> = a seta de <strong>volta</strong> do loop (retorna ao teste/incremento).</li>
+            <li><code>JNE</code>/<code>JGE</code> = um dos ramos do losango (<strong>SIM</strong> ou <strong>NÃO</strong>), conforme a condição.</li>
+        </ul>
+        <p><strong>Sinal de erro:</strong> se o número do salto cair no <strong>meio</strong> de uma instrução, o alvo está errado.</p>
+    </div>
+    <div class="card-dica">
+        <strong>Resumo (os saltos dos exemplos):</strong>
+        <table>
+            <tr><th>Salto</th><th>Número</th><th>Instrução no endereço</th><th>No fluxograma</th></tr>
+            <tr><td><code>JNE 0000 0018</code></td><td><code>0018</code></td><td><code>INC contador</code></td><td>seta <strong>NÃO</strong> volta ao incremento</td></tr>
+            <tr><td><code>JMP 0000 0024</code></td><td><code>0024</code></td><td><code>CMP N, contador</code></td><td>seta de <strong>volta</strong> ao teste</td></tr>
+            <tr><td><code>JGE 0000 004C</code> (corrigido)</td><td><code>004C</code></td><td><code>OUT monitor, ...</code></td><td>seta <strong>NÃO</strong> sai do loop para o output</td></tr>
+        </table>
+    </div>
+
+    <h3>17.5 Fluxograma do Exemplo 1 &mdash; interpretado e corrigido</h3>
+    <div class="card-prova">
+<p><strong>Fluxograma (símbolos padrão):</strong></p>
+<svg class="fc" viewBox="0 0 700 480" role="img" aria-label="Fluxograma: contador de zero ate N">
+            <defs>
+                <marker id="ar1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                    <path class="arrow" d="M0,0 L8,3 L0,6 z"/>
+                </marker>
+            </defs>
+            <rect class="sh term" x="140" y="20" width="120" height="40" rx="20"/>
+            <text x="200" y="40">Início</text>
+            <polyline class="ln" points="200,60 200,92" marker-end="url(#ar1)"/>
+            <polygon class="sh io" points="150,95 270,95 250,135 130,135"/>
+            <text x="200" y="115">N</text>
+            <polyline class="ln" points="200,135 200,167" marker-end="url(#ar1)"/>
+            <rect class="sh" x="130" y="170" width="140" height="40"/>
+            <text x="200" y="190">Contador = 0</text>
+            <polyline class="ln" points="200,210 200,245"/>
+            <rect class="sh" x="100" y="245" width="200" height="40"/>
+            <text x="200" y="265">Contador = contador + 1</text>
+            <polyline class="ln" points="200,285 200,312" marker-end="url(#ar1)"/>
+            <polygon class="sh dec" points="200,312 310,367 200,422 90,367"/>
+            <text x="200" y="367">Contador = N ?</text>
+            <polyline class="ln" points="310,367 432,367" marker-end="url(#ar1)"/>
+            <text class="lb sim" x="350" y="357">SIM</text>
+            <path class="sh doc" d="M450,345 L590,345 L590,385 Q557,397 520,385 Q483,373 450,385 Z"/>
+            <text x="520" y="366">Contador</text>
+            <polyline class="ln" points="520,390 520,412" marker-end="url(#ar1)"/>
+            <rect class="sh term" x="460" y="415" width="120" height="40" rx="20"/>
+            <text x="520" y="435">Fim</text>
+            <polyline class="ln" points="200,422 200,455 45,455 45,225 198,225" marker-end="url(#ar1)"/>
+            <text class="lb nao" x="216" y="445">NÃO</text>
+        </svg>
+        <p style="margin-top:1rem;"><strong>Interpretação (lendo junto com o código):</strong></p>
+        <ol>
+            <li><strong>Entrada de dados</strong> &rarr; lê <code>N</code> (<code>IN N, teclado</code>).</li>
+            <li><strong>Contador</strong> &rarr; inicialização com <code>MOV contador, #0</code>.</li>
+            <li><strong>Contador = contador + 1</strong> &rarr; <code>INC contador</code>.</li>
+            <li><strong>Contador = N?</strong> &rarr; <code>CMP N, contador</code> + <code>JNE</code> (se NÃO igual, volta ao INC; se igual, cai no OUT).</li>
+            <li><strong>Fim</strong> &rarr; <code>OUT monitor, contador</code> mostra o valor final (que será igual a N).</li>
+        </ol>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Correção do fluxograma (o bloco de notas tinha um bloco duplicado):</strong> ele aparece com dois "Contador = contador + 1". Pelo código e pela lógica, é <strong>um único incremento dentro do laço</strong> &mdash; o ramo "N (não)" deve voltar ao passo de incremento, e o ramo "S (sim)" segue para o OUT. Isso é uma <strong>estrutura Do&nbsp;While</strong> (testa depois de incrementar).
+        </div>
+    </div>
+
+    <h3>17.6 Exemplo 2 &mdash; Loop com incremento acumulado (o "While" do professor)</h3>
+    <div class="card">
+        <p><strong>Enunciado da folha:</strong> "Dado o seguinte fluxograma, implemente o código correspondente utilizando as instruções x86 no modo protegido."</p>
+        <p><strong>Fluxograma (símbolos padrão):</strong></p>
+<svg class="fc" viewBox="0 0 700 560" role="img" aria-label="Fluxograma: contador com incremento">
+            <defs>
+                <marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                    <path class="arrow" d="M0,0 L8,3 L0,6 z"/>
+                </marker>
+            </defs>
+            <rect class="sh term" x="140" y="20" width="120" height="40" rx="20"/>
+            <text x="200" y="40">Início</text>
+            <polyline class="ln" points="200,60 200,92" marker-end="url(#ar2)"/>
+            <polygon class="sh io" points="150,95 270,95 250,135 130,135"/>
+            <text x="200" y="115">N</text>
+            <polyline class="ln" points="200,135 200,167" marker-end="url(#ar2)"/>
+            <polygon class="sh io" points="150,170 270,170 250,210 130,210"/>
+            <text x="200" y="190">Incremento</text>
+            <polyline class="ln" points="200,210 200,242" marker-end="url(#ar2)"/>
+            <rect class="sh" x="130" y="245" width="140" height="40"/>
+            <text x="200" y="265">Contador = 0</text>
+            <polyline class="ln" points="200,285 200,312"/>
+            <polygon class="sh dec" points="200,312 310,367 200,422 90,367"/>
+            <text x="200" y="367">Contador &lt; N ?</text>
+            <polyline class="ln" points="200,422 200,452" marker-end="url(#ar2)"/>
+            <text class="lb sim" x="216" y="445">SIM</text>
+            <rect class="sh" x="80" y="455" width="240" height="44"/>
+            <text x="200" y="477" style="font-size:12px;">Contador = contador + incremento</text>
+            <polyline class="ln" points="200,499 200,525 45,525 45,300 198,300" marker-end="url(#ar2)"/>
+            <polyline class="ln" points="310,367 432,367" marker-end="url(#ar2)"/>
+            <text class="lb nao" x="350" y="357">NÃO</text>
+            <path class="sh doc" d="M450,330 L590,330 L590,390 Q557,402 520,390 Q483,378 450,390 Z"/>
+            <text x="520" y="352">Contador</text>
+            <text x="520" y="372">Incremento</text>
+            <polyline class="ln" points="520,395 520,427" marker-end="url(#ar2)"/>
+            <rect class="sh term" x="460" y="429" width="120" height="40" rx="20"/>
+            <text x="520" y="449">Fim</text>
+        </svg>
+        <p><strong>Código (já corrigido conforme o fluxograma):</strong></p>
+        <div class="diagrama" style="background:rgba(0,0,0,0.3); color:var(--prova-text);">
+  0000 0000  IN N, teclado
+  0000 000C  IN Incremento, teclado
+  0000 0018  MOV contador, #0
+  0000 0024  CMP contador, N        ; contador - N  (ordem conforme o fluxograma)
+  0000 0030  JGE 0000 004C          ; contador >= N  ->  sai do laço
+  0000 0038  ADD contador, incremento
+  0000 0044  JMP 0000 0024          ; volta ao teste
+  0000 004C  OUT monitor, contador      ; mostra o contador final
+  0000 0058  OUT monitor, incremento    ; mostra o incremento
+        </div>
+        <div class="card-dica">
+            <strong>Correções feitas em relação ao bloco de notas do professor:</strong>
+            <ol>
+                <li><code>JGE 0000 003C</code> &rarr; <strong><code>JGE 0000 004C</code></strong>: o <code>003C</code> caía no meio do <code>ADD</code> (0038&ndash;0043) e não era um salto válido. O destino certo é o primeiro <code>OUT</code>, em <code>004C</code>.</li>
+                <li><code>OUT monitor, incremento</code> &rarr; <strong><code>OUT monitor, contador</code></strong>: o fluxograma tem dois valores de saída (<code>Contador</code> e <code>Incremento</code>), então um <code>OUT</code> para cada.</li>
+                <li><code>CMP N, contador</code> &rarr; <strong><code>CMP contador, N</code></strong>: para o <code>JGE</code> saltar "quando contador &#8805; N" (explicação na caixa abaixo).</li>
+            </ol>
+        </div>
+        <div class="card-dica">
+            <strong>Mesma regra do Exemplo 1:</strong> conte os operandos &mdash; <strong>1 operando</strong> &rarr; <code>+0x8</code>; <strong>2 operandos</strong> &rarr; <code>+0x0C</code>.
+        </div>
+        <p><strong>O mesmo cálculo, linha por linha (Exemplo 2):</strong></p>
+        <table>
+            <tr><th>Endereço</th><th>Instrução</th><th>Conta</th><th>Próximo</th></tr>
+            <tr><td><code>0000 0000</code></td><td><code>IN N, teclado</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 000C</code></td></tr>
+            <tr><td><code>0000 000C</code></td><td><code>IN Incremento, teclado</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 0018</code></td></tr>
+            <tr><td><code>0000 0018</code></td><td><code>MOV contador, #0</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 0024</code></td></tr>
+            <tr><td><code>0000 0024</code></td><td><code>CMP N, contador</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 0030</code></td></tr>
+            <tr><td><code>0000 0030</code></td><td><code>JGE 0000 004C</code></td><td>1 operando &rarr; +0x8</td><td><code>0000 0038</code></td></tr>
+            <tr><td><code>0000 0038</code></td><td><code>ADD contador, incremento</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 0044</code></td></tr>
+            <tr><td><code>0000 0044</code></td><td><code>JMP 0000 0024</code></td><td>1 operando &rarr; +0x8</td><td><code>0000 004C</code></td></tr>
+            <tr><td><code>0000 004C</code></td><td><code>OUT monitor, contador</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 0058</code></td></tr>
+            <tr><td><code>0000 0058</code></td><td><code>OUT monitor, incremento</code></td><td>2 operandos &rarr; +0x0C (fim)</td><td><code>0000 0064</code></td></tr>
+        </table>
+        <p><strong>Traduzindo os endereços para decimal (Exemplo 2):</strong> o <code>0000</code> da esquerda (segmento) é zero em todos, então basta traduzir a parte da direita. Para ler um hex de 4 dígitos <code>x y z w</code>: <code>x&times;4096 + y&times;256 + z&times;16 + w</code> &mdash; aqui <code>x</code> e <code>y</code> são 0, então sobra só <code>z&times;16 + w</code>.</p>
+        <table>
+            <tr><th>Endereço (hex)</th><th>Conta</th><th>Decimal</th><th>Instrução</th></tr>
+            <tr><td><code>0000 0000</code></td><td>0</td><td><strong>0</strong></td><td><code>IN N, teclado</code></td></tr>
+            <tr><td><code>0000 000C</code></td><td>C = 12</td><td><strong>12</strong></td><td><code>IN Incremento, teclado</code></td></tr>
+            <tr><td><code>0000 0018</code></td><td>1&times;16 + 8</td><td><strong>24</strong></td><td><code>MOV contador, #0</code></td></tr>
+            <tr><td><code>0000 0024</code></td><td>2&times;16 + 4</td><td><strong>36</strong></td><td><code>CMP N, contador</code></td></tr>
+            <tr><td><code>0000 0030</code></td><td>3&times;16 + 0</td><td><strong>48</strong></td><td><code>JGE 0000 004C</code></td></tr>
+            <tr><td><code>0000 0038</code></td><td>3&times;16 + 8</td><td><strong>56</strong></td><td><code>ADD contador, incremento</code></td></tr>
+            <tr><td><code>0000 0044</code></td><td>4&times;16 + 4</td><td><strong>68</strong></td><td><code>JMP 0000 0024</code></td></tr>
+            <tr><td><code>0000 004C</code></td><td>4&times;16 + 12</td><td><strong>76</strong></td><td><code>OUT monitor, contador</code></td></tr>
+            <tr><td><code>0000 0058</code></td><td>5&times;16 + 8</td><td><strong>88</strong></td><td><code>OUT monitor, incremento</code></td></tr>
+        </table>
+        <p><strong>Os saltos em decimal (posição &rarr; próxima):</strong></p>
+        <div class="diagrama">
+  0  ->  12   (+12)
+  12 ->  24   (+12)
+  24 ->  36   (+12)
+  36 ->  48   (+12)
+  48 ->  56   (+8)    &lt;- JGE tem 1 operando
+  56 ->  68   (+12)
+  68 ->  76   (+8)    &lt;- JMP tem 1 operando
+  76 ->  88   (+12)
+  88 -> 100   (+12)   &lt;- fim (0000 0064 = 100)
+        </div>
+        <p><strong>Por que o <code>JGE</code> aponta para <code>004C</code>?</strong> O destino de um salto é sempre o <strong>início de uma instrução</strong> &mdash; e <code>0000 004C</code> (= 76) é onde começa o primeiro <code>OUT</code>. O <code>003C</code> do bloco de notas caía no meio do <code>ADD</code> (que vai de <code>0038</code> a <code>0043</code>) &mdash; era um endereço inválido. A correção já está aplicada no código acima.</p>
+        <p style="margin-top:1rem;"><strong>Lendo passo a passo:</strong></p>
+        <ol>
+            <li><code>IN N, teclado</code> e <code>IN Incremento, teclado</code> &rarr; lê os dois valores.</li>
+            <li><code>MOV contador, #0</code> &rarr; inicializa o contador.</li>
+            <li><code>CMP N, contador</code> &rarr; testa <code>N &minus; contador</code>.</li>
+            <li><code>JGE 0000 004C</code> &rarr; sai do laço quando <strong>contador &#8805; N</strong> (ramo NÃO do fluxograma) e pula diretamente para o primeiro <code>OUT</code>, em <code>004C</code>.</li>
+            <li><code>ADD contador, incremento</code> &rarr; acumula o incremento no contador (ramo SIM do fluxograma).</li>
+            <li><code>JMP 0000 0024</code> &rarr; volta para o teste (repetição).</li>
+            <li><code>OUT monitor, contador</code> e <code>OUT monitor, incremento</code> &rarr; exibem os <strong>dois</strong> valores de saída do fluxograma: o <code>Contador</code> final (acumulado) e o <code>Incremento</code> (o passo que foi somado a cada volta).</li>
+        </ol>
+    </div>
+
+    <div class="card-prova">
+<p style="font-size:1.05rem; font-weight:700;">⚠ Por que o código usa <code>CMP contador, N</code> + <code>JGE</code>?</p>
+        <p>O fluxograma descreve um laço <strong>"enquanto contador &lt; N"</strong> &mdash; o programa sai do laço quando <strong>contador &#8805; N</strong>. Pela regra da seção 16: <code>CMP A, B; JGE</code> pula quando <strong>A &#8805; B</strong>. Para o <code>JGE</code> pular "quando contador &#8805; N", o operando <strong>A</strong> precisa ser o <em>contador</em>: <code>CMP contador, N</code>.</p>
+        <p>Com <code>CMP N, contador; JGE</code> (como estava no bloco de notas), o teste ficaria <strong>N &#8805; contador</strong> &mdash; a ordem invertida, que não bate com "sai quando contador &lt; N". Daí a correção no código acima.</p>
+        <ul>
+            <li><code>CMP contador, N</code> &rarr; faz <strong>contador &minus; N</strong>.</li>
+            <li><code>JGE</code> salta quando <strong>contador &#8805; N</strong> &rarr; exatamente "sai quando NÃO é (contador &lt; N)".</li>
+            <li>Se <code>contador &lt; N</code>, executa <code>ADD</code> e <code>JMP</code> de volta ao teste (continua o While).</li>
+            <li><strong>Por que dois <code>OUT</code>?</strong> O bloco de saída do fluxograma mostra <strong>dois valores</strong> &mdash; <code>Contador</code> e <code>Incremento</code>: o resultado do laço é "o contador acumulado" e "o passo que foi somado a cada volta". Então o programa precisa de <strong>um <code>OUT</code> para cada valor</strong>. No bloco de notas as duas linhas vieram iguais (<code>incremento</code>, <code>incremento</code>) &mdash; provavelmente um erro de cópia: pelo fluxograma o primeiro <code>OUT</code> deve ser <code>OUT monitor, contador</code>.</li>
+        </ul>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Regra universal para a prova:</strong> decida primeiro <strong>o que o fluxograma quer dizer</strong> ("sai quando contador &ge; N"), depois escreva o CMP com o operando <strong>A</strong> primeiro e escolha o Jxx. Se a questão pedir o código <em>exatamente</em> como o professor anotou, mantenha <code>CMP N, contador</code> + <code>JGE</code> como ele escreveu &mdash; a resolução por <code>CMP contador, N</code> é a interpretação que segue o fluxograma.
+        </div>
+    </div>
+
+    <h3>17.7 Estruturas: repetição (While / Do&nbsp;While) e seleção (IF / THEN / ELSE)</h3>
+    <div class="card">
+        <p><strong>OBS do bloco de notas:</strong> o JUMP condicional é usado para implementar:</p>
+        <ul>
+            <li><strong>Repetições:</strong> <em>While</em> (testa antes, Jxx no topo) e <em>Do&nbsp;While</em> (testa depois, Jxx no fim).</li>
+            <li><strong>Seleções:</strong> <em>IF&nbsp;THEN&nbsp;ELSE</em> e <em>IF&nbsp;THEN&nbsp;ELSE&nbsp;NULO</em> (sem o ELSE).</li>
+        </ul>
+        <div class="card-dica">
+            <strong>O teste é SEMPRE feito com <code>CMP</code> + <code>JUMP</code> condicional.</strong> Nunca há teste sem CMP nos exercícios do professor.
+        </div>
+    </div>
+
+    <!-- ==================== BLOCO 18: QUESTÕES DE PROVA ==================== -->
+    <h2 id="sec-18">18. Questões de Prova &mdash; Resolvidas Passo a Passo</h2>
+
+    <h3>18.1 &mdash; Exemplo já resolvido na seção 17.4 (contador até N)</h3>
+    <div class="card">
+        <p>Fluxograma &rarr; código com <code>CMP</code> + <code>JNE</code> (Do&nbsp;While). Revise a <a href="#sec-17">seção 17.4</a>.</p>
+    </div>
+
+    <h3>18.2 &mdash; Questão 1: Fatorial de N (lido via teclado)</h3>
+    <div class="card-prova">
+        <p><strong>Enunciado:</strong> "Dado o número N, via teclado, calcular o fatorial de N".</p>
+        <p><strong>Raciocínio:</strong> <code>N! = N × (N&minus;1) × ... × 1</code>. Se <code>N = 0</code>, o resultado é 1. Usamos um contador que vai de 1 até N, multiplicando o resultado acumulado por cada valor &mdash; a <code>MUL</code> usa o EAX implicitamente, então guardamos o resultado em EAX a cada volta.</p>
+        <div class="diagrama" style="color:var(--prova-text);">
+  IN N, teclado              ; lê N
+  MOV fatorial, #1           ; resultado inicial = 1
+  MOV contador, #1           ; começa multiplicando por 1
+
+  teste:
+      CMP N, contador        ; N - contador
+      JL fim                 ; se N < contador, terminou  (JL)
+      MOV EAX, fatorial      ; prepara o multiplicando
+      MUL contador           ; EAX = EAX × contador
+      MOV fatorial, EAX      ; guarda o novo fatorial
+      INC contador           ; próximo multiplicador
+      JMP teste              ; volta ao teste
+
+  fim:
+      OUT monitor, fatorial  ; mostra o resultado
+        </div>
+        <p><strong>Testando com N = 3:</strong> fatorial=1, contador=1 &rarr; (3&#8805;1) EAX=1×1=1, contador=2 &rarr; (3&#8805;2) EAX=1×2=2, contador=3 &rarr; (3&#8805;3) EAX=2×3=6, contador=4 &rarr; <code>CMP 3,4</code> &rarr; <code>JL</code> (3&lt;4) &rarr; fim. Resultado = <strong>6</strong>. ✓</p>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Pegadinha:</strong> a <code>MUL</code> não recebe destino &mdash; ela <em>sempre</em> multiplica pelo <code>EAX</code>. Por isso carregamos <code>MOV EAX, fatorial</code> antes e guardamos de volta com <code>MOV fatorial, EAX</code>.
+        </div>
+    </div>
+
+    <h3>18.3 &mdash; Questão 2: N primeiros termos da sequência de Fibonacci</h3>
+    <div class="card-prova">
+        <p><strong>Enunciado:</strong> "Calcule os N primeiros termos da sequência de Fibonacci, sabendo que os dois primeiros termos são 0 e 1, e o próximo termo é formado pela soma dos dois últimos."</p>
+        <p><strong>Raciocínio:</strong> guardamos os dois últimos termos. A cada volta, o novo termo = <code>termo1 + termo2</code> (usando <code>ADD</code>). Depois "andamos": o termo1 recebe o termo2, e o termo2 recebe a soma. Repetimos até produzir N termos.</p>
+        <div class="diagrama" style="color:var(--prova-text);">
+  IN N, teclado              ; quantos termos
+  MOV t1, #0                 ; termo 1 (0)
+  MOV t2, #1                 ; termo 2 (1)
+  MOV contador, #2           ; já temos 2 termos mostrados
+
+  teste:
+      CMP N, contador        ; N - contador
+      JLE fim                ; se N <= contador, já mostrou tudo
+      MOV EAX, t1            ; prepara a soma
+      ADD EAX, t2            ; próximo = t1 + t2
+      MOV t1, t2             ; termo1 "anda"
+      MOV t2, EAX            ; termo2 = novo termo
+      INC contador           ; conta mais um termo
+      JMP teste
+
+  fim:
+      OUT monitor, t2        ; mostra o último termo calculado
+        </div>
+        <p><strong>Sequência para N = 5:</strong> 0, 1 &rarr; t1=0,t2=1 &rarr; próximo=1 &rarr; t1=1,t2=1 &rarr; próximo=2 &rarr; t1=1,t2=2 &rarr; próximo=3 &rarr; t1=2,t2=3 &rarr; último termo = <strong>3</strong> (sequência 0,1,1,2,3). ✓</p>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Chave:</strong> os três <code>MOV</code> no fim do laço deslocam os termos (o "andar da sequência"). Respeite a ordem: primeiro calcula a soma, depois desloca.
+        </div>
+    </div>
+
+    <h3>18.4 &mdash; Questão 3: Identificar se N é par ou ímpar (usa DIV)</h3>
+    <div class="card-prova">
+        <p><strong>Enunciado:</strong> "Dado N números, identifique se o número é par ou ímpar."</p>
+        <p><strong>Raciocínio:</strong> dividimos N por 2. Se o <strong>resto (AH) = 0</strong> &rarr; par; se <strong>resto = 1</strong> &rarr; ímpar. É a aplicação direta do <code>DIV</code> da tabela (AL = quociente, AH = resto).</p>
+        <div class="diagrama" style="color:var(--prova-text);">
+  IN N, teclado              ; lê o número
+  MOV AX, N                  ; AX = dividendo
+  MOV BL, #2                 ; divisor = 2  (BL é um registrador auxiliar)
+  DIV BL                     ; AL = AX/BL (quociente), AH = resto
+  CMP AH, #0                 ; resto = 0 ?
+  JE par                     ; se sim -> é par
+  JMP impar                  ; se não -> é ímpar
+
+  par:
+      OUT monitor, #0        ; sinaliza PAR (0)
+      JMP fim
+
+  impar:
+      OUT monitor, #1        ; sinaliza ÍMPAR (1)
+
+  fim:
+      ...                    ; (para vários números, repete com outro IN)
+        </div>
+        <p><strong>Obs. importante:</strong> o <code>DIV</code> <strong>destrói o dividendo</strong> &mdash; o valor que estava em <code>AX</code> é sobrescrito por <code>AL</code> (quociente) e <code>AH</code> (resto). Por isso o teste é feito com <code>AH</code> logo após o <code>DIV</code>; qualquer valor anterior em <code>AX</code> se perde.</p>
+        <p><strong>Testando N = 7:</strong> <code>MOV AX,7</code> &rarr; <code>DIV 2</code> &rarr; AL = 3, AH = <strong>1</strong> &rarr; <code>CMP AH,#0</code> &rarr; <code>JE</code> não salta &rarr; ímpar. ✓ &nbsp; <strong>N = 4:</strong> AH = <strong>0</strong> &rarr; <code>JE par</code> salta &rarr; par. ✓</p>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Frase "mastigada":</strong> par é quando <strong>resto 0</strong>; ímpar quando <strong>resto 1</strong>. Para N números, esse bloco fica dentro de um laço comandado por um contador.
+        </div>
+    </div>
+
+    <h3>18.5 &mdash; Molde IF / THEN / ELSE (questão de seleção)</h3>
+    <div class="card">
+        <p><strong>Estrutura IF condição THEN bloco-A ELSE bloco-B:</strong></p>
+        <div class="diagrama">
+  CMP X, Y            ; testa a condição
+  Jxx else_label      ; SE a condição for FALSA, pula para o ELSE
+  ... instruções do bloco A (THEN) ...
+  JMP fim_if          ; termina o THEN para não cair no ELSE
+  else_label:
+  ... instruções do bloco B (ELSE) ...
+  fim_if:
+  ...
+        </div>
+        <p><strong>IF / THEN / ELSE nulo</strong> = idem, mas sem o bloco B (o rótulo <code>else_label</code> aponta direto para <code>fim_if</code>).</p>
+        <ul>
+            <li>Na escrita do código, o salto do "fim do THEN" usa um <code>JMP</code> incondicional (para pular o ELSE).</li>
+            <li>O teste da condição usa <code>CMP</code> + <code>Jxx</code> (condicional).</li>
+        </ul>
     </div>
 
     <!-- ==================== RODAPÉ ==================== -->
@@ -1959,271 +2644,16 @@
     }
     bindSpy();
 
-    /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-       MODO ONLINE (hospedado no Vercel) vs OFFLINE (file://)
-       Online = API universal + blocos compartilhados (Upstash)
-       Offline = API key do usuÃ¡rio + blocos locais (localStorage)
-       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
-    var ONLINE = location.protocol !== 'file:';
+    /* =====================================================
+       BLOCOS LOCAIS (salvos apenas no navegador)
+       ===================================================== */
+    var STORAGE_KEY = 'blocos_salvos';
 
-    var fab       = document.getElementById('geminiFab');
-    var panel     = document.getElementById('geminiPanel');
-    var note      = document.getElementById('geminiNote');
-    var keyLabel  = document.getElementById('geminiKeyLabel');
-    var keyIn     = document.getElementById('geminiKey');
-    var modelIn   = document.getElementById('geminiModel');
-    var textIn    = document.getElementById('geminiInput');
-    var btnGen    = document.getElementById('geminiGerar');
-    var btnIns    = document.getElementById('geminiInserir');
-    var status    = document.getElementById('geminiStatus');
-var preview   = document.getElementById('geminiPreview');
-
-    var pendingHtml   = '';
-    var pendingTitulo = '';
-    var blocosState   = [];
-
-    var SYSTEM_PROMPT =
-        'VocÃª Ã© um assistente de estudo de Arquitetura de Computadores (Intel x86/x64). ' +
-        'Organize as anotaÃ§Ãµes em seÃ§Ãµes claras, "mastigue" (simplifique) conceitos difÃ­ceis, ' +
-        'destaque pontos-chave com <mark> e <strong>, use classes HTML existentes do site: ' +
-        '.card, .card-dica, .card-importante, .card-prova, .diagrama, <table>, e dÃª exemplos prÃ¡ticos. ' +
-        'Retorne APENAS um JSON vÃ¡lido: {"titulo":"TÃ­tulo do bloco","html":"<div>...</div>"}';
-
-    /* â”€â”€â”€ ConfiguraÃ§Ã£o por modo â”€â”€â”€ */
-    if (ONLINE) {
-        keyIn.style.display = 'none';
-        keyLabel.style.display = 'none';
-        if (note) note.style.display = '';
-        btnIns.textContent = 'Salvar para todos';
-} else {
-        btnIns.textContent = 'Inserir na pÃ¡gina';
-        var savedKey = localStorage.getItem('gemini_api_key');
-        if (savedKey) keyIn.value = savedKey;
-    }
-
-    /* â”€â”€â”€ Toggle painel â”€â”€â”€ */
-    fab.addEventListener('click', function () {
-        panel.classList.toggle('aberto');
-    });
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') panel.classList.remove('aberto');
-    });
-
-    function setStatus(msg, erro) {
-        status.className = erro ? 'gemini-status erro' : 'gemini-status';
-        status.textContent = msg;
-    }
-
-    function montarPreview(titulo, html) {
-        preview.className = 'gemini-preview visivel';
-        preview.innerHTML = '<strong>' + titulo + '</strong><hr style="margin:.4rem 0;border-color:var(--border)">' + html;
-        btnIns.style.display = '';
-    }
-
-    /* â”€â”€â”€ GeraÃ§Ã£o de bloco (com fallback de modelo) â”€â”€â”€ */
-    function chamarGerar(modelo, texto) {
-        if (ONLINE) {
-            /* proxy no Vercel usa a chave universal (escondida) */
-            return fetch('/api/gemini', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ acao: 'gerar', modelo: modelo, texto: texto })
-            })
-            .then(function (r) { return r.json(); })
-            .then(function (data) {
-                if (data.error) throw new Error(data.error);
-                var resp = data.texto || '';
-                var jsonMatch = resp.match(/\{[\s\S]*"titulo"[\s\S]*"html"[\s\S]*\}/);
-                if (!jsonMatch) throw new Error('A resposta nÃ£o contÃ©m JSON com titulo/html.');
-                var parsed = JSON.parse(jsonMatch[0]);
-                return { titulo: parsed.titulo || 'Bloco gerado', html: parsed.html || '' };
-            });
-        }
-
-        /* offline: chamada direta ao Google com a key do usuÃ¡rio */
-        var key = keyIn.value.trim();
-        var corpo = function (mdl) {
-            return {
-                systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-                contents: [{ parts: [{ text: texto }] }],
-                generationConfig: { temperature: 0.5, maxOutputTokens: 4096 }
-            };
-        };
-        var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + modelo + ':generateContent?key=' + key;
-        return fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(corpo(modelo))
-        })
-.then(function (r) {
-            if (r.status === 404 && modelo !== 'gemini-3.5-flash') {
-                var u2 = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=' + key;
-                return fetch(u2, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(corpo('gemini-3.5-flash'))
-                });
-            }
-            return r;
-        })
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-            var textResp = '';
-            if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-                textResp = (data.candidates[0].content.parts || []).map(function (p) { return p.text || ''; }).join('');
-            }
-            if (!textResp) {
-                var msg = (data.error && data.error.message) || 'Resposta vazia da API.';
-                throw new Error(msg);
-            }
-            var jsonMatch = textResp.match(/\{[\s\S]*"titulo"[\s\S]*"html"[\s\S]*\}/);
-            if (!jsonMatch) throw new Error('A resposta nÃ£o contÃ©m JSON com titulo/html.');
-            var parsed = JSON.parse(jsonMatch[0]);
-            return { titulo: parsed.titulo || 'Bloco gerado', html: parsed.html || '' };
-        });
-    }
-
-    btnGen.addEventListener('click', function () {
-        var modelo = modelIn.value;
-        var texto  = textIn.value.trim();
-
-        if (!texto) { setStatus('Cole suas anotaÃ§Ãµes.', true); return; }
-        if (!ONLINE && !keyIn.value.trim()) { setStatus('Informe a API Key.', true); return; }
-        if (!ONLINE) localStorage.setItem('gemini_api_key', keyIn.value.trim());
-
-        setStatus('Gerando bloco... aguarde.');
-        btnGen.disabled = true;
-        btnIns.style.display = 'none';
-        preview.className = 'gemini-preview';
-        pendingHtml = '';
-
-        chamarGerar(modelo, texto)
-            .then(function (res) {
-                pendingTitulo = res.titulo;
-                pendingHtml   = res.html;
-                montarPreview(res.titulo, res.html);
-                setStatus('Bloco gerado com sucesso!');
-            })
-            .catch(function (err) {
-                setStatus('Erro: ' + err.message, true);
-            })
-            .finally(function () {
-                btnGen.disabled = false;
-            });
-    });
-
-    /* â”€â”€â”€ Compartilhar (online / Upstash) â”€â”€â”€ */
-    function copiarAutor() {
-        var a = localStorage.getItem('gemini_autor');
-        if (!a) {
-            a = prompt('Seu nome (aparece no bloco compartilhado):') || 'anÃ´nimo';
-            localStorage.setItem('gemini_autor', a);
-        }
-        return a;
-    }
-
-    function salvarBlocoCompartilhado(titulo, html) {
-        return fetch('/api/gemini', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ acao: 'salvar', titulo: titulo, html: html, autor: copiarAutor() })
-        })
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-            if (data.error) throw new Error(data.error);
-            blocosState.push(data.bloco);
-            renderBlocos();
-        });
-    }
-
-    function removerBlocoCompartilhado(id) {
-        return fetch('/api/gemini', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ acao: 'remover', id: id })
-        })
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-            if (data.error) throw new Error(data.error);
-            blocosState = blocosState.filter(function (b) { return b.id !== id; });
-            renderBlocos();
-        });
-    }
-
-    function carregarBlocosCompartilhados() {
-        fetch('/api/gemini?acao=listar')
-            .then(function (r) { return r.json(); })
-            .then(function (data) {
-                if (data.error) throw new Error(data.error);
-                blocosState = data.blocos || [];
-                renderBlocos();
-            })
-            .catch(function () { /* ainda sem resposta (env faltando) */ });
-    }
-
-/* â”€â”€â”€ Render dos blocos compartilhados (integrados ao guia) â”€â”€â”€ */
-    function renderBlocos() {
-        var lista = document.getElementById('blocosIntegrados');
-        if (!lista) return;
-
-        lista.innerHTML = '';
-
-        blocosState.forEach(function (b) {
-            var wrap = document.createElement('div');
-            wrap.className = 'gpt-block';
-
-            var del = document.createElement('button');
-            del.className = 'remover-ia';
-            del.title = 'Remover este bloco para todos';
-            del.textContent = '\u2715';
-            del.addEventListener('click', function () {
-                if (!confirm('Remover este bloco para todos?')) return;
-                removerBlocoCompartilhado(b.id).catch(function () {});
-            });
-            wrap.appendChild(del);
-
-            wrap.insertAdjacentHTML('beforeend', b.html || '');
-
-            var dataTxt = '';
-            if (b.data) { try { dataTxt = ' â€¢ ' + new Date(b.data).toLocaleString('pt-BR'); } catch (e) {} }
-            var meta = document.createElement('div');
-            meta.className = 'meta-blocos';
-            meta.textContent = 'Criado por ' + (b.autor || 'anÃ´nimo') + dataTxt;
-            wrap.appendChild(meta);
-
-            lista.appendChild(wrap);
-        });
-        bindSpy();
-    }
-
-    /* â”€â”€â”€ Salvar / inserir â”€â”€â”€ */
-    btnIns.addEventListener('click', function () {
-        if (!pendingHtml) return;
-        var htmlAtual = pendingHtml;
-
-        if (ONLINE) {
-            salvarBlocoCompartilhado(pendingTitulo, htmlAtual)
-                .then(function () { setStatus('Bloco salvo para todos!'); })
-                .catch(function (err) { setStatus('Erro ao salvar: ' + err.message, true); });
-        } else {
-            var container = document.querySelector('.container') || document.body;
-            criarBlocoLocal(container, htmlAtual, true, htmlAtual);
-            setStatus('Bloco inserido na pÃ¡gina!');
-        }
-
-        textIn.value = '';
-        preview.className = 'gemini-preview';
-        preview.innerHTML = '';
-        btnIns.style.display = 'none';
-        pendingHtml = '';
-    });
-
-    /* â”€â”€â”€ Blocos locais (offline) â”€â”€â”€ */
-    var STORAGE_KEY = 'gemini_blocos_salvos';
     function carregarLocais() {
         try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
         catch (e) { return []; }
     }
+
     function salvarLocais(arr) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
     }
@@ -2237,7 +2667,7 @@ var preview   = document.getElementById('geminiPreview');
         del.title = 'Remover este bloco';
         del.textContent = '\u2715';
         del.addEventListener('click', function () {
-            if (!confirm('Remover este bloco gerado por IA?')) return;
+            if (!confirm('Remover este bloco salvo?')) return;
             wrapper.remove();
             var arr = carregarLocais().filter(function (h) { return h !== identificador; });
             salvarLocais(arr);
@@ -2255,16 +2685,11 @@ var preview   = document.getElementById('geminiPreview');
         bindSpy();
     }
 
-    /* â”€â”€â”€ Restaurar blocos locais (offline) â”€â”€â”€ */
-    if (!ONLINE) {
-        var container = document.querySelector('.container') || document.body;
-        carregarLocais().forEach(function (html) {
-            criarBlocoLocal(container, html, false, html);
-        });
-    }
-
-    /* â”€â”€â”€ Carregar blocos compartilhados (online) â”€â”€â”€ */
-    if (ONLINE) carregarBlocosCompartilhados();
+    /* Restaurar blocos salvos no navegador */
+    var container = document.querySelector('.container') || document.body;
+    carregarLocais().forEach(function (html) {
+        criarBlocoLocal(container, html, false, html);
+    });
 })();
 </script>
 </html>
