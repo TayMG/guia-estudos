@@ -1999,6 +1999,33 @@
         <p>Quem decide "A vs B" é a <strong>ordem dentro do CMP</strong> &mdash; não a ordem do texto da questão.</p>
     </div>
 
+    <div class="card" style="margin-top:1rem; border-color:var(--prova-border);">
+        <p style="font-weight:700;">📌 Antes de tudo: o que é <code>EAX</code>? (aparece o tempo todo daqui pra frente)</p>
+        <p>Um <strong>registrador</strong> é uma "gaveta" de memória <strong>dentro do processador</strong>, onde o programa guarda valores na hora de calcular &mdash; fica muito mais perto da CPU do que a memória normal, por isso o código passa o tempo todo trazendo valores da memória para os registradores, calculando ali, e devolvendo para a memória.</p>
+        <ul>
+            <li><code>EAX</code> = a "gaveta" <strong>acumuladora</strong> de <strong>32 bits</strong> &mdash; a principal para contas.</li>
+            <li><code>AX</code> = a <strong>metade baixa</strong> do EAX (16 bits). <code>AH</code> / <code>AL</code> = as metades de <strong>8 bits</strong> do AX (H = high, L = low).</li>
+            <li>Ela é <strong>implícita</strong> em certas instruções: a <code>MUL</code> multiplica sempre o EAX ("EAX = EAX &times; SRC"), a <code>DIV</code> divide o <strong>AX</strong> (quociente em AL, resto em AH), e o <code>IN</code> coloca o valor lido em AX.</li>
+            <li><strong>Pra mostrar o número no monitor</strong>, o valor também passa por AX: <code>OUT monitor, AX</code>.</li>
+        </ul>
+        <p><strong>A mesma gaveta, 4 janelas diferentes (é assim que eu sei qual usar):</strong></p>
+        <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
+   EAX (32 bits) = [    metade alta (16 bits)   ][     AX (16 bits)    ]
+   AX  (16 bits) =                            [    AH (8 bits)  ][ AL (8 bits) ]
+        </div>
+        <table>
+            <tr><th>Se o código usa...</th><th>É a janela de...</th><th>Onde aparece na prova</th></tr>
+            <tr><td><code>EAX</code></td><td>32 bits (a gaveta toda)</td><td><code>MUL</code> multiplica o EAX</td></tr>
+            <tr><td><code>AX</code></td><td>16 bits (a metade de baixo)</td><td><code>DIV</code> divide o AX; <code>IN</code>/<code>OUT</code> usam AX</td></tr>
+            <tr><td><code>AH</code></td><td>8 bits (a parte alta do AX)</td><td><code>DIV</code> deixa o <strong>resto</strong> em AH</td></tr>
+            <tr><td><code>AL</code></td><td>8 bits (a parte baixa do AX)</td><td><code>DIV</code> deixa o <strong>quociente</strong> em AL</td></tr>
+        </table>
+        <p><strong>Registrador ≠ memória:</strong> <code>MOV EAX, fatorial</code> copia <em>o valor que está na memória</em> para a gaveta. <code>MOV EAX, #5</code> coloca <em>a constante 5</em> direto na gaveta (é o <code>#</code> que avisa: "isto é um número literal, não um endereço"). A seção 4.1/4.2 detalha todos os registradores &mdash; aqui basta saber o EAX.</p>
+        <div class="card-dica">
+            <strong>E o "N" do professor, seria o AX?</strong> <strong>Não.</strong> O <code>N</code> é uma <strong>variável na memória</strong> &mdash; um endereço do segmento de dados com nome (a "caixinha N"). O <code>AX</code> é o registrador (a gaveta). Eles conversam pelo <code>MOV</code>: <code>IN N, teclado</code> guarda o digitado na caixinha <code>N</code>; <code>MOV AX, N</code> copia <em>o conteúdo de N</em> para a gaveta AX &mdash; isso é obrigatório porque <code>MUL</code>/<code>DIV</code>/<code>OUT</code> só sabem trabalhar com a gaveta, não direto com a memória; depois, <code>MOV fatorial, EAX</code> devolve pra memória.
+        </div>
+    </div>
+
     <h3>16.1 &mdash; 1ª linha da 1ª tabela: <code>MOV DST,SRC</code> (o foco principal)</h3>
     <div class="card-prova">
         <p><strong>MOV DST, SRC</strong> &rarr; copia o valor de <strong>SRC</strong> para <strong>DST</strong>.</p>
@@ -2011,13 +2038,20 @@
         <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
             <strong>Nas anotações do professor:</strong> <code>MOV contador, #0</code> (inicializa contador com 0) e <code>MOV EAX, 0000A14B</code> (copia o valor da memória para EAX). O <code>#</code> marca <strong>constante</strong> &mdash; sem <code>#</code> é o <strong>conteúdo de um endereço</strong>.
         </div>
-        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
-            <strong>Na prática (o MOV é o "carregador/guardador" de valores numa questão):</strong>
-            <ul>
-                <li><strong>Inicializar</strong> antes do laço: <code>MOV contador, #0</code> (Exemplo 1).</li>
-                <li><strong>Carregar</strong> antes de multiplicar: <code>MOV EAX, fatorial</code> &mdash; porque a <code>MUL</code> usa o EAX "por baixo dos panos".</li>
-                <li><strong>Guardar</strong> o resultado de volta na memória: <code>MOV fatorial, EAX</code> (questão do fatorial).</li>
-            </ul>
+        <div class="card-importante" style="margin-top:1rem;">
+            <p style="font-weight:700;">EXEMPLO APLICADO &mdash; MOV na questão do fatorial:</p>
+            <p><strong>Questão:</strong> "dado N, calcular o fatorial de N". A <code>MUL</code> multiplica sempre o <strong>EAX</strong> "por baixo dos panos", então o fluxo é: <em>carregar no EAX &rarr; multiplicar &rarr; devolver para a memória</em>.</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
+  0000 000C   MOV fatorial, #1       &lt;- inicializa: fatorial := 1
+  0000 0044   MOV EAX, fatorial      &lt;- carrega: EAX := fatorial
+  0000 0058   MOV fatorial, EAX      &lt;- guarda: fatorial := EAX (resultado da MUL)
+            </div>
+            <ol>
+                <li><strong>Linha 1 &mdash; inicializar:</strong> antes do laço, a variável <code>fatorial</code> passa a valer <strong>1</strong>.</li>
+                <li><strong>Linha 2 &mdash; carregar:</strong> copia o valor da memória para o EAX (o <code>fatorial</code> continua 1 &mdash; o MOV só copiou).</li>
+                <li><strong>Linha 3 &mdash; guardar:</strong> depois de <code>MUL contador</code> (EAX = EAX &times; contador), copia o resultado de volta para <code>fatorial</code>.</li>
+            </ol>
+            <p><strong>Quando usar na prova:</strong> o MOV é o "entregador" &mdash; ele <strong>só copia</strong> SRC &rarr; DST, nunca calcula. Use para inicializar, carregar ou salvar.</p>
         </div>
     </div>
 
@@ -2032,26 +2066,67 @@
             <tr><td><code>INC DST</code></td><td>Incrementa em 1</td><td><code>INC contador</code></td></tr>
             <tr><td><code>DEC DST</code></td><td>Decrementa em 1</td><td><code>DEC contador</code></td></tr>
             <tr><td><code>NEG DST</code></td><td>Inverte o sinal (0 &minus; DST)</td><td><code>NEG EAX</code> &rarr; EAX = &minus;EAX</td></tr>
-            <tr><td><code>DIV SRC</code></td><td>Divida AX por SRC: <strong>AL</strong> = quociente, <strong>AH</strong> = resto</td><td><code>DIV #2</code> &rarr; AH = resto (par/ímpar!)</td></tr>
+            <tr><td><code>DIV SRC</code></td><td>Divida AX por SRC: <strong>AL</strong> = quociente, <strong>AH</strong> = resto</td><td><code>DIV BL</code> &rarr; AH = resto (par/ímpar!, BL = 2)</td></tr>
         </table>
         <div class="card-importante" style="margin-top:1rem;">
             <strong>Pegadinha que cai na prova:</strong> <code>MUL</code> e <code>DIV</code> <strong>NÃO têm DST</strong> &mdash; usam registradores implícitos (<code>EAX</code> / <code>AX</code>). Enquanto <code>ADD</code>/<code>SUB</code> recebem dois operandos, <code>MUL</code>/<code>DIV</code> recebem só um (o <code>SRC</code>).
         </div>
         <div class="card-dica">
-            <strong>DIV é a chave da questão "par ou ímpar":</strong> <code>MOV AX, N</code> &rarr; <code>DIV 2</code>. Se o <strong>resto (AH) = 0</strong> o número é par; se <strong>AH = 1</strong> é ímpar.
+            <strong>DIV é a chave da questão "par ou ímpar":</strong> <code>MOV AX, N</code> &rarr; <code>MOV BL, #2</code> &rarr; <code>DIV BL</code>. O quociente cai em <strong>AL</strong> e o <strong>resto em AH</strong>: se <strong>AH = 0</strong> o número é par; se <strong>AH = 1</strong> é ímpar.
         </div>
-        <div class="card-importante" style="margin-top:1rem;">
-            <strong>Na prática &mdash; cada uma aplicada numa questão real:</strong>
-            <table>
-                <tr><th>Instrução</th><th>Onde aparece</th><th>Trecho na questão</th></tr>
-                <tr><td><code>ADD</code></td><td>Somar o passo digitado a cada volta (Exemplo 2)</td><td><code>ADD contador, incremento</code></td></tr>
-                <tr><td><code>SUB</code></td><td>Contagem regressiva (de N até 0)</td><td><code>SUB contador, #1</code></td></tr>
-                <tr><td><code>MUL</code></td><td>Fatorial: multiplicar o acumulado pelo contador</td><td><code>MOV EAX, fatorial</code> + <code>MUL contador</code></td></tr>
-                <tr><td><code>INC</code></td><td>Contador que anda de 1 em 1 (Exemplo 1)</td><td><code>INC contador</code></td></tr>
-                <tr><td><code>DEC</code></td><td>Contador que desce de 1 em 1</td><td><code>DEC contador</code></td></tr>
-                <tr><td><code>NEG</code></td><td>Inverter o sinal de um valor lido</td><td><code>NEG EAX</code> &rarr; EAX = &minus;EAX</td></tr>
-                <tr><td><code>DIV</code></td><td>Par ou ímpar: pegando o resto por 2</td><td><code>MOV AX, N</code> + <code>DIV BL</code> (BL = 2) &rarr; AH = resto</td></tr>
-            </table>
+        <div class="card" style="margin-top:1rem; border-color:var(--prova-border);">
+            <p style="font-weight:700;">EXEMPLOS APLICADOS &mdash; cada uma aplicada numa questão, mastigado:</p>
+
+            <p style="font-weight:700; margin-top:.75rem;">▸ <code>ADD</code> &mdash; acumular o passo (Exemplo 2):</p>
+            <p><em>Questão:</em> "o contador começa em 5 e o incremento digitado é 3; some o incremento ao contador".</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
+  ADD contador, incremento      &lt;- contador := contador + incremento
+            </div>
+            <p>Passo a passo: o contador estava <strong>5</strong>, soma 3 em cima &rarr; contador = <strong>8</strong>. O ADD <strong>soma</strong> o 2º operando em cima do 1º.</p>
+
+            <p style="font-weight:700; margin-top:.75rem;">▸ <code>SUB</code> &mdash; contagem regressiva:</p>
+            <p><em>Questão:</em> "dê um passo para trás a cada volta, começando de 5".</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
+  SUB contador, #1              &lt;- contador := contador - 1
+            </div>
+            <p>Passo a passo: contador estava <strong>5</strong>, subtrai 1 &rarr; contador = <strong>4</strong>. Cuidado: é sempre <strong>1º menos 2º</strong> (5 &minus; 1).</p>
+
+            <p style="font-weight:700; margin-top:.75rem;">▸ <code>MUL</code> &mdash; fatorial (usa o EAX escondido):</p>
+            <p><em>Questão:</em> "multiplique o fatorial acumulado pelo contador". Suponha EAX = 6 e contador = 4.</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
+  MUL contador                  &lt;- EAX := EAX × contador
+            </div>
+            <p>Passo a passo: EAX estava <strong>6</strong>, multiplica por 4 &rarr; EAX = <strong>24</strong>. O MUL <strong>não tem destino</strong>: o resultado sempre cai no EAX (&times;1 operando).</p>
+
+            <p style="font-weight:700; margin-top:.75rem;">▸ <code>INC</code> &mdash; andar de 1 em 1 (Exemplo 1):</p>
+            <p><em>Questão:</em> "avance o contador de 1 em 1". Ele está em 5.</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
+  INC contador                  &lt;- contador := contador + 1
+            </div>
+            <p>Passo a passo: contador de <strong>5</strong> &rarr; <strong>6</strong>. INC = "+1 na própria variável" (1 único operando).</p>
+
+            <p style="font-weight:700; margin-top:.75rem;">▸ <code>DEC</code> &mdash; descer de 1 em 1:</p>
+            <p><em>Questão:</em> "diminua o contador a cada repetição". Ele está em 5.</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
+  DEC contador                  &lt;- contador := contador - 1
+            </div>
+            <p>Passo a passo: contador de <strong>5</strong> &rarr; <strong>4</strong>. DEC = "&minus;1 na própria variável".</p>
+
+            <p style="font-weight:700; margin-top:.75rem;">▸ <code>NEG</code> &mdash; inverter o sinal:</p>
+            <p><em>Questão:</em> "troque o sinal do valor lido". EAX vale 7.</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
+  NEG EAX                       &lt;- EAX := 0 - EAX   (troca o sinal)
+            </div>
+            <p>Passo a passo: EAX de <strong>7</strong> &rarr; <strong>&minus;7</strong>. Multiplica de graça por &minus;1.</p>
+
+            <p style="font-weight:700; margin-top:.75rem;">▸ <code>DIV</code> &mdash; par ou ímpar (resto):</p>
+            <p><em>Questão:</em> "descubra se o número lido (7) é par ou ímpar, dividindo-o por 2". Preparamos o divisor antes &mdash; o professor guarda o 2 num registrador auxiliar.</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
+  MOV AX, #7                   &lt;- dividendo: AX := 7
+  MOV BL, #2                   &lt;- divisor: BL := 2
+  DIV BL                       &lt;- AL := AX ÷ BL (quociente),  AH := AX % BL (resto)
+            </div>
+            <p>Passo a passo: AX = <strong>7</strong> &divide; BL = 2 &rarr; AL = <strong>3</strong> (quociente), AH = <strong>1</strong> (resto). O que decide par/ímpar é o <strong>AH</strong>: resto 1 = <strong>ímpar</strong>; se fosse 0, par. (No código, o divisor nunca vem sozinho &mdash; ele sempre prepara antes com <code>MOV BL, #2</code>.)</p>
         </div>
     </div>
 
@@ -2068,16 +2143,96 @@
         <div class="card-dica">
             <strong>Memorização rápida:</strong> <code>AND</code> = "liga o que eu deixar ligado"; <code>OR</code> = "liga se qualquer um ligar"; <code>XOR</code> = "liga se forem diferentes"; <code>NOT</code> = "inverte tudo".
         </div>
-        <div class="card-importante" style="margin-top:1rem;">
-            <strong>Na prática &mdash; o BOOLEAN é o "operador de bits" (exemplo com EAX = 0101b = 5):</strong>
-            <table>
-                <tr><th>Instrução</th><th>0101b vira...</th><th>O que aconteceu / uso real</th></tr>
-                <tr><td><code>AND EAX, #1</code></td><td>0001b (1)</td><td>"Máscara": só o bit 0 sobra. Resultado 1 = <strong>ímpar</strong>, 0 = <strong>par</strong> (mesma ideia da questão DIV, mas por AND).</td></tr>
-                <tr><td><code>OR EAX, #8</code></td><td>1101b (13)</td><td>Liga o bit 3 à força (usado quando você <strong>quer</strong> um bit aceso, custe o que custar).</td></tr>
-                <tr><td><code>XOR EAX, #1</code></td><td>0100b (4)</td><td>Inverte o bit 0 (usado para <strong>alternar/toggle</strong>). E <code>XOR EAX, EAX</code> &rarr; 0000b (0) é o jeito mais rápido de "zerar" o registrador.</td></tr>
-                <tr><td><code>NOT EAX</code></td><td>1010b (10)</td><td>Inverte todos os bits (complemento de 1).</td></tr>
-            </table>
-            <p style="margin-top:.5rem;"><strong>Regra prática para a prova:</strong> quando a questão falar em <em>máscara</em>, <em>ligar/desligar bit</em>, <em>inverter</em> ou <em>comparar bits</em> &rarr; é BOOLEAN. Quando falar em somar/contar/multiplicar &rarr; é ARITHMETIC.</p>
+        <div class="card" style="margin-top:1rem; border-color:var(--prova-border);">
+            <p style="font-weight:700;">Primeiro, o pré-requisito para não se perder: como ler <code>0101b</code></p>
+            <p>Um número em binário é uma fila de <strong>bits</strong> (dígitos 0 ou 1). Cada bit tem um valor, da <strong>direita para a esquerda</strong>: <strong>1, 2, 4, 8</strong> (sempre dobrando). O "b" no fim é só um aviso: "isto está em binário".</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
+  0101b  =  0 × 8  +  1 × 4  +  0 × 2  +  1 × 1   =  4 + 1  =  5
+   bits:     bit3     bit2     bit1     bit0
+            </div>
+            <p>As posições têm nome: <strong>bit 0</strong> (o da direita, vale 1), <strong>bit 1</strong> (vale 2), <strong>bit 2</strong> (vale 4), <strong>bit 3</strong> (vale 8).</p>
+            <p><strong>Agora a chave da sua pergunta:</strong> <code>#1</code> escrito em 4 bits é <strong><code>0001b</code></strong>. Por quê? Porque o número 1 só tem o <strong>bit 0</strong> aceso (1&times;1 = 1); os bits 1, 2 e 3 ficam em 0. Então <code>#1</code> = "um único bit aceso: o bit 0".</p>
+        </div>
+        <div class="card" style="margin-top:1rem; border-color:var(--prova-border);">
+            <p style="font-weight:700;">BOOLEAN BIT A BIT &mdash; como TODAS as instruções calculam, coluna por coluna:</p>
+            <p>O princípio é o mesmo para todas: cada instrução olha <strong>só um par de bits por vez</strong> (os dois da <em>mesma coluna</em>), aplica a sua regra e escreve o resultado na mesma coluna. As colunas são independentes &mdash; nada de "emprestar" como na soma. Aqui estão <strong>as 4 instruções sobre o mesmo EAX = <code>0101b</code></strong></p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
+   coluna:            bit 3    bit 2    bit 1    bit 0      vira
+   valor:                 8        4        2        1
+   ────────────────────────────────────────────────────────────
+   EAX = 0101b            0        1        0        1       5
+   #1  = 0001b            0        0        0        1       1
+   #8  = 1000b            1        0        0        0       8
+
+   AND EAX, #1            0        0        0        1       1    máscara: só o bit 0 passa
+   OR  EAX, #8            1        1        0        1      13    força o bit 3 a ligar
+   XOR EAX, #1            0        1        0        0       4    bit 0 alterna (iguais dão 0)
+   NOT EAX                1        0        1        0      10    cada bit troca de valor
+            </div>
+            <p style="margin-top:.5rem;"><strong>Agora o cálculo de cada uma, coluna por coluna (mastigado):</strong></p>
+
+            <p style="font-weight:700; margin-top:.6rem;">▸ <code>AND EAX, #1</code> &rarr; por que sobra <code>1b</code>:</p>
+            <ol>
+                <li>Regra: o resultado só é 1 se <strong>os DOIS bits forem 1</strong> (1 AND 1 = 1; o resto é 0).</li>
+                <li>O <code>#1</code> = <code>0001b</code> tem 1 <strong>só no bit 0</strong>. Nas colunas bit 1, 2 e 3 o EAX cruza com 0 &rarr; vira 0 (x AND 0 = 0 sempre).</li>
+                <li>Só no bit 0 os dois têm 1 &rarr; 1. Resultado: <code>0001b</code> = <strong>1</strong>. O <code>#1</code> é uma <em>máscara</em>: o 1 é "janela" (deixa passar), os 0 são "paredes" (bloqueiam).</li>
+            </ol>
+
+            <p style="font-weight:700; margin-top:.6rem;">▸ <code>OR EAX, #8</code> &rarr; ligar um bit à força:</p>
+            <ol>
+                <li>Regra: o resultado é 1 se <strong>pelo menos um</strong> dos dois for 1 (0 OR 0 = 0; o resto é 1).</li>
+                <li>O <code>#8</code> = <code>1000b</code> tem 1 só no bit 3. Na coluna bit 3: 0 OR 1 = 1 &rarr; o bit 3 do EAX liga à força.</li>
+                <li>Nas outras colunas o par com 0 não muda nada: <code>0101 OR 1000 = 1101b</code> = <strong>13</strong>.</li>
+            </ol>
+
+            <p style="font-weight:700; margin-top:.6rem;">▸ <code>XOR EAX, #1</code> &rarr; inverter um bit:</p>
+            <ol>
+                <li>Regra: bits <strong>iguais dão 0</strong>, <strong>diferentes dão 1</strong>.</li>
+                <li>Na coluna bit 0: 1 com 1 (iguais) &rarr; 0 &mdash; o bit alternou.</li>
+                <li>Colunas bit 1, 2 e 3: o EAX cruza com 0 &rarr; fica igual a ele mesmo. Resultado: <code>0100b</code> = <strong>4</strong>. Truque: <code>XOR EAX, EAX</code> zera o registrador (todo bit com ele mesmo dá 0).</li>
+            </ol>
+
+            <p style="font-weight:700; margin-top:.6rem;">▸ <code>NOT EAX</code> &rarr; inverter tudo:</p>
+            <ol>
+                <li>Regra: <strong>cada bit troca</strong>: era 0 vira 1, era 1 vira 0.</li>
+                <li>Não usa segundo operando. <code>0101b</code> &rarr; <code>1010b</code> = <strong>10</strong>.</li>
+            </ol>
+
+            <p style="margin-top:.5rem;"><strong>Memorize por frase:</strong> AND = "os dois têm que querer"; OR = "basta um querer"; XOR = "têm que ser diferentes"; NOT = "só inverte tudo".</p>
+        </div>
+        <div class="card" style="margin-top:1rem; border-color:var(--prova-border);">
+            <p style="font-weight:700;">EXEMPLOS APLICADOS &mdash; BOOLEAN aplicada numa questão, mastigado:</p>
+
+            <p style="font-weight:700; margin-top:.75rem;">▸ <code>AND</code> &mdash; ver se o número é par usando a máscara <code>#1</code>:</p>
+            <p><em>Questão:</em> "o número 5 (<code>0101b</code>) está no EAX; determine, pelo bit 0, se é par ou ímpar".</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
+  AND EAX, #1                    &lt;- máscara: só o bit 0 passa
+            </div>
+            <p>Aplicando o bit a bit acima: sobra <strong>1</strong> &rarr; bit 0 aceso &rarr; <strong>ímpar</strong> (se desse 0, par). Na prova, completa com <code>CMP EAX, #0</code> + <code>JE par</code> para desviar.</p>
+
+            <p style="font-weight:700; margin-top:.75rem;">▸ <code>OR</code> &mdash; ligar um bit à força:</p>
+            <p><em>Questão:</em> "ligue o bit 3 (valor 8) do valor <code>0101b</code> antes de mostrar".</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
+  OR EAX, #8                     &lt;- #8 = 1000b (só bit 3 aceso)
+            </div>
+            <p>Passo a passo: o <code>#8</code> tem 1 só no bit 3 &rarr; o OR força esse bit para 1 e deixa o resto igual: <code>0101 OR 1000 = 1101b</code> = <strong>13</strong>. O bit 3 (era 0) virou 1.</p>
+
+            <p style="font-weight:700; margin-top:.75rem;">▸ <code>XOR</code> &mdash; inverter um bit (alternar):</p>
+            <p><em>Questão:</em> "alterne o bit 0 do valor <code>0101b</code> a cada leitura".</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
+  XOR EAX, #1                    &lt;- mesmo bit diferente vira 1
+            </div>
+            <p>Passo a passo: <code>0101 XOR 0001</code> &rarr; bit 0: 1 com 1 = 0 (iguais), os outros bits com 0 ficam iguais &rarr; <code>0100b</code> = <strong>4</strong>. E o truque <code>XOR EAX, EAX</code>: todo bit com ele mesmo dá 0 &rarr; <strong>zera o registrador</strong> (o zero mais rápido).</p>
+
+            <p style="font-weight:700; margin-top:.75rem;">▸ <code>NOT</code> &mdash; inverter todos os bits:</p>
+            <p><em>Questão:</em> "inverta os bits do valor <code>0101b</code>".</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
+  NOT EAX                        &lt;- só um operando
+            </div>
+            <p>Passo a passo: cada bit troca (0 &rarr; 1, 1 &rarr; 0): <code>0101 &rarr; 1010b</code> = <strong>10</strong>. Não usa segundo operando.</p>
+        </div>
+        <div class="card-dica">
+            <strong>Regra prática para a prova:</strong> questão falou em <em>máscara</em>, <em>ligar/desligar bit</em>, <em>inverter</em> ou <em>comparar bits</em> &rarr; é BOOLEAN. Falou em somar/contar/multiplicar &rarr; é ARITHMETIC.
         </div>
     </div>
 
@@ -2092,27 +2247,55 @@
             <tr><td><code>OUT port, AX</code></td><td><strong>Saída</strong>: envia o valor de <strong>AX</strong> para o dispositivo (ex.: monitor). "Dado sai".</td></tr>
         </table>
         <div class="card-dica">
+            <strong>"Flags" são "bandeirinhas":</strong> o processador acende ou apaga <strong>sinais</strong> (0/1) depois de cada conta, como lembretes. Os que importam aqui: <strong>ZF</strong> (deu zero? &rarr; ZF = 1), <strong>SF</strong> (resultado era negativo?), <strong>OF</strong> (estourou a capacidade?). O <code>CMP</code> acende as bandeirinhas da subtração <strong>em segredo</strong>; o <code>Jxx</code> é quem olha as bandeirinhas e decide o salto. Detalhe na seção 4.3 (EFLAG).
+        </div>
+        <div class="card-dica">
             <strong>Para lembrar IN vs OUT:</strong> <code>IN AX, teclado</code> &rarr; AX <strong>recebe</strong> (entrada). <code>OUT monitor, AX</code> &rarr; monitor <strong>recebe</strong> (saída). Sempre uma "porta" no meio.
+        </div>
+        <div class="card-dica">
+            <strong>Por que você vê <code>IN N, teclado</code> e não <code>IN AX, teclado</code>?</strong> A <em>tabela fiel</em> mostra o formato teórico (<code>IN AX, porta</code>), mas nas <strong>questões resolvidas</strong> o professor troca o <code>AX</code> pelo <strong>nome da variável</strong> que aquele dado representa: <code>IN N, teclado</code> = "lê do teclado e guarda em N"; <code>OUT monitor, contador</code> = "mostra o valor de contador". É a mesma coisa, só com o "apelido" da variável. O que nunca muda: entrada SEMPRE de uma porta (teclado), saída SEMPRE para uma porta (monitor).
         </div>
         <div class="card-importante">
             <strong>Como CMP + Jxx funcionam juntos (a dupla que resolve loops e decisões):</strong><br>
-            <code>CMP N, contador</code> &rarr; calcula <code>N &minus; contador</code> em segredo.<br>
-            <code>JGE alvo</code> &rarr; se <code>N &#8805; contador</code>, pula para <code>alvo</code>. Se não, executa a próxima instrução.<br>
+            <code>CMP contador, N</code> &rarr; calcula <code>contador &minus; N</code> em segredo.<br>
+            <code>JGE alvo</code> &rarr; se <code>contador &#8805; N</code>, pula para <code>alvo</code>. Se não, executa a próxima instrução.<br>
             <span style="color:var(--accent);">Tudo o que o professor faz em laços é: <strong>teste sempre com CMP + JUMP condicional</strong>.</span>
         </div>
         <div class="card-dica">
             <strong>Na prática &mdash; as 5 trabalhando juntas num laço (é exatamente o padrão das questões):</strong>
             <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0; margin-top:.5rem;">
-   IN N, teclado            &lt;- entrada: lê do teclado
+   MOV contador, #0         &lt;- inicializa: contador := 0
+   IN N, teclado            &lt;- entrada: quantas voltas (ex.: digitou 5 &rarr; N = 5)
+   IN incremento, teclado   &lt;- entrada: o passo a somar (ex.: digitou 2)
   teste:
-   CMP N, contador          &lt;- comparação: N - contador
-   JGE fim                  &lt;- salto condicional: se for o caso, sai
+   CMP contador, N          &lt;- comparação: contador - N (primeiro o contador)
+   JGE fim                  &lt;- salto condicional: se contador >= N, sai
    ADD contador, incremento &lt;- corpo do laço
    JMP teste                &lt;- salto incondicional: volta ao teste
   fim:
    OUT monitor, contador    &lt;- saída: mostra no monitor
             </div>
             <p style="margin-top:.5rem;">Repare: <code>IN</code> aparece no começo, <code>OUT</code> no fim, a comparação no meio e os saltos fazem o "vai e volta". Toda questão de fluxograma segue esse padrão.</p>
+            <p style="margin-top:.5rem;"><strong>Rastreando com N = 5 e incremento = 2 (contador começa em 0):</strong></p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0; margin-top:.5rem;">
+  CMP contador, N  -->  0 - 5  -->  JGE? (0 ≥ 5) NÃO  -->  ADD  -->  contador = 2
+  CMP contador, N  -->  2 - 5  -->  JGE? (2 ≥ 5) NÃO  -->  ADD  -->  contador = 4
+  CMP contador, N  -->  4 - 5  -->  JGE? (4 ≥ 5) NÃO  -->  ADD  -->  contador = 6
+  CMP contador, N  -->  6 - 5  -->  JGE? (6 ≥ 5) SIM  -->  pula pro OUT
+  OUT monitor, contador  -->  mostra 6   (6 é o primeiro valor que passou de N)
+            </div>
+            <p style="margin-top:.5rem;">Cada volta o teste pergunta "contador já alcançou ou passou de N?". Só quando a resposta é sim o <code>JGE</code> sai do laço.</p>
+        </div>
+        <div class="card-dica">
+            <strong>Quando usar cada uma numa questão (procure as palavras-chave):</strong>
+            <table>
+                <tr><th>Instrução</th><th>Sinal na questão</th><th>Onde fica no código</th></tr>
+                <tr><td><code>IN AX, teclado</code></td><td>"lido via teclado", "digitou um valor"</td><td>No começo (a primeira instrução)</td></tr>
+                <tr><td><code>OUT monitor, AX</code></td><td>"mostrar", "exibir no monitor"</td><td>No fim (a resposta)</td></tr>
+                <tr><td><code>CMP A, B</code></td><td>"verificar", "até que", "se for maior/menor/igual"</td><td>Sempre logo antes de um Jxx</td></tr>
+                <tr><td><code>JMP alvo</code></td><td>"voltar ao teste", "voltar ao início"</td><td>Fim do corpo do laço (seta para cima)</td></tr>
+                <tr><td><code>Jxx alvo</code></td><td>"sair quando", "se for par", "até atingir N"</td><td>Logo após o CMP (a condição de saída)</td></tr>
+            </table>
         </div>
     </div>
 
@@ -2138,6 +2321,21 @@
                 <li>"<strong>Enquanto</strong> contador &lt; N, some" &rarr; sai quando contador &#8805; N &rarr; <code>CMP contador, N</code> + <code>JGE</code> (Exemplo 2).</li>
                 <li>"Se for <strong>par</strong>, mostra 0; <strong>senão</strong> ímpar, mostra 1" &rarr; testa o resto: <code>CMP AH, #0</code> + <code>JE par</code> (18.4).</li>
             </ul>
+        </div>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Método mastigado em 3 passos (fazendo uma questão de verdade):</strong>
+            <p>Questão: <em>"enquanto contador &lt; N, some o incremento; quando contador &#8805; N, mostre e pare."</em></p>
+            <ol>
+                <li><strong>Escreva a condição de CONTINUAR</strong> (o que o laço faz): <em>contador &lt; N</em>.</li>
+                <li><strong>Escreva a condição de SAIR</strong> (o contrário): <em>contador &#8805; N</em>.</li>
+                <li><strong>Traduza a saída em "pular quando..." com o CMP na mesma ordem</strong>:
+                    <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0; margin-top:.3rem;">
+  CMP contador, N      ; primeiro o contador (= A), depois o N (= B)  -->  A - B
+  JGE fim              ; pula quando  contador >= N   (a condição de sair)
+                    </div>
+                    Por que <code>JGE</code>? Porque a saída é "&#8805;", e <code>JGE</code> = "jump if greater or equal". Se a saída fosse "=" usaríamos <code>JE</code>; se fosse "&lt;", <code>JL</code>. <strong>O Jxx sai com a condição de SAIR, não a de continuar.</strong>
+                </li>
+            </ol>
         </div>
     </div>
 
@@ -2647,7 +2845,7 @@
         </div>
         <p><strong>Endereços na mesma regra do professor:</strong> <code>JE 0000 0048</code> (= 72) &rarr; par; <code>JMP 0000 005C</code> (= 92) &rarr; ímpar; <code>JMP 0000 0068</code> (= 104) &rarr; fim.</p>
         <p><strong>Obs. importante:</strong> o <code>DIV</code> <strong>destrói o dividendo</strong> &mdash; o valor que estava em <code>AX</code> é sobrescrito por <code>AL</code> (quociente) e <code>AH</code> (resto). Por isso o teste é feito com <code>AH</code> logo após o <code>DIV</code>; qualquer valor anterior em <code>AX</code> se perde.</p>
-        <p><strong>Testando N = 7:</strong> <code>MOV AX,7</code> &rarr; <code>DIV 2</code> &rarr; AL = 3, AH = <strong>1</strong> &rarr; <code>CMP AH,#0</code> &rarr; <code>JE</code> não salta &rarr; ímpar. ✓ &nbsp; <strong>N = 4:</strong> AH = <strong>0</strong> &rarr; <code>JE par</code> salta &rarr; par. ✓</p>
+        <p><strong>Testando N = 7:</strong> <code>MOV AX,7</code> &rarr; <code>MOV BL,#2</code> &rarr; <code>DIV BL</code> &rarr; AL = 3, AH = <strong>1</strong> &rarr; <code>CMP AH,#0</code> &rarr; <code>JE</code> não salta &rarr; ímpar. ✓ &nbsp; <strong>N = 4:</strong> AH = <strong>0</strong> &rarr; <code>JE par</code> salta &rarr; par. ✓</p>
         <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
             <strong>Frase "mastigada":</strong> par é quando <strong>resto 0</strong>; ímpar quando <strong>resto 1</strong>. Para N números, esse bloco fica dentro de um laço comandado por um contador.
         </div>
