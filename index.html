@@ -2011,6 +2011,14 @@
         <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
             <strong>Nas anotações do professor:</strong> <code>MOV contador, #0</code> (inicializa contador com 0) e <code>MOV EAX, 0000A14B</code> (copia o valor da memória para EAX). O <code>#</code> marca <strong>constante</strong> &mdash; sem <code>#</code> é o <strong>conteúdo de um endereço</strong>.
         </div>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Na prática (o MOV é o "carregador/guardador" de valores numa questão):</strong>
+            <ul>
+                <li><strong>Inicializar</strong> antes do laço: <code>MOV contador, #0</code> (Exemplo 1).</li>
+                <li><strong>Carregar</strong> antes de multiplicar: <code>MOV EAX, fatorial</code> &mdash; porque a <code>MUL</code> usa o EAX "por baixo dos panos".</li>
+                <li><strong>Guardar</strong> o resultado de volta na memória: <code>MOV fatorial, EAX</code> (questão do fatorial).</li>
+            </ul>
+        </div>
     </div>
 
     <h3>16.2 &mdash; 2ª tabela completa: ARITHMETIC</h3>
@@ -2032,6 +2040,19 @@
         <div class="card-dica">
             <strong>DIV é a chave da questão "par ou ímpar":</strong> <code>MOV AX, N</code> &rarr; <code>DIV 2</code>. Se o <strong>resto (AH) = 0</strong> o número é par; se <strong>AH = 1</strong> é ímpar.
         </div>
+        <div class="card-importante" style="margin-top:1rem;">
+            <strong>Na prática &mdash; cada uma aplicada numa questão real:</strong>
+            <table>
+                <tr><th>Instrução</th><th>Onde aparece</th><th>Trecho na questão</th></tr>
+                <tr><td><code>ADD</code></td><td>Somar o passo digitado a cada volta (Exemplo 2)</td><td><code>ADD contador, incremento</code></td></tr>
+                <tr><td><code>SUB</code></td><td>Contagem regressiva (de N até 0)</td><td><code>SUB contador, #1</code></td></tr>
+                <tr><td><code>MUL</code></td><td>Fatorial: multiplicar o acumulado pelo contador</td><td><code>MOV EAX, fatorial</code> + <code>MUL contador</code></td></tr>
+                <tr><td><code>INC</code></td><td>Contador que anda de 1 em 1 (Exemplo 1)</td><td><code>INC contador</code></td></tr>
+                <tr><td><code>DEC</code></td><td>Contador que desce de 1 em 1</td><td><code>DEC contador</code></td></tr>
+                <tr><td><code>NEG</code></td><td>Inverter o sinal de um valor lido</td><td><code>NEG EAX</code> &rarr; EAX = &minus;EAX</td></tr>
+                <tr><td><code>DIV</code></td><td>Par ou ímpar: pegando o resto por 2</td><td><code>MOV AX, N</code> + <code>DIV BL</code> (BL = 2) &rarr; AH = resto</td></tr>
+            </table>
+        </div>
     </div>
 
     <h3>16.3 &mdash; 3ª tabela completa: BOOLEAN</h3>
@@ -2046,6 +2067,17 @@
         </table>
         <div class="card-dica">
             <strong>Memorização rápida:</strong> <code>AND</code> = "liga o que eu deixar ligado"; <code>OR</code> = "liga se qualquer um ligar"; <code>XOR</code> = "liga se forem diferentes"; <code>NOT</code> = "inverte tudo".
+        </div>
+        <div class="card-importante" style="margin-top:1rem;">
+            <strong>Na prática &mdash; o BOOLEAN é o "operador de bits" (exemplo com EAX = 0101b = 5):</strong>
+            <table>
+                <tr><th>Instrução</th><th>0101b vira...</th><th>O que aconteceu / uso real</th></tr>
+                <tr><td><code>AND EAX, #1</code></td><td>0001b (1)</td><td>"Máscara": só o bit 0 sobra. Resultado 1 = <strong>ímpar</strong>, 0 = <strong>par</strong> (mesma ideia da questão DIV, mas por AND).</td></tr>
+                <tr><td><code>OR EAX, #8</code></td><td>1101b (13)</td><td>Liga o bit 3 à força (usado quando você <strong>quer</strong> um bit aceso, custe o que custar).</td></tr>
+                <tr><td><code>XOR EAX, #1</code></td><td>0100b (4)</td><td>Inverte o bit 0 (usado para <strong>alternar/toggle</strong>). E <code>XOR EAX, EAX</code> &rarr; 0000b (0) é o jeito mais rápido de "zerar" o registrador.</td></tr>
+                <tr><td><code>NOT EAX</code></td><td>1010b (10)</td><td>Inverte todos os bits (complemento de 1).</td></tr>
+            </table>
+            <p style="margin-top:.5rem;"><strong>Regra prática para a prova:</strong> quando a questão falar em <em>máscara</em>, <em>ligar/desligar bit</em>, <em>inverter</em> ou <em>comparar bits</em> &rarr; é BOOLEAN. Quando falar em somar/contar/multiplicar &rarr; é ARITHMETIC.</p>
         </div>
     </div>
 
@@ -2068,6 +2100,20 @@
             <code>JGE alvo</code> &rarr; se <code>N &#8805; contador</code>, pula para <code>alvo</code>. Se não, executa a próxima instrução.<br>
             <span style="color:var(--accent);">Tudo o que o professor faz em laços é: <strong>teste sempre com CMP + JUMP condicional</strong>.</span>
         </div>
+        <div class="card-dica">
+            <strong>Na prática &mdash; as 5 trabalhando juntas num laço (é exatamente o padrão das questões):</strong>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0; margin-top:.5rem;">
+   IN N, teclado            &lt;- entrada: lê do teclado
+  teste:
+   CMP N, contador          &lt;- comparação: N - contador
+   JGE fim                  &lt;- salto condicional: se for o caso, sai
+   ADD contador, incremento &lt;- corpo do laço
+   JMP teste                &lt;- salto incondicional: volta ao teste
+  fim:
+   OUT monitor, contador    &lt;- saída: mostra no monitor
+            </div>
+            <p style="margin-top:.5rem;">Repare: <code>IN</code> aparece no começo, <code>OUT</code> no fim, a comparação no meio e os saltos fazem o "vai e volta". Toda questão de fluxograma segue esse padrão.</p>
+        </div>
     </div>
 
     <h3>16.5 &mdash; Jxx: qual usar depois de um <code>CMP A, B</code></h3>
@@ -2084,6 +2130,14 @@
         </table>
         <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
             <strong>Regra prática:</strong> para <strong>igualdade</strong> use <code>JE</code>/<code>JNE</code> (não importa o sinal). Para <strong>maior/menor</strong>, o professor usa <code>JG/JGE/JL/JLE</code> como se fossem "&gt;, &ge;, &lt;, &le;". Memória de bolso: <strong>JGE = "Jump se o primeiro for &ge; o segundo"</strong>.
+        </div>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Na prática &mdash; como escolher o Jxx direto do texto da questão:</strong>
+            <ul>
+                <li>"Repita <strong>até o contador = N</strong>" (Exemplo 1, com <code>INC</code> de 1 em 1) &rarr; <code>CMP N, contador</code> + <code>JNE</code> (volta enquanto não for igual).</li>
+                <li>"<strong>Enquanto</strong> contador &lt; N, some" &rarr; sai quando contador &#8805; N &rarr; <code>CMP contador, N</code> + <code>JGE</code> (Exemplo 2).</li>
+                <li>"Se for <strong>par</strong>, mostra 0; <strong>senão</strong> ímpar, mostra 1" &rarr; testa o resto: <code>CMP AH, #0</code> + <code>JE par</code> (18.4).</li>
+            </ul>
         </div>
     </div>
 
@@ -2507,22 +2561,36 @@
         <p><strong>Enunciado:</strong> "Dado o número N, via teclado, calcular o fatorial de N".</p>
         <p><strong>Raciocínio:</strong> <code>N! = N × (N&minus;1) × ... × 1</code>. Se <code>N = 0</code>, o resultado é 1. Usamos um contador que vai de 1 até N, multiplicando o resultado acumulado por cada valor &mdash; a <code>MUL</code> usa o EAX implicitamente, então guardamos o resultado em EAX a cada volta.</p>
         <div class="diagrama" style="color:var(--prova-text);">
-  IN N, teclado              ; lê N
-  MOV fatorial, #1           ; resultado inicial = 1
-  MOV contador, #1           ; começa multiplicando por 1
+  0000 0000   IN N, teclado          ; lê N
+  0000 000C   MOV fatorial, #1       ; resultado inicial = 1
+  0000 0018   MOV contador, #1       ; começa multiplicando por 1
 
-  teste:
-      CMP N, contador        ; N - contador
-      JL fim                 ; se N < contador, terminou  (JL)
-      MOV EAX, fatorial      ; prepara o multiplicando
-      MUL contador           ; EAX = EAX × contador
-      MOV fatorial, EAX      ; guarda o novo fatorial
-      INC contador           ; próximo multiplicador
-      JMP teste              ; volta ao teste
+  0000 0024   CMP N, contador        ; teste: N - contador
+  0000 0030   JL  0000 0068          ; se N < contador -> terminou, vai pro fim
+  0000 0038   MOV EAX, fatorial      ; prepara o multiplicando
+  0000 0044   MUL contador           ; EAX = EAX × contador
+  0000 004C   MOV fatorial, EAX      ; guarda o novo fatorial
+  0000 0058   INC contador           ; próximo multiplicador
+  0000 0060   JMP 0000 0024          ; volta ao teste
 
-  fim:
-      OUT monitor, fatorial  ; mostra o resultado
+  0000 0068   OUT monitor, fatorial  ; fim: mostra o resultado
         </div>
+        <p><strong>Conferindo os endereços (mesma regra dos exemplos 17.4/17.6):</strong></p>
+        <table>
+            <tr><th>Endereço</th><th>Instrução</th><th>Conta</th><th>Próximo</th></tr>
+            <tr><td><code>0000 0000</code></td><td><code>IN N, teclado</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 000C</code></td></tr>
+            <tr><td><code>0000 000C</code></td><td><code>MOV fatorial, #1</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 0018</code></td></tr>
+            <tr><td><code>0000 0018</code></td><td><code>MOV contador, #1</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 0024</code></td></tr>
+            <tr><td><code>0000 0024</code></td><td><code>CMP N, contador</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 0030</code></td></tr>
+            <tr><td><code>0000 0030</code></td><td><code>JL 0000 0068</code></td><td>1 operando &rarr; +0x8</td><td><code>0000 0038</code></td></tr>
+            <tr><td><code>0000 0038</code></td><td><code>MOV EAX, fatorial</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 0044</code></td></tr>
+            <tr><td><code>0000 0044</code></td><td><code>MUL contador</code></td><td>1 operando &rarr; +0x8</td><td><code>0000 004C</code></td></tr>
+            <tr><td><code>0000 004C</code></td><td><code>MOV fatorial, EAX</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 0058</code></td></tr>
+            <tr><td><code>0000 0058</code></td><td><code>INC contador</code></td><td>1 operando &rarr; +0x8</td><td><code>0000 0060</code></td></tr>
+            <tr><td><code>0000 0060</code></td><td><code>JMP 0000 0024</code></td><td>1 operando &rarr; +0x8</td><td><code>0000 0068</code></td></tr>
+            <tr><td><code>0000 0068</code></td><td><code>OUT monitor, fatorial</code></td><td>2 operandos &rarr; +0x0C (fim)</td><td><code>0000 0074</code></td></tr>
+        </table>
+        <p><strong>Saltos:</strong> <code>JL 0000 0068</code> (= 104) vai para o <code>OUT</code>; <code>JMP 0000 0024</code> (= 36) volta para o teste.</p>
         <p><strong>Testando com N = 3:</strong> fatorial=1, contador=1 &rarr; (3&#8805;1) EAX=1×1=1, contador=2 &rarr; (3&#8805;2) EAX=1×2=2, contador=3 &rarr; (3&#8805;3) EAX=2×3=6, contador=4 &rarr; <code>CMP 3,4</code> &rarr; <code>JL</code> (3&lt;4) &rarr; fim. Resultado = <strong>6</strong>. ✓</p>
         <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
             <strong>Pegadinha:</strong> a <code>MUL</code> não recebe destino &mdash; ela <em>sempre</em> multiplica pelo <code>EAX</code>. Por isso carregamos <code>MOV EAX, fatorial</code> antes e guardamos de volta com <code>MOV fatorial, EAX</code>.
@@ -2534,24 +2602,23 @@
         <p><strong>Enunciado:</strong> "Calcule os N primeiros termos da sequência de Fibonacci, sabendo que os dois primeiros termos são 0 e 1, e o próximo termo é formado pela soma dos dois últimos."</p>
         <p><strong>Raciocínio:</strong> guardamos os dois últimos termos. A cada volta, o novo termo = <code>termo1 + termo2</code> (usando <code>ADD</code>). Depois "andamos": o termo1 recebe o termo2, e o termo2 recebe a soma. Repetimos até produzir N termos.</p>
         <div class="diagrama" style="color:var(--prova-text);">
-  IN N, teclado              ; quantos termos
-  MOV t1, #0                 ; termo 1 (0)
-  MOV t2, #1                 ; termo 2 (1)
-  MOV contador, #2           ; já temos 2 termos mostrados
+  0000 0000   IN N, teclado          ; quantos termos
+  0000 000C   MOV t1, #0             ; termo 1 (0)
+  0000 0018   MOV t2, #1             ; termo 2 (1)
+  0000 0024   MOV contador, #2       ; já temos 2 termos mostrados
 
-  teste:
-      CMP N, contador        ; N - contador
-      JLE fim                ; se N <= contador, já mostrou tudo
-      MOV EAX, t1            ; prepara a soma
-      ADD EAX, t2            ; próximo = t1 + t2
-      MOV t1, t2             ; termo1 "anda"
-      MOV t2, EAX            ; termo2 = novo termo
-      INC contador           ; conta mais um termo
-      JMP teste
+  0000 0030   CMP N, contador        ; teste: N - contador
+  0000 003C   JLE 0000 0084          ; se N <= contador -> já mostrou tudo, fim
+  0000 0044   MOV EAX, t1            ; prepara a soma
+  0000 0050   ADD EAX, t2            ; próximo = t1 + t2
+  0000 005C   MOV t1, t2             ; termo1 "anda"
+  0000 0068   MOV t2, EAX            ; termo2 = novo termo
+  0000 0074   INC contador           ; conta mais um termo
+  0000 007C   JMP 0000 0030          ; volta ao teste
 
-  fim:
-      OUT monitor, t2        ; mostra o último termo calculado
+  0000 0084   OUT monitor, t2        ; fim: mostra o último termo calculado
         </div>
+        <p><strong>Endereços na mesma regra do professor</strong> (1 operando &rarr; +0x8; 2 operandos &rarr; +0x0C): <code>JLE 0000 0084</code> (= 132) vai para o <code>OUT</code> final; <code>JMP 0000 0030</code> (= 48) volta para o teste.</p>
         <p><strong>Sequência para N = 5:</strong> 0, 1 &rarr; t1=0,t2=1 &rarr; próximo=1 &rarr; t1=1,t2=1 &rarr; próximo=2 &rarr; t1=1,t2=2 &rarr; próximo=3 &rarr; t1=2,t2=3 &rarr; último termo = <strong>3</strong> (sequência 0,1,1,2,3). ✓</p>
         <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
             <strong>Chave:</strong> os três <code>MOV</code> no fim do laço deslocam os termos (o "andar da sequência"). Respeite a ordem: primeiro calcula a soma, depois desloca.
@@ -2563,24 +2630,22 @@
         <p><strong>Enunciado:</strong> "Dado N números, identifique se o número é par ou ímpar."</p>
         <p><strong>Raciocínio:</strong> dividimos N por 2. Se o <strong>resto (AH) = 0</strong> &rarr; par; se <strong>resto = 1</strong> &rarr; ímpar. É a aplicação direta do <code>DIV</code> da tabela (AL = quociente, AH = resto).</p>
         <div class="diagrama" style="color:var(--prova-text);">
-  IN N, teclado              ; lê o número
-  MOV AX, N                  ; AX = dividendo
-  MOV BL, #2                 ; divisor = 2  (BL é um registrador auxiliar)
-  DIV BL                     ; AL = AX/BL (quociente), AH = resto
-  CMP AH, #0                 ; resto = 0 ?
-  JE par                     ; se sim -> é par
-  JMP impar                  ; se não -> é ímpar
+  0000 0000   IN N, teclado          ; lê o número
+  0000 000C   MOV AX, N              ; AX = dividendo
+  0000 0018   MOV BL, #2             ; divisor = 2  (BL é um registrador auxiliar)
+  0000 0024   DIV BL                 ; AL = AX/BL (quociente), AH = resto
+  0000 002C   CMP AH, #0             ; resto = 0 ?
+  0000 0038   JE  0000 0048          ; se sim -> é par
+  0000 0040   JMP 0000 005C          ; se não -> é ímpar
 
-  par:
-      OUT monitor, #0        ; sinaliza PAR (0)
-      JMP fim
+  0000 0048   OUT monitor, #0        ; par: sinaliza PAR (0)
+  0000 0054   JMP 0000 0068          ; pula o bloco do ímpar -> vai pro fim
 
-  impar:
-      OUT monitor, #1        ; sinaliza ÍMPAR (1)
+  0000 005C   OUT monitor, #1        ; ímpar: sinaliza ÍMPAR (1)
 
-  fim:
-      ...                    ; (para vários números, repete com outro IN)
+  0000 0068   ...                    ; fim: (para vários números, repete com outro IN)
         </div>
+        <p><strong>Endereços na mesma regra do professor:</strong> <code>JE 0000 0048</code> (= 72) &rarr; par; <code>JMP 0000 005C</code> (= 92) &rarr; ímpar; <code>JMP 0000 0068</code> (= 104) &rarr; fim.</p>
         <p><strong>Obs. importante:</strong> o <code>DIV</code> <strong>destrói o dividendo</strong> &mdash; o valor que estava em <code>AX</code> é sobrescrito por <code>AL</code> (quociente) e <code>AH</code> (resto). Por isso o teste é feito com <code>AH</code> logo após o <code>DIV</code>; qualquer valor anterior em <code>AX</code> se perde.</p>
         <p><strong>Testando N = 7:</strong> <code>MOV AX,7</code> &rarr; <code>DIV 2</code> &rarr; AL = 3, AH = <strong>1</strong> &rarr; <code>CMP AH,#0</code> &rarr; <code>JE</code> não salta &rarr; ímpar. ✓ &nbsp; <strong>N = 4:</strong> AH = <strong>0</strong> &rarr; <code>JE par</code> salta &rarr; par. ✓</p>
         <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
