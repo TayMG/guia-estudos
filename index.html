@@ -2154,82 +2154,146 @@
             <p><strong>Agora a chave da sua pergunta:</strong> <code>#1</code> escrito em 4 bits é <strong><code>0001b</code></strong>. Por quê? Porque o número 1 só tem o <strong>bit 0</strong> aceso (1&times;1 = 1); os bits 1, 2 e 3 ficam em 0. Então <code>#1</code> = "um único bit aceso: o bit 0".</p>
         </div>
         <div class="card" style="margin-top:1rem; border-color:var(--prova-border);">
-            <p style="font-weight:700;">BOOLEAN BIT A BIT &mdash; como TODAS as instruções calculam, coluna por coluna:</p>
-            <p>O princípio é o mesmo para todas: cada instrução olha <strong>só um par de bits por vez</strong> (os dois da <em>mesma coluna</em>), aplica a sua regra e escreve o resultado na mesma coluna. As colunas são independentes &mdash; nada de "emprestar" como na soma. Aqui estão <strong>as 4 instruções sobre o mesmo EAX = <code>0101b</code></strong></p>
-            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
-   coluna:            bit 3    bit 2    bit 1    bit 0      vira
-   valor:                 8        4        2        1
-   ────────────────────────────────────────────────────────────
-   EAX = 0101b            0        1        0        1       5
-   #1  = 0001b            0        0        0        1       1
-   #8  = 1000b            1        0        0        0       8
-
-   AND EAX, #1            0        0        0        1       1    máscara: só o bit 0 passa
-   OR  EAX, #8            1        1        0        1      13    força o bit 3 a ligar
-   XOR EAX, #1            0        1        0        0       4    bit 0 alterna (iguais dão 0)
-   NOT EAX                1        0        1        0      10    cada bit troca de valor
+            <p style="font-weight:700;">O MÉTODO &mdash; como TODAS as instruções BOOLEAN calculam, coluna por coluna:</p>
+            <p>As 4 instruções seguem <strong>a mesma rotina</strong> &mdash; só a <em>regrinha</em> de decidir cada bit é que muda. A rotina é:</p>
+            <ol>
+                <li>Escreva os dois números em binário, um em cima do outro, com a <strong>mesma quantidade de casas</strong> (os bits ficam alinhados em colunas).</li>
+                <li>Vá <strong>coluna por coluna</strong>, da direita para a esquerda. Em cada coluna há um par de bits: o de cima (do EAX) e o de baixo (do operando).</li>
+                <li>Aplique a <strong>regrinha da instrução</strong> naquele par e escreva o resultado (0 ou 1) na mesma coluna, na linha do resultado.</li>
+                <li>Junte os 4 bits do resultado e leia o valor final.</li>
+            </ol>
+            <div class="card-dica">
+                <strong>As colunas são independentes:</strong> não existe "emprestar" nem "levar 1" como na soma. Um erro numa coluna não mexe nas outras.
             </div>
-            <p style="margin-top:.5rem;"><strong>Agora o cálculo de cada uma, coluna por coluna (mastigado):</strong></p>
+            <p style="margin-top:.75rem;">O valor de cada coluna (decore, aparece em toda conta da prova):</p>
+            <table>
+                <tr><th></th><th>bit 3</th><th>bit 2</th><th>bit 1</th><th>bit 0</th></tr>
+                <tr><td><strong>valor da coluna</strong></td><td>8</td><td>4</td><td>2</td><td>1</td></tr>
+                <tr><td>exemplo: EAX = 0101b</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+                <tr><td>conta de cada bit</td><td>0&times;8=0</td><td>1&times;4=4</td><td>0&times;2=0</td><td>1&times;1=1</td></tr>
+            </table>
+            <p style="margin-top:.5rem;">Soma: 0 + 4 + 0 + 1 = <strong>5</strong>. Ou seja, <code>0101b = 5</code>. Nas tabelas abaixo, repare que a <strong>linha do resultado é a única que muda</strong> conforme a instrução.</p>
+        </div>
 
-            <p style="font-weight:700; margin-top:.6rem;">▸ <code>AND EAX, #1</code> &rarr; por que sobra <code>1b</code>:</p>
-            <ol>
-                <li>Regra: o resultado só é 1 se <strong>os DOIS bits forem 1</strong> (1 AND 1 = 1; o resto é 0).</li>
-                <li>O <code>#1</code> = <code>0001b</code> tem 1 <strong>só no bit 0</strong>. Nas colunas bit 1, 2 e 3 o EAX cruza com 0 &rarr; vira 0 (x AND 0 = 0 sempre).</li>
-                <li>Só no bit 0 os dois têm 1 &rarr; 1. Resultado: <code>0001b</code> = <strong>1</strong>. O <code>#1</code> é uma <em>máscara</em>: o 1 é "janela" (deixa passar), os 0 são "paredes" (bloqueiam).</li>
-            </ol>
+        <div class="card" style="margin-top:1rem; border-color:var(--prova-border);">
+            <p style="font-weight:700;">▸ <code>AND</code> &mdash; regra: <strong>"os DOIS têm que ser 1"</strong> (1 AND 1 = 1; qualquer outro par = 0):</p>
+            <table>
+                <tr><th></th><th>bit 3<br>(vale 8)</th><th>bit 2<br>(vale 4)</th><th>bit 1<br>(vale 2)</th><th>bit 0<br>(vale 1)</th><th>valor</th></tr>
+                <tr><td>EAX = 0101b</td><td>0</td><td>1</td><td>0</td><td>1</td><td>5</td></tr>
+                <tr><td><code>#1</code> = 0001b</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+                <tr><td><strong>resultado (AND)</strong></td><td>0</td><td>0</td><td>0</td><td><strong>1</strong></td><td><strong>1</strong></td></tr>
+            </table>
+            <p><strong>Por que o resultado é 1 e não 5?</strong> O operando <code>#1</code> em 4 bits é <code>0001b</code>: ele só tem o <strong>bit 0 ligado</strong>. Fazendo coluna por coluna:</p>
+            <ul>
+                <li>bit 3: 0 AND 0 = 0</li>
+                <li>bit 2: 1 AND 0 = 0</li>
+                <li>bit 1: 0 AND 0 = 0</li>
+                <li>bit 0: 1 AND 1 = <strong>1</strong> (única coluna onde os DOIS bits são 1)</li>
+            </ul>
+            <div class="card-dica">
+                <strong>O <code>#1</code> é uma "máscara" (estêncil):</strong> o 1 do bit 0 é o furo que deixa o bit do EAX passar; os 0 são parede que bloqueia. Por isso <strong>só o bit 0 sobrevive</strong>. Uso clássico na prova: olhar um único bit (ex.: descobrir se o número é par ou ímpar pelo bit 0).
+            </div>
+        </div>
 
-            <p style="font-weight:700; margin-top:.6rem;">▸ <code>OR EAX, #8</code> &rarr; ligar um bit à força:</p>
-            <ol>
-                <li>Regra: o resultado é 1 se <strong>pelo menos um</strong> dos dois for 1 (0 OR 0 = 0; o resto é 1).</li>
-                <li>O <code>#8</code> = <code>1000b</code> tem 1 só no bit 3. Na coluna bit 3: 0 OR 1 = 1 &rarr; o bit 3 do EAX liga à força.</li>
-                <li>Nas outras colunas o par com 0 não muda nada: <code>0101 OR 1000 = 1101b</code> = <strong>13</strong>.</li>
-            </ol>
+        <div class="card" style="margin-top:1rem; border-color:var(--prova-border);">
+            <p style="font-weight:700;">▸ <code>OR</code> &mdash; regra: <strong>"basta UM ser 1"</strong> (0 OR 0 = 0; qualquer outro par = 1):</p>
+            <table>
+                <tr><th></th><th>bit 3<br>(vale 8)</th><th>bit 2<br>(vale 4)</th><th>bit 1<br>(vale 2)</th><th>bit 0<br>(vale 1)</th><th>valor</th></tr>
+                <tr><td>EAX = 0101b</td><td>0</td><td>1</td><td>0</td><td>1</td><td>5</td></tr>
+                <tr><td><code>#8</code> = 1000b</td><td>1</td><td>0</td><td>0</td><td>0</td><td>8</td></tr>
+                <tr><td><strong>resultado (OR)</strong></td><td><strong>1</strong></td><td>1</td><td>0</td><td>1</td><td><strong>13</strong></td></tr>
+            </table>
+            <p><strong>Por que só o bit 3 ligou e o resto ficou igual?</strong> O operando <code>#8</code> = <code>1000b</code> tem 1 <strong>só no bit 3</strong>, e o OR liga quando "pelo menos um" dos dois é 1:</p>
+            <ul>
+                <li>bit 3: 0 OR 1 = 1 (o OR "empurra" o bit 3 para 1)</li>
+                <li>bit 2: 1 OR 0 = 1 (continua igual)</li>
+                <li>bit 1: 0 OR 0 = 0 (continua igual)</li>
+                <li>bit 0: 1 OR 0 = 1 (continua igual)</li>
+            </ul>
+            <div class="card-dica">
+                <strong>Uso na prova:</strong> "ligar um bit à força" sem alterar os outros. Aqui o bit 3 (vale 8) foi de 0 para 1 e o resultado virou <code>1101b</code> = 13.
+            </div>
+        </div>
 
-            <p style="font-weight:700; margin-top:.6rem;">▸ <code>XOR EAX, #1</code> &rarr; inverter um bit:</p>
-            <ol>
-                <li>Regra: bits <strong>iguais dão 0</strong>, <strong>diferentes dão 1</strong>.</li>
-                <li>Na coluna bit 0: 1 com 1 (iguais) &rarr; 0 &mdash; o bit alternou.</li>
-                <li>Colunas bit 1, 2 e 3: o EAX cruza com 0 &rarr; fica igual a ele mesmo. Resultado: <code>0100b</code> = <strong>4</strong>. Truque: <code>XOR EAX, EAX</code> zera o registrador (todo bit com ele mesmo dá 0).</li>
-            </ol>
+        <div class="card" style="margin-top:1rem; border-color:var(--prova-border);">
+            <p style="font-weight:700;">▸ <code>XOR</code> &mdash; regra: <strong>"iguais dão 0, diferentes dão 1"</strong>:</p>
+            <table>
+                <tr><th></th><th>bit 3<br>(vale 8)</th><th>bit 2<br>(vale 4)</th><th>bit 1<br>(vale 2)</th><th>bit 0<br>(vale 1)</th><th>valor</th></tr>
+                <tr><td>EAX = 0101b</td><td>0</td><td>1</td><td>0</td><td>1</td><td>5</td></tr>
+                <tr><td><code>#1</code> = 0001b</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+                <tr><td><strong>resultado (XOR)</strong></td><td>0</td><td>1</td><td>0</td><td><strong>0</strong></td><td><strong>4</strong></td></tr>
+            </table>
+            <p><strong>Por que o bit 0 inverteu e os outros ficaram?</strong> O XOR pergunta em cada coluna: "esses dois bits são iguais?". Se iguais &rarr; 0; se diferentes &rarr; 1:</p>
+            <ul>
+                <li>bit 3: 0 e 0 &rarr; iguais &rarr; 0</li>
+                <li>bit 2: 1 e 0 &rarr; diferentes &rarr; 1</li>
+                <li>bit 1: 0 e 0 &rarr; iguais &rarr; 0</li>
+                <li>bit 0: 1 e 1 &rarr; iguais &rarr; 0 (o bit 0 "alternou": era 1, virou 0)</li>
+            </ul>
+            <div class="card-dica">
+                <strong>Uso na prova:</strong> alternar/inverter um bit. E o truque famoso <code>XOR EAX, EAX</code>: todo bit é igual a ele mesmo &rarr; tudo dá 0 &rarr; <strong>zera o registrador</strong> (mais rápido que <code>MOV EAX, #0</code>).
+            </div>
+        </div>
 
-            <p style="font-weight:700; margin-top:.6rem;">▸ <code>NOT EAX</code> &rarr; inverter tudo:</p>
-            <ol>
-                <li>Regra: <strong>cada bit troca</strong>: era 0 vira 1, era 1 vira 0.</li>
-                <li>Não usa segundo operando. <code>0101b</code> &rarr; <code>1010b</code> = <strong>10</strong>.</li>
-            </ol>
+        <div class="card" style="margin-top:1rem; border-color:var(--prova-border);">
+            <p style="font-weight:700;">▸ <code>NOT</code> &mdash; regra: <strong>"cada bit troca"</strong> (0 vira 1, 1 vira 0):</p>
+            <table>
+                <tr><th></th><th>bit 3<br>(vale 8)</th><th>bit 2<br>(vale 4)</th><th>bit 1<br>(vale 2)</th><th>bit 0<br>(vale 1)</th><th>valor</th></tr>
+                <tr><td>EAX = 0101b</td><td>0</td><td>1</td><td>0</td><td>1</td><td>5</td></tr>
+                <tr><td><strong>resultado (NOT)</strong></td><td><strong>1</strong></td><td><strong>0</strong></td><td><strong>1</strong></td><td><strong>0</strong></td><td><strong>10</strong></td></tr>
+            </table>
+            <p><strong>Atenção &mdash; é a única sem 2º número:</strong> ela só inverte cada bit do EAX:</p>
+            <ul>
+                <li>bit 3: era 0 &rarr; vira 1</li>
+                <li>bit 2: era 1 &rarr; vira 0</li>
+                <li>bit 1: era 0 &rarr; vira 1</li>
+                <li>bit 0: era 1 &rarr; vira 0</li>
+            </ul>
+            <p>Resultado: <code>1010b</code> = <strong>10</strong>.</p>
+        </div>
 
-            <p style="margin-top:.5rem;"><strong>Memorize por frase:</strong> AND = "os dois têm que querer"; OR = "basta um querer"; XOR = "têm que ser diferentes"; NOT = "só inverte tudo".</p>
+        <p style="margin-top:.75rem;"><strong>Memorize:</strong> AND = "os dois têm que querer"; OR = "basta um querer"; XOR = "têm que ser diferentes"; NOT = "inverte tudo".</p>
+        <div class="card" style="margin-top:1rem; border-color:var(--prova-border);">
+            <p style="font-weight:700;">EXEMPLOS APLICADOS &mdash; cada instrução usada numa questão, mastigado:</p>
+
+            <p style="font-weight:700; margin-top:.5rem;">▸ <strong><code>AND</code> numa questão:</strong> "O número digitado está em EAX. Mostre se ele é par ou ímpar, analisando o bit 0."</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0; margin-top:.25rem;">
+   0000 0000  AND EAX, #1      &lt;- máscara #1: apaga tudo, sobra só o bit 0
+   0000 000C  CMP EAX, #0      &lt;- o bit 0 ficou 0?
+   0000 0018  JNE 0000 002C    &lt;- se NÃO der 0 (sobra 1) &rarr; bit 0 aceso &rarr; ímpar
+   0000 0020  OUT monitor, #0  &lt;- par (última instrução)
+   0000 002C  (aqui viria o trecho do ímpar)
+            </div>
+            <p><strong>Teste numérico:</strong> se EAX = 5 (<code>0101b</code>) &rarr; sobra <code>0001b</code> = 1 &rarr; n&atilde;o é 0 &rarr; pula &rarr; <strong>ímpar</strong>. Se EAX = 4 (<code>0100b</code>) &rarr; sobra 0 &rarr; cai no <strong>par</strong>.</p>
+
+            <p style="font-weight:700; margin-top:1rem;">▸ <strong><code>OR</code> numa questão:</strong> "Antes de exibir, o bit 3 (que representa um aviso) deve estar SEMPRE ligado."</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0; margin-top:.25rem;">
+   OR EAX, #8         &lt;- liga à força o bit 3 (vale 8), sem mexer nos outros
+   OUT monitor, EAX   &lt;- mostra o valor com o aviso ligado
+            </div>
+            <p><strong>Teste numérico:</strong> EAX = 5 (<code>0101b</code>) &rarr; <code>0101b OR 1000b</code> = <code>1101b</code> = <strong>13</strong>. O número aumentou? Não importa &mdash; o que a questão queria era só o bit 3 = 1.</p>
+
+            <p style="font-weight:700; margin-top:1rem;">▸ <strong><code>XOR</code> numa questão:</strong> "A cada leitura do teclado, o bit 0 deve alternar (1 volta 0, 0 volta 1)."</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0; margin-top:.25rem;">
+   XOR EAX, #1        &lt;- inverte só o bit 0 (o xor "responde" quando os 2 são diferentes)
+            </div>
+            <p><strong>Teste numérico:</strong> EAX = 5 (<code>0101b</code>) &rarr; <code>0101b XOR 0001b</code> = <code>0100b</code> = <strong>4</strong> (bit 0 virou 0). Rodando a linha de novo: <code>0100b XOR 0001b</code> = <code>0101b</code> = <strong>5</strong> (bit 0 voltou a 1). Por isso "alterna" a cada leitura.</p>
+
+            <p style="font-weight:700; margin-top:1rem;">▸ <strong><code>NOT</code> numa questão:</strong> "Inverta todos os bits do valor em EAX."</p>
+            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0; margin-top:.25rem;">
+   NOT EAX            &lt;- inverte TODOS os bits (0 vira 1, 1 vira 0)
+            </div>
+            <p><strong>Teste numérico:</strong> EAX = 5 (<code>0101b</code>) &rarr; <code>NOT</code> = <code>1010b</code> = <strong>10</strong>. Cuidado: ele não "soma com nada" &mdash; cada bit apenas troca.</p>
         </div>
         <div class="card" style="margin-top:1rem; border-color:var(--prova-border);">
-            <p style="font-weight:700;">EXEMPLOS APLICADOS &mdash; BOOLEAN aplicada numa questão, mastigado:</p>
-
-            <p style="font-weight:700; margin-top:.75rem;">▸ <code>AND</code> &mdash; ver se o número é par usando a máscara <code>#1</code>:</p>
-            <p><em>Questão:</em> "o número 5 (<code>0101b</code>) está no EAX; determine, pelo bit 0, se é par ou ímpar".</p>
-            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
-  AND EAX, #1                    &lt;- máscara: só o bit 0 passa
-            </div>
-            <p>Aplicando o bit a bit acima: sobra <strong>1</strong> &rarr; bit 0 aceso &rarr; <strong>ímpar</strong> (se desse 0, par). Na prova, completa com <code>CMP EAX, #0</code> + <code>JE par</code> para desviar.</p>
-
-            <p style="font-weight:700; margin-top:.75rem;">▸ <code>OR</code> &mdash; ligar um bit à força:</p>
-            <p><em>Questão:</em> "ligue o bit 3 (valor 8) do valor <code>0101b</code> antes de mostrar".</p>
-            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
-  OR EAX, #8                     &lt;- #8 = 1000b (só bit 3 aceso)
-            </div>
-            <p>Passo a passo: o <code>#8</code> tem 1 só no bit 3 &rarr; o OR força esse bit para 1 e deixa o resto igual: <code>0101 OR 1000 = 1101b</code> = <strong>13</strong>. O bit 3 (era 0) virou 1.</p>
-
-            <p style="font-weight:700; margin-top:.75rem;">▸ <code>XOR</code> &mdash; inverter um bit (alternar):</p>
-            <p><em>Questão:</em> "alterne o bit 0 do valor <code>0101b</code> a cada leitura".</p>
-            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
-  XOR EAX, #1                    &lt;- mesmo bit diferente vira 1
-            </div>
-            <p>Passo a passo: <code>0101 XOR 0001</code> &rarr; bit 0: 1 com 1 = 0 (iguais), os outros bits com 0 ficam iguais &rarr; <code>0100b</code> = <strong>4</strong>. E o truque <code>XOR EAX, EAX</code>: todo bit com ele mesmo dá 0 &rarr; <strong>zera o registrador</strong> (o zero mais rápido).</p>
-
-            <p style="font-weight:700; margin-top:.75rem;">▸ <code>NOT</code> &mdash; inverter todos os bits:</p>
-            <p><em>Questão:</em> "inverta os bits do valor <code>0101b</code>".</p>
-            <div class="diagrama" style="text-align:left; background:transparent; border:none; font-size:0.82rem; padding:0;">
-  NOT EAX                        &lt;- só um operando
-            </div>
-            <p>Passo a passo: cada bit troca (0 &rarr; 1, 1 &rarr; 0): <code>0101 &rarr; 1010b</code> = <strong>10</strong>. Não usa segundo operando.</p>
+            <p style="font-weight:700;">NA HORA DA PROVA &mdash; frase da questão &rarr; o que você escreve (resumo de tudo):</p>
+            <table>
+                <tr><th>Se a questão disser...</th><th>Escreva isso</th><th>Por quê</th></tr>
+                <tr><td>"verifique se o número é par ou ímpar (bit 0)"</td><td><code>AND EAX, #1</code></td><td>a máscara <code>#1</code> deixa passar só o bit 0; sobra 1 &rarr; ímpar, sobra 0 &rarr; par</td></tr>
+                <tr><td>"ligue o bit 3 à força" / "ative o bit que vale 8"</td><td><code>OR EAX, #8</code></td><td>o <code>OR</code> liga esse bit e não mexe nos outros</td></tr>
+                <tr><td>"alterne/inverta um bit a cada leitura"</td><td><code>XOR EAX, #1</code></td><td><code>XOR</code> troca o bit quando ele é diferente do operando</td></tr>
+                <tr><td>"inverta todos os bits"</td><td><code>NOT EAX</code></td><td>só inverte tudo (1 operando)</td></tr>
+            </table>
         </div>
         <div class="card-dica">
             <strong>Regra prática para a prova:</strong> questão falou em <em>máscara</em>, <em>ligar/desligar bit</em>, <em>inverter</em> ou <em>comparar bits</em> &rarr; é BOOLEAN. Falou em somar/contar/multiplicar &rarr; é ARITHMETIC.
@@ -2748,10 +2812,14 @@
 
     <!-- ==================== BLOCO 18: QUESTÕES DE PROVA ==================== -->
     <h2 id="sec-18">18. Questões de Prova &mdash; Resolvidas Passo a Passo</h2>
+    <div class="card-dica">
+        <strong>Sobre a seção:</strong> os enunciados abaixo são do bloco de notas do professor (ele escreveu só a pergunta). As resoluções são propostas deste guia <strong>seguindo o formato dele</strong>.
+    </div>
 
     <h3>18.1 &mdash; Exemplo já resolvido na seção 17.4 (contador até N)</h3>
     <div class="card">
         <p>Fluxograma &rarr; código com <code>CMP</code> + <code>JNE</code> (Do&nbsp;While). Revise a <a href="#sec-17">seção 17.4</a>.</p>
+        <p>Repare no formato do professor: o programa <strong>acaba exatamente no último <code>OUT</code></strong> &mdash; não existe salto "pro fim", o último <code>OUT</code> é a última instrução.</p>
     </div>
 
     <h3>18.2 &mdash; Questão 1: Fatorial de N (lido via teclado)</h3>
@@ -2764,14 +2832,14 @@
   0000 0018   MOV contador, #1       ; começa multiplicando por 1
 
   0000 0024   CMP N, contador        ; teste: N - contador
-  0000 0030   JL  0000 0068          ; se N < contador -> terminou, vai pro fim
+  0000 0030   JL  0000 0068          ; se N < contador -> sai do laço (pula pro OUT)
   0000 0038   MOV EAX, fatorial      ; prepara o multiplicando
   0000 0044   MUL contador           ; EAX = EAX × contador
   0000 004C   MOV fatorial, EAX      ; guarda o novo fatorial
   0000 0058   INC contador           ; próximo multiplicador
-  0000 0060   JMP 0000 0024          ; volta ao teste
+  0000 0060   JMP 0000 0024          ; volta ao teste (é o laço)
 
-  0000 0068   OUT monitor, fatorial  ; fim: mostra o resultado
+  0000 0068   OUT monitor, fatorial  ; última instrução: mostra o resultado
         </div>
         <p><strong>Conferindo os endereços (mesma regra dos exemplos 17.4/17.6):</strong></p>
         <table>
@@ -2806,15 +2874,15 @@
   0000 0024   MOV contador, #2       ; já temos 2 termos mostrados
 
   0000 0030   CMP N, contador        ; teste: N - contador
-  0000 003C   JLE 0000 0084          ; se N <= contador -> já mostrou tudo, fim
+  0000 003C   JLE 0000 0084          ; se N <= contador -> sai do laço (pula pro OUT)
   0000 0044   MOV EAX, t1            ; prepara a soma
   0000 0050   ADD EAX, t2            ; próximo = t1 + t2
   0000 005C   MOV t1, t2             ; termo1 "anda"
   0000 0068   MOV t2, EAX            ; termo2 = novo termo
   0000 0074   INC contador           ; conta mais um termo
-  0000 007C   JMP 0000 0030          ; volta ao teste
+  0000 007C   JMP 0000 0030          ; volta ao teste (é o laço)
 
-  0000 0084   OUT monitor, t2        ; fim: mostra o último termo calculado
+  0000 0084   OUT monitor, t2        ; última instrução: mostra o último termo calculado
         </div>
         <p><strong>Endereços na mesma regra do professor</strong> (1 operando &rarr; +0x8; 2 operandos &rarr; +0x0C): <code>JLE 0000 0084</code> (= 132) vai para o <code>OUT</code> final; <code>JMP 0000 0030</code> (= 48) volta para o teste.</p>
         <p><strong>Sequência para N = 5:</strong> 0, 1 &rarr; t1=0,t2=1 &rarr; próximo=1 &rarr; t1=1,t2=1 &rarr; próximo=2 &rarr; t1=1,t2=2 &rarr; próximo=3 &rarr; t1=2,t2=3 &rarr; último termo = <strong>3</strong> (sequência 0,1,1,2,3). ✓</p>
@@ -2831,21 +2899,16 @@
   0000 0000   IN N, teclado          ; lê o número
   0000 000C   MOV AX, N              ; AX = dividendo
   0000 0018   MOV BL, #2             ; divisor = 2  (BL é um registrador auxiliar)
-  0000 0024   DIV BL                 ; AL = AX/BL (quociente), AH = resto
-  0000 002C   CMP AH, #0             ; resto = 0 ?
-  0000 0038   JE  0000 0048          ; se sim -> é par
-  0000 0040   JMP 0000 005C          ; se não -> é ímpar
-
-  0000 0048   OUT monitor, #0        ; par: sinaliza PAR (0)
-  0000 0054   JMP 0000 0068          ; pula o bloco do ímpar -> vai pro fim
-
-  0000 005C   OUT monitor, #1        ; ímpar: sinaliza ÍMPAR (1)
-
-  0000 0068   ...                    ; fim: (para vários números, repete com outro IN)
+  0000 0024   DIV BL                 ; AL = quociente, AH = resto
+  0000 002C   CMP AH, #0             ; teste: resto = 0?
+  0000 0038   JE  0000 0054          ; se par -> salta pro OUT do par (bloco THEN)
+  0000 0040   OUT monitor, #1        ; ímpar: mostra 1 (bloco ELSE, cai aqui)
+  0000 004C   JMP 0000 0060          ; fim do ELSE: pula o OUT do par (fim do programa)
+  0000 0054   OUT monitor, #0        ; par: mostra 0  (última instrução do programa)
         </div>
-        <p><strong>Endereços na mesma regra do professor:</strong> <code>JE 0000 0048</code> (= 72) &rarr; par; <code>JMP 0000 005C</code> (= 92) &rarr; ímpar; <code>JMP 0000 0068</code> (= 104) &rarr; fim.</p>
+        <p><strong>Endereços na mesma regra do professor:</strong> <code>JE 0000 0054</code> (= 84) &rarr; bloco par; <code>JMP 0000 0060</code> (= 96) &rarr; endereço logo após o último <code>OUT</code> (= fim do programa). O <code>JMP 0000 0060</code> é o "não pode cair no bloco do par": sem ele, depois de mostrar o 1 o programa continuaria e mostraria o 0 também. É o <em>fim do THEN</em> que a estrutura IF, THEN, ELSE do professor exige (Obs dele: o JUMP também serve para IF, THEN, ELSE).</p>
         <p><strong>Obs. importante:</strong> o <code>DIV</code> <strong>destrói o dividendo</strong> &mdash; o valor que estava em <code>AX</code> é sobrescrito por <code>AL</code> (quociente) e <code>AH</code> (resto). Por isso o teste é feito com <code>AH</code> logo após o <code>DIV</code>; qualquer valor anterior em <code>AX</code> se perde.</p>
-        <p><strong>Testando N = 7:</strong> <code>MOV AX,7</code> &rarr; <code>MOV BL,#2</code> &rarr; <code>DIV BL</code> &rarr; AL = 3, AH = <strong>1</strong> &rarr; <code>CMP AH,#0</code> &rarr; <code>JE</code> não salta &rarr; ímpar. ✓ &nbsp; <strong>N = 4:</strong> AH = <strong>0</strong> &rarr; <code>JE par</code> salta &rarr; par. ✓</p>
+        <p><strong>Testando N = 7:</strong> <code>MOV AX,7</code> &rarr; <code>MOV BL,#2</code> &rarr; <code>DIV BL</code> &rarr; AL = 3, AH = <strong>1</strong> &rarr; <code>CMP AH,#0</code> &rarr; <code>JE</code> não salta &rarr; mostra 1 (ímpar) &rarr; <code>JMP 0000 0060</code> termina. ✓ &nbsp; <strong>N = 4:</strong> AH = <strong>0</strong> &rarr; <code>JE 0000 0054</code> salta &rarr; mostra 0 (par). ✓</p>
         <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
             <strong>Frase "mastigada":</strong> par é quando <strong>resto 0</strong>; ímpar quando <strong>resto 1</strong>. Para N números, esse bloco fica dentro de um laço comandado por um contador.
         </div>
@@ -2869,6 +2932,9 @@
             <li>Na escrita do código, o salto do "fim do THEN" usa um <code>JMP</code> incondicional (para pular o ELSE).</li>
             <li>O teste da condição usa <code>CMP</code> + <code>Jxx</code> (condicional).</li>
         </ul>
+        <div class="card-dica">
+            <strong>Traduzindo para o formato do professor (com endereços):</strong> O "rótulo" <code>fim_if</code> não é escrito na prova &mdash; é o <em>endereço logo após a última instrução</em>. Exemplo real da <a href="#sec-18">questão 18.4</a>: o <code>JMP 0000 0060</code> pula o bloco do par e vai direto para o fim do programa (não há instrução além do último <code>OUT</code>).
+        </div>
     </div>
 
     <!-- ==================== RODAPÉ ==================== -->
