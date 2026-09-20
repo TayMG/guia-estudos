@@ -2937,6 +2937,100 @@
         </div>
     </div>
 
+    <h3>18.6 &mdash; Questões práticas com BOOLEAN (proposta do guia)</h3>
+    <div class="card-dica">
+        <strong>Sobre esta seção:</strong> o professor não resolveu BOOLEAN no bloco de notas (a questão de par/ímpar dele usa <code>DIV</code>). Estas resoluções são <strong>propostas deste guia</strong> no mesmo formato dele &mdash; mesma regra de endereços, programa termina no último <code>OUT</code>.
+    </div>
+
+    <div class="card">
+        <p style="font-weight:700;">A regra de ouro antes de tudo:</p>
+        <p><strong>Toda instrução BOOLEAN faz <code>DST = DST [op] SRC</code></strong> &mdash; o resultado vai para o <strong>primeiro operando</strong>. Por isso a sequência padrão numa questão é sempre:</p>
+        <div class="diagrama" style="color:var(--prova-text);">
+   IN N, teclado        ; 1) entra o dado
+   MOV EAX, N           ; 2) traz pro EAX (é ele que o BOOLEAN vai alterar)
+   AND EAX, #1          ; 3) a instrução em si [AND / OR / XOR / NOT]
+   CMP ...  Jxx ...     ; 4) só se a questão pedir decisão (ex.: o AND do par/ímpar)
+   OUT monitor, EAX     ; 5) mostra o resultado; programa termina aqui
+        </div>
+        <p><strong>E as regras do professor pra qualquer programa:</strong> teste <strong>sempre</strong> com <code>CMP</code> + <code>Jxx</code>; o programa <strong>termina no último <code>OUT</code></strong> (nada de "JMP pro fim" que caia em endereço vazio).</p>
+    </div>
+
+    <div class="card-prova">
+        <p><strong>▸ <code>AND</code> &mdash; "o número é par ou ímpar?"</strong></p>
+        <p><strong>Enunciado:</strong> "Dado N, identifique se é par ou ímpar, analisando o bit 0."</p>
+        <p><strong>Raciocínio:</strong> <code>AND EAX, #1</code> deixa passar <strong>só o bit 0</strong> (a máscara <code>#1</code> = <code>0001b</code>). Sobrou 1 &rarr; ímpar; sobrou 0 &rarr; par.</p>
+        <div class="diagrama" style="color:var(--prova-text);">
+   0000 0000   IN N, teclado          ; lê o número
+   0000 000C   MOV EAX, N             ; copia pro EAX (o AND vai alterar ele)
+   0000 0018   AND EAX, #1            ; máscara: apaga tudo, sobra só o bit 0
+   0000 0024   CMP EAX, #0            ; teste: o bit 0 ficou 0?
+   0000 0030   JE  0000 004C          ; sim (0) -> par -> pula pro OUT do par
+   0000 0038   OUT monitor, #1        ; não (sobrou 1) -> é ÍMPAR
+   0000 0044   JMP 0000 0058          ; fim do ELSE: pula o OUT do par (= fim)
+   0000 004C   OUT monitor, #0        ; PAR (última instrução do programa)
+        </div>
+        <p><strong>Conferindo os endereços (mesma regra dos exemplos 17.4/17.6):</strong></p>
+        <table>
+            <tr><th>Endereço</th><th>Instrução</th><th>Conta</th><th>Próximo</th></tr>
+            <tr><td><code>0000 0000</code></td><td><code>IN N, teclado</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 000C</code></td></tr>
+            <tr><td><code>0000 000C</code></td><td><code>MOV EAX, N</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 0018</code></td></tr>
+            <tr><td><code>0000 0018</code></td><td><code>AND EAX, #1</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 0024</code></td></tr>
+            <tr><td><code>0000 0024</code></td><td><code>CMP EAX, #0</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 0030</code></td></tr>
+            <tr><td><code>0000 0030</code></td><td><code>JE 0000 004C</code></td><td>1 operando &rarr; +0x8</td><td><code>0000 0038</code></td></tr>
+            <tr><td><code>0000 0038</code></td><td><code>OUT monitor, #1</code></td><td>2 operandos &rarr; +0x0C</td><td><code>0000 0044</code></td></tr>
+            <tr><td><code>0000 0044</code></td><td><code>JMP 0000 0058</code></td><td>1 operando &rarr; +0x8</td><td><code>0000 004C</code></td></tr>
+            <tr><td><code>0000 004C</code></td><td><code>OUT monitor, #0</code></td><td>2 operandos &rarr; +0x0C (fim)</td><td><code>0000 0058</code></td></tr>
+        </table>
+        <p><strong>Saltos:</strong> <code>JE 0000 004C</code> (= 76) vai direto pro <code>OUT</code> do par; <code>JMP 0000 0058</code> (= 88) é o endereço logo <strong>após o último <code>OUT</code></strong> &mdash; o "fim do programa". Sem esse <code>JMP</code>, depois de mostrar o 1 (ímpar) o programa continuaria e mostraria o 0 também.</p>
+        <p><strong>Testando N = 5</strong> (<code>0101b</code>): <code>AND</code> com <code>#1</code> &rarr; sobra <code>0001b</code> = 1 &rarr; <code>CMP 1,0</code> &rarr; não é 0 &rarr; mostra <strong>1 (ímpar)</strong> &rarr; <code>JMP</code> termina. ✓ &nbsp; <strong>N = 4</strong> (<code>0100b</code>): sobra 0 &rarr; <code>JE</code> salta &rarr; mostra <strong>0 (par)</strong>. ✓</p>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>A mesma questão, dois caminhos:</strong> o professor resolveu com <code>DIV</code> (18.4) &mdash; <code>DIV BL</code> + olhar o resto em <code>AH</code>. Aqui resolvemos com <code>AND</code> (máscara do bit 0). <strong>Os dois estão certos</strong>, só usam instruções diferentes da tabela: DIV é da ARITHMETIC, AND é da BOOLEAN. Se a questão cobrar "par/ímpar", qualquer um dos dois resolve.
+        </div>
+    </div>
+
+    <div class="card-prova">
+        <p><strong>▸ <code>OR</code> &mdash; "ligar um bit à força"</strong></p>
+        <p><strong>Enunciado:</strong> "Antes de mostrar o número, o bit 3 (que é um aviso, vale 8) deve estar SEMPRE ligado, mesmo que o resto não mude."</p>
+        <p><strong>Raciocínio:</strong> <code>OR EAX, #8</code> &mdash; o <code>#8</code> = <code>1000b</code> tem 1 só no bit 3, e o OR liga "se <em>qualquer um</em> for 1". Resultado: bit 3 vai pra 1, o resto fica intacto.</p>
+        <div class="diagrama" style="color:var(--prova-text);">
+   0000 0000   IN N, teclado          ; lê o número
+   0000 000C   MOV EAX, N             ; copia pro EAX
+   0000 0018   OR EAX, #8             ; liga o bit 3 à força (2 operandos -> +0x0C)
+   0000 0024   OUT monitor, EAX       ; mostra já com o aviso ligado (última instrução)
+        </div>
+        <p><strong>Testando N = 5:</strong> <code>0101b OR 1000b</code> = <code>1101b</code> = <strong>13</strong>. O número "mudou"? Sim &mdash; mas a questão só queria o bit 3 aceso; nenhum outro bit foi tocado.</p>
+    </div>
+
+    <div class="card-prova">
+        <p><strong>▸ <code>XOR</code> &mdash; "alternar um bit a cada leitura"</strong></p>
+        <p><strong>Enunciado:</strong> "A cada leitura do teclado, o bit 0 deve alternar (de 0&rarr;1, de 1&rarr;0)."</p>
+        <p><strong>Raciocínio:</strong> o XOR responde em cada coluna "os dois bits são iguais?" &mdash; iguais dão 0, diferentes dão 1. Como o <code>#1</code> tem 1 só no bit 0, esse bit <strong>inverte</strong> e o resto fica intacto.</p>
+        <div class="diagrama" style="color:var(--prova-text);">
+   0000 0000   IN N, teclado          ; lê o número
+   0000 000C   MOV EAX, N             ; copia pro EAX
+   0000 0018   XOR EAX, #1            ; alterna o bit 0
+   0000 0024   OUT monitor, EAX       ; última instrução
+        </div>
+        <p><strong>Testando duas leituras:</strong> 1ª: N = 5 (<code>0101b</code>) &rarr; <code>XOR EAX,#1</code> &rarr; <code>0100b</code> = 4 (era 1, virou 0). 2ª: N = 4 (<code>0100b</code>) &rarr; <code>0101b</code> = 5 (era 0, voltou a 1). Por isso "alterna". E o truque: <code>XOR EAX, EAX</code> zera o registrador (todo bit é igual a si mesmo &rarr; tudo dá 0).</p>
+    </div>
+
+    <div class="card-prova">
+        <p><strong>▸ <code>NOT</code> &mdash; "inverter todos os bits"</strong></p>
+        <p><strong>Enunciado:</strong> "Inverta todos os bits de N antes de mostrar."</p>
+        <p><strong>Raciocínio:</strong> <code>NOT</code> só troca cada bit (0&rarr;1, 1&rarr;0). <strong>Atenção: é a única com 1 operando</strong> &mdash; o endereço anda <code>+0x08</code>, não <code>+0x0C</code>.</p>
+        <div class="diagrama" style="color:var(--prova-text);">
+   0000 0000   IN N, teclado          ; lê o número
+   0000 000C   MOV EAX, N             ; copia pro EAX
+   0000 0018   NOT EAX                ; 1 operando -> +0x08
+   0000 0020   OUT monitor, EAX       ; mostra invertido (última instrução)
+        </div>
+        <p><strong>Conferindo:</strong> <code>MOV</code> em 000C (+0x0C) &rarr; <code>NOT</code> em 0018 (+0x08) &rarr; <code>OUT</code> em 0020. <strong>Testando N = 5:</strong> <code>0101b</code> &rarr; <code>1010b</code> = 10. Ele não soma nem multiplica &mdash; cada bit apenas troca.</p>
+    </div>
+
+    <div class="card-dica">
+        <strong>Frase "mastigada" pra revisão rápida:</strong> AND = "os dois têm que ser 1" (lê um bit, ex. par/ímpar); OR = "basta um ser 1" (liga bit à força); XOR = "iguais dão 0" (alterna bit); NOT = "inverte tudo" (1 operando!). Se a questão for "par ou ímpar" e você lembrar só de um jeito de resolver, lembra do 18.4 (DIV) &mdash; ele também resolve.
+    </div>
+
     <!-- ==================== RODAPÉ ==================== -->
     <div style="text-align:center; margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border); color:var(--text-muted); font-size:0.85rem;">
         Arquitetura de Computadores &mdash; Guia de Estudo<br>
