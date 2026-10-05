@@ -417,6 +417,8 @@
     <a href="#sec-16">16. Como Interpretar</a>
     <a href="#sec-17">17. Controle de Fluxo</a>
     <a href="#sec-18">18. Questões de Prova</a>
+    <a href="#sec-19">19. Paginação</a>
+    <a href="#sec-20">20. Prática de Paginação</a>
 </nav>
 <div class="container">
 
@@ -674,7 +676,7 @@
         <table>
             <tr><th>Método</th><th>Como funciona</th><th>Quando usado</th></tr>
             <tr><td><strong>Segmentação</strong></td><td>A memória é dividida em blocos (segmentos) de tamanhos variados</td><td>Sempre ativo no modo protegido</td></tr>
-            <tr><td><strong>Paginação</strong></td><td>A memória é dividida em páginas de tamanho fixo (tipicamente 4 KB)</td><td>Opcional, gerenciado pelo SO</td></tr>
+            <tr><td><strong>Paginação</strong></td><td>A memória é dividida em páginas de tamanho fixo (tipicamente 4 KB)</td><td>Opcional, gerenciado pelo SO &mdash; <a href="#sec-19">ver seção 19</a></td></tr>
             <tr><td><strong>Segmentação + Paginação</strong></td><td>Primeiro segmenta, depois pagina</td><td>Combinação dos dois métodos</td></tr>
         </table>
     </div>
@@ -1197,7 +1199,7 @@
             <li>
                 <strong>Definir o endereço físico</strong><br>
                 Se a paginação estiver <strong>desativada</strong>: endereço físico = endereço linear.<br>
-                Se a paginação estiver <strong>ativa</strong>: o endereço linear é traduzido usando tabelas de páginas para obter o endereço físico.
+                Se a paginação estiver <strong>ativa</strong>: o endereço linear é traduzido usando tabelas de páginas para obter o endereço físico (<a href="#sec-19">ver seção 19</a>).
             </li>
         </ol>
     </div>
@@ -1740,6 +1742,33 @@
 
             <dt>Paginação</dt>
             <dd>Técnica de dividir a memória em páginas de tamanho fixo (tipicamente 4 KB) para gerenciamento eficiente.</dd>
+
+            <dt>Página</dt>
+            <dd>Pedacinho de <strong>4 KB</strong> em que o <em>processo</em> é dividido na paginação.</dd>
+
+            <dt>Frame (Quadro de página)</dt>
+            <dd>Pedacinho de <strong>4 KB</strong> da <em>memória física</em> onde uma página é colocada.</dd>
+
+            <dt>Memória Virtual (Mv)</dt>
+            <dd>Parte do <strong>HD reservada</strong> para se comportar como continuação da memória principal. Guarda as páginas do processo.</dd>
+
+            <dt>Remapeamento de endereço</dt>
+            <dd>Quando um endereço lógico passa a ocupar um endereço físico diferente durante a execução (a página voltou a um frame diferente).</dd>
+
+            <dt>Swap</dt>
+            <dd>Substituição de <strong>todas as páginas</strong> de um programa pelas de outro quando todos os frames estão ocupados.</dd>
+
+            <dt>Unidade de Paginação</dt>
+            <dd>Parte da arquitetura x86 (modo protegido) que, a partir do endereço linear (da segmentação), calcula o endereço físico por endereçamento multinível.</dd>
+
+            <dt>Tabela de Diretório</dt>
+            <dd>Tabela de 4 KB com 1024 entradas (4 bytes cada) que aponta para as tabelas de página. Seu endereço base fica no <strong>CR3</strong>.</dd>
+
+            <dt>Tabela de Página</dt>
+            <dd>Tabela de 4 KB com 1024 entradas (4 bytes cada) que aponta para as páginas (endereço físico base).</dd>
+
+            <dt>OFFSET da Página</dt>
+            <dd>Os 12 bits menos significativos do endereço linear; somado ao endereço da página (Epg) completa o endereço físico.</dd>
 
             <dt>Ring (Anel)</dt>
             <dd>Nível de privilégio no modo protegido. Ring 0 = kernel (máxima privilégio), Ring 3 = aplicativos (mínima).</dd>
@@ -3031,6 +3060,451 @@
         <strong>Frase "mastigada" pra revisão rápida:</strong> AND = "os dois têm que ser 1" (lê um bit, ex. par/ímpar); OR = "basta um ser 1" (liga bit à força); XOR = "iguais dão 0" (alterna bit); NOT = "inverte tudo" (1 operando!). Se a questão for "par ou ímpar" e você lembrar só de um jeito de resolver, lembra do 18.4 (DIV) &mdash; ele também resolve.
     </div>
 
+    <!-- ==================== BLOCO 19: PAGINAÇÃO ==================== -->
+    <h2 id="sec-19">19. Paginação (Gerenciamento de Memória) &mdash; Assunto de Prova</h2>
+
+    <div class="card-importante">
+        <strong>Tudo desta seção veio do bloco de notas do professor &mdash; é assunto de prova.</strong>
+        Paginação é a técnica de gerenciamento de memória (usada no modo protegido) que <strong>divide o processo e a memória física em pedaços iguais de 4 KB</strong>, fazendo a memória caber mesmo com espaço físico limitado. Leia com calma: cada parágrafo do professor vira pergunta de prova.
+    </div>
+
+    <div class="card">
+        <h3>19.1 &mdash; Por que a paginação existe? (o problema que ela resolve)</h3>
+        <p>A <strong>memória física tem tamanho limitado</strong>. <strong>Sem a paginação</strong>, quando um processo vai ser executado ele precisa de um espaço contíguo livre na memória física; se não existir memória disponível para alocar o processo, o <strong>sistema operacional informa que não existe memória disponível e o processo não é executado</strong>.</p>
+        <p><strong>Com a paginação</strong>, o cenário muda:</p>
+        <ul>
+            <li>O <strong>processo</strong> a ser executado é dividido em tamanhos iguais de <strong>4 KB</strong> &rarr; cada pedaço é uma <strong>página</strong>.</li>
+            <li>A <strong>memória física disponível</strong> também é dividida em tamanhos iguais de <strong>4 KB</strong> &rarr; cada pedaço é um <strong>frame</strong> ou <strong>quadro de página</strong>.</li>
+        </ul>
+        <p>Ou seja: o processo não precisa caber <strong>inteiro</strong> na RAM. Ele vai sendo trazido página a página &mdash; só o que está em uso fica carregado.</p>
+    </div>
+
+    <div class="card">
+        <h3>19.2 &mdash; Vocabulário de prova (decore):</h3>
+        <table>
+            <tr><th>Termo</th><th>O que é (do bloco de notas)</th></tr>
+            <tr><td><strong>Página</strong></td><td>Pedacinho de <strong>4 KB</strong> em que o <em>processo</em> é dividido.</td></tr>
+            <tr><td><strong>Frame / Quadro de página</strong></td><td>Pedacinho de <strong>4 KB</strong> da <em>memória física</em> em que uma página é colocada.</td></tr>
+            <tr><td><strong>Memória Virtual (Mv)</strong></td><td>Parte do <strong>HD reservada</strong> para se comportar como uma <em>continuação da memória principal</em>. As páginas do processo ficam armazenadas nela.</td></tr>
+            <tr><td><strong>Página fora dos frames</strong></td><td>Página que está na memória virtual mas ainda não foi copiada para nenhum frame da RAM.</td></tr>
+            <tr><td><strong>Remapeamento de endereço</strong></td><td>Quando um <strong>endereço lógico</strong> passa a ocupar um <strong>endereço físico diferente</strong> durante as execuções (a página voltou a um frame que não era o de antes).</td></tr>
+            <tr><td><strong>Swap</strong></td><td>Operação de <strong>substituir todas as páginas</strong> de um programa pelas de outro quando todos os frames estão ocupados.</td></tr>
+            <tr><td><strong>Unidade de Paginação</strong></td><td>Implementação da paginação no x86 modo protegido: a partir do <strong>endereço linear</strong> (calculado pela segmentação) calcula o <strong>endereço físico</strong>.</td></tr>
+        </table>
+    </div>
+
+    <div class="card-prova">
+        <h3>19.3 &mdash; As 3 tabelas do bloco de notas (como o professor desenha):</h3>
+        <p style="margin-top:.6rem;">O professor representa a paginação em 3 tabelas: a <strong>Tabela 01</strong> são as <strong>páginas do processo</strong> (todas armazenadas na memória virtual); a <strong>Tabela 02</strong> são os <strong>frames da memória principal</strong> (onde as páginas são <em>copiadas</em>); a <strong>Tabela 03</strong> é o <strong>HD</strong>, que contém a memória virtual.</p>
+
+        <p style="font-weight:700; margin-top:1rem;">Tabela 01 &mdash; Página (o processo dividido, na memória virtual):</p>
+        <table>
+            <tr><th>Página</th><th>Tamanho</th><th>Onde fica</th></tr>
+            <tr><td>Página 8</td><td>4 KB</td><td>Memória Virtual</td></tr>
+            <tr><td>Página 7</td><td>4 KB</td><td>Memória Virtual</td></tr>
+            <tr><td>Página 6</td><td>4 KB</td><td>Memória Virtual</td></tr>
+            <tr><td>Página 5</td><td>4 KB</td><td>Memória Virtual</td></tr>
+            <tr><td>Página 4</td><td>4 KB</td><td>Memória Virtual</td></tr>
+            <tr><td>Página 3</td><td>4 KB</td><td>Memória Virtual</td></tr>
+            <tr><td>Página 2</td><td>4 KB</td><td>Memória Virtual</td></tr>
+            <tr><td>Página 1</td><td>4 KB</td><td>Memória Virtual</td></tr>
+            <tr><td>Página 0</td><td>4 KB</td><td>Memória Virtual</td></tr>
+        </table>
+
+        <p style="font-weight:700; margin-top:1rem;">Tabela 02 &mdash; Memória Principal (os frames da RAM onde as páginas são colocadas):</p>
+        <table>
+            <tr><th>Frame</th><th>Tamanho</th><th>Onde fica</th></tr>
+            <tr><td>Frame 5</td><td>4 KB</td><td>Memória Principal (RAM)</td></tr>
+            <tr><td>Frame 4</td><td>4 KB</td><td>Memória Principal (RAM)</td></tr>
+            <tr><td>Frame 3</td><td>4 KB</td><td>Memória Principal (RAM)</td></tr>
+            <tr><td>Frame 2</td><td>4 KB</td><td>Memória Principal (RAM)</td></tr>
+            <tr><td>Frame 1</td><td>4 KB</td><td>Memória Principal (RAM)</td></tr>
+            <tr><td>Frame 0</td><td>4 KB</td><td>Memória Principal (RAM)</td></tr>
+        </table>
+
+        <p style="font-weight:700; margin-top:1rem;">Tabela 03 &mdash; HD (onde fica a memória virtual &mdash; a "continuação" da RAM):</p>
+        <div class="diagrama" style="color:var(--prova-text);">
+   ┌──────────────────────────────┐
+   │              HD              │
+   │  ┌────────────────────────┐  │
+   │  │     Memória Virtual    │  │  <- área do HD reservada p/ ser a
+   │  │ (Mv) = HD + Swap       │  │     continuação da memória principal
+   │  └────────────────────────┘  │
+   └──────────────────────────────┘
+        </div>
+        <p>Note a ligação: <strong>página → memória virtual (Tabela 01 e 03)</strong> e <strong>frame → memória principal (Tabela 02)</strong>. O fluxo entre uma e outra é o "ciclo de vida" do item <a href="#sec-19">19.4</a> logo abaixo.</p>
+    </div>
+
+    <div class="card">
+        <h3>19.4 &mdash; Como funciona: o ciclo de vida da página (mastigado):</h3>
+        <ol class="passo-lista">
+            <li><strong>Processo dividido:</strong> o processo é quebrado em várias páginas de 4 KB e <strong>armazenado na memória virtual</strong> (HD).</li>
+            <li><strong>Cópias para a RAM:</strong> somente algumas das páginas do processo são <strong>copiadas para os frames disponíveis</strong> da memória principal.</li>
+            <li><strong>Página requisitada e ausente:</strong> durante o processamento, se for feita referência a uma página que <strong>não está em nenhum frame</strong>, a página referenciada deve ser <strong>trazida para um dos frames</strong>.</li>
+            <li><strong>Substituição (se não tiver frame livre):</strong> a página nova <strong>sobrescreve a página anterior</strong> que estava carregada no frame.</li>
+            <li><strong>Página alterada volta primeiro (preciosa!):</strong> se a página que será substituída <strong>tiver sido alterada</strong>, antes de ser sobrescrita ela é <strong>enviada de volta para a memória virtual</strong> (para não perder as mudanças).</li>
+            <li><strong>Pode voltar a outro lugar:</strong> durante a execução, uma página já retirada pode ser <strong>requisitada novamente</strong>; ao ser trazida para a RAM, ela pode ocupar <strong>um frame diferente</strong> do anterior &rarr; isso é o remapeamento (item <a href="#sec-19">19.5</a>).</li>
+        </ol>
+        <div class="card-dica">
+            <strong>Resumo de prova:</strong> RAM só tem os frames; HD (memória virtual) guarda tudo. Página <strong>ausente</strong> → busca da memória virtual. Frame <strong>ocupado</strong> → sobrescreve o antigo. Página antiga <strong>alterada</strong> → salva antes na memória virtual.
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>19.5 &mdash; Remapeamento de endereço (exemplo do bloco de notas):</h3>
+        <p>Um <strong>endereço lógico</strong> pode ocupar <strong>endereços físicos diferentes</strong> ao longo da execução. É exatamente isso no exemplo do professor &mdash; o mesmo programa (4 instruções) é carregado na memória em bases físicas diferentes:</p>
+        <p style="font-weight:700; margin-top:.6rem;"><strong>Endereço lógico do programa</strong> (o mesmo nas duas execuções):</p>
+        <div class="diagrama">
+   0000 0020  (próxima instrução)
+   0000 0014  ADD total, END2
+   0000 000C  INC END2
+   0000 0000  MOV END1, END2
+        </div>
+        <p style="font-weight:700; margin-top:.6rem;"><strong>Execução 1 &mdash; colocado na memória física em 00bf:</strong></p>
+        <div class="diagrama">
+   00bf 0020
+   00bf 0014  ADD total, END2
+   00bf 000c  INC END2
+   00bf 0000  MOV END1, END2
+        </div>
+        <p style="font-weight:700; margin-top:.6rem;"><strong>Execução 2 &mdash; se executado de novo, o endereço PODE mudar (aqui foi para af10):</strong></p>
+        <div class="diagrama">
+   af10 0020
+   af10 0014  Add total, END2
+   af10 000c  Inc END2
+   af10 0000  mov END1, END2
+        </div>
+        <p><strong>Mastigando:</strong> o <code>MOV</code> tem endereço lógico <code>0000 0000</code>. Na 1ª execução ele morou no físico <code>00bf 0000</code>; na 2ª execução morou no físico <code>af10 0000</code>. Mesmo endereço lógico, endereços físicos diferentes &rarr; <strong>remapeamento de endereço</strong>. O <code>OFFSET</code> final (últimos dígitos <code>0000/000C/0014/0020</code>) se mantém: ele é interno à página; o que muda é a <strong>base física</strong> onde a página foi carregada.</p>
+        <div class="card-dica">
+            <strong>Correção feita por este guia:</strong> no bloco de notas o professor trocou <code>INC</code> e <code>ADD</code> nas colunas físicas (escreveu ADD no offset 000C e INC no 0014). Como o offset é fixo, o 000C tem de ser <strong>INC</strong> e o 0014 <strong>ADD</strong> &mdash; a correção acima acompanha o código lógico.
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>19.6 &mdash; Swap (troca completa de programas):</h3>
+        <p><strong>Obs do professor:</strong> quando um programa vai ser executado e <strong>todos os frames da memória já estão ocupados</strong> por páginas de outro programa, é necessário fazer a <strong>substituição de todas as páginas de um programa pelas páginas do programa que será executado</strong> &mdash; essa operação recebe o nome de <strong>swap</strong>.</p>
+        <div class="card-dica">
+            <strong>Diferença que cai na prova:</strong> fetch individual de página (19.4) substitui <strong>uma</strong> página quando ela é requisitada. <strong>Swap</strong> (19.6) troca <strong>o programa inteiro</strong> quando não há nenhum frame livre para o novo processo.
+        </div>
+    </div>
+
+    <div class="card-prova">
+        <h3>19.7 &mdash; Como o x86 (modo protegido) calcula o endereço físico &mdash; a conta 10 | 10 | 12:</h3>
+        <p style="margin-top:.6rem;">A paginação do x86 no modo protegido é implementada pela <strong>unidade de paginação</strong>: a partir do <strong>endereço linear</strong> (que foi calculado pela unidade de segmentação), ela calcula o <strong>endereço físico</strong>. O cálculo usa um sistema de <strong>endereçamento multinível</strong>:</p>
+        <ul>
+            <li><strong>Nível 1 e 2:</strong> usados na <strong>tabela de diretório</strong> &mdash; ela aponta para a <strong>tabela de página</strong> (nível 3).</li>
+            <li><strong>Nível 3:</strong> a <strong>tabela de página</strong> aponta para a <strong>página</strong>, que tem o <strong>endereço físico</strong>.</li>
+        </ul>
+        <p style="font-weight:700; margin-top:.8rem;">O endereço linear (32 bits) é dividido em 3 partes:</p>
+        <div class="diagrama" style="color:var(--prova-text);">
+    ┌──────────────────────────────────────────────────────────────────────────────────────┐
+    │              ENDEREÇO LINEAR (32 BITS)  →  10 bits | 10 bits | 12 bits               │
+    └──────────────────────────────────────────────────────────────────────────────────────┘
+    bit 31 (mais significativo)                                  (menos significativo) bit 0
+
+    ┌─────────────────────┐          ┌─────────────────────┐         ┌─────────────────────┐
+    │       10 bits       │          │       10 bits       │         │       12 bits       │
+    └─────────────────────┘          └─────────────────────┘         └─────────────────────┘
+               │                                │                               │
+               │ x100 = ×4                      │ x100 = ×4                     │ vai direto
+               ▼                                ▼                               ▼
+    ┌──────────┬──────────┐          ┌──────────┬──────────┐         ┌──────────┬──────────┐
+    │ Índice da tabela de │          │ Índice da tabela de │         │  OFFSET da página   │
+    │      diretório      │          │       página        │         │  (sem multiplicar)  │
+    └──────────┴──────────┘          └──────────┴──────────┘         └──────────┴──────────┘
+               │                                │                               │
+               ▼                                ▼                               ▼
+     CR3=tdir (+)→ eetdir  ──────────────→Etpg (+)→ eetpg   ──────────────→Epg (+)→ endereço físico
+                      ▼       conteúdo                ▼        conteúdo                    ▼
+             eetdir = entrada da              eetpg = entrada da                    conteúdo = Dado
+             tabela de diretório               tabela de página                      o que buscamos
+
+    Legenda:
+      x100 = ×4   o índice é multiplicado por 4 (cada entrada da tabela vale 4 bytes)
+      ──────────→   o CONTEÚDO de uma entrada vira a BASE do (+) da próxima coluna
+      CR3 = endereço base da tabela de diretório (registro do processador)
+      Etpg / Epg = conteúdo vindo da coluna anterior
+      eetdir = endereço de entrada na tabela de diretório
+      eetpg  = endereço de entrada na tabela de página
+      Estruturas da paginação (cada tabela = 4 KB = 1024 entradas × 4 bytes):
+        tabela de diretório → Etpg   |   tabela de página → Epg   |   página (4 KB) → Dado
+</div>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Fórmula de bolso (o caminho inteiro em 1 linha):</strong><br>
+            <code>eetdir = CR3 + índice_dir</code> &rarr; conteúdo = <code>Etpg</code> &rarr; <code>eetpg = Etpg + índice_pg</code> &rarr; conteúdo = <code>Epg</code> &rarr; <code>ENDEREÇO FÍSICO = Epg + offset</code>
+        </div>
+        <p style="font-weight:700; margin-top:.8rem;">Passo a passo da conta (decore a sequência):</p>
+        <ol class="passo-lista">
+            <li><strong>Separe o endereço linear em 3 partes:</strong> 10 bits mais significativos (índice da <strong>tabela de diretório</strong>), 10 bits do meio (índice da <strong>tabela de página</strong>), 12 bits menos significativos (<strong>OFFSET da página</strong>).</li>
+            <li><strong>Multiplique os dois índices por 4</strong> (<code>×4</code>): os 12 bits menos significativos <strong>não multiplica</strong> (vai direto como offset). Por quê ×4? Porque cada entrada da tabela ocupa <strong>4 bytes</strong>.</li>
+            <li><strong>Índice da tabela de diretório:</strong> pegue o endereço base da tabela de diretório (<strong>CR3</strong> &mdash; o primeiro endereço da tabela de diretório) e <strong>some o índice</strong> &rarr; resulta no <strong>endereço de entrada da tabela de diretório (eetdir)</strong>.</li>
+            <li><strong>Conteúdo de eetdir:</strong> é o que interessa &mdash; corresponde ao <strong>endereço inicial de uma das tabelas de páginas (Etpg)</strong>.</li>
+            <li><strong>Índice da tabela de página:</strong> some o índice da tabela de página ao endereço da tabela de página <code>Etpg</code> &rarr; resulta no <strong>endereço de entrada da tabela de páginas (eetpg)</strong>.</li>
+            <li><strong>Conteúdo de eetpg:</strong> corresponde ao <strong>endereço inicial de uma página (epg)</strong>.</li>
+            <li><strong>Endereço físico:</strong> some o endereço da página <code>epg</code> com o <strong>OFFSET</strong> &rarr; o endereço físico, cujo conteúdo é a informação que queremos acessar.</li>
+        </ol>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Frase "chave" do professor:</strong> o que interessa é o <strong>conteúdo</strong> do endereço de entrada &mdash; primeiro o conteúdo dá a <code>Etpg</code>, depois o conteúdo dá a <code>Epg</code>, e por fim <code>Epg + OFFSET</code> dá o endereço físico.
+        </div>
+    </div>
+
+    <div class="card-prova">
+        <h3>19.8 &mdash; Obs. do professor (tamanhos que caem na prova):</h3>
+        <ol>
+            <li>Existe apenas <strong>uma tabela de diretório ativa</strong>, com <strong>4 KB</strong> de tamanho, que armazena <strong>1024</strong> endereços iniciais de tabelas de páginas; <strong>cada endereço tem 32 bits</strong> (4 bytes).</li>
+            <li>Cada <strong>tabela de página</strong> também possui <strong>4 KB</strong> e armazena <strong>1024</strong> endereços iniciais de páginas; cada um desses endereços possui <strong>4 bytes</strong>.</li>
+            <li>Cada <strong>página</strong> também possui <strong>4 KB</strong>.</li>
+        </ol>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Confira a conta (é por isso que tudo é 4 KB):</strong> 1024 entradas &times; 4 bytes = 4096 bytes = 4 KB. A tabela de diretório tem 1024 entradas de 4 bytes, a tabela de página também, e por isso elas ocupam exatamente uma página (4 KB) cada.
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>19.9 &mdash; Exemplo numérico completo (resolvido, estilo prova):</h3>
+        <p>Calcular o endereço físico para o endereço linear <code>0x12345678</code>, com <strong>CR3 = 0x01000000</strong>:</p>
+        <ol class="passo-lista">
+            <li><strong>Escreva o endereço em binário e separe 10 | 10 | 12:</strong><br>
+                <code>0x12345678</code> = <code>0001 0010 0011 0100 0101 0110 0111 1000</code><br>
+                &rarr; diretório = <code>0001001000</code> = <strong>72</strong>; página = <code>1101000101</code> = <strong>837</strong>; offset (12 bits) = <code>0110 0111 1000</code> = <strong>0x678</strong>.</li>
+            <li><strong>Multiplique por 4 os índices:</strong> diretório <code>72 × 4 = 288</code> (0x120); página <code>837 × 4 = 3348</code> (0xD14).</li>
+            <li><strong>eetdir = CR3 + índice dir</strong> = <code>0x01000000 + 0x120</code> = <code>0x01000120</code>. <em>Conteúdo</em> (dado do problema) = <code>0x02000000</code> → essa é a <strong>Etpg</strong>.</li>
+            <li><strong>eetpg = Etpg + índice pg</strong> = <code>0x02000000 + 0xD14</code> = <code>0x02000D14</code>. <em>Conteúdo</em> (dado do problema) = <code>0x03000000</code> → essa é a <strong>Epg</strong>.</li>
+            <li><strong>Endereço físico = Epg + offset</strong> = <code>0x03000000 + 0x678</code> = <strong><code>0x03000678</code></strong> ✓</li>
+        </ol>
+        <div class="card-dica">
+            <strong>Dica de cálculo:</strong> multiplicar por 4 em binário é só <strong>deslocar 2 bits para a esquerda</strong> (acrescentar dois zeros no final). E o offset <strong>nunca é multiplicado</strong> &mdash; ele é somado por último.
+        </div>
+        <p style="margin-top:.9rem;"><a href="#sec-20">&rarr; Ver esses cálculos na prática, passo a passo com números reais, na <strong>seção 20</strong></a></p>
+    </div>
+
+    <!-- ==================== BLOCO 20: PAGINAÇÃO NA PRÁTICA ==================== -->
+    <h2 id="sec-20">20. Paginação na Prática &mdash; Aula com Números Reais</h2>
+
+    <div class="card">
+        <p>Esta é a <strong>parte prática</strong> da matéria: aqui a paginação deixa de ser teoria e vira conta. O foco continua sendo o <strong>cálculo do endereço físico</strong> (seção 19.7), só que agora com <strong>dados fixos</strong> para você treinar sem errar a base.</p>
+        <h3>20.1 &mdash; O cenário (os dados do problema)</h3>
+        <p>Todos os exercícios desta seção usam exatamente os mesmos dados. Copie e cole ao lado do caderno:</p>
+        <table>
+            <thead>
+                <tr><th>Dado</th><th>Valor</th><th>Para que serve</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>CR3</strong></td><td><code>0x0005 1000</code></td><td>Endereço base da <strong>tabela de diretório</strong> (registro do processador)</td></tr>
+                <tr><td>Tabela de diretório</td><td><code>0x0005 1000</code> &mdash; 4 KB</td><td>1024 entradas &times; 4 bytes; cada entrada aponta para uma tabela de página</td></tr>
+                <tr><td>Tabela de página A</td><td><code>0x0003 2000</code> &mdash; 4 KB</td><td>Apontoada pela entrada 72 do diretório</td></tr>
+                <tr><td>Tabela de página B</td><td><code>0x0006 4000</code> &mdash; 4 KB</td><td>Apontoada pela entrada 584 do diretório</td></tr>
+                <tr><td>Páginas (frames)</td><td>blocos de <strong>4 KB</strong></td><td>Ex.: <code>0x0000 1000</code>, <code>0x0000 7000</code>, <code>0x0000 A000</code>, <code>0x0000 B000</code></td></tr>
+            </tbody>
+        </table>
+        <div class="card-importante">
+            <strong>O que você recebe de grça e o que você precisa fazer.</strong> Em cada exercício eu digo <strong>o que está gravado dentro das tabelas</strong> (ou seja, o conteúdo de <code>eetdir</code> e de <code>eetpg</code>). Você não precisa inventar tabela nenhuma: só fazer as três somas e multiplicar os dois índices por 4.
+        </div>
+    </div>
+
+    <div class="card-prova">
+        <h3>20.2 &mdash; Exercício 1 (resolvido): traduzir o endereço linear 0x1234 5678</h3>
+        <p style="margin-top:.6rem;"><strong>Problema:</strong> com <code>CR3 = 0x0005 1000</code>, a entrada 72 do diretório contém <code>0x0003 2000</code>, a entrada 837 da tabela de página contém <code>0x0000 A000</code>. Qual é o <strong>endereço físico</strong> do endereço linear <code>0x1234 5678</code>?</p>
+
+        <p style="font-weight:700; margin-top:.9rem;">Passo 1 &mdash; Separe o endereço linear em 10 | 10 | 12:</p>
+        <p><code>0x12345678</code> = <code>0001 0010 0011 0100 0101 0110 0111 1000</code></p>
+        <table>
+            <thead>
+                <tr><th>Parte</th><th>Bits</th><th>Binário</th><th>Decimal</th><th>&times;4</th><th>Valor somado</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Índice da tabela de <strong>diretório</strong></td><td>10 (31&ndash;22)</td><td><code>0001001000</code></td><td><strong>72</strong></td><td><code>72 &times; 4 = 288</code></td><td><code>0x0000 0120</code></td></tr>
+                <tr><td>Índice da tabela de <strong>página</strong></td><td>10 (21&ndash;12)</td><td><code>1101000101</code></td><td><strong>837</strong></td><td><code>837 &times; 4 = 3348</code></td><td><code>0x0000 0D14</code></td></tr>
+                <tr><td><strong>Offset</strong> da página</td><td>12 (11&ndash;0)</td><td><code>0110 0111 1000</code></td><td>1656</td><td><strong>não multiplica</strong></td><td><code>0x0000 0678</code></td></tr>
+            </tbody>
+        </table>
+
+        <p style="font-weight:700; margin-top:.9rem;">Passo 2 &mdash; As três somas (a conta que cai na prova):</p>
+        <div class="diagrama" style="color:var(--prova-text);">
+    ┌─────────────────────────────────────────────────────────────────────────┐
+    │ CR3 = 0x0005 1000                                                       │
+    ├─────────────────────────────────────────────────────────────────────────┤
+    │> (+) 0x0000 0120   →   0x0005 1120   =   eetdir   (endereço onde leio)  │
+    │     [memória] 0x0003 2000   =   Etpg   (o que li)                       │
+    │> (+) 0x0000 0D14   →   0x0003 2D14   =   eetpg   (endereço onde leio)   │
+    │     [memória] 0x0000 A000   =   Epg    (o que li)                       │
+    │> (+) 0x0000 0678   →   0x0000 A678   =   ENDEREÇO FÍSICO                │
+    │     [memória] o DADO que o programa queria acessar                      │
+    └─────────────────────────────────────────────────────────────────────────┘
+</div>
+
+        <p style="font-weight:700; margin-top:.9rem;">Passo 3 &mdash; Escrevendo o raciocínio completo (estilo prova):</p>
+        <ol class="passo-lista">
+            <li><strong>eetdir = CR3 + índice_dir &times; 4</strong> → <code>0x0005 1000 + 0x0000 0120</code> = <code>0x0005 1120</code>. <em>Conteúdo lido:</em> <code>0x0003 2000</code> → essa é a <strong>Etpg</strong>.</li>
+            <li><strong>eetpg = Etpg + índice_pg &times; 4</strong> → <code>0x0003 2000 + 0x0000 0D14</code> = <code>0x0003 2D14</code>. <em>Conteúdo lido:</em> <code>0x0000 A000</code> → essa é a <strong>Epg</strong>.</li>
+            <li><strong>Endereço físico = Epg + offset</strong> → <code>0x0000 A000 + 0x0000 0678</code> = <strong><code>0x0000 A678</code></strong> ✓</li>
+        </ol>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Confira o resultado sem refazer a conta:</strong> o endereço físico tem que estar <strong>dentro da página</strong>. <code>0x0000 A678</code> está entre <code>0x0000 A000</code> e <code>0x0000 AFFF</code> — ou seja, dentro da página de 4 KB que começou em <code>0x0000 A000</code>. Se a resposta cair fora desse intervalo, alguma soma errou.
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>20.3 &mdash; O mesmo programa, quatro endereços (treine sem consultar)</h3>
+        <p>Agora faça as quatro traduções. <strong>Nada muda</strong> no cenário — só o endereço linear de entrada. Tabela gabarito (use para conferir depois de tentar):</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Endereço linear</th><th>dir</th><th>pg</th><th>offset</th>
+                    <th>eetdir</th><th>Etpg</th><th>eetpg</th><th>Epg</th><th>Físico</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><code>0x1234 5678</code></td><td>72</td><td>837</td><td><code>0x678</code></td><td><code>0x0005 1120</code></td><td><code>0x0003 2000</code></td><td><code>0x0003 2D14</code></td><td><code>0x0000 A000</code></td><td><strong><code>0x0000 A678</code></strong></td></tr>
+                <tr><td><code>0x1234 567C</code></td><td>72</td><td>837</td><td><code>0x67C</code></td><td><code>0x0005 1120</code></td><td><code>0x0003 2000</code></td><td><code>0x0003 2D14</code></td><td><code>0x0000 A000</code></td><td><strong><code>0x0000 A67C</code></strong></td></tr>
+                <tr><td><code>0x1234 6ABC</code></td><td>72</td><td>838</td><td><code>0xABC</code></td><td><code>0x0005 1120</code></td><td><code>0x0003 2000</code></td><td><code>0x0003 2D18</code></td><td><code>0x0000 B000</code></td><td><strong><code>0x0000 BABC</code></strong></td></tr>
+                <tr><td><code>0x9234 5678</code></td><td>584</td><td>189</td><td><code>0x978</code></td><td><code>0x0005 1920</code></td><td><code>0x0006 4000</code></td><td><code>0x0006 42F4</code></td><td><code>0x0000 5000</code></td><td><strong><code>0x0000 5978</code></strong></td></tr>
+            </tbody>
+        </table>
+        <p><strong>Detalhe das contas:</strong></p>
+        <ul>
+            <li>Linha 1 &rarr; <code>72 &times; 4 = 288 = 0x120</code>; <code>837 &times; 4 = 3348 = 0xD14</code>; <code>0x0005 1000 + 0x120 = 0x0005 1120</code>; <code>0x0003 2000 + 0xD14 = 0x0003 2D14</code>; <code>0x0000 A000 + 0x678 = 0x0000 A678</code>.</li>
+            <li>Linha 2 &rarr; só o offset mudou (<code>0x678 &rarr; 0x67C</code>). Mesma página, mesmos dois endereços de entrada, físicos <strong>consecutivos</strong> (+4).</li>
+            <li>Linha 3 &rarr; o índice da página virou 838 (<code>838 &times; 4 = 3352 = 0xD18</code> → <code>0x0003 2D18</code>), e a entrada 838 aponta para <strong>outro frame</strong> (<code>0x0000 B000</code>) — página vizinha lógica, memória física distante. É o <strong>remapeamento</strong> da seção 19.5 acontecendo na conta.</li>
+            <li>Linha 4 &rarr; o índice do <strong>diretório</strong> é o que muda (<code>584 &times; 4 = 2336 = 0x920</code>), e por isso a tabela de página é outra (<code>0x0006 4000</code> em vez de <code>0x0003 2000</code>).</li>
+        </ul>
+        <div class="card-dica">
+            <strong>Regra rápida para saber quando dois endereços estão na mesma página:</strong> compare apenas os <strong>20 bits mais significativos</strong> (índice de diretório + índice de página). Se forem iguais, os dois endereços estão na mesma página e os físicos ficam lado a lado, como na linha 2.
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>20.4 &mdash; Onde esses números vivem na memória</h3>
+        <p>Veja as três tabelas do cenário com os valores reais. As linhas com <strong><code>&gt;</code></strong> são as entradas usadas no Exercício 1 (20.2); as demais aparecem na tabela da 20.3 e na simulação da 20.5:</p>
+        <div class="diagrama">
+    ┌──────────────────────────────────────────────────────────────────────────────┐
+    │ TABELA DE DIRETÓRIO   base 0x0005 1000   4 KB                                │
+    ├──────────────────────────────────────────────────────────────────────────────┤
+    │  entrada     0 @ +0x0000  →  0x0000 0000                         │   não usada
+    │> entrada    72 @ +0x0120  →  0x0003 2000  │   Ex. 1 (20.2) e linhas 1-3 (20.3)
+    │  entrada   584 @ +0x0920  →  0x0006 4000                    │   linha 4 (20.3)
+    │  entrada  1023 @ +0x0FFC  →  0x0000 0000                    │   última entrada
+    └──────────────────────────────────────────────────────────────────────────────┘
+
+    ┌──────────────────────────────────────────────────────────────────────────────┐
+    │ TABELA DE PÁGINA A   base 0x0003 2000   4 KB                                 │
+    ├──────────────────────────────────────────────────────────────────────────────┤
+    │  entrada     0 @ +0x0000  →  0x0000 1000         │   código do programa (20.5)
+    │  entrada   128 @ +0x0200  →  0x0000 7000            │   buffer de dados (20.5)
+    │> entrada   837 @ +0x0D14  →  0x0000 A000                      │   Ex. 1 (20.2)
+    │  entrada   838 @ +0x0D18  →  0x0000 B000                    │   linha 3 (20.3)
+    │  entrada  1023 @ +0x0FFC  →  0x0000 0000                    │   última entrada
+    └──────────────────────────────────────────────────────────────────────────────┘
+
+    ┌──────────────────────────────────────────────────────────────────────────────┐
+    │ PÁGINA (frame)   base 0x0000 A000   4 KB                                     │
+    ├──────────────────────────────────────────────────────────────────────────────┤
+    │  +0x0000  ········································  +0x0FFF     │   4096 bytes
+    │> offset 0x678 (1656)  →  byte procurado = 0x0000 A678                        │
+    └──────────────────────────────────────────────────────────────────────────────┘
+        </div>
+        <div class="card-dica">
+            <strong>Olhe o endereço de cada entrada:</strong> o <em>endereço</em> da entrada 72 do diretório é <code>0x0005 1120</code> (onde eu leio) e o seu <em>conteúdo</em> é <code>0x0003 2000</code> (o que eu leio). Essa distinção &mdash; <strong>onde eu leio</strong> vs. <strong>o que eu li</strong> &mdash; é exatamente o que a banca cobra na prova.
+        </div>
+    </div>
+
+    <div class="card-prova">
+        <h3>20.5 &mdash; Simulação: um programa inteiro sendo executado</h3>
+        <p style="margin-top:.6rem;">Um programa tem endereços <strong>lógicos</strong> (os que o programador vê) bem distantes uns dos outros. Depois de traduzir cada um, o programa inteiro acaba espalhado em vários frames da memória física:</p>
+        <div class="diagrama" style="color:var(--prova-text);">
+    0x0000 0000 :  B8 0A 00        MOV AX, 10
+    0x0000 0004 :  BB 20 00        MOV BX, 32
+    0x0000 0008 :  01 D8           ADD AX, BX
+    0x0000 000C :  CD 20           OUT 20h, AX
+    0x0000 0010 :  F4              HLT
+                        .....
+    0x0000 8000 :  (buffer de dados do programa)
+    0x0000 8100 :  (buffer + 100h)
+    </div>
+        <p><strong>Tradução de cada endereço lógico (CR3 = 0x0005 1000; entrada 0 do diretório = 0x0003 2000):</strong></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Lógico</th><th>dir</th><th>pg</th><th>offset</th>
+                    <th>eetdir</th><th>Etpg</th><th>eetpg</th><th>Epg</th><th>Físico</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><code>0x0000 0000</code></td><td>0</td><td>0</td><td><code>0x000</code></td><td><code>0x0005 1000</code></td><td><code>0x0003 2000</code></td><td><code>0x0003 2000</code></td><td><code>0x0000 1000</code></td><td><strong><code>0x0000 1000</code></strong></td></tr>
+                <tr><td><code>0x0000 0004</code></td><td>0</td><td>0</td><td><code>0x004</code></td><td><code>0x0005 1000</code></td><td><code>0x0003 2000</code></td><td><code>0x0003 2000</code></td><td><code>0x0000 1000</code></td><td><strong><code>0x0000 1004</code></strong></td></tr>
+                <tr><td><code>0x0000 0008</code></td><td>0</td><td>0</td><td><code>0x008</code></td><td><code>0x0005 1000</code></td><td><code>0x0003 2000</code></td><td><code>0x0003 2000</code></td><td><code>0x0000 1000</code></td><td><strong><code>0x0000 1008</code></strong></td></tr>
+                <tr><td><code>0x0000 000C</code></td><td>0</td><td>0</td><td><code>0x00C</code></td><td><code>0x0005 1000</code></td><td><code>0x0003 2000</code></td><td><code>0x0003 2000</code></td><td><code>0x0000 1000</code></td><td><strong><code>0x0000 100C</code></strong></td></tr>
+                <tr><td><code>0x0000 0010</code></td><td>0</td><td>0</td><td><code>0x010</code></td><td><code>0x0005 1000</code></td><td><code>0x0003 2000</code></td><td><code>0x0003 2000</code></td><td><code>0x0000 1000</code></td><td><strong><code>0x0000 1010</code></strong></td></tr>
+                <tr><td><code>0x0000 1000</code></td><td>0</td><td>16</td><td><code>0x000</code></td><td><code>0x0005 1000</code></td><td><code>0x0003 2000</code></td><td><code>0x0003 2040</code></td><td><code>0x0000 9000</code></td><td><strong><code>0x0000 9000</code></strong></td></tr>
+                <tr><td><code>0x0000 8000</code></td><td>0</td><td>128</td><td><code>0x000</code></td><td><code>0x0005 1000</code></td><td><code>0x0003 2000</code></td><td><code>0x0003 2200</code></td><td><code>0x0000 7000</code></td><td><strong><code>0x0000 7000</code></strong></td></tr>
+                <tr><td><code>0x0000 8100</code></td><td>0</td><td>128</td><td><code>0x100</code></td><td><code>0x0005 1000</code></td><td><code>0x0003 2000</code></td><td><code>0x0003 2200</code></td><td><code>0x0000 7000</code></td><td><strong><code>0x0000 7100</code></strong></td></tr>
+            </tbody>
+        </table>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Três conclusões dessa tabela (caem na prova):</strong>
+            <ol style="margin:.4rem 0 0 1rem; padding-left:1rem;">
+                <li>As <strong>5 primeiras instruções</strong> estão em 4 bytes consecutivos (<code>0x1000</code> a <code>0x1010</code>) porque caem na <strong>mesma página lógica</strong> (pg = 0): só o offset anda, +4 em +4.</li>
+                <li>O <code>HLT</code> lógico <code>0x0000 0010</code> virou físico <code>0x0000 1010</code>, e a página lógica <code>0x0000 1000</code> virou o frame <code>0x0000 9000</code> — ou seja, <strong>32768 bytes de distância no lógico viraram página colada</strong> porque o offset zerou.</li>
+                <li>O buffer lógico <code>0x0000 8000</code> (32 KB depois do código) caiu no frame <code>0x0000 7000</code>: <strong>o mesmo programa ocupa memória física espalhada</strong>. É o resumo prático do remapeamento (19.5) e do fetch de página (19.4).</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>20.6 &mdash; Lista de exercícios (faça no papel antes de olhar o gabarito)</h3>
+        <ol>
+            <li>Converta <code>0x0000 A5F0</code> para binário e separe em 10 | 10 | 12. Diga os três valores em decimal.</li>
+            <li>Com <code>CR3 = 0x0020 0000</code>, qual é o <code>eetdir</code> do índice de diretório 7?</li>
+            <li>A entrada 837 de uma tabela de página começa em qual byte da tabela?</li>
+            <li>CR3 = <code>0x0005 1000</code>; a entrada 128 do diretório contém <code>0x0009 0000</code>; a entrada 1 dessa tabela de página contém <code>0x0000 E000</code>. Traduza o endereço linear <code>0x2000 1000</code>.</li>
+            <li><strong>Erro a encontrar:</strong> alguém escreveu <code>0x0005 1000 + 128 = 0x0005 1080</code> para o índice de diretório 128. Qual entrada essa pessoa leu de verdade, e qual era o endereço correto?</li>
+            <li>Os endereços lineares <code>0x1234 5678</code> e <code>0x1234 567C</code> caem na mesma página? E no mesmo frame? Justifique usando os 20 bits mais significativos.</li>
+            <li>Por que os dois índices são multiplicados por 4 e o offset não é?</li>
+            <li>Qual é o maior offset possível dentro de uma página? E quantos bytes tem a página?</li>
+            <li>Com o exercício 1 (dir = 72, pg = 837), e se o offset fosse <code>0xFFF</code>? O endereço físico sairia da página?</li>
+            <li>Com uma tabela de diretório de 1024 entradas e páginas de 4 KB, quanta memória virtual o processo pode endereçar?</li>
+        </ol>
+        <div class="card-dica">
+            <strong>Tempo sugerido:</strong> ~10 minutos para os 10 itens. Errar é normal nas duas primeiras tentativas — o importante é comparar com o gabarito e saber <strong>qual passo</strong> você errou.
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>20.7 &mdash; Gabarito comentado</h3>
+        <ol>
+            <li><code>0x0000 A5F0</code> = <code>0000 0000 0000 0000 1010 0101 1111 0000</code> → diretório = <code>0000000000</code> = <strong>0</strong>; página = <code>0000001010</code> = <strong>10</strong>; offset = <code>0101 1111 0000</code> = <strong>1520</strong> (<code>0x5F0</code>). Conferência: <code>10 &times; 4096 + 1520 = 42.480 = 0xA5F0</code> ✓</li>
+            <li><code>7 &times; 4 = 28 = 0x1C</code> → <code>eetdir = 0x0020 0000 + 0x1C = 0x0020 001C</code>.</li>
+            <li><code>837 &times; 4 = 3348 = 0xD14</code> → começa no byte <strong>3348</strong> da tabela (o 3349º byte, se contar do 1).</li>
+            <li><code>0x2000 1000 &gt;&gt; 22 = 128</code> → dir = <strong>128</strong>; <code>0x2000 1000 &gt;&gt; 12 &amp; 0x3FF = 1</code> → pg = <strong>1</strong>; offset = <code>0x000</code>.
+                <br>eetdir = <code>0x0005 1000 + 0x200 = 0x0005 1200</code> → <strong>Etpg = 0x0009 0000</strong>.
+                <br>eetpg = <code>0x0009 0000 + 0x4 = 0x0009 0004</code> → <strong>Epg = 0x0000 E000</strong>.
+                <br>físico = <code>0x0000 E000 + 0x000 = <strong>0x0000 E000</strong></code>.</li>
+            <li>Ele somou <strong>128 bytes</strong> em vez de <strong>512 bytes</strong>. <code>128 &divide; 4 = 32</code> → leu a <strong>entrada 32</strong> do diretório (enquanto queria a 128). O correto é <code>0x0005 1000 + 0x200 = 0x0005 1200</code>. A entrada 32 estava lá, mas era a entrada errada — e nada na conta denuncia o erro.</li>
+            <li><strong>Sim, a mesma página e o mesmo frame.</strong> Os 20 bits mais significativos (<code>0001001000&nbsp;1101000101</code>) são idêntticos; só o offset muda (<code>0x678</code> → <code>0x67C</code>). Resultado: <code>0x0000 A678</code> e <code>0x0000 A67C</code>, <strong>consecutivos</strong>.</li>
+            <li>Porque cada <strong>entrada da tabela ocupa 32 bits = 4 bytes</strong>, então o número da entrada vira byte multiplicando por 4. O offset já <strong>é</strong> o número do byte dentro da página (0 a 4095): não existe entrada de tabela para multiplicar.</li>
+            <li>12 bits → de 0 a 4095, ou seja <code>0x000</code> a <code>0xFFF</code>. E a página tem <code>4095 + 1 = 4096 bytes = 4 KB</code>.</li>
+            <li>Físico = <code>0x0000 A000 + 0xFFF = 0x0000 AFFF</code>. <strong>Não sai da página</strong> — esse é o último byte dela. Um offset <code>0x1000</code> seria impossível com 12 bits: ele simplesmente <strong>não existe</strong> no formato (passar de <code>0xFFF</code> muda o índice de página para 838).</li>
+            <li><code>1024 &times; 1024 &times; 4 KB = 2^10 &times; 2^10 &times; 2^12 = 2^32 bytes = 4 GB</code>. E só as <strong>tabelas</strong> ocupam <code>1024 &times; 4 KB = 4 MB</code>.</li>
+        </ol>
+    </div>
+
+    <div class="card-prova">
+        <h3>20.8 &mdash; Pegadinhas clássicas (as que zeram prova)</h3>
+        <ol>
+            <li><strong>Esquecer o &times;4.</strong> É o erro número 1 — e o pior, porque <strong>não dá erro de digitação</strong>: o resultado continua parecendo um endereço válido (exercício 5).</li>
+            <li><strong>Multiplicar o offset por 4 também.</strong> O offset já é o byte dentro da página; multiplicar joga o acesso para outra página.</li>
+            <li><strong>Usar o <code>eetdir</code> como base da segunda soma.</strong> A base é o <strong>conteúdo</strong> de <code>eetdir</code> (<code>Etpg</code>), não o próprio <code>eetdir</code>.</li>
+            <li><strong>Inverter a ordem dos índices.</strong> O índice de <strong>diretório</strong> é o bloco mais à esquerda (bits 31&ndash;22); o de <strong>página</strong> é o do meio (21&ndash;12).</li>
+            <li><strong>Usar CR3 como base da tabela de página.</strong> CR3 só aponta para a tabela de <strong>diretório</strong>; a de página vem do conteúdo da entrada.</li>
+            <li><strong>Confundir <code>eetdir</code> com <code>Etpg</code>.</strong> <code>eetdir</code> = <em>onde eu leio</em>; <code>Etpg</code> = <em>o que eu li</em>. O mesmo para <code>eetpg</code> → <code>Epg</code>.</li>
+            <li><strong>Entregar o resultado sem indicar a base.</strong> Escreva sempre o resultado em hexadecimal (<code>0x0000 A678</code>) e diga que é o <strong>endereço físico</strong>.</li>
+        </ol>
+        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
+            <strong>Checklist de 30 segundos antes de entregar a questão:</strong>
+            <br>1. Separei em <strong>10 | 10 | 12</strong>? &nbsp;2. Multipliquei os <strong>dois primeiros</strong> por 4? &nbsp;3. Usei o <strong>conteúdo</strong> como base da soma seguinte? &nbsp;4. Somei o offset <strong>somente no final</strong>? &nbsp;5. O resultado caiu <strong>dentro de uma página de 4 KB</strong>?
+        </div>
+    </div>
+
     <!-- ==================== RODAPÉ ==================== -->
     <div style="text-align:center; margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border); color:var(--text-muted); font-size:0.85rem;">
         Arquitetura de Computadores &mdash; Guia de Estudo<br>
@@ -3042,7 +3516,7 @@
 </body>
 <script>
 (function () {
-    /* â”€â”€â”€ Scroll-spy dinÃ¢mico â”€â”€â”€ */
+    /* ═══ Scroll-spy dinámico ═══ */
     function bindSpy() {
         var links = Array.prototype.slice.call(document.querySelectorAll('.sidebar a[href^="#"]'));
         var secs = links.map(function (a) {
