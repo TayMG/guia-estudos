@@ -3617,6 +3617,161 @@
         </div>
     </div>
 
+    <div class="card">
+        <h3>20.3 &mdash; Cada símbolo do quadro, traduzido para o português</h3>
+        <p>Antes de resolver qualquer coisa, vamos <strong>apontar para cada pedacinho do quadro de 20.1 e dizer o que ele é</strong>, sem pressupor nada. A ideia central é simples: um <strong>endereço linear</strong> (o endereço "falso", que o programa usa) vira um <strong>endereço físico</strong> (o endereço "real", onde o dado está na RAM) passando por <strong>duas tabelas</strong>. Os nomes esquisitos do quadro são só os "endereços de onde a gente leu" e "o que estava escrito lá".</p>
+        <table>
+            <thead>
+                <tr><th>Símbolo no quadro</th><th>O que é de verdade</th><th>Tradução para humano</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>1AF8 1D74</code></td><td>Endereço <strong>linear</strong> (lógico/virtual)</td><td>O endereço que o programa pede <em>antes</em> da tradução.</td></tr>
+                <tr><td><code>10 | 10 | 12</code></td><td>Divisão do endereço em 3 campos</td><td>O "código do endereço" tem 3 partes: duas etiquetas e um deslocamento.</td></tr>
+                <tr><td><code>CR3 = 000B 0000</code></td><td>Registrador com a base da tabela de diretório</td><td>Onde começa o <strong>mapa-mestre</strong>.</td></tr>
+                <tr><td>índice dir. <code>107</code></td><td>Número da linha do mapa-mestre</td><td>"Vá à linha 107 do mapa-mestre."</td></tr>
+                <tr><td><code>EETDIR = 000B 01AC</code></td><td>Endereço de onde se lê = <code>CR3 + 107&times;4</code></td><td>O endereço exato da linha 107.</td></tr>
+                <tr><td><code>ETP = 0022 0000</code> <em>(lido)</em></td><td>Base da <strong>tabela de páginas</strong></td><td>O conteúdo da linha 107 diz: "o mapa de páginas fica em 0022 0000".</td></tr>
+                <tr><td>índice pág. <code>897</code></td><td>Número da linha da tabela de páginas</td><td>"Vá à linha 897 do mapa de páginas."</td></tr>
+                <tr><td><code>EETPG = 0022 0E04</code></td><td>Endereço de onde se lê = <code>0022 0000 + 897&times;4</code></td><td>O endereço exato da linha 897.</td></tr>
+                <tr><td><code>PÁGINA = 0130 0000</code> <em>(lido)</em></td><td>Base do <strong>quadro</strong> físico (Epg)</td><td>A caixa na RAM onde o dado realmente mora.</td></tr>
+                <tr><td>offset <code>0xD74</code></td><td>Deslocamento dentro da página</td><td>O byte nº <code>D74</code> dentro daquela caixa de 4 KB.</td></tr>
+                <tr><td>físico <code>0130 0D74</code></td><td>Endereço físico final = <code>Epg + offset</code></td><td>Endereço real do byte na memória RAM.</td></tr>
+            </tbody>
+        </table>
+
+        <h4 style="margin-top:1.3rem;">Por que a divisão é <code>10 | 10 | 12</code>?</h4>
+        <p>Um endereço de 32 bits (8 dígitos hexadecimais) é cortado em três pedaços que somam 32 bits:</p>
+        <ul>
+            <li><strong>10 bits</strong> para o índice do diretório &rarr; <code>2<sup>10</sup> = 1024</code> linhas no mapa-mestre;</li>
+            <li><strong>10 bits</strong> para o índice da página &rarr; <code>2<sup>10</sup> = 1024</code> linhas na tabela de páginas;</li>
+            <li><strong>12 bits</strong> para o offset &rarr; <code>2<sup>12</sup> = 4096</code> bytes = <strong>4 KB</strong>, que é o tamanho de <em>uma página</em> (e de <em>um quadro</em>).</li>
+        </ul>
+        <div class="card-importante">
+            <strong>Segredo do "&times;4":</strong> cada linha das tabelas guarda um número de 32 bits = 4 bytes. Então a linha de número <code>N</code> fica no endereço <code>base + N &times; 4</code>. Multiplicar por 4 é só <strong>empurrar 2 bits para a esquerda</strong> (acrescentar dois zeros no fim do número binário). É por isso que <code>107 &times; 4 = 0x1AC</code> e <code>897 &times; 4 = 0xE04</code>.
+        </div>
+
+        <h4 style="margin-top:1.3rem;">As três zonas do desenho</h4>
+        <p><strong>Zona 1 &mdash; a conta (esquerda):</strong> é o caminho do endereço passo a passo: <code>CR3</code> &rarr; <code>EETDIR</code> &rarr; lê <code>ETP</code> &rarr; <code>EETPG</code> &rarr; lê <code>PÁGINA</code> &rarr; soma o <code>offset</code> &rarr; <strong>endereço físico</strong>. Cada seta significa "somei o índice&times;4 e fui ler lá".</p>
+        <p><strong>Zona 2 &mdash; a árvore (meio):</strong> é o <em>mesmo caminho</em> visto como estrutura. O nó de cima é o <strong>registrador CR3</strong> apontando para a <strong>TABELA DE DIRETÓRIO</strong> (1024 entradas). Uma dessas entradas (a de índice 107) aponta para a <strong>TABELA DE PÁGINAS</strong> (1024 entradas). Uma dessas (índice 897) aponta para a <strong>PÁGINA</strong> de 4 KB. Os "1024" ao lado dos grupos são o número de ramos de cada nível.</p>
+        <p><strong>Zona 3 &mdash; a coluna de memória (direita):</strong> é a RAM de 4 GB como uma régua que <strong>cresce para baixo</strong>. Nela você vê, na ordem em que aparecem os endereços, os blocos: <code>000B 0000</code> (a tabela de diretório), <code>0022 0000</code> (a tabela de páginas) e <code>0130 0000</code> (a página de 4 KB, hachurada em vermelho). As etiquetas <code>2<sup>10</sup>...4KB</code> dizem o tamanho de cada bloco, e as setas ligam cada bloco ao seu lugar na conta.</p>
+        <div class="card-dica">
+            <strong>Como não se perder:</strong> leia sempre de <em>cima para baixo</em> e de <em>esquerda para a direita</em>. Os três endereços importantes aparecem em ordem crescente &mdash; <code>000B 0000 &lt; 0022 0000 &lt; 0130 0000</code> &mdash; que é exatamente a ordem em que são visitados.
+        </div>
+    </div>
+
+    <div class="card-prova">
+        <h3>20.4 &mdash; A pergunta do professor, resolvida devagarinho</h3>
+        <blockquote style="margin:0 0 1rem; padding:0.8rem 1rem; border-left:4px solid var(--prova-border); background:rgba(0,0,0,0.15); border-radius:0 8px 8px 0;">
+            <em>"Se uma determinada página, durante a paginação, for carregada em <strong>2 quadros de página anteriores</strong> ao que estava, quais as alterações que devem ser feitas no seu exemplo no cálculo da paginação?"</em>
+        </blockquote>
+
+        <p><strong>Primeiro: entender a pergunta em português.</strong> No exemplo de 20.1, a página (o dado) estava no quadro que começa em <code>0130 0000</code>. Agora imagine que o sistema operacional <strong>mudou essa página de lugar</strong> na RAM: em vez de ficar onde estava, ela foi <em>empurrada para trás</em>, para <strong>2 quadros antes</strong>. A pergunta é: <em>o que muda na conta?</em></p>
+
+        <div class="card-importante">
+            <strong>A peça-chave:</strong> cada <strong>quadro</strong> tem o tamanho de uma <strong>página</strong> = 4 KB = <code>0x1000</code>. Então "2 quadros antes" significa <strong>subtrair</strong> <code>2 &times; 0x1000 = 0x2000</code> do endereço da página. Antes = endereço menor.
+        </div>
+
+        <ol class="passo-lista">
+            <li><strong>O que <u>não</u> muda (e por quê):</strong> o endereço linear <code>1AF81D74</code> continua o mesmo (é o que o programa pede). Logo, os índices também não mudam: diretório <code>107</code>, página <code>897</code>, offset <code>0xD74</code>. Portanto <code>CR3 = 000B 0000</code>, <code>EETDIR = 000B 01AC</code> e <code>EETPG = 0022 0E04</code> ficam <strong>iguais</strong> &mdash; nós lemos <em>o mesmo lugar</em>.</li>
+            <li><strong>O que muda &mdash; o conteúdo lido no <code>EETPG</code>:</strong> a linha <code>0022 0E04</code> guardava <code>0130 0000</code> (Epg antigo). Como a página andou 2 quadros para trás, essa linha passa a guardar <strong><code>012F E000</code></strong>:
+                <br><code>0130 0000 &minus; 0x2000 = 012F E000</code>.</li>
+            <li><strong>O que muda &mdash; o endereço físico final:</strong> agora é <code>Epg + offset</code> com o novo Epg:
+                <br><code>012F E000 + 0xD74 = <strong>012F ED74</strong></code> &#10003;</li>
+        </ol>
+
+        <p><strong>Resposta em uma frase:</strong> só o <em>conteúdo da entrada da tabela de páginas</em> e o <em>endereço físico final</em> mudam; todo o resto da conta (CR3, índices, endereços de leitura <code>EETDIR</code>/<code>EETPG</code>) permanece igual, porque <strong>a página mudou de lugar, mas o "endereço lógico" com que o programa a procura não mudou</strong>. A tradução é transparente.</p>
+
+        <table>
+            <thead><tr><th>Elemento do cálculo</th><th>Antes</th><th>Depois (2 quadros antes)</th><th>Mudou?</th></tr></thead>
+            <tbody>
+                <tr><td>Endereço linear</td><td><code>1AF8 1D74</code></td><td><code>1AF8 1D74</code></td><td>não</td></tr>
+                <tr><td>CR3</td><td><code>000B 0000</code></td><td><code>000B 0000</code></td><td>não</td></tr>
+                <tr><td>EETDIR</td><td><code>000B 01AC</code></td><td><code>000B 01AC</code></td><td>não</td></tr>
+                <tr><td>ETP (conteúdo lido)</td><td><code>0022 0000</code></td><td><code>0022 0000</code></td><td>não</td></tr>
+                <tr><td>EETPG</td><td><code>0022 0E04</code></td><td><code>0022 0E04</code></td><td>não</td></tr>
+                <tr><td>PÁGINA / Epg (conteúdo lido)</td><td><code>0130 0000</code></td><td><code>012F E000</code></td><td><strong>sim</strong></td></tr>
+                <tr><td>Offset</td><td><code>0xD74</code></td><td><code>0xD74</code></td><td>não</td></tr>
+                <tr><td>Endereço físico</td><td><code>0130 0D74</code></td><td><code>012F ED74</code></td><td><strong>sim</strong></td></tr>
+            </tbody>
+        </table>
+
+        <div class="card-dica">
+            <strong>Dica visual:</strong> o próprio quadro já mostra a vizinhança abaixo da página &mdash; as etiquetas <code>&minus; 012F FFFF</code> e <code>012F F000</code> marcam o quadro <em>imediatamente anterior</em> (<code>012F F000</code>). Então 1 quadro antes &rarr; <code>012F F000</code>; <strong>2 quadros antes &rarr; <code>012F E000</code></strong>. É só "descer" na régua de memória.
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>20.5 &mdash; Banco de questões: subindo o nível até o da prova</h3>
+        <p>Tente resolver <strong>antes</strong> de abrir a resposta (clique em "Ver resolução"). Use sempre os dados-base do quadro: <code>CR3 = 000B 0000</code>, <code>ETP = 0022 0000</code>, <code>Epg = 0130 0000</code>, endereço linear <code>1AF81D74</code>. Lembre-se: <strong>1 quadro = 4 KB = 0x1000</strong>.</p>
+
+        <h4>Nível 1 &mdash; aquecimento</h4>
+        <p><strong>Q1.</strong> E se a página fosse carregada <strong>2 quadros depois</strong> (para frente, endereço maior)? Quais seriam o novo Epg e o novo endereço físico?</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
+            <p>Para frente = somar: <code>0130 0000 + 0x2000 = 0130 2000</code> (novo Epg). Endereço físico = <code>0130 2000 + 0xD74 = <strong>0130 2D74</strong></code>. Só a entrada do EETPG e o físico mudam; o resto é igual.</p>
+        </details>
+
+        <p style="margin-top:0.8rem;"><strong>Q2.</strong> E se a página fosse <strong>5 quadros antes</strong>?</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
+            <p><code>5 &times; 0x1000 = 0x5000</code>. Novo Epg = <code>0130 0000 &minus; 0x5000 = 012F B000</code>. Físico = <code>012F B000 + 0xD74 = <strong>012F BD74</strong></code>.</p>
+        </details>
+
+        <h4 style="margin-top:1.2rem;">Nível 2 &mdash; trocando o alvo</h4>
+        <p><strong>Q3.</strong> Mantendo o mesmo diretório e a mesma página, mas trocando o endereço linear para <code>1AF8 1E00</code> (repare: mudaram só os 3 últimos dígitos hexa), qual o novo endereço físico?</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
+            <p>Os 3 últimos dígitos hexa = os <strong>12 bits de offset</strong>. Então os índices (107 e 897) <em>não</em> mudam; <code>Epg</code> continua <code>0130 0000</code>. Só o offset vira <code>0xE00</code>. Físico = <code>0130 0000 + 0xE00 = <strong>0130 0E00</strong></code>.</p>
+        </details>
+
+        <p style="margin-top:0.8rem;"><strong>Q4.</strong> Endereço linear totalmente novo <code>0ABCDEF0</code>, com <code>CR3 = 000B 0000</code>, <code>ETP = 0022 0000</code> e <code>Epg = 0130 0000</code>. Refaça o cálculo completo (índices, EETDIR, EETPG e físico).</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
+            <p>Separe <code>0ABCDEF0</code> em <code>10 | 10 | 12</code>: diretório = <code>0000101010</code> = <strong>42</strong> (<code>0x2A</code>); página = <code>1111001101</code> = <strong>973</strong> (<code>0x3CD</code>); offset = <code>1110 1111 0000</code> = <code>0xEF0</code>.</p>
+            <ul>
+                <li><code>EETDIR = 000B 0000 + 42&times;4 = 000B 0000 + 0xA8 = <strong>000B 00A8</strong></code>;</li>
+                <li><code>EETPG = 0022 0000 + 973&times;4 = 0022 0000 + 0xF34 = <strong>0022 0F34</strong></code>;</li>
+                <li>Físico = <code>0130 0000 + 0xEF0 = <strong>0130 0EF0</strong></code>.</li>
+            </ul>
+        </details>
+
+        <p style="margin-top:0.8rem;"><strong>Q5.</strong> Agora mude <u>outra coisa</u>: quem se mudou de lugar foi a <strong>tabela de páginas</strong>, de <code>0022 0000</code> para <code>0023 0000</code> (e a página do dado continua em <code>0130 0000</code>). O que muda no cálculo?</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
+            <p>Muda o <strong>conteúdo lido no EETDIR</strong> (a Etpg): de <code>0022 0000</code> para <code>0023 0000</code>. Consequentemente muda o <code>EETPG</code>: <code>0023 0000 + 897&times;4 = 0023 0000 + 0xE04 = <strong>0023 0E04</strong></code>. Mas o <strong>Epg continua <code>0130 0000</code></strong>, então o <strong>endereço físico não muda</strong>: <code>0130 0D74</code>.</p>
+            <p><strong>Lição:</strong> mover a <em>tabela</em> muda os <em>endereços de leitura</em>, mas não necessariamente o dado final. Mover a <em>página</em> (a Q. do professor) muda o <em>dado final</em>.</p>
+        </details>
+
+        <h4 style="margin-top:1.2rem;">Nível 3 &mdash; combinações e pegadinhas de prova</h4>
+        <p><strong>Q6.</strong> Combinação: a <strong>tabela de páginas</strong> passa para <code>0023 0000</code> <u>e</u> a <strong>página</strong> desce <strong>3 quadros</strong>. Recalcule Epg, EETPG e endereço físico.</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
+            <p><code>EETPG = 0023 0000 + 0xE04 = 0023 0E04</code>. Novo Epg = <code>0130 0000 &minus; 3&times;0x1000 = 0130 0000 &minus; 0x3000 = 012F D000</code>. Físico = <code>012F D000 + 0xD74 = <strong>012F DD74</strong></code>.</p>
+        </details>
+
+        <p style="margin-top:0.8rem;"><strong>Q7.</strong> (pegadinha) Quando a página é movida de quadro, o <strong>endereço linear</strong> <code>1AF81D74</code> muda? E o programa que está rodando percebe alguma coisa?</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
+            <p><strong>Não</strong> e <strong>não</strong>. O endereço linear é o "nome" que o programa usa e permanece idêntico. Quem sabe onde a página está é a <em>tabela de páginas</em>, atualizada pelo sistema operacional. A tradução linear&rarr;física é <strong>transparente</strong>: o programa continua funcionando sem alterar uma linha de código.</p>
+        </details>
+
+        <p style="margin-top:0.8rem;"><strong>Q8.</strong> (pegadinha) Por que <strong>não dá</strong> para mover a página "meia página" (2 KB) em vez de 4 KB?</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
+            <p>Porque a unidade de alocação é o <strong>quadro</strong> inteiro, e o quadro tem sempre 4 KB (o offset de 12 bits só cobre <code>0x000</code> a <code>0xFFF</code>). A entrada da tabela guarda só <em>a base</em> do quadro (os 12 bits baixos são zero). O que resolve "onde dentro do quadro" é o offset, não a tabela. Mover para um endereço que não seja múltiplo de 4 KB quebraria essa regra.</p>
+        </details>
+
+        <p style="margin-top:0.8rem;"><strong>Q9.</strong> (raciocínio) A sequência de endereços <code>000B 0000 &lt; 0022 0000 &lt; 0130 0000</code> precisa ser <em>sempre</em> crescente?</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
+            <p><strong>Não.</strong> Ela é crescente <em>neste exemplo</em> por coincidência da forma como o professor escolheu os números. A única obrigação técnica é que cada <em>bloco</em> comece num endereço múltiplo de 4 KB. A tabela de diretório, a de páginas e a página podem estar em qualquer ordem na RAM &mdash; o que garante a tradução correta são os <em>ponteiros</em> escritos nas tabelas (CR3 &rarr; ETP &rarr; página), não a ordem dos endereços.</p>
+        </details>
+    </div>
+
+    <div class="card-dica">
+        <strong>Resumo de bolso (para decorar):</strong> <code>dir = (linear &gt;&gt; 22) &amp; 0x3FF</code>; <code>pg = (linear &gt;&gt; 12) &amp; 0x3FF</code>; <code>offset = linear &amp; 0xFFF</code>. Depois: <code>EETDIR = CR3 + dir&times;4</code> &rarr; lê <strong>ETP</strong>; <code>EETPG = ETP + pg&times;4</code> &rarr; lê <strong>Epg</strong>; <strong>físico = Epg + offset</strong>. Mover a página em <code>N</code> quadros = somar/subtrair <code>N &times; 0x1000</code> <strong>apenas ao Epg</strong> (e refazer a última soma). O resto da conta fica no lugar.
+    </div>
+
     <!-- ==================== RODAPÉ ==================== -->
     <div style="text-align:center; margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border); color:var(--text-muted); font-size:0.85rem;">
         Arquitetura de Computadores &mdash; Guia de Estudo<br>
