@@ -267,11 +267,77 @@
             margin: 1rem 0;
             font-family: 'Courier New', monospace;
             font-size: 0.85rem;
-            line-height: 1.5;
+            line-height: 15px;
             white-space: pre;
             overflow-x: auto;
             color: var(--text);
         }
+
+        .diagrama.diagrama-quadro {
+            font-family: Consolas, 'Cascadia Mono', 'Courier New', monospace;
+            font-size: 17px;
+            line-height: 19px;
+            letter-spacing: 0;
+            font-variant-ligatures: none;
+            font-feature-settings: 'liga' 0, 'calt' 0;
+            background:
+                linear-gradient(180deg, rgba(56, 189, 248, 0.055), rgba(30, 41, 59, 0) 24%),
+                var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.6rem 2rem 1.8rem;
+            margin: 0.25rem 0 1.6rem;
+            box-shadow:
+                inset 0 1px 0 rgba(226, 232, 240, 0.04),
+                0 14px 34px -20px rgba(2, 6, 23, 0.7);
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) rgba(30, 41, 59, 0.6);
+        }
+        .diagrama-quadro .oplus { display: inline-block; width: 1ch; text-align: center; line-height: 1; }
+        .diagrama-quadro .oplus > span {
+            font-family: 'Segoe UI Symbol', 'Lucida Sans Unicode', sans-serif;
+            font-size: 0.65em;
+        }
+        .diagrama-quadro .c-vm { color: #ff5757; }
+        .diagrama-quadro .c-az { color: #4c9be8; }
+        .diagrama-quadro .fill-vm { background: #ff5757; color: transparent; }
+        .diagrama-quadro .cel {
+            display: inline-block;
+            width: 7ch;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            vertical-align: top;
+            box-sizing: border-box;
+        }
+        .diagrama-quadro .cel > b { font-size: 0.77em; font-weight: normal; line-height: 0; }
+        .diagrama-quadro .cel-vm { background: #ff5757; color: transparent; }
+        .diagrama-quadro .cel-cz { background: #737373; color: #ff3131; }
+        .diagrama-quadro .cel-az { background: #81a0cb; color: #16202c; }
+
+        details.trecho { margin: 1.5rem 0 0.4rem; }
+        details.trecho summary {
+            cursor: pointer;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            list-style: none;
+        }
+        details.trecho summary::before { content: "\25B8  "; color: var(--accent); }
+        details.trecho[open] summary::before { content: "\25BE  "; color: var(--accent); }
+        details.trecho summary:hover { color: var(--accent); }
+
+        details.trecho { margin: 1.5rem 0 0.4rem; }
+        details.trecho summary {
+            cursor: pointer;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            list-style: none;
+        }
+        details.trecho summary::before { content: "\25B8  "; color: var(--accent); }
+        details.trecho[open] summary::before { content: "\25BE  "; color: var(--accent); }
+        details.trecho summary:hover { color: var(--accent); }
 
         .fluxo {
             display: flex;
@@ -3282,133 +3348,192 @@
     <h2 id="sec-20">20. O Quadro do Professor &mdash; Paginação Mecanizada</h2>
 
     <div class="card">
-        <p>Esta seção é a <strong>reprodução fiel do quadro da aula</strong>: um endereço linear inteiro traduzido até o byte que o programa quer ler, do registrador <code>CR3</code> até o <strong>endereço físico</strong>. Nada de valores inventados &mdash; são exatamente os números que ficaram escritos no quadro.</p>
+        <p>Esta seção é a <strong>reprodução fiel do quadro da aula</strong>, organizada exatamente como o professor desenhou na lousa: <strong>à esquerda a conta</strong> (do <code>CR3</code> até o endereço físico), <strong>no meio a árvore</strong> das estruturas e <strong>à direita a coluna de memória de 4 GB</strong>. Um endereço linear inteiro traduzido até o byte que o programa quer ler. Nada de valores inventados &mdash; são exatamente os números que ficaram escritos no quadro.</p>
 
         <div class="card-importante">
             <strong>Os dados do quadro (guarde estes cinco):</strong> endereço linear <code>1AF8 1D74</code>; <code>CR3 = 000B 0000</code>; índice de diretório <strong>107</strong>; índice de página <strong>897</strong>; offset <code>0xD74</code>.
         </div>
 
-        <h3>20.1 &mdash; O endereço linear em três partes (10 | 10 | 12)</h3>
-        <div class="diagrama">
-    ┌───────────────────────────────────────────────────────────────────────────────────────┐
-    │ ENDEREÇO LINEAR = 1AF8 1D74                                                           │
-    │                                                                                       │
-    │ 0001 1010 1111 1000 0001 1101 0111 0100                                               │
-    │                                                                                       │
-    │ ÍNDICE DA TABELA DE DIRETÓRIO  (bits 31-22)   0001101011          = 107               │
-    │ ÍNDICE DA TABELA DE PÁGINAS    (bits 21-12)   1110000001          = 897               │
-    │ OFFSET DE PÁGINA               (bits 11-0)    1101 0111 0100      = 0xD74             │
-    │                                                                                       │
-    │ ×4  (no quadro ele escreve ×100 binário)  →   107 × 4 = 428  = 0001 1010 1100 = 1 A C │
-    │ ×4  (no quadro ele escreve ×100 binário)  →  897 × 4 = 3588  = 1110 0000 0100 = E 0 4 │
-    │                                                                                       │
-    │ O OFFSET NUNCA é multiplicado — ele entra direto na última soma.                      │
-    └───────────────────────────────────────────────────────────────────────────────────────┘
+        <h3>20.1 &mdash; Transcri&ccedil;&atilde;o fiel do quadro (166 &times; 48)</h3>
+                        <p><strong>Quadro (símbolos padrão):</strong></p>
+<svg class="fc" viewBox="0 0 1060 620" role="img" aria-label="Quadro de paginacao: endereco linear, conta ate o endereco fisico, arvore de tabelas e coluna de memoria" style="max-width:1000px">
+            <defs>
+                <marker id="arq" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                    <path class="arrow" d="M0,0 L8,3 L0,6 z"/>
+                </marker>
+            </defs>
+            <text x="530" y="24" style="font-size:15px;font-weight:800;">PAGINA&#199;&#195;O MODO PROTEGIDO</text>
+            <rect class="sh term" x="48" y="38" width="324" height="40" rx="20"/>
+            <text x="210" y="58">ENDERE&#199;O LINEAR: 1AF8 1D74</text>
+            <polyline class="ln" points="210,78 210,90 92,90 92,116"/>
+            <polyline class="ln" points="210,78 210,90 222,90 222,116"/>
+            <polyline class="ln" points="210,78 210,90 348,90 348,116"/>
+            <polygon class="sh io" points="28,116 152,116 137,184 13,184"/>
+            <text x="84" y="142">001 1010 11</text>
+            <text x="84" y="164" style="font-size:10px;fill:var(--text-muted);">10 BITS · dir = 107</text>
+            <polygon class="sh dec" points="168,150 222,116 276,150 222,184"/>
+            <text x="222" y="146" style="font-size:12px;">11 1000 0001</text>
+            <text x="222" y="168" style="font-size:9.5px;fill:var(--text-muted);">10 BITS · pg = 897</text>
+            <rect class="sh" x="292" y="116" width="104" height="68"/>
+            <text x="344" y="146" style="font-size:12px;">1101 0111 0100</text>
+            <text x="344" y="168" style="font-size:10px;fill:var(--text-muted);">12 BITS · offset = D74</text>
+            <circle cx="156" cy="150" r="9" class="ln"/>
+            <text x="156" y="150" style="font-family:'Segoe UI Symbol','Lucida Sans Unicode',sans-serif;">&#8853;</text>
+            <circle cx="284" cy="150" r="9" class="ln"/>
+            <text x="284" y="150" style="font-family:'Segoe UI Symbol','Lucida Sans Unicode',sans-serif;">&#8853;</text>
+            <text x="15" y="214" style="font-size:9px;fill:var(--text-muted);text-anchor:start;">Registrador de controle nº 3</text>
+            <rect class="sh term" x="15" y="220" width="110" height="48" rx="24"/>
+            <text x="70" y="238">CR3</text>
+            <text x="70" y="257" style="font-size:11px;">000B 0000</text>
+            <circle cx="137" cy="244" r="9" class="ln"/>
+            <text x="137" y="244" style="font-family:'Segoe UI Symbol','Lucida Sans Unicode',sans-serif;">&#8853;</text>
+            <text x="210" y="206" style="font-size:9.5px;fill:var(--text-muted);">índice dir ×4 = 0x1AC</text>
+            <rect class="sh" x="160" y="220" width="185" height="48"/>
+            <text x="252" y="238" style="font-size:11.5px;">EETDIR = 000B 0000 + 0x1AC</text>
+            <text x="252" y="257" style="font-size:11.5px;">= 000B 01AC  →  lê ETP</text>
+            <polyline class="ln" points="252,268 252,300" marker-end="url(#arq)"/>
+            <rect class="sh io" x="15" y="300" width="120" height="48" rx="6"/>
+            <text x="75" y="318" style="font-size:11px;">ETP (índice 107)</text>
+            <text x="75" y="337">0022 0000</text>
+            <circle cx="146" cy="324" r="9" class="ln"/>
+            <text x="146" y="324" style="font-family:'Segoe UI Symbol','Lucida Sans Unicode',sans-serif;">&#8853;</text>
+            <text x="146" y="286" style="font-size:9.5px;fill:var(--text-muted);">índice pg ×4 = 0xE04</text>
+            <rect class="sh" x="170" y="300" width="185" height="48"/>
+            <text x="262" y="318" style="font-size:11.5px;">EETP = 0022 0000 + 0xE04</text>
+            <text x="262" y="337" style="font-size:11.5px;">= 0022 0E04  →  lê Epg</text>
+            <polyline class="ln" points="262,348 262,380" marker-end="url(#arq)"/>
+            <rect class="sh io" x="15" y="380" width="120" height="48" rx="6"/>
+            <text x="75" y="398" style="font-size:11px;">Epg (índice 897)</text>
+            <text x="75" y="417">0130 0000</text>
+            <circle cx="146" cy="404" r="9" class="ln"/>
+            <text x="146" y="404" style="font-family:'Segoe UI Symbol','Lucida Sans Unicode',sans-serif;">&#8853;</text>
+            <text x="146" y="366" style="font-size:9.5px;fill:var(--text-muted);">offset = D74</text>
+            <rect class="sh" x="170" y="380" width="185" height="48"/>
+            <text x="262" y="398" style="font-size:11.5px;">físico = 0130 0000 + 0xD74</text>
+            <text x="262" y="417" style="font-size:11.5px;">= 0130 0D74</text>
+            <polyline class="ln" points="262,428 262,446 210,446 210,452" marker-end="url(#arq)"/>
+            <rect class="sh term" x="70" y="452" width="280" height="56" rx="28"/>
+            <text x="210" y="475">ENDERE&#199;O FÍSICO LIDO</text>
+            <text x="210" y="496" style="font-size:15px;font-weight:800;">0130 0D74</text>
+            <rect class="sh doc" x="455" y="36" width="210" height="44"/>
+            <text x="560" y="51" style="font-size:11.5px;">TABELA DE DIRET&#211;RIO</text>
+            <text x="560" y="69" style="font-size:10px;fill:var(--text-muted);">1024 entradas</text>
+            <polyline class="ln" points="560,80 560,96" marker-end="url(#arq)"/>
+            <rect class="sh" x="505" y="96" width="110" height="32"/>
+            <text x="560" y="116" style="font-size:10.5px;">0x1AC · dir = 107</text>
+            <polyline class="ln" points="560,128 560,148" marker-end="url(#arq)"/>
+            <rect class="sh doc" x="455" y="148" width="210" height="44"/>
+            <text x="560" y="163" style="font-size:11.5px;">TABELA DE P&#193;GINAS</text>
+            <text x="560" y="181" style="font-size:10px;fill:var(--text-muted);">1024 entradas</text>
+            <polyline class="ln" points="560,192 560,208" marker-end="url(#arq)"/>
+            <rect class="sh" x="505" y="208" width="110" height="32"/>
+            <text x="560" y="228" style="font-size:10.5px;">0xE04 · pg = 897</text>
+            <polyline class="ln" points="560,240 560,264" marker-end="url(#arq)"/>
+            <rect class="sh" x="470" y="264" width="180" height="44"/>
+            <text x="560" y="279" style="font-size:11px;">P&#193;GINA · quadro 4 KB</text>
+            <text x="560" y="297" style="font-size:10.5px;fill:var(--text-muted);">0130 0000 – 0130 0FFF</text>
+            <text class="lb sim" x="560" y="338">byte lido → 0130 0D74</text>
+            <text x="885" y="24" style="font-size:13px;">MEM&#211;RIA F&#205;SICA (4 GB)</text>
+            <rect class="sh" x="820" y="36" width="150" height="532" rx="8"/>
+            <rect class="sh" x="832" y="212" width="126" height="52" rx="5"/>
+            <text x="895" y="228" style="font-size:9.5px;fill:var(--text-muted);">próxima página</text>
+            <text x="895" y="246" style="font-size:11px;">0130 1000</text>
+            <rect x="828" y="264" width="134" height="64" rx="5" fill="rgba(56,189,248,0.10)" stroke="var(--accent)" stroke-width="2"/>
+            <text x="895" y="279" style="font-size:10.5px;">P&#193;GINA (4 KB)</text>
+            <text x="895" y="294" style="font-size:9px;fill:var(--text-muted);">0130 0000 – 0130 0FFF</text>
+            <rect x="838" y="302" width="94" height="16" rx="4" fill="rgba(255,87,87,0.20)" stroke="#ff5757" stroke-width="1.5"/>
+            <text x="885" y="314" style="font-size:9.5px;fill:#ff5757;font-weight:700;">0130 0D74 &#9668;</text>
+            <rect class="sh" x="832" y="328" width="126" height="47" rx="5"/>
+            <text x="895" y="344" style="font-size:9.5px;fill:var(--text-muted);">abaixo da página</text>
+            <text x="895" y="361" style="font-size:11px;">012F F000 · FFFF</text>
+            <rect class="sh" x="832" y="376" width="126" height="47" rx="5"/>
+            <text x="895" y="392" style="font-size:9.5px;fill:var(--text-muted);">EETP</text>
+            <text x="895" y="409" style="font-size:11px;">0022 0E04</text>
+            <rect class="sh" x="832" y="424" width="126" height="47" rx="5"/>
+            <text x="895" y="440" style="font-size:9.5px;fill:var(--text-muted);">Tabela de páginas (ETP)</text>
+            <text x="895" y="457" style="font-size:11px;">0022 0000</text>
+            <rect class="sh" x="832" y="472" width="126" height="47" rx="5"/>
+            <text x="895" y="488" style="font-size:9.5px;fill:var(--text-muted);">Tabela de diretório</text>
+            <text x="895" y="505" style="font-size:11px;">000B 01AC</text>
+            <rect class="sh" x="832" y="520" width="126" height="47" rx="5"/>
+            <text x="895" y="536" style="font-size:9.5px;fill:var(--text-muted);">CR3</text>
+            <text x="895" y="553" style="font-size:11px;">000B 0000</text>
+            <polyline class="ln" points="742,544 824,544" marker-end="url(#arq)"/>
+            <polyline class="ln" points="742,448 824,448" marker-end="url(#arq)"/>
+            <polyline class="ln" points="742,400 824,400" marker-end="url(#arq)"/>
+            <polyline class="ln" style="stroke:#ff5757;" points="742,310 824,310"/>
+        </svg>
+        <details class="trecho">
+            <summary>Ver transcrição fiel em caracteres (grade 166 × 48)</summary>
+<div class="diagrama diagrama-quadro">
+           PAGINAÇÃO MODO PROTEGIDO                                                                                                                                   
+                                                                                                                                                                      
+                                                10 BITS       10 BITS       12 BITS                                                                       46B         
+           ENDEREÇO LINEAR:  1AF81D74     &lt;-&gt;  001 1010 11|11 1000 0001 | 1101 0111 0100                                                         ┌───────┐            
+                                                                                                                                                 │       │            
+          ┌─────────────┬───────────────────┬──────────────┐     <span class="c-vm">D74</span>                                                                  <span class="c-vm">0130 0FFF</span>  │       │<span class="c-az">0130 1000</span>   
+          │  10 bits    │       10 bits     │    10 bits   │ <span class="c-vm">───────────→─<span class="oplus"><span>⊕</span></span>─────────────</span>                                                    <span class="c-vm">────→</span>├───────┤            
+          └─────────────┴───────────────────┴──────────────┘  <span class="c-vm">OFFSET DA END. FÍSICO = 0130 0D74─────────────────</span>                      <span class="c-vm">0130 0D74</span>  │       │<span class="c-vm">PÁGINA</span>      
+<span class="c-az">índice da tabela│</span>   índice da tabela│                           <span class="c-vm">PÁGINA</span>    <span class="c-vm">│</span>                                     <span class="c-vm">────────────────────────────────→│</span><span class="cel cel-vm">░░░░░░░</span><span class="c-vm">│4KB</span>         
+  <span class="c-az">de diretório</span>  <span class="c-az">│</span>         de páginas│                                     <span class="c-vm">│</span>                                                           <span class="c-vm">0130 0000─→</span>├───────┤<span class="c-az">– 012F FFFF</span> 
+                <span class="c-az">│x100</span>               │  x100                               <span class="c-vm">│</span>                                                                      │       │<span class="c-az">012F F000</span>   
+                <span class="c-az">│</span> <span class="c-az">2</span>                 │   2                                 <span class="c-vm">│</span>                                                                      <span class="c-vm">├───────</span>┤<span class="c-vm">0130 0000</span>   
+           <span class="c-az">0001 10100 1100</span>     11 1000 000100                         <span class="c-vm">┌───┬───┐</span>                                                                  ├───────┤            
+            <span class="c-az">1   A   C</span>           E   0   4                             <span class="c-vm">│</span> <span class="c-vm">PÁGINA│</span>                                                       0022 0E04  │<span class="cel cel-cz"><b>0130 0000</b></span>│Tabela de   
+                <span class="c-az">│</span>         0022 0000 │  0022 0E04                      <span class="c-vm">└───────┘</span>                                                                  │       │PÁGINA      
+                         ────────→──<span class="oplus"><span>⊕</span></span>──────────→                                                                                                 │       │4BK         
+000B 0000       <span class="c-az">│</span> 000B 01AC ETP          EETP                                           <span class="c-vm">┌───┐</span>                                      ETP=0022 0000 ├───────┤            
+<span class="c-az">─────────────→──<span class="oplus"><span>⊕</span></span>──────────→</span>                                                    <span class="c-vm">┌───────┤</span>   <span class="c-vm">├───┐</span>                                             ──→├───────┤──┐         
+ <span class="c-az">CR3</span>                <span class="c-az">EETDIR</span>                                                      <span class="c-vm">│</span>       <span class="c-vm">│</span>   <span class="c-vm">│</span>   <span class="c-vm">│</span>                                                │       │  │         
+  <span class="c-az">│</span>                                                                             <span class="c-vm">│</span>       <span class="c-vm">─────</span>   <span class="c-vm">│</span>                                  <span class="c-az">000B 01AC────→</span>├<span class="c-az">───────┤</span>  │<span class="c-az">Tabela de</span>
+  <span class="c-az">│</span>                                                                             <span class="c-vm">│</span>       <span class="c-vm">─</span>─<span class="c-vm">───</span>   <span class="c-vm">│1024</span>                               <span class="c-az">EETDIR</span>       │<span class="cel cel-az"><b>0022 0000</b></span><span class="c-az">│</span>──<span class="c-az">┘diretório</span>
+  <span class="c-az">│</span>                                                                             <span class="c-vm">├───────┤</span>   <span class="c-vm">│</span>   <span class="c-vm">│PÁGINAS</span>                            <span class="c-az">CR3</span>          │       │   <span class="c-az">4BK</span>      
+  <span class="c-az">↓</span>                                                                             <span class="c-vm">│</span>       <span class="c-vm">─────</span>   <span class="c-vm">│4KB</span>                               <span class="c-az">─────────────→├</span>───────┤            
+ <span class="c-az">Registrador de</span>                                                                 <span class="c-vm">│</span>       <span class="c-vm">─────</span>   <span class="c-vm">│</span>                                  <span class="c-az">000B 0000</span>     │       │            
+  <span class="c-az">controle Nº 3</span>                                                                 <span class="c-vm">├</span>─────<span class="c-vm">──┤</span>   <span class="c-vm">├───┘</span>                                                │       │            
+                                                                                <span class="c-vm">│</span>       <span class="c-vm">│</span>   <span class="c-vm">│</span>                                                    └───────┘            
+                                                                    ┌───┬<span class="c-vm">───────┘</span>       <span class="c-vm">└───┘</span>                                                                         
+                                                               <span class="c-az">┌────</span>┤   ├──────────────────────┐                                                                      
+                                                               <span class="c-az">│</span>    └───┘                      │                                                                      
+                                                               <span class="c-az">│</span>                <span class="c-vm">┌───┐</span>          │                                                                      
+                                                               <span class="c-az">│</span>    ┌───┐   <span class="c-vm">┌───┤</span>   <span class="c-vm">├───┐</span>      │                                                                      
+                                                               <span class="c-az">├</span>────┤   │   <span class="c-vm">│</span>   <span class="c-vm">│</span>   <span class="c-vm">│</span>   <span class="c-vm">│</span>      │                                                                      
+                                                   <span class="c-az">┌──────┐</span>    <span class="c-az">│</span>    │   │   <span class="c-vm">│</span>   <span class="c-vm">─────</span>   <span class="c-vm">│</span>      │                                                                      
+                                                   <span class="c-az">│</span>      <span class="c-az">│</span>    <span class="c-az">│</span>    └───┘   <span class="c-vm">│</span>   │   │   <span class="c-vm">│</span>      │                                                                      
+                                          <span class="c-az">TABELA DE│</span>      <span class="c-az">│</span>    <span class="c-az">│</span>    ┌───┐   <span class="c-vm">│</span>   <span class="c-vm">─────</span>   <span class="c-vm">│</span>      │1024                                                                  
+                                          <span class="c-az">DIRETÓRIO│</span>      <span class="c-az">├────┤</span>    │   │   <span class="c-vm">│</span>   <span class="c-vm">│</span>   <span class="c-vm">│</span>   <span class="c-vm">1024</span>   │TABELA DE                                                             
+                                                   <span class="c-az">│</span>      <span class="c-az">│</span>    <span class="c-az">├────</span>┤   ├─<span class="c-vm">─←┼───</span><span class="fill-vm">┼───┤</span>   <span class="c-vm">PÁGINAS</span>│PÁGINAS                                                               
+                                          <span class="c-az">000B 0000└──────┘</span>    <span class="c-az">│</span>    └───┘   <span class="c-vm">│</span>   <span class="c-vm">└─</span>─<span class="c-vm">─┘</span>   <span class="c-vm">4KB</span>    │                                                                      
+                                                               <span class="c-az">│</span>            <span class="c-vm">│</span> <span class="c-vm">0130 0000</span> <span class="c-vm">│</span>      │                                                                      
+                                                               <span class="c-az">│</span>    ┌───┐   <span class="c-vm">│</span>           <span class="c-vm">│</span>      │                                                                      
+                                                               ├<span class="c-az">──</span>──┤   │   <span class="c-vm">│</span>           <span class="c-vm">│</span>      │                                                                      
+                                                               │    <span class="c-az">│</span>   │   <span class="c-vm">│</span>   <span class="c-vm">┌───┐</span>   <span class="c-vm">│</span>      │                                                                      
+                                                               │    └───┘   <span class="c-vm">└───┤</span>   <span class="c-vm">├───┘</span>      │                                                                      
+                                                               │    ┌───┐       <span class="c-vm">│</span>   <span class="c-vm">│</span>          │                                                                      
+                                                               │    │   │       <span class="c-vm">└───┘</span>          │                                                                      
+                                                               <span class="c-az">└────┤</span>   └──────────────────────┘                                                                      
+                                                                    └───┘                                                                                             
+                                                                                                                                                                      
+        </div>
+            </details>
+            </details>
+        <div class="card-dica">
+            <strong>Como ler o quadro (da esquerda para a direita):</strong> a primeira zona é <em>a conta</em> &mdash; separa o endereço em <strong>10 | 10 | 12</strong>, multiplica os dois índices por 4 e soma tudo a partir do <code>CR3</code>. A segunda é <em>a árvore</em> &mdash; o mesmo caminho visto como estrutura, com os colchetes de <strong>1024</strong> ramos em cada nível. A terceira é <em>a coluna</em> &mdash; onde cada bloco mora na memória física, de baixo para cima.
         </div>
         <div class="card-dica">
-            <strong>Como o professor separou:</strong> ele escreveu o endereço inteiro em binário e cortou nos <strong>10 primeiros bits</strong> (diretório), nos <strong>10 do meio</strong> (página) e nos <strong>12 restantes</strong> (offset). Os dois primeiros blocos viram endereço de entrada multiplicando por 4; o terceiro entra na conta <strong>como está</strong>.
+            <strong>Confira sem refazer a conta:</strong> o byte tem que cair <strong>dentro da página</strong>. <code>0130 0D74</code> está entre <code>0130 0000</code> e <code>0130 0FFF</code> &#10003; Se cair fora, alguma soma errou. E repare na ordem dos endereços: <code>000B 0000 &lt; 0022 0000 &lt; 0130 0000</code>.
         </div>
     </div>
 
     <div class="card-prova">
-        <h3>20.2 &mdash; As três somas (a cadeia do quadro)</h3>
-        <p style="margin-top:.6rem;">Do <code>CR3</code> até o byte procurado, em quatro passos. A coluna da <strong>esquerda</strong> é o que você calcula; a do <strong>meio</strong> é o endereço que você vai <em>ler</em>; a da <strong>direita</strong> é o valor que a memória devolve:</p>
-        <div class="diagrama" style="color:var(--prova-text);">
-    ┌───────────────────┬────────────────────────────┬────────────────────────────┐
-    │ CONTA (soma)      │ ENDEREÇO (onde leio)       │ CONTEÚDO (o que li)        │
-    ├───────────────────┼────────────────────────────┼────────────────────────────┤
-    │ * CR3 = 000B 0000 │ 000B 0000                  │ tabela de diretório        │
-    │ 000B 0000 + 1 A C │ EETDIR = 000B 01AC         │ ETP = 0022 0000            │
-    │ 0022 0000 + E 0 4 │ EETPG = 0022 0E04          │ PÁGINA = 0130 0000         │
-    │ 0130 0000 + D 7 4 │ END. FÍSICO = 0130 0D74    │ byte procurado             │
-    └───────────────────┴────────────────────────────┴────────────────────────────┘
-        </div>
-        <p style="font-weight:700; margin-top:.9rem;">Escrito por extenso (estilo prova):</p>
+        <h3>20.2 &mdash; As três somas, por extenso (estilo prova)</h3>
         <ol class="passo-lista">
             <li><strong>eetdir = CR3 + índice_dir &times; 4</strong> &rarr; <code>000B 0000 + 0x1AC</code> = <code>000B 01AC</code>. <em>Conteúdo lido:</em> <code>0022 0000</code> &mdash; essa é a <strong>Etpg</strong> (base da tabela de página).</li>
             <li><strong>eetpg = Etpg + índice_pg &times; 4</strong> &rarr; <code>0022 0000 + 0xE04</code> = <code>0022 0E04</code>. <em>Conteúdo lido:</em> <code>0130 0000</code> &mdash; essa é a <strong>Epg</strong> (início da página/frame).</li>
             <li><strong>Endereço físico = Epg + offset</strong> &rarr; <code>0130 0000 + 0xD74</code> = <strong><code>0130 0D74</code></strong> &#10003;</li>
         </ol>
         <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
-            <strong>Confira sem refazer a conta:</strong> o byte tem que cair <strong>dentro da página</strong>. <code>0130 0D74</code> está entre <code>0130 0000</code> e <code>0130 0FFF</code> &#10003; Se cair fora, alguma soma errou.
-        </div>
-    </div>
-
-    <div class="card">
-        <h3>20.3 &mdash; A árvore: diretório &rarr; tabelas de página &rarr; páginas</h3>
-        <p>A mesma conta, agora vista como <strong>estrutura</strong>. O <code>CR3</code> aponta para a tabela de diretório; cada entrada dela aponta para uma tabela de página; cada entrada dessa aponta para uma página de 4 KB:</p>
-        <div class="diagrama">
-    ┌───────────────────────────────────────────────────────────────────────┐
-    │                        ┌────────────────────────────┐                 │
-    │                        │   TABELA DE DIRETÓRIO      │                 │
-    │                        │  base = 000B 0000  (CR3)   │                 │
-    │                        │  1024 entradas × 4 B = 4 KB│                 │
-    │                        └─────────────┬──────────────┘                 │
-    │                                      │  lê em 000B 01AC  →  0022 0000 │
-    │                ┌─────────────────────┼─────────────────────┐          │
-    │                ↓                     ↓                     ↓          │
-    │         ┌────────────┐        ┌──────────────┐       ┌────────────┐   │
-    │         │    ...     │        │   0022 0000  │       │    ...     │   │
-    │         │            │        │   4 KB       │       │            │   │
-    │         └────────────┘        └──────┬───────┘       └────────────┘   │
-    │     1024 TABELAS DE PÁGINAS          │  lê em 0022 0E04  →  0130 0000 │
-    │                                      ↓                                │
-    │                               ┌──────────────┐                        │
-    │                               │   0130 0000  │                        │
-    │                               │   4 KB       │                        │
-    │                               └──────────────┘                        │
-    │                        1024 PÁGINAS DE 4 KB                           │
-    └───────────────────────────────────────────────────────────────────────┘
-        </div>
-        <div class="card-dica">
-            <strong>O que os dois colchetes do quadro significam:</strong> são os <strong>1024</strong> ramos de cada nível. <code>1024 tabelas de página × 1024 páginas × 4 KB = 4 GB</code> &mdash; é exatamente isso que um endereço de 32 bits consegue alcançar.
-        </div>
-    </div>
-
-    <div class="card">
-        <h3>20.4 &mdash; A coluna de memória de 4 GB (o lado físico)</h3>
-        <p>Lendo a coluna de <strong>cima para baixo</strong> é o caminho inverso; de <strong>baixo para cima</strong> é o caminho que a CPU percorre &mdash; cada bloco mora um pouco mais alto na memória física:</p>
-        <div class="diagrama">
-    ┌───────────────────────────────────────────────────────────────┐
-    │ ↑  END. FÍSICO = 0130 0D74   (o byte que o programa quer)     │
-    │ ┌────────────────────────────────────────────────┐            │
-    │ │  PÁGINA 4 KB  — hachurada no quadro            │            │
-    │ │  0130 0000  . . .  . . .  0130 0FFF            │            │
-    │ │  offset 0xD74 dentro dela = 0130 0D74          │            │
-    │ └──────────────────────┬─────────────────────────┘            │
-    │      EETPG = 0022 0E04  ↑  (onde leio)   conteúdo = 0130 0000 │
-    │ ┌──────────────────────┴─────────────────────────┐            │
-    │ │  TABELA DE PÁGINA 4 KB                         │            │
-    │ │  base 0022 0000   =  ETP                       │            │
-    │ └──────────────────────┬─────────────────────────┘            │
-    │      EETDIR = 000B 01AC ↑  (onde leio)  conteúdo = 0022 0000  │
-    │ ┌──────────────────────┴─────────────────────────┐            │
-    │ │  TABELA DE DIRETÓRIO 4 KB                      │            │
-    │ │  base 000B 0000   =  * CR3                     │            │
-    │ └────────────────────────────────────────────────┘            │
-    │ ↑  * CR3 = 000B 0000   REGISTRADOR DE CONTROLE Nº3            │
-    └───────────────────────────────────────────────────────────────┘
-        </div>
-        <div class="card-dica">
-            <strong>Repare na ordem dos endereços:</strong> <code>000B 0000 &lt; 0022 0000 &lt; 0130 0000</code>. Cada tabela ocupa 4 KB e pode estar em qualquer lugar da memória &mdash; a única coisa que liga um nível ao outro é o <strong>conteúdo escrito na entrada</strong>.
-        </div>
-    </div>
-
-    <div class="card-prova">
-        <h3>20.5 &mdash; Tabela-resumo do exemplo do quadro</h3>
-        <p style="margin-top:.6rem;">A mesma informação em uma linha só, do jeito que a banca costuma pedir:</p>
-        <table>
-            <thead>
-                <tr><th>Etapa</th><th>Endereço <em>onde leio</em></th><th>Conteúdo <em>o que li</em></th><th>Endereço físico</th></tr>
-            </thead>
-            <tbody>
-                <tr><td><strong>1.</strong> índice dir <code>107 × 4 = 0x1AC</code></td><td><code>000B 0000 + 0x1AC</code> = <strong><code>000B 01AC</code></strong></td><td><code>0022 0000</code> (ETP)</td><td>&mdash;</td></tr>
-                <tr><td><strong>2.</strong> índice pg <code>897 × 4 = 0xE04</code></td><td><code>0022 0000 + 0xE04</code> = <strong><code>0022 0E04</code></strong></td><td><code>0130 0000</code> (PÁGINA)</td><td>&mdash;</td></tr>
-                <tr><td><strong>3.</strong> offset <code>0xD74</code> (sem ×4)</td><td><code>0130 0000 + 0xD74</code> = <strong><code>0130 0D74</code></strong></td><td>&mdash;</td><td><strong><code>0130 0D74</code></strong></td></tr>
-            </tbody>
-        </table>
-        <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
-            <strong>Nomenclatura:</strong> no quadro o professor escreve <code>EETDIR</code>/<code>EETPG</code> para o <em>endereço onde se lê</em> e <code>ETP</code>/<code>PÁGINA</code> para o <em>conteúdo lido</em> &mdash; nos exercícios da seção 19 isso aparece como <code>eetdir</code>&rarr;<code>Etpg</code> e <code>eetpg</code>&rarr;<code>Epg</code>. Mesma coisa, nomes diferentes.
+            <strong>Nomenclatura do quadro:</strong> o professor escreve <code>EETDIR</code>/<code>EETPG</code> para o <em>endereço onde se lê</em> e <code>ETP</code>/<code>PÁGINA</code> para o <em>conteúdo lido</em> &mdash; nos exercícios da seção 19 isso aparece como <code>eetdir</code>&rarr;<code>Etpg</code> e <code>eetpg</code>&rarr;<code>Epg</code>. Mesma coisa, nomes diferentes.
         </div>
     </div>
 
