@@ -493,6 +493,8 @@
     <a href="#sec-18">18. Questões de Prova</a>
     <a href="#sec-19">19. Paginação</a>
     <a href="#sec-20">20. O Quadro do Professor</a>
+<a href="#sec-21">21. Segmenta&ccedil;&atilde;o + Pagina&ccedil;&atilde;o</a>
+<a href="#sec-22">22. Roteiro de Estudo</a>
 </nav>
 <div class="container">
 
@@ -3925,7 +3927,372 @@
         <strong>Resumo de bolso (para decorar):</strong> <code>dir = (linear &gt;&gt; 22) &amp; 0x3FF</code>; <code>pg = (linear &gt;&gt; 12) &amp; 0x3FF</code>; <code>offset = linear &amp; 0xFFF</code>. Depois: <code>EETDIR = CR3 + dir&times;4</code> &rarr; lê <strong>ETP</strong>; <code>EETPG = ETP + pg&times;4</code> &rarr; lê <strong>Epg</strong>; <strong>físico = Epg + offset</strong>. Mover a página em <code>N</code> quadros = somar/subtrair <code>N &times; 0x1000</code> <strong>apenas ao Epg</strong> (e refazer a última soma). O resto da conta fica no lugar.
     </div>
 
+    <!-- ==================== BLOCO 21: TRILHA SEGMENTACAO + PAGINACAO ==================== -->
+    <h2 id="sec-21">21. Trilha de Prova &mdash; Segmenta&ccedil;&atilde;o + Pagina&ccedil;&atilde;o no Modo Protegido</h2>
+
+    <div class="card-prova">
+        <p><strong>Esta &eacute; a se&ccedil;&atilde;o que fecha o buraco do curso.</strong> At&eacute; aqui voc&ecirc; estudou os dois assuntos <em>separados</em>: a <strong>segmenta&ccedil;&atilde;o</strong> (se&ccedil;&otilde;es <a href="#sec-5">5</a>, <a href="#sec-7">7</a>, <a href="#sec-10">10</a> e <a href="#sec-101">10.1</a>), que transforma <code>Seletor:Offset</code> em <strong>endere&ccedil;o linear</strong>; e a <strong>pagina&ccedil;&atilde;o</strong> (se&ccedil;&otilde;es <a href="#sec-19">19</a> e <a href="#sec-20">20</a>), que transforma <strong>endere&ccedil;o linear</strong> em <strong>endere&ccedil;o f&iacute;sico</strong>. O tema da sua prova &eacute; justamente as duas <strong>ligadas no mesmo exerc&iacute;cio</strong>. &Eacute; isso que fazemos aqui.</p>
+        <p style="margin-top:.7rem;">As duas metades nunca se contradizem &mdash; s&oacute; se <strong>encaixam</strong>. A sa&iacute;da da primeira (endere&ccedil;o linear) &eacute; a entrada da segunda. Quem n&atilde;o enxerga a emenda trava na prova.</p>
+    </div>
+
+    <h3>21.1 &mdash; O caminho completo do endere&ccedil;o (o mapa do tema)</h3>
+
+    <div class="card">
+        <p>Todo acesso &agrave; mem&oacute;ria no modo protegido percorre este caminho. Guarde este desenho: ele &eacute; a espinha dorsal de qualquer quest&atilde;o do tema.</p>
+        <div class="diagrama" style="color:var(--prova-text);">
+   ENDEREÇO LÓGICO = Seletor : Offset      (ex.: CS:EIP, SS:ESP, DS:ESI...)
+        │
+        ▼   ┌─────────────── UNIDADE DE SEGMENTAÇÃO ───────────────┐
+            │  1) acha o descritor do seletor (Base e Limite)       │
+            │  2) Linear = Base do segmento + Offset                │
+            │  3) TESTE: se Linear &gt; Limite → GPF (aborta o programa)│
+            └───────────────────────────┬───────────────────────────┘
+                                        ▼
+   ENDEREÇO LINEAR (32 bits)
+        │
+    ┌───┴─────────────────────────────┐
+    │                                 │
+  paginação OFF                  paginação ON
+    │                                 │
+    │                                 ▼   ┌──────── UNIDADE DE PAGINAÇÃO ────────┐
+    │                                     │  fatia 10 | 10 | 12                  │
+    │                                     │  CR3 → EETDIR → lê ETP               │
+    │                                     │  EETPG → lê Epg → Epg + offset        │
+    │                                     └──────────────────┬───────────────────┘
+    │                                                        │
+    └──────────────────────┬─────────────────────────────────┘
+                           ▼
+   ENDEREÇO FÍSICO  →  RAM</div>
+        <p style="font-weight:700; margin-top:1rem;">A mesma coisa em palavras, etapa por etapa:</p>
+        <table>
+            <thead><tr><th>Etapa</th><th>Quem faz</th><th>O que entra</th><th>O que sai</th><th>Se der erro</th></tr></thead>
+            <tbody>
+                <tr><td><strong>1. Segmenta&ccedil;&atilde;o</strong></td><td>Unidade de segmenta&ccedil;&atilde;o</td><td><code>Seletor:Offset</code></td><td>Endere&ccedil;o <strong>linear</strong></td><td>Linear &gt; Limite &rarr; <strong>GPF</strong> (aborta)</td></tr>
+                <tr><td><strong>2. Pagina&ccedil;&atilde;o</strong> (se ativa)</td><td>Unidade de pagina&ccedil;&atilde;o</td><td>Endere&ccedil;o <strong>linear</strong></td><td>Endere&ccedil;o <strong>f&iacute;sico</strong></td><td>P&aacute;gina fora da RAM &rarr; o SO traz do disco</td></tr>
+            </tbody>
+        </table>
+        <div class="card-dica">
+            <strong>Liga&ccedil;&atilde;o com o resto do site:</strong> a etapa 1 &eacute; a se&ccedil;&atilde;o <a href="#sec-10">10 (os 5 passos)</a>; a etapa 2 &eacute; a se&ccedil;&atilde;o <a href="#sec-19">19.7 (a conta 10|10|12)</a>. Aqui elas aparecem no <strong>mesmo exerc&iacute;cio</strong>, uma alimentando a outra.
+        </div>
+    </div>
+
+    <div class="card-prova">
+        <h3>21.2 &mdash; O m&eacute;todo integrado (roteiro &uacute;nico, do come&ccedil;o ao fim)</h3>
+        <p>Use sempre este roteiro. A <strong>regra de ouro</strong>: fa&ccedil;a <u>uma etapa de cada vez</u>. Voc&ecirc; s&oacute; passa para a pagina&ccedil;&atilde;o depois que a segmenta&ccedil;&atilde;o deu OK &mdash; se ela der GPF, nem existe endere&ccedil;o linear para paginar.</p>
+        <ol class="passo-lista">
+            <li>
+                <strong>Passo 1 &mdash; Identifique o registrador de deslocamento (offset).</strong>
+                <p style="margin:0.5rem 0 0;">O <em>enunciado</em> diz a opera&ccedil;&atilde;o. <em>Buscar instru&ccedil;&atilde;o</em> &rarr; <code>EIP</code>; <em>ler/escrever dado</em> &rarr; <code>ESI</code>/<code>EDI</code>; <em>pilha</em> &rarr; <code>ESP</code>/<code>EBP</code>.</p>
+            </li>
+            <li>
+                <strong>Passo 2 &mdash; Identifique o seletor e pegue o descritor.</strong>
+                <p style="margin:0.5rem 0 0;">O registrador define o seletor: <code>EIP&rarr;CS</code>, <code>ESP/EBP&rarr;SS</code>, <code>ESI/EDI&rarr;DS/ES/FS/GS</code>. Na <strong>tabela de descritores</strong>, anote a <strong>Base</strong> e o <strong>Limite</strong> daquele seletor.</p>
+            </li>
+            <li>
+                <strong>Passo 3 &mdash; Calcule o endere&ccedil;o linear.</strong>
+                <p style="margin:0.7rem 0 0; padding:0.5rem 0.8rem; background:var(--surface2); border-left:3px solid var(--accent2); border-radius:0 6px 6px 0;"><code>Linear = Base do segmento + Offset</code></p>
+            </li>
+            <li>
+                <strong>Passo 4 &mdash; Teste de limite (a checagem de seguran&ccedil;a).</strong>
+                <p style="margin:0.5rem 0 0;">Se <code>Linear &gt; Limite</code> &rarr; <strong>GPF</strong>, <u>pare aqui</u> (a pagina&ccedil;&atilde;o n&atilde;o roda). Sen&atilde;o, continue.</p>
+            </li>
+            <li>
+                <strong>Passo 5 &mdash; A pagina&ccedil;&atilde;o est&aacute; desligada? Ent&atilde;o acabou.</strong>
+                <p style="margin:0.7rem 0 0; padding:0.5rem 0.8rem; background:var(--surface2); border-left:3px solid var(--accent2); border-radius:0 6px 6px 0;">Sem pagina&ccedil;&atilde;o: <code>F&iacute;sico = Linear</code>. Ponto final.</p>
+            </li>
+            <li>
+                <strong>Passo 6 &mdash; (s&oacute; com pagina&ccedil;&atilde;o ativa) Fatie o linear em <code>10 | 10 | 12</code>.</strong>
+                <p style="margin:0.5rem 0 0;">Saem tr&ecirc;s n&uacute;meros: <strong>&iacute;ndice de diret&oacute;rio</strong>, <strong>&iacute;ndice de p&aacute;gina</strong> e <strong>offset</code>. Atalho: os <strong>3 &uacute;ltimos d&iacute;gitos hexa</strong> s&atilde;o o offset.</p>
+            </li>
+            <li>
+                <strong>Passo 7 &mdash; <code>EETDIR = CR3 + &iacute;ndice_dir &times; 4</code>.</strong>
+                <p style="margin:0.5rem 0 0;">O <em>conte&uacute;do lido</u> nesse endere&ccedil;o &eacute; a <strong>ETP</strong> (base da tabela de p&aacute;ginas).</p>
+            </li>
+            <li>
+                <strong>Passo 8 &mdash; <code>EETPG = ETP + &iacute;ndice_pg &times; 4</code>.</strong>
+                <p style="margin:0.5rem 0 0;">O conte&uacute;do lido ali &eacute; a <strong>Epg</strong> (in&iacute;cio do quadro f&iacute;sico).</p>
+            </li>
+            <li>
+                <strong>Passo 9 &mdash; F&iacute;sico = Epg + offset</strong> e <strong>confira</strong>.
+                <p style="margin:0.5rem 0 0;">Os 3 &uacute;ltimos d&iacute;gitos do f&iacute;sico t&ecirc;m de ser iguais aos do offset, e o byte tem de cair dentro do quadro <code>Epg</code>&hellip;<code>Epg + 0xFFF</code>.</p>
+            </li>
+        </ol>
+        <div class="card-dica">
+            <strong>Como decorar a diferen&ccedil;a das duas metades:</strong> a <em>segmenta&ccedil;&atilde;o</em> usa <strong>soma</em> (<code>Base + Offset</code>) e uma <em>tabela de descritores</em>; a <em>pagina&ccedil;&atilde;o</em> usa <em>dois &iacute;ndices &times; 4</em> e <em>tr&ecirc;s endere&ccedil;os</em> (<code>CR3 &rarr; ETP &rarr; Epg</code>). A &uacute;nica coisa que as duas t&ecirc;m em comum &eacute; que a sa&iacute;da de uma &eacute; a entrada da outra: <strong>o endere&ccedil;o linear</strong>.
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>21.3 &mdash; Exemplo 1: do come&ccedil;o ao fim (P1, pagina&ccedil;&atilde;o ATIVA)</h3>
+        <p style="margin:0 0 1rem; padding:0.8rem 1rem; border-left:4px solid var(--accent); background:rgba(0,0,0,0.15); border-radius:0 8px 8px 0;">
+            <strong>Enunciado:</strong> O processador do processo <strong>P1</strong> vai buscar a pr&oacute;xima instru&ccedil;&atilde;o, com <code>CS</code> = seletor <code>0001</code> e <code>EIP = 0000 3000</code>. A <strong>pagina&ccedil;&atilde;o est&aacute; ATIVA</strong> e temos <code>CR3 = 000B 0000</code>. A entrada do diret&oacute;rio aponta para a tabela de p&aacute;ginas em <code>0022 0000</code>, e a entrada usada dessa tabela aponta para o quadro <code>0130 0000</code>. Calcule o <strong>endere&ccedil;o f&iacute;sico</strong> do byte buscado.
+        </p>
+
+        <h4>Parte 1 &mdash; Tirar as informa&ccedil;&otilde;es do enunciado</h4>
+        <table>
+            <thead><tr><th>Pe&ccedil;a</th><th>Valor</th><th>De onde veio</th></tr></thead>
+            <tbody>
+                <tr><td>Registrador / seletor</td><td><code>EIP</code> / <code>CS = 0001</code></td><td>&ldquo;buscar a pr&oacute;xima instru&ccedil;&atilde;o&rdquo; &rarr; EIP; o processo P1 usa CS 0001</td></tr>
+                <tr><td>Base e Limite do segmento</td><td>Base <code>0000 1a00</code>, Limite <code>0004 DFFD</code></td><td>Tabela de descritores (se&ccedil;&atilde;o 7), linha do seletor 0001</td></tr>
+                <tr><td>Offset</td><td><code>0000 3000</code></td><td>Valor dado do <code>EIP</code></td></tr>
+                <tr><td>Pagina&ccedil;&atilde;o</td><td>ATIVA</td><td>Enunciado. Dados: <code>CR3 = 000B 0000</code>, <code>ETP = 0022 0000</code>, <code>Epg = 0130 0000</code></td></tr>
+            </tbody>
+        </table>
+
+        <h4>Parte 2 &mdash; Segmenta&ccedil;&atilde;o (Passos 1 a 4)</h4>
+        <p><strong>Passo 1</strong> &mdash; Registrador de deslocamento: <code>EIP</code> (busca de instru&ccedil;&atilde;o).</p>
+        <p><strong>Passo 2</strong> &mdash; Seletor: <code>CS = 0001</code>. Descritor: Base <code>0000 1a00</code>, Limite <code>0004 DFFD</code>.</p>
+        <p><strong>Passo 3</strong> &mdash; Endere&ccedil;o linear:</p>
+        <div class="diagrama">
+  Endereço Linear = 0000 1a00 + 0000 3000
+  Endereço Linear = 0000 4a00</div>
+        <p><strong>Passo 4</strong> &mdash; Teste de limite:</p>
+        <div class="diagrama">
+  Linear:  0000 4a00
+  Limite:  0004 DFFD
+
+  0000 4a00 ≤ 0004 DFFD  → ✅ OK! segue para a paginação</div>
+
+        <h4>Parte 3 &mdash; Pagina&ccedil;&atilde;o (Passos 6 a 9)</h4>
+        <p><strong>Passo 6</strong> &mdash; Fatiar <code>0x0000 4A00</code> em <code>10 | 10 | 12</code>:</p>
+        <div class="diagrama">
+  0x00004A00 = 0000 0000 0000 0000 0100 1010 0000 0000
+                    dir(10)     pg(10)      offset(12)
+  índice_dir = 0000000000 = 0     (0x00)
+  índice_pg  = 0000000100 = 4     (0x04)
+  offset     = 1010 0000 0000 = 0xA00</div>
+        <p><strong>Passo 7</strong> &mdash; <code>eetdir = CR3 + índice_dir &times; 4</code></p>
+        <div class="diagrama">
+  eetdir = 000B 0000 + 0×4 = 000B 0000
+  conteúdo lido = 0022 0000   →  ETP</div>
+        <p><strong>Passo 8</strong> &mdash; <code>eetpg = ETP + índice_pg &times; 4</code></p>
+        <div class="diagrama">
+  eetpg = 0022 0000 + 4×4 = 0022 0000 + 0x10 = 0022 0010
+  conteúdo lido = 0130 0000   →  Epg</div>
+        <p><strong>Passo 9</strong> &mdash; <code>Físico = Epg + offset</code></p>
+        <div class="diagrama">
+  Endereço Físico = 0130 0000 + 0xA00 = 0130 0A00</div>
+
+        <h4>Parte 4 &mdash; Confer&ecirc;ncia e resposta</h4>
+        <p><strong>Confere?</strong> Os 3 &uacute;ltimos d&iacute;gitos do f&iacute;sico (<code>A00</code>) s&atilde;o iguais aos do offset &#10003; e o byte cai dentro do quadro <code>0130 0000</code>&hellip;<code>0130 0FFF</code> &#10003;</p>
+        <div class="card-dica">
+            <strong>Resposta:</strong> endere&ccedil;o linear <code>0000 4A00</code> (dir 0, pg 4, offset <code>0xA00</code>) &rarr; endere&ccedil;o f&iacute;sico <strong><code>0130 0A00</code></strong>.
+        </div>
+        <table>
+            <thead><tr><th>Elemento</th><th>Valor</th></tr></thead>
+            <tbody>
+                <tr><td>Endere&ccedil;o l&oacute;gico</td><td><code>CS:0000 3000</code></td></tr>
+                <tr><td>Segmenta&ccedil;&atilde;o</td><td><code>0000 1a00 + 0000 3000</code> = linear <code>0000 4A00</code></td></tr>
+                <tr><td>Teste de limite</td><td><code>0000 4A00 &le; 0004 DFFD</code> &#10003;</td></tr>
+                <tr><td>Pagina&ccedil;&atilde;o</td><td><code>eetdir 000B 0000</code> (ETP) &rarr; <code>eetpg 0022 0010</code> (Epg)</td></tr>
+                <tr><td>Endere&ccedil;o f&iacute;sico</td><td><strong><code>0130 0A00</code></strong></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h3>21.4 &mdash; Exemplo 2: quando os &iacute;ndices n&atilde;o s&atilde;o zero (P2)</h3>
+        <p>O exemplo anterior tinha <code>índice_dir = 0</code>. Agora um em que <strong>os dois &iacute;ndices s&atilde;o diferentes de zero</strong>, para voc&ecirc; ver as contas completas de <code>×4</code>.</p>
+        <p style="margin:0 0 1rem; padding:0.8rem 1rem; border-left:4px solid var(--prova-border); background:rgba(0,0,0,0.15); border-radius:0 8px 8px 0;">
+            <strong>Enunciado:</strong> O processador vai <strong>buscar a pr&oacute;xima instru&ccedil;&atilde;o do processo P2</strong>. O <code>CS</code> do P2 &eacute; o seletor <code>0140</code> (Base <code>0034 1000</code>, Limite <code>004e ffff</code>) e o <code>EIP = 0010 0ABC</code>. A pagina&ccedil;&atilde;o est&aacute; <strong>ativa</strong> com os mesmos dados: <code>CR3 = 000B 0000</code>, <code>ETP = 0022 0000</code>, <code>Epg = 0130 0000</code>. Calcule o endere&ccedil;o f&iacute;sico.
+        </p>
+
+        <h4>Parte 1 &mdash; Segmenta&ccedil;&atilde;o</h4>
+        <p><strong>Passo 1</strong> &mdash; <code>EIP</code> (c&oacute;digo). <strong>Passo 2</strong> &mdash; <code>CS = 0140</code>: Base <code>0034 1000</code>, Limite <code>004e ffff</code>.</p>
+        <div class="diagrama">
+  Endereço Linear = 0034 1000 + 0010 0ABC = 0044 1ABC
+  Teste: 0044 1ABC ≤ 004e ffff  → ✅ OK</div>
+
+        <h4>Parte 2 &mdash; Pagina&ccedil;&atilde;o</h4>
+        <div class="diagrama">
+  0x00441ABC = 0000 0000 0100 0100 0001 1010 1011 1100
+  índice_dir = 0000000001 = 1      (0x01)
+  índice_pg  = 0001000001 = 65     (0x41)
+  offset     = 1010 1011 1100 = 0xABC</div>
+        <p><strong>Passo 7</strong> &mdash; <code>eetdir = 000B 0000 + 1×4 = 000B 0004</code> &rarr; l&ecirc; <code>0022 0000</code> (ETP).</p>
+        <p><strong>Passo 8</strong> &mdash; <code>eetpg = 0022 0000 + 65×4</code>. Como <code>65 &times; 4 = 260 = 0x104</code>:</p>
+        <div class="diagrama">
+  eetpg = 0022 0000 + 0x104 = 0022 0104
+  conteúdo lido = 0130 0000   →  Epg</div>
+        <p><strong>Passo 9</strong> &mdash;</p>
+        <div class="diagrama">
+  Endereço Físico = 0130 0000 + 0xABC = 0130 0ABC</div>
+        <div class="card-dica">
+            <strong>Resposta:</strong> linear <code>0044 1ABC</code> (dir 1 &rarr; <code>000B 0004</code>; pg 65 &rarr; <code>0022 0104</code>) &rarr; f&iacute;sico <strong><code>0130 0ABC</code></strong> &#10003;
+        </div>
+        <div class="card-importante">
+            <strong>Como o &times;4 vira hexa:</strong> <code>65 &times; 4 = 260</code> &rarr; em hexa <code>0x104</code>. Fa&ccedil;a a conta em decimal e converta, ou apenas <strong>acrescente dois zeros</strong> ao bin&aacute;rio de 65 (<code>1000001</code> &rarr; <code>100000100</code> = <code>0x104</code>).
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>21.5 &mdash; Exemplo 3: quando o GPF barra antes da pagina&ccedil;&atilde;o</h3>
+        <p>Nem toda quest&atilde;o chega at&eacute; a pagina&ccedil;&atilde;o. Se a <strong>segmenta&ccedil;&atilde;o</strong> reprovar no teste de limite, o programa &eacute; abortado e <strong>a pagina&ccedil;&atilde;o nunca acontece</strong>.</p>
+        <p style="margin:0 0 1rem; padding:0.8rem 1rem; border-left:4px solid var(--prova-border); background:rgba(0,0,0,0.15); border-radius:0 8px 8px 0;">
+            <strong>Enunciado:</strong> O processador vai <strong>ler um dado do processo P1</strong>. <code>ESI = 0000 0500</code>. O segmento de dados do P1 &eacute; o seletor <code>0003</code> (Base <code>000a 0001</code>, Limite <code>0000 0fff</code>). Existe acesso &agrave; mem&oacute;ria? Justifique.
+        </p>
+        <div class="diagrama">
+  Endereço Linear = 000a 0001 + 0000 0500 = 000a 0501
+  Teste: 000a 0501 > 0000 0fff  → ❌ GPF! programa ABORTADO
+
+  A paginação NEM RODA: o acesso foi barrado na segmentação.</div>
+        <div class="card-dica">
+            <strong>Resposta:</strong> <strong>N&atilde;o</strong> h&aacute; acesso. O endere&ccedil;o linear <code>000a 0501</code> ultrapassa o limite <code>0000 0fff</code> do segmento de dados &rarr; <strong>GPF</strong>. Como a falha acontece na <u>etapa 1</u> (segmenta&ccedil;&atilde;o), o endere&ccedil;o f&iacute;sico nunca chega a ser calculado.
+        </div>
+        <div class="card-importante">
+            <strong>Moral de prova:</strong> sempre <em>primeiro</em> a segmenta&ccedil;&atilde;o (com o teste de limite). S&oacute; depois de um &ldquo;OK&rdquo; voc&ecirc; parte para a pagina&ccedil;&atilde;o. Muitos alunos perdem pontos calculando o endere&ccedil;o f&iacute;sico de um acesso que deveria ter sido abortado.
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>21.5.1 &mdash; Banco de quest&otilde;es integradas (segmenta&ccedil;&atilde;o + pagina&ccedil;&atilde;o)</h3>
+        <p>Resolva <strong>antes</strong> de abrir a resposta. Dados fixos para todas: pagina&ccedil;&atilde;o <strong>ativa</strong>, <code>CR3 = 000B 0000</code>, <code>ETP = 0022 0000</code> (conte&uacute;do lido no <code>EETDIR</code>), <code>Epg = 0130 0000</code> (conte&uacute;do lido no <code>EETPG</code>). Tabela de descritores: P1 c&oacute;digo <code>0001</code> (Base <code>0000 1a00</code>, Limite <code>0004 DFFD</code>); P1 dados <code>0003</code> (Base <code>000a 0001</code>, Limite <code>0000 0fff</code>). Lembre: <strong>1 quadro = 4 KB = 0x1000</strong>.</p>
+
+        <p style="margin-top:0.8rem;"><strong>Q1.</strong> Processo P1, busca de instru&ccedil;&atilde;o com <code>EIP = 0000 2000</code>. Fa&ccedil;a <u>a trilha inteira</u> (segmenta&ccedil;&atilde;o + pagina&ccedil;&atilde;o) e d&ecirc; o endere&ccedil;o f&iacute;sico.</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">&#9654; Ver resolu&ccedil;&atilde;o</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Segmenta&ccedil;&atilde;o:</strong> <code>linear = 0000 1a00 + 0000 2000 = 0000 3A00</code>. Teste: <code>0000 3A00 &le; 0004 DFFD</code> &#10003;</p>
+                <p><strong>Fatiar</strong> <code>0x00003A00</code> &rarr; dir <strong>0</strong>; pg <strong>3</strong>; offset <code>0xA00</code>.</p>
+                <p><strong>eetdir</strong> = <code>000B 0000 + 0&times;4 = 000B 0000</code> &rarr; l&ecirc; <code>0022 0000</code> (ETP).</p>
+                <p><strong>eetpg</strong> = <code>0022 0000 + 3&times;4 = 0022 0000 + 0x0C = 0022 000C</code> &rarr; l&ecirc; <code>0130 0000</code> (Epg).</p>
+                <p><strong>F&iacute;sico</strong> = <code>0130 0000 + 0xA00 = 0130 0A00</code> &#10003;</p>
+            </div>
+        </details>
+
+        <p style="margin-top:0.8rem;"><strong>Q2.</strong> Agora o mesmo P1, mas <code>EIP = 0000 2500</code>. Por que o endere&ccedil;o f&iacute;sico <u>n&atilde;o</u> muda de quadro, mas muda de byte?</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">&#9654; Ver resolu&ccedil;&atilde;o</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Segmenta&ccedil;&atilde;o:</strong> <code>0000 1a00 + 0000 2500 = 0000 3F00</code> &#10003; (<code>&le; 0004 DFFD</code>).</p>
+                <p><strong>Fatiar</strong> <code>0x00003F00</code> &rarr; dir <strong>0</strong>; pg <strong>3</strong>; offset <code>0xF00</code>.</p>
+                <p>S&oacute; o <strong>offset</strong> mudou (0xA00 &rarr; 0xF00); <code>dir</code> e <code>pg</code> s&atilde;o os mesmos &rarr; a <strong>mesma caixa</strong> (<code>Epg = 0130 0000</code>).</p>
+                <p><strong>F&iacute;sico</strong> = <code>0130 0000 + 0xF00 = 0130 0F00</code> &#10003;</p>
+                <p><em>Por qu&ecirc;:</em> o offset aponta o byte <em>dentro</em> da p&aacute;gina; como ele ficou no mesmo intervalo de 4 KB, o quadro n&atilde;o muda.</p>
+            </div>
+        </details>
+
+        <p style="margin-top:0.8rem;"><strong>Q3.</strong> Pegue a Q1 (P1, <code>EIP = 0000 2000</code>) e mova a <strong>p&aacute;gina 3 quadros para tr&aacute;s</strong>. Qual o novo endere&ccedil;o f&iacute;sico?</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">&#9654; Ver resolu&ccedil;&atilde;o</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>3 quadros</strong> = <code>3 &times; 0x1000 = 0x3000</code>. Para tr&aacute;s = subtrair do <code>Epg</code>:</p>
+                <p><code>0130 0000 &minus; 0x3000 = 012F D000</code> (novo Epg).</p>
+                <p><strong>Refazer s&oacute; a &uacute;ltima soma:</strong> <code>012F D000 + 0xA00 = 012F DA00</code> &#10003;</p>
+                <p>O resto da conta (<code>CR3</code>, &iacute;ndices, <code>eetdir</code>, <code>eetpg</code>) n&atilde;o muda &mdash; s&oacute; o <em>conte&uacute;do</em> do <code>EETPG</code> e a &uacute;ltima soma.</p>
+            </div>
+        </details>
+
+        <p style="margin-top:0.8rem;"><strong>Q4.</strong> Volte &agrave; Q1 e suponha que a <strong>pagina&ccedil;&atilde;o estivesse DESLIGADA</strong>. Qual o endere&ccedil;o f&iacute;sico?</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">&#9654; Ver resolu&ccedil;&atilde;o</summary>
+            <div style="margin-top:0.8rem;">
+                <p>Sem pagina&ccedil;&atilde;o, <strong>f&iacute;sico = linear</strong>. A segmenta&ccedil;&atilde;o continua valendo, ent&atilde;o:</p>
+                <p><strong>F&iacute;sico = <code>0000 3A00</code></strong> &#10003;</p>
+                <p><em>Pegadinha:</em> as tabelas de p&aacute;ginas simplesmente n&atilde;o s&atilde;o consultadas &mdash; mas o descritor e o teste de limite <strong>continuam valendo</u>.</p>
+            </div>
+        </details>
+
+        <p style="margin-top:0.8rem;"><strong>Q4 (b).</strong> E na Q1, se a pagina&ccedil;&atilde;o estivesse ativa mas a p&aacute;gina estivesse agora em <code>012F F000</code>, qual o f&iacute;sico?</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">&#9654; Ver resolu&ccedil;&atilde;o</summary>
+            <div style="margin-top:0.8rem;">
+                <p>Mudou s&oacute; a <code>Epg</code> (a caixa). Refaz-se apenas a &uacute;ltima soma:</p>
+                <p><code>012F F000 + 0xA00 = 012F FA00</code> &#10003;</p>
+            </div>
+        </details>
+
+        <p style="margin-top:0.8rem;"><strong>Q5.</strong> Processo P1, leitura de dados com <code>ESI = 0000 0500</code> (seletor 0003). Existe acesso?</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">&#9654; Ver resolu&ccedil;&atilde;o</summary>
+            <div style="margin-top:0.8rem;">
+                <p><code>linear = 000a 0001 + 0000 0500 = 000a 0501</code>.</p>
+                <p>Teste: <code>000a 0501 &gt; 0000 0fff</code> &rarr; <strong>GPF</strong>. <strong>N&atilde;o</strong> h&aacute; acesso; a pagina&ccedil;&atilde;o nem roda.</p>
+            </div>
+        </details>
+
+        <p style="margin-top:0.8rem;"><strong>Q6.</strong> (pegadinha conceitual) Por que o <strong>teste de limite tem de vir antes</strong> da pagina&ccedil;&atilde;o?</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">&#9654; Ver resolu&ccedil;&atilde;o</summary>
+            <div style="margin-top:0.8rem;">
+                <p>Porque o limite &eacute; a <strong>prote&ccedil;&atilde;o do segmento</strong>: sem ele, um programa poderia &ldquo;vazar&rdquo; para al&eacute;m do seu espa&ccedil;o (ler dados de outro processo) &mdash; e a pagina&ccedil;&atilde;o, sozinha, traduziria alegremente qualquer linear.</p>
+                <p>O <strong>GPF</strong> barra o acesso <em>antes</em> de qualquer tradu&ccedil;&atilde;o. Por isso a ordem importa: <strong>1&ordm; segmentar (e testar), 2&ordm; paginar</strong>.</p>
+            </div>
+        </details>
+    </div>
+
+    <div class="card-dica">
+        <strong>Resumo de bolso da trilha integrada:</strong> <code>Seletor:Offset</code> &rarr; (Base + Offset) &rarr; <strong>linear</strong> &rarr; teste <code>&le;</code> Limite (sen&atilde;o GPF) &rarr; se pagina&ccedil;&atilde;o off, <code>f&iacute;sico = linear</code>; se ativa, fatiar <code>10|10|12</code> &rarr; <code>EETDIR = CR3 + dir&times;4</code> (l&ecirc; <strong>ETP</strong>) &rarr; <code>EETPG = ETP + pg&times;4</code> (l&ecirc; <strong>Epg</strong>) &rarr; <strong>f&iacute;sico = Epg + offset</strong>. Mover a p&aacute;gina em <code>N</code> quadros = somar/subtrair <code>N &times; 0x1000</code> s&oacute; ao <code>Epg</code>.
+    </div>
+
+    <!-- ==================== BLOCO 22: ROTEIRO DE ESTUDO PRIORIZADO ==================== -->
+    <h2 id="sec-22">22. Roteiro de Estudo &mdash; Ordem de Prioridade para a Prova</h2>
+
+    <div class="card-prova">
+        <p><strong>Tema da prova: Segmenta&ccedil;&atilde;o e Pagina&ccedil;&atilde;o no Modo Protegido.</strong> Esta se&ccedil;&atilde;o &eacute; o seu <strong>mapa de estudos</strong>: tudo o que voc&ecirc; precisa ver est&aacute; aqui, na <u>ordem em que faz sentido aprender</u>. Siga de cima para baixo &mdash; cada prioridade s&oacute; faz sentido depois da anterior.</p>
+        <ul>
+            <li><strong>N&atilde;o pule a Prioridade 1</strong> (a base): sem ela o resto vira decoreba.</li>
+            <li>Voc&ecirc; <em>n&atilde;o precisa</em> dominar as se&ccedil;&otilde;es fora desta lista (instru&ccedil;&otilde;es, controle de fluxo) para esta prova.</li>
+            <li>No fim, fa&ccedil;a o <strong>auto-teste</strong> da <a href="#sec-21">se&ccedil;&atilde;o 21</a> (banco de quest&otilde;es integradas).</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>O caminho, em ordem de prioridade</h3>
+        <table>
+            <thead><tr><th style="width:9%;">Prioridade</th><th>O que estudar</th><th style="width:22%;">Onde</th><th style="width:26%;">Por que vem aqui</th></tr></thead>
+            <tbody>
+                <tr><td rowspan="4" style="vertical-align:middle; font-weight:800; text-align:center; color:var(--prova-text);">1<br>BASE</td><td>Modo Protegido (vis&atilde;o geral)</td><td><a href="#sec-3">Se&ccedil;&atilde;o 3</a></td><td>Situa tudo: 32 bits, seletores, prote&ccedil;&atilde;o</td></tr>
+                <tr><td>Os 3 tipos de endere&ccedil;o (l&oacute;gico &rarr; linear &rarr; f&iacute;sico)</td><td><a href="#sec-5">Se&ccedil;&atilde;o 5</a></td><td>&Eacute; o esqueleto de toda a mat&eacute;ria</td></tr>
+                <tr><td>Pares Seletor:Offset (CS:EIP, SS:ESP, DS:ESI...)</td><td><a href="#sec-5">Se&ccedil;&atilde;o 5.1</a></td><td>Define qual registrador usar em cada acesso</td></tr>
+                <tr><td>Segmentos (c&oacute;digo, pilha, dados) e seus tamanhos</td><td><a href="#sec-6">Se&ccedil;&atilde;o 6</a></td><td>Explica <em>o que</em> est&aacute; sendo segmentado</td></tr>
+
+                <tr><td rowspan="5" style="vertical-align:middle; font-weight:800; text-align:center; color:var(--prova-text);">2<br>SEGMENTA&Ccedil;&Atilde;O</td><td>Tabela de descritores (Seletor, Base, Limite, Acesso)</td><td><a href="#sec-7">Se&ccedil;&atilde;o 7</a></td><td>De onde saem Base e Limite</td></tr>
+                <tr><td>Convers&atilde;o Hex &harr; Bin&aacute;rio</td><td><a href="#sec-7">Se&ccedil;&atilde;o 7.2</a></td><td>Necess&aacute;rio para fatiar o endere&ccedil;o</td></tr>
+                <tr><td>Seletores e registradores detalhados</td><td><a href="#sec-9">Se&ccedil;&atilde;o 9</a></td><td>Decora&ccedil;&atilde;o dos pares e do papel de cada um</td></tr>
+                <tr><td>Os 5 passos da execu&ccedil;&atilde;o</td><td><a href="#sec-10">Se&ccedil;&atilde;o 10</a></td><td>O m&eacute;todo da metade 1 (at&eacute; o linear)</td></tr>
+                <tr><td>Exemplos resolvidos de segmenta&ccedil;&atilde;o</td><td><a href="#sec-101">Se&ccedil;&atilde;o 10.1</a></td><td>Treina Base+Offset e o teste de limite (GPF)</td></tr>
+
+                <tr><td rowspan="5" style="vertical-align:middle; font-weight:800; text-align:center; color:var(--prova-text);">3<br>PAGINA&Ccedil;&Atilde;O</td><td>Vocabul&aacute;rio de prova (p&aacute;gina, quadro, tabelas)</td><td><a href="#sec-19">Se&ccedil;&atilde;o 19.2</a></td><td>Sem os nomes, os enunciados n&atilde;o fazem sentido</td></tr>
+                <tr><td>As 3 tabelas (diret&oacute;rio, p&aacute;ginas, p&aacute;gina/quadro)</td><td><a href="#sec-19">Se&ccedil;&atilde;o 19.3</a></td><td>Entender a estrutura antes da conta</td></tr>
+                <tr><td>A conta <code>10 | 10 | 12</code> e o <code>CR3</code></td><td><a href="#sec-19">Se&ccedil;&atilde;o 19.7</a></td><td>O cora&ccedil;&atilde;o do c&aacute;lculo do f&iacute;sico</td></tr>
+                <tr><td>Tamanhos que caem na prova (4 KB, 1024, &times;4)</td><td><a href="#sec-19">Se&ccedil;&atilde;o 19.8</a></td><td>Pergunta te&oacute;rica garantida</td></tr>
+                <tr><td>Exemplo num&eacute;rico resolvido</td><td><a href="#sec-19">Se&ccedil;&atilde;o 19.9</a></td><td>Primeira pr&aacute;tica s&oacute; de pagina&ccedil;&atilde;o</td></tr>
+
+                <tr><td rowspan="3" style="vertical-align:middle; font-weight:800; text-align:center; color:var(--prova-text);">3<br>O QUADRO</td><td>As tr&ecirc;s somas + dicion&aacute;rio dos s&iacute;mbolos</td><td><a href="#sec-20">Se&ccedil;&otilde;es 20.2 e 20.3</a></td><td>Traduz o vocabul&aacute;rio do professor</td></tr>
+                <tr><td>M&eacute;todo do come&ccedil;o ao fim (com a mudan&ccedil;a de quadros)</td><td><a href="#sec-20">Se&ccedil;&atilde;o 20.4</a></td><td>O estilo exato da quest&atilde;o dele</td></tr>
+                <tr><td>Banco de 9 quest&otilde;es de pagina&ccedil;&atilde;o</td><td><a href="#sec-20">Se&ccedil;&atilde;o 20.5</a></td><td>Treino progressivo do f&aacute;cil ao dif&iacute;cil</td></tr>
+
+                <tr><td style="vertical-align:middle; font-weight:800; text-align:center; color:var(--prova-text);">4<br>INTEGRA&Ccedil;&Atilde;O</td><td>A trilha completa (segmenta&ccedil;&atilde;o + pagina&ccedil;&atilde;o juntas) e o banco integrado</td><td><a href="#sec-21">Se&ccedil;&atilde;o 21</a></td><td><strong>O tema real da prova</strong>: as duas metades ligadas</td></tr>
+
+                <tr><td style="vertical-align:middle; font-weight:800; text-align:center; color:var(--prova-text);">4<br>REVIS&Atilde;O</td><td>Cheat Sheet, Gloss&aacute;rio e Mapa de Rela&ccedil;&otilde;es</td><td><a href="#sec-13">Se&ccedil;&atilde;o 13</a>, <a href="#sec-12">12</a> e <a href="#sec-14">14</a></td><td>V&eacute;spera da prova: recapitula&ccedil;&atilde;o r&aacute;pida</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card-dica">
+        <strong>Como usar este roteiro na pr&aacute;tica (sugest&atilde;o de cronograma):</strong>
+        <ul>
+            <li><strong>Dia 1:</strong> Prioridades 1 e 2 (base + segmenta&ccedil;&atilde;o). Refa&ccedil;a de cabe&ccedil;a os exemplos da <a href="#sec-101">10.1</a>.</li>
+            <li><strong>Dia 2:</strong> Prioridade 3 (pagina&ccedil;&atilde;o + o quadro). Resolva o banco da <a href="#sec-20">20.5</a> sem olhar.</li>
+            <li><strong>Dia 3:</strong> Prioridade 4 (integra&ccedil;&atilde;o). Resolva o banco da <a href="#sec-21">21</a> e refa&ccedil;a os Exemplos 1 e 2 da se&ccedil;&atilde;o 21 do zero.</li>
+            <li><strong>V&eacute;spera:</strong> s&oacute; as se&ccedil;&otilde;es <a href="#sec-13">13</a>, <a href="#sec-12">12</a> e <a href="#sec-14">14</a> + o resumo de bolso da <a href="#sec-21">21</a>.</li>
+        </ul>
+    </div>
+
+    <div class="card-importante">
+        <strong>As 5 perguntas que mais caem neste tema (saiba responder na hora):</strong>
+        <ol>
+            <li>Qual a diferen&ccedil;a entre endere&ccedil;o <strong>l&oacute;gico</strong>, <strong>linear</strong> e <strong>f&iacute;sico</strong>?</li>
+            <li>Como se calcula o <strong>endere&ccedil;o linear</strong> e quando ocorre o <strong>GPF</strong>?</li>
+            <li>Por que o endere&ccedil;o linear se divide em <code>10 | 10 | 12</code> e por que o &iacute;ndice &eacute; multiplicado por <strong>4</strong>?</li>
+            <li>Fa&ccedil;a a trilha completa <code>Seletor:Offset &rarr; F&iacute;sico</code> para um caso dado (com pagina&ccedil;&atilde;o ativa).</li>
+            <li>Se uma p&aacute;gina se muda de quadro, <strong>o que muda e o que n&atilde;o muda</strong> no c&aacute;lculo?</li>
+        </ol>
+    </div>
+
     <!-- ==================== RODAPÉ ==================== -->
+
     <div style="text-align:center; margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border); color:var(--text-muted); font-size:0.85rem;">
         Arquitetura de Computadores &mdash; Guia de Estudo<br>
         Material elaborado a partir das anotações de aula. Para uso pessoal.<br>
