@@ -3616,9 +3616,20 @@
     <div class="card-prova">
         <h3>20.2 &mdash; As três somas, por extenso (estilo prova)</h3>
         <ol class="passo-lista">
-            <li><strong>eetdir = CR3 + índice_dir &times; 4</strong> &rarr; <code>000B 0000 + 0x1AC</code> = <code>000B 01AC</code>. <em>Conteúdo lido:</em> <code>0022 0000</code> &mdash; essa é a <strong>Etpg</strong> (base da tabela de página).</li>
-            <li><strong>eetpg = Etpg + índice_pg &times; 4</strong> &rarr; <code>0022 0000 + 0xE04</code> = <code>0022 0E04</code>. <em>Conteúdo lido:</em> <code>0130 0000</code> &mdash; essa é a <strong>Epg</strong> (início da página/frame).</li>
-            <li><strong>Endereço físico = Epg + offset</strong> &rarr; <code>0130 0000 + 0xD74</code> = <strong><code>0130 0D74</code></strong> &#10003;</li>
+            <li>
+                <strong>eetdir = CR3 + índice_dir &times; 4</strong>
+                <p style="margin:0.5rem 0 0;">Substituindo os valores: <code>000B 0000 + 0x1AC</code> = <code>000B 01AC</code></p>
+                <p style="margin:0.7rem 0 0; padding:0.5rem 0.8rem; background:var(--surface2); border-left:3px solid var(--accent2); border-radius:0 6px 6px 0;"><em>Conteúdo lido nesse endereço:</em> <code>0022 0000</code> &mdash; essa é a <strong>Etpg</strong> (base da tabela de página).</p>
+            </li>
+            <li>
+                <strong>eetpg = Etpg + índice_pg &times; 4</strong>
+                <p style="margin:0.5rem 0 0;">Substituindo os valores: <code>0022 0000 + 0xE04</code> = <code>0022 0E04</code></p>
+                <p style="margin:0.7rem 0 0; padding:0.5rem 0.8rem; background:var(--surface2); border-left:3px solid var(--accent2); border-radius:0 6px 6px 0;"><em>Conteúdo lido nesse endereço:</em> <code>0130 0000</code> &mdash; essa é a <strong>Epg</strong> (início da página/frame).</p>
+            </li>
+            <li>
+                <strong>Endereço físico = Epg + offset</strong>
+                <p style="margin:0.5rem 0 0;">Substituindo os valores: <code>0130 0000 + 0xD74</code> = <strong><code>0130 0D74</code></strong> &#10003;</p>
+            </li>
         </ol>
         <div class="card-dica" style="background:rgba(245,158,11,0.08); border-left-color:var(--prova-border); color:var(--prova-text);">
             <strong>Nomenclatura do quadro:</strong> o professor escreve <code>EETDIR</code>/<code>EETPG</code> para o <em>endereço onde se lê</em> e <code>ETP</code>/<code>PÁGINA</code> para o <em>conteúdo lido</em> &mdash; nos exercícios da seção 19 isso aparece como <code>eetdir</code>&rarr;<code>Etpg</code> e <code>eetpg</code>&rarr;<code>Epg</code>. Mesma coisa, nomes diferentes.
