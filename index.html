@@ -3665,6 +3665,10 @@
             <em>"Se uma determinada página, durante a paginação, for carregada em <strong>2 quadros de página anteriores</strong> ao que estava, quais as alterações que devem ser feitas no seu exemplo no cálculo da paginação?"</em>
         </blockquote>
 
+        <div class="card-dica">
+            <strong>Antes da conta, a ideia com desenho mental:</strong> imagine a memória RAM como uma <strong>rua comprida de casinhas</strong>, todas do mesmo tamanho (4 KB). Cada casinha é um <strong>quadro</strong>. A <em>página</em> (o dado) é uma família que mora em uma dessas casas &mdash; no exemplo, na casa que começa em <code>0130 0000</code>. O <strong>endereço linear</strong> é só o <em>nome</em> da família ("quero a Mamãe"), e o <strong>endereço físico</strong> é o <em>número da casa</em>. Se a família se muda para 2 casas antes na rua, o <em>número da casa</em> muda, mas o <em>nome</em> continua o mesmo &mdash; por isso o programa nem percebe.
+        </div>
+
         <p><strong>Primeiro: entender a pergunta em português.</strong> No exemplo de 20.1, a página (o dado) estava no quadro que começa em <code>0130 0000</code>. Agora imagine que o sistema operacional <strong>mudou essa página de lugar</strong> na RAM: em vez de ficar onde estava, ela foi <em>empurrada para trás</em>, para <strong>2 quadros antes</strong>. A pergunta é: <em>o que muda na conta?</em></p>
 
         <div class="card-importante">
@@ -3702,69 +3706,134 @@
 
     <div class="card">
         <h3>20.5 &mdash; Banco de questões: subindo o nível até o da prova</h3>
-        <p>Tente resolver <strong>antes</strong> de abrir a resposta (clique em "Ver resolução"). Use sempre os dados-base do quadro: <code>CR3 = 000B 0000</code>, <code>ETP = 0022 0000</code>, <code>Epg = 0130 0000</code>, endereço linear <code>1AF81D74</code>. Lembre-se: <strong>1 quadro = 4 KB = 0x1000</strong>.</p>
+        <p>Tente resolver <strong>antes</strong> de abrir a resposta (clique em "&#9654; Ver resolução"). Todas usam os dados do quadro: <code>CR3 = 000B 0000</code>, <code>ETP = 0022 0000</code>, <code>Epg = 0130 0000</code>, endereço linear <code>1AF81D74</code>. E lembre-se sempre: <strong>1 quadro = 1 página = 4 KB = 0x1000</strong>.</p>
+
+        <div class="card-importante">
+            <strong>O mesmo macete resolve TODAS as questões &mdash; o método dos 3 passos:</strong>
+            <ol style="margin:0.6rem 0 0 1.2rem;">
+                <li><strong>Fatiar:</strong> quebre o endereço em <code>10 | 10 | 12</code> &rarr; acha o <em>índice de diretório</em>, o <em>índice de página</em> e o <em>offset</em>.</li>
+                <li><strong>Descer as duas tabelas:</strong> <code>EETDIR = CR3 + dir&times;4</code> (lê a <em>ETP</em>) e <code>EETPG = ETP + pg&times;4</code> (lê a <em>Epg</em>).</li>
+                <li><strong>Somar o offset:</strong> <code>físico = Epg + offset</code>.</li>
+            </ol>
+            <p style="margin-top:0.6rem;">Pense em três "caixas de memória" empilhadas: a de diretório, a de páginas e a página de 4 KB. O passo 1 descobre <em>quais gavetas</em> abrir; o passo 2 <em>abre</em>; o passo 3 diz <em>qual byte</em> dentro da última caixa.</p>
+        </div>
 
         <h4>Nível 1 &mdash; aquecimento</h4>
         <p><strong>Q1.</strong> E se a página fosse carregada <strong>2 quadros depois</strong> (para frente, endereço maior)? Quais seriam o novo Epg e o novo endereço físico?</p>
-        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
-            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
-            <p>Para frente = somar: <code>0130 0000 + 0x2000 = 0130 2000</code> (novo Epg). Endereço físico = <code>0130 2000 + 0xD74 = <strong>0130 2D74</strong></code>. Só a entrada do EETPG e o físico mudam; o resto é igual.</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">&#9654; Ver resolução</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Ideia em 1 frase:</strong> "2 quadros depois" = andar 2 caixas para a frente = <strong>somar</strong>. (Antes = subtrair; depois = somar.)</p>
+                <p><strong>Passo 1 &mdash; quanto vale 1 quadro?</strong> 1 quadro = 4 KB = <code>0x1000</code>. Então 2 quadros = <code>2 &times; 0x1000 = 0x2000</code>.</p>
+                <p><strong>Passo 2 &mdash; a nova Epg (a caixa):</strong> <code>0130 0000 + 0x2000 = 0130 2000</code>.</p>
+                <p><strong>Passo 3 &mdash; o endereço físico:</strong> <code>Epg + offset = 0130 2000 + 0xD74 = 0130 2D74</code>.</p>
+                <p><strong>Resposta:</strong> nova caixa <code>0130 2000</code>; endereço físico <code>0130 2D74</code> &#10003;</p>
+                <p>Nada mais muda: <code>CR3</code>, índices, <code>EETDIR</code> e <code>EETPG</code> continuam iguais &mdash; só o conteúdo do <code>EETPG</code> e a última soma mudam.</p>
+            </div>
         </details>
 
         <p style="margin-top:0.8rem;"><strong>Q2.</strong> E se a página fosse <strong>5 quadros antes</strong>?</p>
-        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
-            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
-            <p><code>5 &times; 0x1000 = 0x5000</code>. Novo Epg = <code>0130 0000 &minus; 0x5000 = 012F B000</code>. Físico = <code>012F B000 + 0xD74 = <strong>012F BD74</strong></code>.</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">&#9654; Ver resolução</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Ideia em 1 frase:</strong> "5 quadros antes" = andar 5 caixas para trás = <strong>subtrair</strong>.</p>
+                <p><strong>Passo 1 &mdash; quanto valem 5 quadros?</strong> <code>5 &times; 0x1000 = 0x5000</code>.</p>
+                <p><strong>Passo 2 &mdash; subtrair da Epg:</strong> <code>0130 0000 &minus; 0x5000 = 012F B000</code>.
+                    <br><em>Como subtrair sem errar:</em> escreva por partes. <code>0x1300000 &minus; 0x5000 = 0x12FB000</code>. Com o espaço de 4 em 4 dígitos: <code>012F B000</code>.</p>
+                <p><strong>Passo 3 &mdash; endereço físico:</strong> <code>012F B000 + 0xD74 = 012F BD74</code>.</p>
+                <p><strong>Resposta:</strong> <code>012F BD74</code> &#10003;</p>
+            </div>
         </details>
 
         <h4 style="margin-top:1.2rem;">Nível 2 &mdash; trocando o alvo</h4>
         <p><strong>Q3.</strong> Mantendo o mesmo diretório e a mesma página, mas trocando o endereço linear para <code>1AF8 1E00</code> (repare: mudaram só os 3 últimos dígitos hexa), qual o novo endereço físico?</p>
-        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
-            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
-            <p>Os 3 últimos dígitos hexa = os <strong>12 bits de offset</strong>. Então os índices (107 e 897) <em>não</em> mudam; <code>Epg</code> continua <code>0130 0000</code>. Só o offset vira <code>0xE00</code>. Físico = <code>0130 0000 + 0xE00 = <strong>0130 0E00</strong></code>.</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">&#9654; Ver resolução</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Ideia em 1 frase:</strong> os <strong>3 últimos dígitos hexa</strong> são exatamente o <strong>offset</strong>. Mudou só o offset &rarr; só a última soma muda.</p>
+                <p><strong>Passo 1 &mdash; reconheça os pedaços:</strong> em <code>1AF8 1E00</code>, os 3 últimos dígitos = <code>E00</code> = offset. O começo (<code>1AF8</code>) carrega os índices, que continuam <strong>107</strong> e <strong>897</strong>.</p>
+                <p><strong>Passo 2 &mdash; é a mesma caixa:</strong> como os índices não mudaram, a página lida é a mesma: <code>Epg = 0130 0000</code>.</p>
+                <p><strong>Passo 3 &mdash; novo físico:</strong> <code>0130 0000 + 0xE00 = 0130 0E00</code>.</p>
+                <p><strong>Analogia:</strong> é a <em>mesma caixa</em> na prateleira &mdash; você só pegou um byte <em>mais à frente</em> dentro dela.</p>
+                <p><strong>Resposta:</strong> <code>0130 0E00</code> &#10003;</p>
+            </div>
         </details>
 
         <p style="margin-top:0.8rem;"><strong>Q4.</strong> Endereço linear totalmente novo <code>0ABCDEF0</code>, com <code>CR3 = 000B 0000</code>, <code>ETP = 0022 0000</code> e <code>Epg = 0130 0000</code>. Refaça o cálculo completo (índices, EETDIR, EETPG e físico).</p>
-        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
-            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
-            <p>Separe <code>0ABCDEF0</code> em <code>10 | 10 | 12</code>: diretório = <code>0000101010</code> = <strong>42</strong> (<code>0x2A</code>); página = <code>1111001101</code> = <strong>973</strong> (<code>0x3CD</code>); offset = <code>1110 1111 0000</code> = <code>0xEF0</code>.</p>
-            <ul>
-                <li><code>EETDIR = 000B 0000 + 42&times;4 = 000B 0000 + 0xA8 = <strong>000B 00A8</strong></code>;</li>
-                <li><code>EETPG = 0022 0000 + 973&times;4 = 0022 0000 + 0xF34 = <strong>0022 0F34</strong></code>;</li>
-                <li>Físico = <code>0130 0000 + 0xEF0 = <strong>0130 0EF0</strong></code>.</li>
-            </ul>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">&#9654; Ver resolução</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Passo 1 &mdash; virar binário de 4 em 4 (nibble a nibble):</strong><br>
+                    <code>0 A B C D E F 0</code> = <code>0000 1010 1011 1100 1101 1110 1111 0000</code></p>
+                <p><strong>Passo 2 &mdash; fatiar <code>10 | 10 | 12</code>:</strong><br>
+                    índice de diretório = <code>0000101010</code> = <strong>42</strong> (<code>0x2A</code>)<br>
+                    índice de página = <code>1111001101</code> = <strong>973</strong> (<code>0x3CD</code>)<br>
+                    offset = <code>1110 1111 0000</code> = <code>0xEF0</code></p>
+                <p><strong>Passo 3 &mdash; EETDIR:</strong> <code>000B 0000 + 42&times;4 = 000B 0000 + 0xA8 = 000B 00A8</code></p>
+                <p><strong>Passo 4 &mdash; EETPG:</strong> <code>0022 0000 + 973&times;4 = 0022 0000 + 0xF34 = 0022 0F34</code></p>
+                <p><strong>Passo 5 &mdash; endereço físico:</strong> <code>0130 0000 + 0xEF0 = 0130 0EF0</code></p>
+                <p><strong>Resposta:</strong> dir 42, pg 973; EETDIR <code>000B 00A8</code>; EETPG <code>0022 0F34</code>; físico <code>0130 0EF0</code> &#10003;</p>
+                <p><em>Observação:</em> a questão já deu os conteúdos lidos (<code>ETP = 0022 0000</code> e <code>Epg = 0130 0000</code>). Por isso, nos passos 4 e 5, usamos esses valores direto.</p>
+            </div>
         </details>
 
         <p style="margin-top:0.8rem;"><strong>Q5.</strong> Agora mude <u>outra coisa</u>: quem se mudou de lugar foi a <strong>tabela de páginas</strong>, de <code>0022 0000</code> para <code>0023 0000</code> (e a página do dado continua em <code>0130 0000</code>). O que muda no cálculo?</p>
-        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
-            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
-            <p>Muda o <strong>conteúdo lido no EETDIR</strong> (a Etpg): de <code>0022 0000</code> para <code>0023 0000</code>. Consequentemente muda o <code>EETPG</code>: <code>0023 0000 + 897&times;4 = 0023 0000 + 0xE04 = <strong>0023 0E04</strong></code>. Mas o <strong>Epg continua <code>0130 0000</code></strong>, então o <strong>endereço físico não muda</strong>: <code>0130 0D74</code>.</p>
-            <p><strong>Lição:</strong> mover a <em>tabela</em> muda os <em>endereços de leitura</em>, mas não necessariamente o dado final. Mover a <em>página</em> (a Q. do professor) muda o <em>dado final</em>.</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">&#9654; Ver resolução</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Ideia em 1 frase:</strong> mover a <em>tabela</em> muda <em>onde eu leio</em> &mdash; mas o dado final pode ficar igual.</p>
+                <p><strong>Passo 1 &mdash; o que muda primeiro:</strong> o <em>conteúdo lido</em> no <code>EETDIR</code> (a <code>ETP</code>) passa de <code>0022 0000</code> para <code>0023 0000</code>. O <code>EETDIR</code> em si (<code>000B 01AC</code>) <strong>não</strong> muda &mdash; continua sendo o mesmo lugar no diretório.</p>
+                <p><strong>Passo 2 &mdash; novo EETPG:</strong> <code>0023 0000 + 897&times;4 = 0023 0000 + 0xE04 = 0023 0E04</code>.</p>
+                <p><strong>Passo 3 &mdash; o conteúdo lido ali:</strong> a questão diz que a página continua em <code>0130 0000</code>, então <code>Epg = 0130 0000</code>.</p>
+                <p><strong>Passo 4 &mdash; endereço físico:</strong> <code>0130 0000 + 0xD74 = 0130 0D74</code> &mdash; <strong>igual ao original!</strong></p>
+                <p><strong>Lição de prova:</strong> mover a <em>tabela</em> = mudar o <em>caminho</em> (endereços de leitura). Mover a <em>página</em> = mudar o <em>destino</em> (endereço físico). São coisas diferentes &mdash; não confunda!</p>
+            </div>
         </details>
 
         <h4 style="margin-top:1.2rem;">Nível 3 &mdash; combinações e pegadinhas de prova</h4>
         <p><strong>Q6.</strong> Combinação: a <strong>tabela de páginas</strong> passa para <code>0023 0000</code> <u>e</u> a <strong>página</strong> desce <strong>3 quadros</strong>. Recalcule Epg, EETPG e endereço físico.</p>
-        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
-            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
-            <p><code>EETPG = 0023 0000 + 0xE04 = 0023 0E04</code>. Novo Epg = <code>0130 0000 &minus; 3&times;0x1000 = 0130 0000 &minus; 0x3000 = 012F D000</code>. Físico = <code>012F D000 + 0xD74 = <strong>012F DD74</strong></code>.</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">&#9654; Ver resolução</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Passo 1 &mdash; a tabela mudou:</strong> <code>EETPG = 0023 0000 + 897&times;4 = 0023 0000 + 0xE04 = 0023 0E04</code>.</p>
+                <p><strong>Passo 2 &mdash; a página desceu 3 quadros:</strong> <code>3 &times; 0x1000 = 0x3000</code> &rarr; <code>0130 0000 &minus; 0x3000 = 012F D000</code>.</p>
+                <p><strong>Passo 3 &mdash; endereço físico:</strong> <code>012F D000 + 0xD74 = 012F DD74</code>.</p>
+                <p><strong>Resposta:</strong> Epg <code>012F D000</code>; EETPG <code>0023 0E04</code>; físico <code>012F DD74</code> &#10003;</p>
+                <p>Repare que as duas mudanças são independentes: uma mexe no <em>passo 2</em> (a tabela) e a outra no <em>passo 3</em> (a página).</p>
+            </div>
         </details>
 
         <p style="margin-top:0.8rem;"><strong>Q7.</strong> (pegadinha) Quando a página é movida de quadro, o <strong>endereço linear</strong> <code>1AF81D74</code> muda? E o programa que está rodando percebe alguma coisa?</p>
-        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
-            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
-            <p><strong>Não</strong> e <strong>não</strong>. O endereço linear é o "nome" que o programa usa e permanece idêntico. Quem sabe onde a página está é a <em>tabela de páginas</em>, atualizada pelo sistema operacional. A tradução linear&rarr;física é <strong>transparente</strong>: o programa continua funcionando sem alterar uma linha de código.</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">&#9654; Ver resolução</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Resposta curta:</strong> <strong>Não</strong> e <strong>não</strong>.</p>
+                <p><strong>Por que o endereço linear não muda:</strong> ele é como o <em>nome</em> que o programa usa ("quero o byte X"). Esse nome não depende de onde o dado está fisicamente guardado na RAM.</p>
+                <p><strong>Por que o programa não percebe:</strong> quem sabe o endereço real é a <em>tabela de páginas</em>, e quem a atualiza é o sistema operacional. A tradução linear &rarr; físico é <strong>transparente</strong>: o programa roda igual, sem mudar uma linha de código.</p>
+                <p><strong>Analogia:</strong> você salvou o contato "Mamãe" no celular. Se sua mãe se mudar de casa, você continua discando "Mamãe" &mdash; o número por trás é que foi trocado na agenda.</p>
+            </div>
         </details>
 
         <p style="margin-top:0.8rem;"><strong>Q8.</strong> (pegadinha) Por que <strong>não dá</strong> para mover a página "meia página" (2 KB) em vez de 4 KB?</p>
-        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
-            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
-            <p>Porque a unidade de alocação é o <strong>quadro</strong> inteiro, e o quadro tem sempre 4 KB (o offset de 12 bits só cobre <code>0x000</code> a <code>0xFFF</code>). A entrada da tabela guarda só <em>a base</em> do quadro (os 12 bits baixos são zero). O que resolve "onde dentro do quadro" é o offset, não a tabela. Mover para um endereço que não seja múltiplo de 4 KB quebraria essa regra.</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">&#9654; Ver resolução</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Por que não:</strong> a unidade de alocação é o <strong>quadro inteiro (4 KB)</strong>, e a entrada da tabela guarda só <em>a base</em> da caixa &mdash; os 12 bits de baixo são sempre zero.</p>
+                <p><strong>O que decide "onde dentro da caixa":</strong> o <em>offset</em>, que tem 12 bits e cobre de <code>0x000</code> até <code>0xFFF</code> (exatamente 4 KB).</p>
+                <p><strong>Analogia:</strong> é como uma prateleira com gavetas fixas do mesmo tamanho &mdash; você guarda objetos <em>dentro</em> das gavetas, não "meia gaveta".</p>
+                <p>Se você movesse para um endereço que não fosse múltiplo de 4 KB, os 12 bits baixos da base deixariam de ser zero e a tradução quebraria.</p>
+            </div>
         </details>
 
         <p style="margin-top:0.8rem;"><strong>Q9.</strong> (raciocínio) A sequência de endereços <code>000B 0000 &lt; 0022 0000 &lt; 0130 0000</code> precisa ser <em>sempre</em> crescente?</p>
-        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px;">
-            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">Ver resolução</summary>
-            <p><strong>Não.</strong> Ela é crescente <em>neste exemplo</em> por coincidência da forma como o professor escolheu os números. A única obrigação técnica é que cada <em>bloco</em> comece num endereço múltiplo de 4 KB. A tabela de diretório, a de páginas e a página podem estar em qualquer ordem na RAM &mdash; o que garante a tradução correta são os <em>ponteiros</em> escritos nas tabelas (CR3 &rarr; ETP &rarr; página), não a ordem dos endereços.</p>
+        <details style="margin:0.5rem 0; padding:0.8rem; background:var(--surface2); border-radius:8px; cursor:pointer;">
+            <summary style="font-weight:600; color:var(--accent); cursor:pointer;">&#9654; Ver resolução</summary>
+            <div style="margin-top:0.8rem;">
+                <p><strong>Resposta:</strong> <strong>Não</strong>, a ordem crescente não é obrigatória.</p>
+                <p><strong>Por que aqui aparece crescendo:</strong> foi só a escolha de números do professor; nada na arquitetura força isso.</p>
+                <p><strong>O que é obrigatório:</strong> cada bloco começar num endereço <strong>múltiplo de 4 KB</strong> (alinhamento).</p>
+                <p><strong>O que garante a tradução certa:</strong> os <em>ponteiros</em> escritos nas tabelas (<code>CR3</code> &rarr; ETP &rarr; página). A RAM pode guardar os blocos em qualquer ordem &mdash; quem manda é o caminho dos ponteiros, não o valor dos endereços.</p>
+            </div>
         </details>
     </div>
 
