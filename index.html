@@ -3679,7 +3679,8 @@
     </div>
 
     <div class="card-prova">
-        <h3>20.4 &mdash; A pergunta do professor, resolvida devagarinho</h3>
+        <h3>20.4 &mdash; A pergunta do professor, do começo ao fim (método completo)</h3>
+
         <p style="margin:0 0 1rem; padding:0.8rem 1rem; border-left:4px solid var(--prova-border); background:rgba(0,0,0,0.15); border-radius:0 8px 8px 0;">
             <strong>Enunciado do professor:</strong> <em>"Se uma determinada página, durante a paginação, for carregada em <strong>2 quadros de página anteriores</strong> ao que estava, quais as alterações que devem ser feitas no seu exemplo no cálculo da paginação?"</em>
         </p>
@@ -3688,18 +3689,82 @@
             <strong>Antes da conta, a ideia com desenho mental:</strong> imagine a memória RAM como uma <strong>rua comprida de casinhas</strong>, todas do mesmo tamanho (4 KB). Cada casinha é um <strong>quadro</strong>. A <em>página</em> (o dado) é uma família que mora em uma dessas casas &mdash; no exemplo, na casa que começa em <code>0130 0000</code>. O <strong>endereço linear</strong> é só o <em>nome</em> da família ("quero a Mamãe"), e o <strong>endereço físico</strong> é o <em>número da casa</em>. Se a família se muda para 2 casas antes na rua, o <em>número da casa</em> muda, mas o <em>nome</em> continua o mesmo &mdash; por isso o programa nem percebe.
         </div>
 
-        <p><strong>Primeiro: entender a pergunta em português.</strong> No exemplo de 20.1, a página (o dado) estava no quadro que começa em <code>0130 0000</code>. Agora imagine que o sistema operacional <strong>mudou essa página de lugar</strong> na RAM: em vez de ficar onde estava, ela foi <em>empurrada para trás</em>, para <strong>2 quadros antes</strong>. A pergunta é: <em>o que muda na conta?</em></p>
+        <h4>Parte 1 &mdash; Como tirar as informações do enunciado</h4>
+        <p>Nenhuma questão de paginação inventa número do nada. Ela sempre te entrega <strong>cinco peças</strong> &mdash; algumas escritas no texto, outras para você <em>ler do quadro</em>. Aprenda a caçar cada uma:</p>
+        <table>
+            <thead><tr><th>Peça</th><th>Como descobrir na questão</th><th>No nosso exemplo</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Endereço linear</strong></td><td>Normalmente vem escrito: "calcular para o endereço X".</td><td><code>1AF8 1D74</code></td></tr>
+                <tr><td><strong>CR3</strong></td><td>Vem escrito, ou está no registrador do topo do quadro.</td><td><code>000B 0000</code></td></tr>
+                <tr><td><strong>ETP</strong> (conteúdo lido)</td><td>Você <em>lê</em> no endereço <code>EETDIR</code> (base da tabela de páginas).</td><td><code>0022 0000</code></td></tr>
+                <tr><td><strong>Epg</strong> (conteúdo lido)</td><td>Você <em>lê</em> no endereço <code>EETPG</code> (base da página/quadro).</td><td><code>0130 0000</code></td></tr>
+                <tr><td><strong>Offset</strong></td><td>São os <strong>3 últimos dígitos hexa</strong> do endereço linear.</td><td><code>0xD74</code></td></tr>
+            </tbody>
+        </table>
+        <p><strong>E o que a questão está pedindo?</strong> Ela não pede "calcule o físico". Ela pergunta <em>o que muda</em> se a página andar 2 quadros. Então o plano é: <strong>(1)</strong> refazer a conta original, <strong>(2)</strong> aplicar a mudança e <strong>(3)</strong> comparar.</p>
 
-        <div class="card-importante">
-            <strong>A peça-chave:</strong> cada <strong>quadro</strong> tem o tamanho de uma <strong>página</strong> = 4 KB = <code>0x1000</code>. Então "2 quadros antes" significa <strong>subtrair</strong> <code>2 &times; 0x1000 = 0x2000</code> do endereço da página. Antes = endereço menor.
+        <h4>Parte 2 &mdash; O método do começo ao fim (use sempre este roteiro)</h4>
+        <ol class="passo-lista">
+            <li>
+                <strong>Passo 1 &mdash; Liste os dados.</strong>
+                <p style="margin:0.5rem 0 0;">Separe o que a questão deu do que você vai descobrir. Aqui: endereço linear <code>1AF8 1D74</code>, <code>CR3 = 000B 0000</code>, e os conteúdos lidos <code>ETP = 0022 0000</code> e <code>Epg = 0130 0000</code>.</p>
+            </li>
+            <li>
+                <strong>Passo 2 &mdash; Fatie o endereço em <code>10 | 10 | 12</code>.</strong>
+                <p style="margin:0.5rem 0 0;">Transforme cada dígito hexa em 4 bits e corte em três pedaços: <strong>10 bits</strong> (índice de diretório), <strong>10 bits</strong> (índice de página) e <strong>12 bits</strong> (offset).</p>
+                <p style="margin:0.4rem 0 0;"><em>Atalho:</em> os <strong>3 últimos dígitos hexa</strong> já são o offset; os 5 dígitos que sobram contêm diretório + página.</p>
+                <p style="margin:0.7rem 0 0; padding:0.5rem 0.8rem; background:var(--surface2); border-left:3px solid var(--accent2); border-radius:0 6px 6px 0;"><code>1AF81D74</code> = <code>0001 1010 1111 1000 0001 1101 0111 0100</code> &rarr; dir = <code>0001101011</code> = <strong>107</strong>; pg = <code>1110000001</code> = <strong>897</strong>; offset = <code>1101 0111 0100</code> = <code>0xD74</code>.</p>
+            </li>
+            <li>
+                <strong>Passo 3 &mdash; eetdir = CR3 + índice_dir &times; 4.</strong>
+                <p style="margin:0.5rem 0 0;">Multiplicar por 4 = <strong>acrescentar dois zeros</strong> no número binário (andar 2 casinhas). <code>107 &times; 4 = 428 = 0x1AC</code>. Depois <strong>some em hexa</strong>, alinhando pela direita: <code>000B 0000 + 0x1AC</code>.</p>
+                <p style="margin:0.7rem 0 0; padding:0.5rem 0.8rem; background:var(--surface2); border-left:3px solid var(--accent2); border-radius:0 6px 6px 0;"><code>000B 0000 + 0x1AC = 000B 01AC</code> &rarr; <em>lê</em> <code>0022 0000</code> (essa é a <strong>Etpg</strong>).</p>
+            </li>
+            <li>
+                <strong>Passo 4 &mdash; eetpg = Etpg + índice_pg &times; 4.</strong>
+                <p style="margin:0.5rem 0 0;">Mesma ideia: <code>897 &times; 4 = 3588 = 0xE04</code>, depois some na base da tabela: <code>0022 0000 + 0xE04</code>.</p>
+                <p style="margin:0.7rem 0 0; padding:0.5rem 0.8rem; background:var(--surface2); border-left:3px solid var(--accent2); border-radius:0 6px 6px 0;"><code>0022 0000 + 0xE04 = 0022 0E04</code> &rarr; lê <code>0130 0000</code> (a <strong>Epg</strong>).</p>
+            </li>
+            <li>
+                <strong>Passo 5 &mdash; endereço físico = Epg + offset.</strong>
+                <p style="margin:0.5rem 0 0;">Some o deslocamento ao início da página. Como o offset é pequeno (&lt; 0x1000), ele mexe só nos 3 últimos dígitos hexa: <code>0130 0000 + 0xD74</code>.</p>
+                <p style="margin:0.7rem 0 0; padding:0.5rem 0.8rem; background:var(--surface2); border-left:3px solid var(--accent2); border-radius:0 6px 6px 0;"><code>0130 0000 + 0xD74</code> = <strong><code>0130 0D74</code></strong> &#10003;</p>
+            </li>
+            <li>
+                <strong>Passo 6 &mdash; Confira (duas checagens rápidas).</strong>
+                <p style="margin:0.5rem 0 0;"><strong>(a)</strong> O endereço físico tem os <strong>mesmos 3 últimos dígitos</strong> do offset (<code>&hellip;0D74</code> termina em <code>D74</code> &#10003;). <strong>(b)</strong> Ele cai <em>dentro</em> do quadro: entre <code>0130 0000</code> e <code>0130 0FFF</code> &#10003;. Se não cair, alguma soma errou.</p>
+            </li>
+        </ol>
+
+        <div class="card-dica">
+            <strong>Como fazer as continhas sem errar:</strong>
+            <ul>
+                <li><strong>&times;4:</strong> acrescente dois zeros no fim do número binário (equivale a multiplicar por 4 em decimal).</li>
+                <li><strong>Somar hexa:</strong> alinhe os blocos pela direita e some casa a casa; se passar de <code>F</code>, "vai um" para a esquerda.</li>
+                <li><strong>Subtrair hexa:</strong> também alinhado pela direita; se não der para subtrair, "empresta" <code>16</code> (<code>0x10</code>) da casa da esquerda.</li>
+            </ul>
         </div>
 
+        <h4>Parte 3 &mdash; Aplicando a mudança (a página desce 2 quadros)</h4>
+        <p>Com a conta original feita e conferida, resolvemos o pedido do professor. Só <strong>duas coisas</strong> mudam; o resto fica "congelado".</p>
         <ol class="passo-lista">
-            <li><strong>O que <u>não</u> muda (e por quê):</strong> o endereço linear <code>1AF81D74</code> continua o mesmo (é o que o programa pede). Logo, os índices também não mudam: diretório <code>107</code>, página <code>897</code>, offset <code>0xD74</code>. Portanto <code>CR3 = 000B 0000</code>, <code>EETDIR = 000B 01AC</code> e <code>EETPG = 0022 0E04</code> ficam <strong>iguais</strong> &mdash; nós lemos <em>o mesmo lugar</em>.</li>
-            <li><strong>O que muda &mdash; o conteúdo lido no <code>EETPG</code>:</strong> a linha <code>0022 0E04</code> guardava <code>0130 0000</code> (Epg antigo). Como a página andou 2 quadros para trás, essa linha passa a guardar <strong><code>012F E000</code></strong>:
-                <br><code>0130 0000 &minus; 0x2000 = 012F E000</code>.</li>
-            <li><strong>O que muda &mdash; o endereço físico final:</strong> agora é <code>Epg + offset</code> com o novo Epg:
-                <br><code>012F E000 + 0xD74 = <strong>012F ED74</strong></code> &#10003;</li>
+            <li>
+                <strong>Traduza "2 quadros antes" para um número.</strong>
+                <p style="margin:0.5rem 0 0;">1 quadro = 4 KB = <code>0x1000</code>, então 2 quadros = <code>0x2000</code>. "Antes" = endereço <strong>menor</strong> = <strong>subtrair</strong>.</p>
+            </li>
+            <li>
+                <strong>Atualize o conteúdo lido no mesmo <code>EETPG</code>.</strong>
+                <p style="margin:0.5rem 0 0;">O endereço <code>0022 0E04</code> continua o mesmo; só o <em>valor guardado</em> nele muda (era <code>0130 0000</code>):</p>
+                <p style="margin:0.7rem 0 0; padding:0.5rem 0.8rem; background:var(--surface2); border-left:3px solid var(--accent2); border-radius:0 6px 6px 0;"><code>0130 0000 &minus; 0x2000 = 012F E000</code> (nova <strong>Epg</strong>).</p>
+            </li>
+            <li>
+                <strong>Refaça a última soma (o endereço físico).</strong>
+                <p style="margin:0.7rem 0 0; padding:0.5rem 0.8rem; background:var(--surface2); border-left:3px solid var(--accent2); border-radius:0 6px 6px 0;"><code>012F E000 + 0xD74 = 012F ED74</code> &#10003;</p>
+            </li>
+            <li>
+                <strong>Confira igual ao passo 6.</strong>
+                <p style="margin:0.5rem 0 0;">Os 3 últimos dígitos continuam <code>D74</code> (= offset ✓) e o byte cai dentro do quadro <code>012F E000</code>…<code>012F EFFF</code> ✓.</p>
+            </li>
         </ol>
 
         <p><strong>Resposta em uma frase:</strong> só o <em>conteúdo da entrada da tabela de páginas</em> e o <em>endereço físico final</em> mudam; todo o resto da conta (CR3, índices, endereços de leitura <code>EETDIR</code>/<code>EETPG</code>) permanece igual, porque <strong>a página mudou de lugar, mas o "endereço lógico" com que o programa a procura não mudou</strong>. A tradução é transparente.</p>
@@ -3728,7 +3793,7 @@
         <p>Tente resolver <strong>antes</strong> de abrir a resposta (clique em "&#9654; Ver resolução"). Todas usam os dados do quadro: <code>CR3 = 000B 0000</code>, <code>ETP = 0022 0000</code>, <code>Epg = 0130 0000</code>, endereço linear <code>1AF81D74</code>. E lembre-se sempre: <strong>1 quadro = 1 página = 4 KB = 0x1000</strong>.</p>
 
         <div class="card-importante">
-            <strong>O mesmo macete resolve TODAS as questões &mdash; o método dos 3 passos:</strong>
+            <strong>Resumo do método (o passo a passo completo, do começo ao fim, está na <u>20.4</u>):</strong>
             <ol style="margin:0.6rem 0 0 1.2rem;">
                 <li><strong>Fatiar:</strong> quebre o endereço em <code>10 | 10 | 12</code> &rarr; acha o <em>índice de diretório</em>, o <em>índice de página</em> e o <em>offset</em>.</li>
                 <li><strong>Descer as duas tabelas:</strong> <code>EETDIR = CR3 + dir&times;4</code> (lê a <em>ETP</em>) e <code>EETPG = ETP + pg&times;4</code> (lê a <em>Epg</em>).</li>
