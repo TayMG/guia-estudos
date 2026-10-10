@@ -137,6 +137,14 @@
             margin-bottom: 0.6rem;
         }
 
+        h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent2);
+            margin-top: 1.2rem;
+            margin-bottom: 0.4rem;
+        }
+
         p, li {
             font-size: 0.95rem;
             margin-bottom: 0.5rem;
@@ -3661,9 +3669,9 @@
 
     <div class="card-prova">
         <h3>20.4 &mdash; A pergunta do professor, resolvida devagarinho</h3>
-        <blockquote style="margin:0 0 1rem; padding:0.8rem 1rem; border-left:4px solid var(--prova-border); background:rgba(0,0,0,0.15); border-radius:0 8px 8px 0;">
-            <em>"Se uma determinada página, durante a paginação, for carregada em <strong>2 quadros de página anteriores</strong> ao que estava, quais as alterações que devem ser feitas no seu exemplo no cálculo da paginação?"</em>
-        </blockquote>
+        <p style="margin:0 0 1rem; padding:0.8rem 1rem; border-left:4px solid var(--prova-border); background:rgba(0,0,0,0.15); border-radius:0 8px 8px 0;">
+            <strong>Enunciado do professor:</strong> <em>"Se uma determinada página, durante a paginação, for carregada em <strong>2 quadros de página anteriores</strong> ao que estava, quais as alterações que devem ser feitas no seu exemplo no cálculo da paginação?"</em>
+        </p>
 
         <div class="card-dica">
             <strong>Antes da conta, a ideia com desenho mental:</strong> imagine a memória RAM como uma <strong>rua comprida de casinhas</strong>, todas do mesmo tamanho (4 KB). Cada casinha é um <strong>quadro</strong>. A <em>página</em> (o dado) é uma família que mora em uma dessas casas &mdash; no exemplo, na casa que começa em <code>0130 0000</code>. O <strong>endereço linear</strong> é só o <em>nome</em> da família ("quero a Mamãe"), e o <strong>endereço físico</strong> é o <em>número da casa</em>. Se a família se muda para 2 casas antes na rua, o <em>número da casa</em> muda, mas o <em>nome</em> continua o mesmo &mdash; por isso o programa nem percebe.
