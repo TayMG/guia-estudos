@@ -4599,25 +4599,40 @@
         <p>Teste do limite do código (<code>0057 af00</code>): <code>0010 2000 ≤ 0057 af00</code> &rarr; <strong>OK</strong>, a instrução pode ser buscada.</p>
 
         <h4 style="margin-top:1rem;">Passo B &mdash; Operando destino: <code>0006 5202</code> (segmento de Dados)</h4>
-        <p>Operandos de dado usam, por padrão, o segmento de <strong>Dados</strong> (<code>DS</code>), aqui o seletor <code>100b</code>, base <code>00c3 4100</code>. Somamos:</p>
+        <p>Operandos de dado usam, por padrão, o segmento de <strong>Dados</strong> (<code>DS</code>), aqui o seletor <code>100b</code>, base <code>00c3 4100</code>. O endereço linear é <code>Base + Offset</code>:</p>
         <div class="diagrama" style="color:var(--prova-text);">
-    00c3 4100      (Base do DS)
-  + 0006 5202      (Offset do operando destino)
-  -----------
-    00c9 9302      (Endereço LINEAR do destino)
+  Linear (destino) = Base (DS) + Offset
+                   = 00c3 4100 + 0006 5202
+
+   00c3 4100     ← base do segmento de Dados
+ + 0006 5202     ← offset do operando destino
+ -----------
+   00c9 9302     ← endereço LINEAR do destino
 </div>
-        <p>Confira a soma "por baixo": <code>4100 + 5202 = 9302</code> (parte baixa) e <code>00c3 + 0006 = 00c9</code> (parte alta). Não "estourou" nada.</p>
-        <p>Teste do limite dos Dados (<code>00d6 7000</code>): <code>00c9 9302 ≤ 00d6 7000</code> &rarr; <strong>OK</strong>. Este endereço linear (<code>00c9 9302</code>) é justamente o que vai alimentar a <strong>Questão 2</strong>.</p>
+        <p>Some coluna a coluna (primeiro a parte baixa, depois a parte alta):</p>
+        <ul>
+            <li>parte baixa: <code>4100 + 5202 = 9302</code> &nbsp;(0+2=2, 0+0=0, 1+2=3, 4+5=9);</li>
+            <li>parte alta: <code>00c3 + 0006 = 00c9</code> &nbsp;(c+0=c, 3+6=9);</li>
+            <li>não houve "vai um".</li>
+        </ul>
+        <p>Teste do limite dos Dados (<code>00d6 7000</code>): <code>00c9 9302 ≤ 00d6 7000</code> &rarr; <strong>OK</strong>. Este endereço linear (<code>00c9 9302</code>) é justamente o que alimenta a <strong>Questão 2</strong>.</p>
 
         <h4 style="margin-top:1rem;">Passo C &mdash; Operando origem: <code>00AB F410</code> (segmento de Dados)</h4>
-        <p>Mesma coisa, mesmo segmento <code>DS = 100b</code>, base <code>00c3 4100</code>:</p>
+        <p>Mesmo segmento <code>DS = 100b</code>, base <code>00c3 4100</code>:</p>
         <div class="diagrama" style="color:var(--prova-text);">
-    00c3 4100      (Base do DS)
-  + 00ab f410      (Offset do operando origem)
-  -----------
-    016f 3510      (Endereço LINEAR da origem)
+  Linear (origem) = Base (DS) + Offset
+                  = 00c3 4100 + 00ab f410
+
+   00c3 4100     ← base do segmento de Dados
+ + 00ab f410     ← offset do operando origem
+ -----------
+   016f 3510     ← endereço LINEAR da origem
 </div>
-        <p>Confira: <code>4100 + f410 = 1 3510</code> (repare no "vai um", o carry) e <code>00c3 + 00ab + 1 = 016f</code>.</p>
+        <p>Some coluna a coluna:</p>
+        <ul>
+            <li>parte baixa: <code>4100 + f410 = 1 3510</code> &nbsp;(aqui houve <strong>"vai um"</strong>);</li>
+            <li>parte alta: <code>00c3 + 00ab + 1 = 016f</code> &nbsp;(o <code>+ 1</code> é o "vai um" que veio da parte baixa).</li>
+        </ul>
         <p>Teste do limite dos Dados (<code>00d6 7000</code>): <code>016f 3510 &gt; 00d6 7000</code> &rarr; <strong>GPF!</strong> A origem passou do fim do segmento. A instrução <u>aborta</u>.</p>
 
         <div class="card-importante">
@@ -4650,119 +4665,121 @@
         </table>
 
         <h4>Passo 1 &mdash; Fatiar o endereço linear em <code>10 | 10 | 12</code></h4>
-        <p>Um endereço linear tem 32 bits. Ele é lido como três campos: 10 bits de <strong>índice de diretório</strong>, 10 bits de <strong>índice de página</strong> e 12 bits de <strong>offset</strong>.</p>
+        <p>Um endereço linear tem 32 bits. Ele é lido como três campos: 10 bits de <strong>índice da tabela de diretório</strong>, 10 bits de <strong>índice da tabela de páginas</strong> e 12 bits de <strong>OFFSET DA PÁGINA</strong>.</p>
         <div class="diagrama" style="color:var(--prova-text);">
   Endereço linear: 00c9 9302
 
   Em binário (32 bits):
-  0000000011 0010011001 001100000010
-  └── 10 ──┘ └── 10 ──┘ └─── 12 ───┘
-  ÍNDICE DIR  ÍNDICE PG   OFFSET
-     = 3        = 153       = 302
+  0000 0000 1100 1001 1001 0011 0000 0010
+  └─────10─────┘└─────10─────┘└─────12─────┘
+
+  índice da tabela de diretório = 0000000011 (bin) = 0000 0003 (hex) = 3
+  índice da tabela de páginas   = 0010011001 (bin) = 0000 0099 (hex) = 153
+  OFFSET DA PÁGINA              = 001100000010 (bin) = 0000 0302 (hex)
 </div>
         <div class="card-dica">
-            <strong>Atalho que você pode usar na prova:</strong> os <strong>3 últimos dígitos hexa</strong> do endereço linear são sempre o <strong>offset</strong>. Aqui: <code>9302</code> &rarr; últimos 3 = <code>302</code>. Os 20 bits que sobram viram os dois índices.
+            <strong>Atalho para a prova:</strong> os <strong>3 últimos dígitos hexa</strong> do endereço linear são sempre o <strong>OFFSET DA PÁGINA</strong>. Aqui: <code>9302</code> &rarr; últimos 3 = <code>302</code>. Os 20 bits que sobram viram os dois índices.
         </div>
-        <p>Conferindo: <strong>índice de diretório = 3</strong>, <strong>índice de página = 153</strong> (em hexa é <code>99</code>), <strong>offset = 0x302</strong>.</p>
+        <p>Conferindo: <strong>índice da tabela de diretório = 3</strong>, <strong>índice da tabela de páginas = 153</strong> (<code>0000 0099</code>) e <strong>OFFSET DA PÁGINA = 0000 0302</strong>.</p>
 
-        <h4>Passo 2 &mdash; Achar o endereço físico do descritor na tabela de diretório (EETDIR)</h4>
-        <p>Conforme o quadro 20.1: cada entrada ocupa 4 bytes. Multiplica-se o <strong>índice da tabela de diretório</strong> por <code>0000 0100</code> (4) e soma-se com <code>CR3</code>.</p>
+        <h4>Passo 2 &mdash; Achar o EETDIR (endereço de leitura no diretório)</h4>
+        <p>Cada entrada das tabelas ocupa <code>4</code> bytes (no quadro 20.1 aparece como <code>× 100</code> em binário, que é o mesmo que <code>× 4</code>). Multiplica-se o <strong>índice da tabela de diretório</strong> por 4 e soma-se com <code>CR3</code>:</p>
         <div class="diagrama" style="color:var(--prova-text);">
-  EETDIR = CR3 + (índice da tabela de diretório × 0000 0100)
-         = 0003 4cf0 + (0000 0003 × 0000 0100)
+  EETDIR = CR3 + (índice da tabela de diretório × 4)
+         = 0003 4cf0 + (0000 0003 × 4)
          = 0003 4cf0 + 0000 000c
          = 0003 4cfc
-  Lendo o conteúdo de 0003 4cfc:
-  ETP = 000f 0000      ← endereço da tabela de páginas
+  Conteúdo lido em 0003 4cfc  →  ETP = 000f 0000   (base da tabela de páginas)
 </div>
 
-        <h4>Passo 3 &mdash; Achar o endereço físico do descritor na tabela de páginas (EETP)</h4>
-        <p>Agora, usando o <strong>índice da tabela de páginas</strong>, multiplica-se por <code>0000 0100</code> (4) e soma-se com <code>ETP</code> (valor lido no passo 2), exatamente como no quadro 20.1:</p>
+        <h4>Passo 3 &mdash; Achar o EETP (endereço de leitura na tabela de páginas)</h4>
+        <p>Agora, usando o <strong>índice da tabela de páginas</strong>, multiplica-se por 4 e soma-se com <code>ETP</code> (o conteúdo lido no passo 2):</p>
         <div class="diagrama" style="color:var(--prova-text);">
-  EETP  = ETP + (índice da tabela de páginas × 0000 0100)
-        = 000f 0000 + (0000 0099 × 0000 0100)
-        = 000f 0000 + 0000 0264
-        = 000f 0264
-  Lendo o conteúdo de 000f 0264:
-  Epg   = 0040 0000      ← endereço da página (base do quadro/frame)
+  EETP = ETP + (índice da tabela de páginas × 4)
+       = 000f 0000 + (0000 0099 × 4)
+       = 000f 0000 + 0000 0264
+       = 000f 0264
+  Conteúdo lido em 000f 0264  →  PÁGINA = 0040 0000   (base do quadro onde a página está)
 </div>
 
-        <h4>Passo 4 &mdash; Endereço físico final</h4>
-        <p>Basta somar a base do quadro com o offset (o mesmo dos 12 bits):</p>
+        <h4>Passo 4 &mdash; END. FÍSICO</h4>
+        <p>Basta somar <code>PÁGINA</code> com o <code>OFFSET DA PÁGINA</code>:</p>
         <div class="diagrama" style="color:var(--prova-text);">
-  Físico = Epg + offset
-         = 0040 0000 + 302
-         = 0040 0302
+  END. FÍSICO = PÁGINA + OFFSET DA PÁGINA
+              = 0040 0000 + 0000 0302
+              = 0040 0302
 </div>
         <div class="card-importante">
-            <strong>Resposta da Questão 2.</strong> O endereço linear <code>00c9 9302</code> corresponde ao endereço <strong>físico 0040 0302</strong>.
+            <strong>Resposta da Questão 2.</strong> O endereço linear <code>00c9 9302</code> corresponde ao <strong>END. FÍSICO 0040 0302</strong>.
         </div>
     </div>
 
     <h3>23.6 &mdash; Questão 3: a página é recarregada 2 quadros antes</h3>
 
     <div class="card-prova">
-        <p>O sistema decide mover a página &mdash; ela vai para um quadro <strong>2 posições antes</strong> (2 quadros "para trás"). Antes de calcular, entenda o tamanho de um quadro.</p>
+        <p>Esta é a <strong>continuação da Questão 2</strong>. A mesma página é recarregada <strong>2 quadros antes</strong>. O professor, além de refazer o endereço, <strong>recalcula o índice da tabela de páginas</strong> e, por meio dele, acha o <strong>novo EETP</strong>. Vamos passo a passo.</p>
 
         <div class="card-dica">
-            <strong>1 quadro (frame) = 1 página = 4 KB = 4096 bytes.</strong> Em hexadecimal, 4 KB = <code>0x1000</code>. Então <strong>2 quadros = 2 × 0x1000 = 0x2000</strong>. "Dois quadros antes" quer dizer <em>subtrair 0x2000</em> da base do quadro.
+            <strong>Tamanho de 1 quadro:</strong> 1 quadro = 1 página = 4 KB = <code>0000 1000</code>. Logo, <strong>2 quadros = 2 × 0000 1000 = 0000 2000</strong>.
         </div>
 
-        <h4>Passo 1 &mdash; Nova base do quadro (novo Epg)</h4>
+        <h4>Passo 1 &mdash; Novo índice da tabela de páginas</h4>
+        <p>Como a página desceu 2 quadros (e cada quadro corresponde a 1 posição na tabela de páginas), o índice cai 2:</p>
         <div class="diagrama" style="color:var(--prova-text);">
-  Epg novo = Epg antigo − 0x2000
-           = 0040 0000 − 2000
-           = 003f e000
+  índice da tabela de páginas (novo) = índice da tabela de páginas (Q2) − 0000 0002
+                                    = 0000 0099 − 0000 0002
+                                    = 0000 0097        ( = 151 )
 </div>
-        <p>Confira a subtração: <code>0000 − 2000</code> "pede emprestado": <code>0040 0000 − 2000 = 003f e000</code>.</p>
 
-        <h4>Passo 2 &mdash; Novo endereço físico</h4>
-        <p>Só muda a base do quadro; o offset continua o mesmo (<code>0x302</code>):</p>
+        <h4>Passo 2 &mdash; Novo EETP</h4>
+        <p>O <code>ETP</code> <strong>NÃO muda</strong> (a tabela de páginas fica onde está: <code>000f 0000</code>). O que muda é o índice; por isso o <strong>EETP muda</strong>:</p>
         <div class="diagrama" style="color:var(--prova-text);">
-  Físico novo = Epg novo + offset
-              = 003f e000 + 302
-              = 003f e302
+  EETP (novo) = ETP + (índice da tabela de páginas (novo) × 4)
+              = 000f 0000 + (0000 0097 × 4)
+              = 000f 0000 + 0000 025c
+              = 000f 025c
+</div>
+        <p>Confira a diferença: <code>000f 0264 − 000f 025c = 0000 0008</code>, que é exatamente <code>0000 0002 × 4 = 0000 0008</code> (os 2 índices a menos).</p>
+
+        <h4>Passo 3 &mdash; Nova PÁGINA (novo endereço da página)</h4>
+        <p>A página também desceu 2 quadros, então o conteúdo lido (a <code>PÁGINA</code>) cai <code>0000 2000</code>:</p>
+        <div class="diagrama" style="color:var(--prova-text);">
+  PÁGINA (nova) = PÁGINA (Q2) − 0000 2000
+                = 0040 0000 − 0000 2000
+                = 003f e000
+</div>
+
+        <h4>Passo 4 &mdash; Novo END. FÍSICO</h4>
+        <p>O <code>OFFSET DA PÁGINA</code> continua o mesmo (<code>0000 0302</code>), porque a posição <em>dentro</em> da página não muda:</p>
+        <div class="diagrama" style="color:var(--prova-text);">
+  END. FÍSICO (novo) = PÁGINA (nova) + OFFSET DA PÁGINA
+                     = 003f e000 + 0000 0302
+                     = 003f e302
 </div>
 
         <div class="card-importante">
-            <strong>Resposta da Questão 3.</strong> Depois de mover a página 2 quadros antes, o mesmo endereço linear <code>00c9 9302</code> passa a apontar para o endereço físico <strong>003f e302</strong>.
+            <strong>Resposta da Questão 3.</strong> Recarregando a página 2 quadros antes: novo <code>EETP = 000f 025c</code>, nova <code>PÁGINA = 003f e000</code> e novo <strong>END. FÍSICO = 003f e302</strong>.
         </div>
 
-        <h4>O que muda e o que NÃO muda (a parte que a prova adora perguntar)</h4>
+        <h4>Resumo: o que muda e o que NÃO muda</h4>
         <table>
-            <thead><tr><th>Etapa / valor</th><th>Antes (Q2)</th><th>Depois (Q3)</th><th>Mudou?</th></tr></thead>
+            <thead><tr><th>Valor</th><th>Q2</th><th>Q3 (2 quadros antes)</th><th>Mudou?</th></tr></thead>
             <tbody>
-                <tr><td>Endereço linear</td><td>00c9 9302</td><td>00c9 9302</td><td>Não</td></tr>
-                <tr><td>Índice de diretório</td><td>3</td><td>3</td><td>Não</td></tr>
-                <tr><td>Índice de página</td><td>153</td><td>153</td><td>Não</td></tr>
-                <tr><td>Offset</td><td>302</td><td>302</td><td>Não</td></tr>
+                <tr><td>Endere&ccedil;o linear</td><td>00c9 9302</td><td>00c9 9302</td><td>Não</td></tr>
+                <tr><td>índice da tabela de diretório</td><td>0000 0003</td><td>0000 0003</td><td>Não</td></tr>
+                <tr><td><code>CR3</code></td><td>0003 4cf0</td><td>0003 4cf0</td><td>Não</td></tr>
                 <tr><td><code>EETDIR</code></td><td>0003 4cfc</td><td>0003 4cfc</td><td>Não</td></tr>
-                <tr><td><code>ETP</code></td><td>000f 0000</td><td>000f 0000</td><td>Não</td></tr>
-                <tr><td><code>EETPG</code></td><td>000f 0264</td><td>000f 0264</td><td>Não</td></tr>
-                <tr><td><strong>Epg</strong> (base do quadro)</td><td>0040 0000</td><td>003f e000</td><td><strong>Sim</strong></td></tr>
-                <tr><td><strong>Endereço físico</strong></td><td>0040 0302</td><td>003f e302</td><td><strong>Sim</strong></td></tr>
+                <tr><td><code>ETP</code> (conteúdo lido)</td><td>000f 0000</td><td>000f 0000</td><td>Não</td></tr>
+                <tr><td>índice da tabela de páginas</td><td>0000 0099</td><td>0000 0097</td><td><strong>Sim</strong> (−2)</td></tr>
+                <tr><td><code>EETP</code> (endere&ccedil;o de leitura)</td><td>000f 0264</td><td>000f 025c</td><td><strong>Sim</strong> (−0000 0008)</td></tr>
+                <tr><td><code>PÁGINA</code> (conteúdo lido)</td><td>0040 0000</td><td>003f e000</td><td><strong>Sim</strong> (−0000 2000)</td></tr>
+                <tr><td><code>OFFSET DA PÁGINA</code></td><td>0000 0302</td><td>0000 0302</td><td>Não</td></tr>
+                <tr><td><strong>END. FÍSICO</strong></td><td>0040 0302</td><td>003f e302</td><td><strong>Sim</strong></td></tr>
             </tbody>
         </table>
-        <div class="card-dica">
-            <strong>A moral:</strong> mover uma página de quadro só muda a <strong>base do quadro (Epg)</strong> e, junto com ela, o <strong>endereço físico</strong>. Todo o resto do cálculo (fatiamento, índices e tabelas) permanece idêntico. Por isso a Questão 3 é "a Questão 2 com outro final": você reaproveita todos os passos e só troca a última soma.
 
-            <h4 style="margin-top:1rem;">Por que NÃO mudam EETDIR, EETP e nem os índices?</h4>
-            <p style="margin-top:.5rem;">Porque o <strong>endereço linear</strong> continua exatamente <code>00c9 9302</code>. Logo, os <strong>índice da tabela de diretório</strong> (<code>0000 0003</code>) e <strong>índice da tabela de páginas</strong> (<code>0000 0099</code>) mantêm-se os mesmos.</p>
-            <ul>
-                <li><strong>EETDIR</strong> = <code>CR3 + (índice da tabela de diretório × 0000 0100)</code> → continua <code>0003 4cfc</code>.</li>
-                <li><strong>EETP</strong>  = <code>ETP + (índice da tabela de páginas × 0000 0100)</code> → continua <code>000f 0264</code> (mesmo endereço da entrada na tabela de páginas).</li>
-                <li><strong>Offset</strong> = <code>0000 0302</code> (12 bits) continua igual. Corresponde à posição dentro da <strong>página</strong>, não ao quadro.</li>
-            </ul>
-            <p><strong>O que muda, unicamente:</strong> o <strong>conteúdo</strong> lido em <code>000f 0264</code>. Antes: <code>Epg = 0040 0000</code>. Depois de a página ser recarregada <strong>2 quadros antes</strong> (cada quadro = <code>0000 1000</code>, logo <code>0000 2000</code>), esse conteúdo passa a ser <code>Epg = 0040 0000 − 0000 2000 = 003f e000</code>.</p>
-            <p>Portanto:</p>
-            <div class="diagrama" style="color:var(--prova-text);">
-  Endereço físico (Q3) = Epg (novo) + offset
-                       = 003f e000 + 0000 0302
-                       = 003f e302
-</div>
-            <div class="card-importante">
-                <strong>Regra fiel ao quadro 20.1:</strong> quando a página muda de quadro, <strong>não se recalcula EETP</strong>. Mantém-se <code>EETP = ETP + (índice da tabela de páginas × 0000 0100)</code> igual. <strong>Somente o valor de Epg</strong> (endereço da página/base do quadro) é alterado, na própria entrada da tabela de páginas.
-            </div>
+        <div class="card-dica">
+            <strong>Por que o EETP muda (explicação do professor).</strong> A página mudou de quadro. Como cada quadro é uma posição na tabela de páginas, ao descer <strong>2 quadros</strong> o índice usado desce <strong>2</strong> &mdash; e o <code>EETP</code> (que é <code>ETP + índice × 4</code>) desce <code>0000 0002 × 4 = 0000 0008</code>. Repare que o <strong>ETP não muda</strong>: a base da tabela continua a mesma; quem mudou foi apenas o índice apontado.
         </div>
     </div>
 
