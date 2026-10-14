@@ -4748,6 +4748,20 @@
         </table>
         <div class="card-dica">
             <strong>A moral:</strong> mover uma página de quadro só muda a <strong>base do quadro (Epg)</strong> e, junto com ela, o <strong>endereço físico</strong>. Todo o resto do cálculo (fatiamento, índices e tabelas) permanece idêntico. Por isso a Questão 3 é "a Questão 2 com outro final": você reaproveita todos os passos e só troca a última soma.
+
+            <h4 style="margin-top:1rem;">Por que <strong>não</strong> mudam EETDIR, EETPG, índices e nem o linear?</h4>
+            <p style="margin-top:.5rem;">Porque o <strong>endereço virtual (linear)</strong> continua o mesmo. O programa continua pedindo <code>00c9 9302</code>. O sistema operacional, ao mover a página, apenas <strong>atualiza o conteúdo da entrada da tabela de páginas</strong> para apontar para o <strong>novo quadro</strong>. Ele <strong>não altera os índices</strong>, não altera <code>CR3</code>, não altera <code>ETP</code> e não altera o endereço linear.</p>
+            <p>Veja com clareza:</p>
+            <ul>
+                <li><strong>Índice de diretório (3) e índice de página (153)</strong> vêm do fatiamento do <em>endereço linear</em>. Como o linear não mudou, esses índices não mudam.</li>
+                <li><strong><code>EETDIR = CR3 + índice_dir × 4</code></strong> → usa <code>CR3</code> e o índice de diretório. Nenhum mudou → <code>EETDIR</code> igual.</li>
+                <li><strong><code>EETPG = ETP + índice_pg × 4</code></strong> → usa <code>ETP</code> (lido no diretório) e o índice de página. Nenhum mudou → <code>EETPG</code> igual. <strong>O endereço da entrada continua o mesmo (000f 0264)</strong>.</li>
+                <li><strong>O que muda é o VALOR guardado nessa entrada</strong>. Em <code>000f 0264</code> estava escrito <code>0040 0000</code> (base do quadro antigo). Ao mover a página, o SO escreve <strong><code>003f e000</code></strong> (base do quadro novo) nessa mesma entrada. Por isso, quando o processador lê de novo <code>EETPG</code>, ele recebe <code>Epg = 003f e000</code>, e o físico vira <code>003f e000 + 0x302 = 003f e302</code>.</li>
+                <li><strong>Offset (0x302)</strong> são os 12 bits mais baixos do linear &mdash; representam a posição <em>dentro da página</em>. A página continua a mesma, só mudou de quadro. Então o deslocamento <em>dentro dela</em> continua exatamente o mesmo.</li>
+            </ul>
+            <div class="card-importante">
+                <strong>Conclusão importantíssima:</strong> <u>Mover uma página de quadro não muda os índices, não muda os endereços das entradas (EETDIR/EETPG), não muda o linear</u>. <strong>Só muda o conteúdo da entrada da tabela de páginas</strong> (o campo que diz "em qual quadro essa página está"). É por isso que você <strong>não recalcula EETPG</strong> na Questão 3 &mdash; você só recalcula o <strong>Epg</strong> (lê um valor diferente naquela mesma entrada).
+            </div>
         </div>
     </div>
 
