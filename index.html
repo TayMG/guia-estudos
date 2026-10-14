@@ -4485,24 +4485,20 @@
         <p style="margin-top:.7rem;">Ela tem 3 partes que se encaixam: <strong>(1)</strong> a segmentação (achar o endereço linear da instrução e dos seus operandos); <strong>(2)</strong> a paginação desse linear; <strong>(3)</strong> o que muda quando a página é recarregada em outro quadro. A <strong>Questão 3 é continuação da Questão 2</strong> &mdash; você reaproveita os passos e só troca o final.</p>
     </div>
 
-    <h3>23.1 &mdash; O que o professor montou (e por que nessa ordem)</h3>
+    <h3>23.1 &mdash; O que o professor montou (ordem padrão)</h3>
 
     <div class="card">
-        <p>Antes de fazer conta, entenda a <strong>montagem</strong>. O professor pegou quatro "pedaços" de memória, um atrás do outro (colados), e deu um papel a cada um:</p>
+        <p>O professor utilizou a <strong>ordem padrão</strong>: <strong>código, pilha, dados e extra</strong>, respectivamente.</p>
         <table>
-            <thead><tr><th>Ordem</th><th>Papel (em palavras)</th><th>Registrador de segmento</th></tr></thead>
+            <thead><tr><th>Ordem</th><th>Papel</th><th>Registrador de segmento</th></tr></thead>
             <tbody>
-                <tr><td>1º</td><td><strong>Código</strong> &mdash; onde ficam as instruções do programa</td><td><code>CS</code> (Code Segment)</td></tr>
-                <tr><td>2º</td><td><strong>Pilha</strong> &mdash; onde ficam PUSH/POP e chamadas de função</td><td><code>SS</code> (Stack Segment)</td></tr>
-                <tr><td>3º</td><td><strong>Dados</strong> &mdash; as variáveis do programa</td><td><code>DS</code> (Data Segment)</td></tr>
-                <tr><td>4º</td><td><strong>Extra</strong> &mdash; um segundo bloco de dados</td><td><code>ES</code> (Extra Segment)</td></tr>
+                <tr><td>1º</td><td><strong>Código</strong></td><td><code>CS</code></td></tr>
+                <tr><td>2º</td><td><strong>Pilha</strong></td><td><code>SS</code></td></tr>
+                <tr><td>3º</td><td><strong>Dados</strong></td><td><code>DS</code></td></tr>
+                <tr><td>4º</td><td><strong>Extra</strong></td><td><code>ES</code></td></tr>
             </tbody>
         </table>
-        <p>Essa é a <strong>"ordem padrão"</strong>: código, pilha, dados e extra &mdash; exatamente nessa sequência. É por isso que as bases crescem nessa ordem na tabela de descritores logo abaixo.</p>
-
-        <div class="card-dica">
-            <strong>Os segmentos ficam "colados".</strong> Esta é a chave de toda a questão. O pedaço 2 (pilha) começa exatamente no endereço <u>seguinte</u> ao último byte do pedaço 1 (código). O pedaço 3 começa no seguinte ao pedaço 2, e assim por diante. Por isso a base de um é sempre "o limite do anterior + 1".
-        </div>
+        <p>Os quatro segmentos foram colocados <strong>contíguos</strong> (um colado atrás do outro), exatamente conforme o quadro <a href="#sec-20">20.1</a>.</p>
     </div>
 
     <h3>23.2 &mdash; A tabela de descritores desta questão</h3>
@@ -4519,18 +4515,19 @@
             </tbody>
         </table>
 
-        <p>O professor <strong>repetiu</strong> o seletor <code>100c</code> (Extra) nos dois outros registradores de dados que sobram: <code>FS</code> e <code>GS</code>. A "configuração" dos registradores de segmento ficou assim:</p>
+        <p>O professor colocou os seletores na tabela de descritores e carregou os registradores de segmento da seguinte forma:</p>
         <table>
-            <thead><tr><th>Registrador</th><th>Seletor</th><th>Aponta para...</th></tr></thead>
+            <thead><tr><th>Registrador</th><th>Seletor</th></tr></thead>
             <tbody>
-                <tr><td><code>CS</code></td><td><code>1000</code></td><td>Código (base 0010 0000, limite 0057 af00)</td></tr>
-                <tr><td><code>SS</code></td><td><code>100a</code></td><td>Pilha (base 0057 af01, limite 00c3 40ff)</td></tr>
-                <tr><td><code>DS</code></td><td><code>100b</code></td><td>Dados (base 00c3 4100, limite 00d6 7000)</td></tr>
-                <tr><td><code>ES</code></td><td><code>100c</code></td><td>Extra (base 00d6 7001, limite 00e4 d193)</td></tr>
-                <tr><td><code>FS</code></td><td><code>100c</code></td><td>Extra (mesmo lugar que ES)</td></tr>
-                <tr><td><code>GS</code></td><td><code>100c</code></td><td>Extra (mesmo lugar que ES)</td></tr>
+                <tr><td><code>CS</code></td><td><code>1000</code></td></tr>
+                <tr><td><code>SS</code></td><td><code>100a</code></td></tr>
+                <tr><td><code>DS</code></td><td><code>100b</code></td></tr>
+                <tr><td><code>ES</code></td><td><code>100c</code></td></tr>
+                <tr><td><code>FS</code></td><td><code>100c</code></td></tr>
+                <tr><td><code>GS</code></td><td><code>100c</code></td></tr>
             </tbody>
         </table>
+        <p><strong>Observação:</strong> o seletor <code>100c</code> foi repetido em <code>ES</code>, <code>FS</code> e <code>GS</code>.</p>
         <div class="card-dica">
             <strong>Por que repetir o <code>100c</code> em FS e GS?</strong> Porque <code>FS</code> e <code>GS</code> são registradores "extras" (usados como espaço livre para apontar dados). Como a questão só tem um bloco "extra", o professor apontou os três (<code>ES</code>, <code>FS</code> e <code>GS</code>) para o mesmo lugar. Não muda conta nenhuma &mdash; é só para deixar o quadro completo.
         </div>
@@ -4668,26 +4665,26 @@
         </div>
         <p>Conferindo: <strong>índice de diretório = 3</strong>, <strong>índice de página = 153</strong> (em hexa é <code>99</code>), <strong>offset = 0x302</strong>.</p>
 
-        <h4>Passo 2 &mdash; Achar a ETP (tabela de páginas)</h4>
-        <p>Primeiro o processador vai ao diretório de páginas. Cada entrada do diretório ocupa <strong>4 bytes</strong>, então multiplicamos o índice de diretório por 4 e somamos ao <code>CR3</code>:</p>
+        <h4>Passo 2 &mdash; Achar o endereço físico do descritor na tabela de diretório (EETDIR)</h4>
+        <p>Conforme o quadro 20.1: cada entrada ocupa 4 bytes. Multiplica-se o <strong>índice da tabela de diretório</strong> por <code>0000 0100</code> (4) e soma-se com <code>CR3</code>.</p>
         <div class="diagrama" style="color:var(--prova-text);">
-  EETDIR = CR3 + (índice_dir × 4)
-         = 0003 4cf0 + (3 × 4)
-         = 0003 4cf0 + 0c
+  EETDIR = CR3 + (índice da tabela de diretório × 0000 0100)
+         = 0003 4cf0 + (0000 0003 × 0000 0100)
+         = 0003 4cf0 + 0000 000c
          = 0003 4cfc
   Lendo o conteúdo de 0003 4cfc:
-  ETP = 000f 0000      ← começo da TABELA DE PÁGINAS
+  ETP = 000f 0000      ← endereço da tabela de páginas
 </div>
 
-        <h4>Passo 3 &mdash; Achar a base da página (Epg)</h4>
-        <p>Agora, dentro da tabela de páginas, usamos o índice de página (sempre ×4):</p>
+        <h4>Passo 3 &mdash; Achar o endereço físico do descritor na tabela de páginas (EETP)</h4>
+        <p>Agora, usando o <strong>índice da tabela de páginas</strong>, multiplica-se por <code>0000 0100</code> (4) e soma-se com <code>ETP</code> (valor lido no passo 2), exatamente como no quadro 20.1:</p>
         <div class="diagrama" style="color:var(--prova-text);">
-  EETPG = ETP + (índice_pg × 4)
-        = 000f 0000 + (153 × 4)
-        = 000f 0000 + 264      (153 × 4 = 612 = 0x264)
+  EETP  = ETP + (índice da tabela de páginas × 0000 0100)
+        = 000f 0000 + (0000 0099 × 0000 0100)
+        = 000f 0000 + 0000 0264
         = 000f 0264
   Lendo o conteúdo de 000f 0264:
-  Epg = 0040 0000      ← base do QUADRO (frame) onde a página está na RAM
+  Epg   = 0040 0000      ← endereço da página (base do quadro/frame)
 </div>
 
         <h4>Passo 4 &mdash; Endereço físico final</h4>
@@ -4749,18 +4746,22 @@
         <div class="card-dica">
             <strong>A moral:</strong> mover uma página de quadro só muda a <strong>base do quadro (Epg)</strong> e, junto com ela, o <strong>endereço físico</strong>. Todo o resto do cálculo (fatiamento, índices e tabelas) permanece idêntico. Por isso a Questão 3 é "a Questão 2 com outro final": você reaproveita todos os passos e só troca a última soma.
 
-            <h4 style="margin-top:1rem;">Por que <strong>não</strong> mudam EETDIR, EETPG, índices e nem o linear?</h4>
-            <p style="margin-top:.5rem;">Porque o <strong>endereço virtual (linear)</strong> continua o mesmo. O programa continua pedindo <code>00c9 9302</code>. O sistema operacional, ao mover a página, apenas <strong>atualiza o conteúdo da entrada da tabela de páginas</strong> para apontar para o <strong>novo quadro</strong>. Ele <strong>não altera os índices</strong>, não altera <code>CR3</code>, não altera <code>ETP</code> e não altera o endereço linear.</p>
-            <p>Veja com clareza:</p>
+            <h4 style="margin-top:1rem;">Por que NÃO mudam EETDIR, EETP e nem os índices?</h4>
+            <p style="margin-top:.5rem;">Porque o <strong>endereço linear</strong> continua exatamente <code>00c9 9302</code>. Logo, os <strong>índice da tabela de diretório</strong> (<code>0000 0003</code>) e <strong>índice da tabela de páginas</strong> (<code>0000 0099</code>) mantêm-se os mesmos.</p>
             <ul>
-                <li><strong>Índice de diretório (3) e índice de página (153)</strong> vêm do fatiamento do <em>endereço linear</em>. Como o linear não mudou, esses índices não mudam.</li>
-                <li><strong><code>EETDIR = CR3 + índice_dir × 4</code></strong> → usa <code>CR3</code> e o índice de diretório. Nenhum mudou → <code>EETDIR</code> igual.</li>
-                <li><strong><code>EETPG = ETP + índice_pg × 4</code></strong> → usa <code>ETP</code> (lido no diretório) e o índice de página. Nenhum mudou → <code>EETPG</code> igual. <strong>O endereço da entrada continua o mesmo (000f 0264)</strong>.</li>
-                <li><strong>O que muda é o VALOR guardado nessa entrada</strong>. Em <code>000f 0264</code> estava escrito <code>0040 0000</code> (base do quadro antigo). Ao mover a página, o SO escreve <strong><code>003f e000</code></strong> (base do quadro novo) nessa mesma entrada. Por isso, quando o processador lê de novo <code>EETPG</code>, ele recebe <code>Epg = 003f e000</code>, e o físico vira <code>003f e000 + 0x302 = 003f e302</code>.</li>
-                <li><strong>Offset (0x302)</strong> são os 12 bits mais baixos do linear &mdash; representam a posição <em>dentro da página</em>. A página continua a mesma, só mudou de quadro. Então o deslocamento <em>dentro dela</em> continua exatamente o mesmo.</li>
+                <li><strong>EETDIR</strong> = <code>CR3 + (índice da tabela de diretório × 0000 0100)</code> → continua <code>0003 4cfc</code>.</li>
+                <li><strong>EETP</strong>  = <code>ETP + (índice da tabela de páginas × 0000 0100)</code> → continua <code>000f 0264</code> (mesmo endereço da entrada na tabela de páginas).</li>
+                <li><strong>Offset</strong> = <code>0000 0302</code> (12 bits) continua igual. Corresponde à posição dentro da <strong>página</strong>, não ao quadro.</li>
             </ul>
+            <p><strong>O que muda, unicamente:</strong> o <strong>conteúdo</strong> lido em <code>000f 0264</code>. Antes: <code>Epg = 0040 0000</code>. Depois de a página ser recarregada <strong>2 quadros antes</strong> (cada quadro = <code>0000 1000</code>, logo <code>0000 2000</code>), esse conteúdo passa a ser <code>Epg = 0040 0000 − 0000 2000 = 003f e000</code>.</p>
+            <p>Portanto:</p>
+            <div class="diagrama" style="color:var(--prova-text);">
+  Endereço físico (Q3) = Epg (novo) + offset
+                       = 003f e000 + 0000 0302
+                       = 003f e302
+</div>
             <div class="card-importante">
-                <strong>Conclusão importantíssima:</strong> <u>Mover uma página de quadro não muda os índices, não muda os endereços das entradas (EETDIR/EETPG), não muda o linear</u>. <strong>Só muda o conteúdo da entrada da tabela de páginas</strong> (o campo que diz "em qual quadro essa página está"). É por isso que você <strong>não recalcula EETPG</strong> na Questão 3 &mdash; você só recalcula o <strong>Epg</strong> (lê um valor diferente naquela mesma entrada).
+                <strong>Regra fiel ao quadro 20.1:</strong> quando a página muda de quadro, <strong>não se recalcula EETP</strong>. Mantém-se <code>EETP = ETP + (índice da tabela de páginas × 0000 0100)</code> igual. <strong>Somente o valor de Epg</strong> (endereço da página/base do quadro) é alterado, na própria entrada da tabela de páginas.
             </div>
         </div>
     </div>
