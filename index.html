@@ -4582,7 +4582,7 @@
         <table>
             <thead><tr><th>Parte da linha</th><th>O que é</th><th>Valor</th></tr></thead>
             <tbody>
-                <tr><td><code>0000 2000</code></td><td><strong>Endereço na linha de código (EIP)</strong>: o <code>EIP</code> aponta para a instrução. Por convenção, na maioria dos exercícios, considera-se o valor dado como <code>EIP = 0000 2000</code>. </td><td><code>EIP = 0000 2000</code></td></tr>
+                <tr><td><code>0000 2000</code></td><td><strong>Endereço na linha de código</strong> (onde a instrução está). O <code>EIP</code>, porém, aponta para a <strong>próxima instrução</strong> = <code>0000 200c</code>. </td><td>EIP = <code>0000 200c</code></td></tr>
                 <tr><td><code>ADD</code></td><td>A operação: somar o destino com a origem</td><td>&mdash;</td></tr>
                 <tr><td><code>0006 5202</code></td><td><strong>Operando destino</strong> (dst): o <em>deslocamento</em> (offset) de um dado</td><td>offset <code>0006 5202</code></td></tr>
                 <tr><td><code>00AB F410</code></td><td><strong>Operando origem</strong> (src): o <em>deslocamento</em> (offset) de um dado</td><td>offset <code>00AB F410</code></td></tr>
@@ -4594,13 +4594,13 @@
         </div>
 
         <h4 style="margin-top:1rem;">Passo A &mdash; Onde está a instrução? (buscar a instrução)</h4>
-        <p>A instrução é buscada usando o par <code>CS:EIP</code>. O <code>CS</code> é o seletor <code>1000</code>, cuja base é <code>0010 0000</code>. O <code>EIP</code> dado é <code>0000 2000</code>. Somamos <code>Base + EIP</code>:</p>
+        <p>A instrução é buscada usando o par <code>CS:EIP</code>. O <code>CS</code> é o seletor <code>1000</code>, cuja base é <code>0010 0000</code>. O <code>EIP</code> dado é <code>0000 200c</code>. Somamos <code>Base + EIP</code>:</p>
         <div class="diagrama" style="color:var(--prova-text);">
   Linear da instrução = Base (CS) + EIP
-                      = 0010 0000 + 0000 2000
-                      = 0010 2000
+                      = 0010 0000 + 0000 200c
+                      = 0010 200c
 </div>
-        <p>Teste do limite do código (<code>0057 af00</code>): <code>0010 2000 ≤ 0057 af00</code> &rarr; <strong>OK</strong>, a instrução pode ser buscada.</p>
+        <p>Teste do limite do código (<code>0057 af00</code>): <code>0010 200c ≤ 0057 af00</code> &rarr; <strong>OK</strong>, a instrução pode ser buscada.</p>
 
         <h4 style="margin-top:1rem;">Passo B &mdash; Operando destino: <code>0006 5202</code> (segmento de Dados)</h4>
         <p>Operandos de dado usam, por padrão, o segmento de <strong>Dados</strong> (<code>DS</code>), aqui o seletor <code>100b</code>, base <code>00c3 4100</code>. O endereço linear é <code>Base + Offset</code>:</p>
