@@ -4728,78 +4728,94 @@
         </div>
 
         <p style="margin-top:1.2rem;"><strong>O caminho todo em uma figura</strong> (só as duas extremidades: o fatia­mento dos 32 bits e os componentes montados):</p>
-        <svg class="fc" viewBox="0 0 1180 520" role="img" aria-label="Questao 2: fatiamento do endereco linear 00C9 9302 em 10-10-12 bits e montagem dos componentes CR3, EETDIR, ETP, EETP, PAGINA e END. FISICO" style="max-width:1100px">
+        <svg class="fc" viewBox="0 0 1180 500" role="img" aria-label="Questao 2 no padrao do quadro 20.1: fatiamento de 00C99302 em 10-10-12 bits e a cadeia CR3, EETDIR, ETP, EETP, PAGINA, OFFSET e END. FISICO = 0040 0302" style="max-width:1100px">
             <style>
-                #q2a text{fill:var(--text);font-size:13px;font-weight:600;text-anchor:middle;dominant-baseline:middle}
-                #q2a .s{text-anchor:start}
-                #q2a .f12{font-size:12px}#q2a .f11{font-size:11px}#q2a .f10{font-size:10px}
-                #q2a .w8{font-weight:800}
-                #q2a .az{fill:var(--accent)}
-                #q2a .gd{fill:var(--prova-text)}
-                #q2a .lr{fill:#ff7b7b}
-                #q2a rect,#q2a line,#q2a path{fill:none;stroke:var(--text);stroke-width:1.6}
-                #q2a .baz{stroke:var(--accent)}#q2a .bgd{stroke:var(--prova-text)}#q2a .blr{stroke:#ff7b7b}
-                #q2a .dash{stroke-dasharray:6 5;stroke:var(--border)}
-                #q2a .fillaz{fill:var(--accent);stroke:none}#q2a .filllr{fill:#ff7b7b;stroke:none}
-                #mq2a path{fill:var(--text);stroke:none}
-                #mq2ab path{fill:var(--accent);stroke:none}
-                #mq2ar path{fill:#ff7b7b;stroke:none}
+                #q23a text{fill:var(--text);font-size:13px;font-weight:600;text-anchor:middle;dominant-baseline:middle}
+                #q23a .st{text-anchor:start}
+                #q23a .f15{font-size:15px}#q23a .f12{font-size:12px}#q23a .f11{font-size:11px}
+                #q23a .w8{font-weight:800}
+                #q23a .b{fill:#4c9be8}
+                #q23a .r{fill:#ff5757}
+                #q23a line,#q23a path,#q23a ellipse{fill:none;stroke:var(--text);stroke-width:2}
+                #q23a .sb{stroke:#4c9be8}
+                #q23a .sr{stroke:#ff5757}
+                #q23a rect{fill:none;stroke:var(--text);stroke-width:2}
+                #q23a .rb{stroke:#4c9be8}
+                #q23a .rr{stroke:#ff5757}
+                #q23a .dash{stroke-dasharray:6 5;stroke:var(--border)}
+                #mq23ak path{fill:var(--text);stroke:none}
+                #mq23ab path{fill:#4c9be8;stroke:none}
+                #mq23ar path{fill:#ff5757;stroke:none}
             </style>
             <defs>
-                <marker id="mq2a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
-                <marker id="mq2ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
-                <marker id="mq2ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
+                <marker id="mq23ak" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="10" markerHeight="10" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
+                <marker id="mq23ab" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="10" markerHeight="10" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
+                <marker id="mq23ar" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="10" markerHeight="10" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
             </defs>
-            <g id="q2a">
-                <line class="dash" x1="560" y1="16" x2="560" y2="504"/>
-                <text class="s w8 f12" x="20" y="30">1) FATIAR O ENDEREÇO LINEAR (32 BITS)</text>
-                <text class="s f12" x="20" y="56">linear = 00c9 9302</text>
-                <text class="s f11" x="20" y="78">binário (cada dígito hexa = 4 bits):</text>
-                <text class="s f11" x="20" y="100" xml:space="preserve">0000 0000 1100 1001 1001 0011 0000 0010</text>
-                <rect x="20" y="116" width="160" height="34"/>
-                <rect x="180" y="116" width="160" height="34"/>
-                <rect x="340" y="116" width="180" height="34"/>
-                <text class="f11" x="100" y="133">0000000011</text>
-                <text class="f11" x="260" y="133">0010011001</text>
-                <text class="f11" x="430" y="133">0011 0000 0010</text>
-                <text class="f11 gd" x="100" y="163">10 bits = índice dir.</text>
-                <text class="f11 gd" x="260" y="163">10 bits = índice págs.</text>
-                <text class="f11 lr" x="430" y="163">12 bits = OFFSET</text>
-                <text class="f11 az" x="100" y="190">= 3</text>
-                <text class="f11 az" x="260" y="190">= 153</text>
-                <text class="f11 lr" x="430" y="190">= 302 (fica em hexa)</text>
-                <text class="s f11 az" x="20" y="222">×4 (acrescenta 2 zeros) e converte p/ hexa:</text>
-                <text class="s f11" x="20" y="243" xml:space="preserve">0000000011 + 00 = 000000001100₂</text>
-                <text class="s f11 az" x="20" y="263">&rarr; 0000 000c   (soma com CR3)</text>
-                <text class="s f11" x="20" y="288" xml:space="preserve">0010011001 + 00 = 001001100100₂</text>
-                <text class="s f11 az" x="20" y="308">&rarr; 0000 0264   (soma com ETP)</text>
+            <g id="q23a">
+                <line class="dash" x1="560" y1="16" x2="560" y2="484"/>
+                <text class="st w8 f12" x="20" y="28">1) FATIAR O ENDEREÇO LINEAR (32 BITS)</text>
+                <text class="st f12" x="20" y="54">linear = 00C99302</text>
+                <text class="st f11" x="20" y="78">binário (cada dígito hexa = 4 bits):</text>
+                <text class="st f11" x="20" y="100" xml:space="preserve">0000 0000 1100 1001 1001 0011 0000 0010</text>
+                <text class="f15" x="100" y="122">10 BITS</text>
+                <text class="f15" x="260" y="122">10 BITS</text>
+                <text class="f15" x="430" y="122">12 BITS</text>
+                <rect x="20" y="134" width="160" height="35"/>
+                <rect x="180" y="134" width="160" height="35"/>
+                <rect x="340" y="134" width="180" height="35"/>
+                <text class="f11" x="100" y="152">0000000011</text>
+                <text class="f11" x="260" y="152">0010011001</text>
+                <text class="f11" x="430" y="152">0011 0000 0010</text>
+                <text class="f12 b" x="30" y="196">índice da tabela</text>
+                <text class="f12 b" x="28" y="214">de diretório</text>
+                <text class="f12" x="210" y="196">índice da tabela</text>
+                <text class="f12" x="222" y="214">de páginas</text>
+                <text class="f12 r" x="400" y="196">OFFSET DA</text>
+                <text class="f12 r" x="400" y="214">PÁGINA</text>
+                <line class="sb" x1="100" y1="169" x2="100" y2="252"/>
+                <text class="f11 b" x="115" y="240">x100</text>
+                <text class="b" x="111" y="256">2</text>
+                <text class="b" x="100" y="284">0000 0000 1100</text>
+                <text class="b" x="100" y="301">0&#160;&#160;&#160;0&#160;&#160;&#160;C</text>
+                <line x1="260" y1="169" x2="260" y2="252"/>
+                <text class="f11" x="275" y="240">x100</text>
+                <text x="271" y="256">2</text>
+                <text x="260" y="284">0010 0110 0100</text>
+                <text x="260" y="301">2&#160;&#160;&#160;6&#160;&#160;&#160;4</text>
+                <line class="sr" x1="430" y1="169" x2="430" y2="252" marker-end="url(#mq23ar)"/>
+                <text class="r" x="430" y="284">302</text>
+                <text class="st f11 r" x="430" y="302">(fica em hexa)</text>
 
-                <text class="s w8 f12" x="600" y="30">2) COMPONENTES MONTADOS</text>
-                <rect class="baz" x="600" y="52" width="230" height="34"/>
-                <text x="715" y="70" class="az">CR3 = 0003 4cf0</text>
-                <rect class="baz" x="600" y="112" width="230" height="34"/>
-                <text x="715" y="130" class="az">EETDIR = 0003 4cfc</text>
-                <text class="s f11 az" x="842" y="106">índice dir ×4 = 000c</text>
-                <rect x="600" y="172" width="230" height="34"/>
-                <text x="715" y="190">ETP = 000f 0000</text>
-                <text class="s f11" x="842" y="166">lê em 0003 4cfc</text>
-                <rect class="bgd" x="600" y="232" width="230" height="34"/>
-                <text x="715" y="250" class="gd">EETP = 000f 0264</text>
-                <text class="s f11 az" x="842" y="226">índice págs ×4 = 0264</text>
-                <rect class="blr" x="600" y="292" width="230" height="34"/>
-                <text x="715" y="310" class="lr">PÁGINA = 0040 0000</text>
-                <text class="s f11" x="842" y="286">lê em 000f 0264</text>
-                <rect class="blr" x="600" y="352" width="230" height="34"/>
-                <text x="715" y="370" class="lr">OFFSET = 302</text>
-                <rect class="blr" x="600" y="412" width="230" height="34"/>
-                <text x="715" y="430" class="lr">END. FÍSICO = 0040 0302</text>
-                <line class="baz" x1="715" y1="86" x2="715" y2="112" marker-end="url(#mq2ab)"/>
-                <line x1="715" y1="146" x2="715" y2="172" marker-end="url(#mq2a)"/>
-                <line class="bgd" x1="715" y1="206" x2="715" y2="232" marker-end="url(#mq2a)"/>
-                <line class="blr" x1="715" y1="266" x2="715" y2="292" marker-end="url(#mq2ar)"/>
-                <line class="blr" x1="715" y1="326" x2="715" y2="352" marker-end="url(#mq2ar)"/>
-                <line class="blr" x1="715" y1="386" x2="715" y2="412" marker-end="url(#mq2ar)"/>
-                <text class="f12" x="658" y="405" fill="#ff7b7b">+</text>
+                <text class="st w8 f12" x="620" y="28">2) COMPONENTES MONTADOS</text>
+                <rect class="rb" x="620" y="52" width="250" height="34"/>
+                <text class="b" x="745" y="70">CR3 = 0003 4CF0</text>
+                <text class="st f11 b" x="884" y="46">base do diretório</text>
+                <rect class="rb" x="620" y="112" width="250" height="34"/>
+                <text class="b" x="745" y="130">EETDIR = 0003 4CFC</text>
+                <text class="st f11 b" x="884" y="146">CR3 + índice_dir×4</text>
+                <rect x="620" y="172" width="250" height="34"/>
+                <text x="745" y="190">ETP = 000F 0000</text>
+                <text class="st f11" x="884" y="206">lê em 0003 4CFC</text>
+                <rect class="rr" x="620" y="232" width="250" height="34"/>
+                <text class="r" x="745" y="250">EETP = 000F 0264</text>
+                <text class="st f11 r" x="884" y="266">ETP + índice_pg×4</text>
+                <rect class="rr" x="620" y="292" width="250" height="34"/>
+                <text class="r" x="745" y="310">PÁGINA = 0040 0000</text>
+                <text class="st f11" x="884" y="326">lê em 000F 0264</text>
+                <rect class="rr" x="620" y="412" width="250" height="34"/>
+                <text class="r" x="745" y="430">END. FÍSICO = 0040 0302</text>
+                <line class="sb" x1="745" y1="86" x2="745" y2="112" marker-end="url(#mq23ab)"/>
+                <line x1="745" y1="146" x2="745" y2="172" marker-end="url(#mq23ak)"/>
+                <line class="sr" x1="745" y1="206" x2="745" y2="232" marker-end="url(#mq23ar)"/>
+                <line class="sr" x1="745" y1="266" x2="745" y2="292" marker-end="url(#mq23ar)"/>
+                <line class="sr" x1="745" y1="326" x2="745" y2="353"/>
+                <line class="sr" x1="745" y1="387" x2="745" y2="412" marker-end="url(#mq23ar)"/>
+                <ellipse class="sr" cx="745" cy="370" rx="13" ry="17"/>
+                <line class="sr" x1="744.5" y1="366" x2="744.5" y2="374"/>
+                <line class="sr" x1="741" y1="370" x2="749" y2="370"/>
+                <line class="sr" x1="470" y1="370" x2="730" y2="370" marker-end="url(#mq23ar)"/>
+                <text class="st f11 r" x="340" y="366">OFFSET = 302</text>
             </g>
         </svg>
     </div>
@@ -4833,7 +4849,7 @@
               = 000f 0000 + 0000 025c
               = 000f 025c
 </div>
-        <p>Confira pela diferença: <code>000f 0264 − 000f 025c = 0008</code>, que é <code>2 × 4</code> (os 2 índices a menos, cada um ×4).</p>
+        <p>Confira pela diferença: a única coisa que mudou foi o <strong>índice da tabela de páginas</strong> &rarr; <code>−0010₂</code> (2 posições a menos). O <code>EETP</code> acompanha o índice, porque é <code>ETP + índice × 4</code>; o <code>ETP</code> continua o mesmo.</p>
 
         <h4>Passo 3 &mdash; Nova PÁGINA</h4>
         <p>A página também desceu 2 quadros, então o conteúdo lido (a <code>PÁGINA</code>) cai <code>0000 2000</code>:</p>
@@ -4873,69 +4889,77 @@
         </table>
 
         <div class="card-dica">
-            <strong>Por que o EETP muda (explicação do professor).</strong> A página mudou de quadro. Como cada quadro é uma posição na tabela de páginas, ao descer <strong>2 quadros</strong> o índice usado desce <strong>2</strong> (<code>0010₂</code>) &mdash; e o <code>EETP</code> (que é <code>ETP + índice × 4</code>) desce <code></code>. Repare que o <strong>ETP não muda</strong>: a base da tabela continua a mesma; quem mudou foi apenas o índice apontado.
+            <strong>Por que o EETP muda (explicação do professor).</strong> A página mudou de quadro. Como cada quadro é uma posição na tabela de páginas, ao descer <strong>2 quadros</strong> o índice usado desce <strong>2</strong> (<code>0010₂</code>) &mdash; e o <code>EETP</code> (que é <code>ETP + índice × 4</code>) desce junto, na mesma medida (<code>−0010₂</code>). Repare que o <strong>ETP não muda</strong>: a base da tabela continua a mesma; quem mudou foi apenas o índice apontado.
         </div>
 
         <p style="margin-top:1.2rem;"><strong>O caminho todo em uma figura</strong> (só as duas extremidades, agora com os valores novos):</p>
-        <svg class="fc" viewBox="0 0 1180 520" role="img" aria-label="Questao 3: nova pagina 2 quadros antes, indice 151, EETP 000f 025c, PAGINA 003f e000 e END. FISICO 003f e302" style="max-width:1100px">
+        <svg class="fc" viewBox="0 0 1180 500" role="img" aria-label="Questao 3 no padrao do quadro 20.1: novo indice pg 151, EETP 000F 025C, PAGINA 003F E000 e END. FISICO 003F E302" style="max-width:1100px">
             <style>
-                #q2b text{fill:var(--text);font-size:13px;font-weight:600;text-anchor:middle;dominant-baseline:middle}
-                #q2b .s{text-anchor:start}
-                #q2b .f12{font-size:12px}#q2b .f11{font-size:11px}#q2b .f10{font-size:10px}
-                #q2b .w8{font-weight:800}
-                #q2b .az{fill:var(--accent)}
-                #q2b .gd{fill:var(--prova-text)}
-                #q2b .lr{fill:#ff7b7b}
-                #q2b rect,#q2b line,#q2b path{fill:none;stroke:var(--text);stroke-width:1.6}
-                #q2b .baz{stroke:var(--accent)}#q2b .bgd{stroke:var(--prova-text)}#q2b .blr{stroke:#ff7b7b}
-                #q2b .dash{stroke-dasharray:6 5;stroke:var(--border)}
-                #q2b .filllr{fill:#ff7b7b;stroke:none}
-                #mq2b path{fill:var(--text);stroke:none}
-                #mq2bb path{fill:var(--accent);stroke:none}
-                #mq2br path{fill:#ff7b7b;stroke:none}
+                #q23b text{fill:var(--text);font-size:13px;font-weight:600;text-anchor:middle;dominant-baseline:middle}
+                #q23b .st{text-anchor:start}
+                #q23b .f15{font-size:15px}#q23b .f12{font-size:12px}#q23b .f11{font-size:11px}
+                #q23b .w8{font-weight:800}
+                #q23b .b{fill:#4c9be8}
+                #q23b .r{fill:#ff5757}
+                #q23b line,#q23b path,#q23b ellipse{fill:none;stroke:var(--text);stroke-width:2}
+                #q23b .sb{stroke:#4c9be8}
+                #q23b .sr{stroke:#ff5757}
+                #q23b rect{fill:none;stroke:var(--text);stroke-width:2}
+                #q23b .rb{stroke:#4c9be8}
+                #q23b .rr{stroke:#ff5757}
+                #q23b .dash{stroke-dasharray:6 5;stroke:var(--border)}
+                #mq23bk path{fill:var(--text);stroke:none}
+                #mq23bb path{fill:#4c9be8;stroke:none}
+                #mq23br path{fill:#ff5757;stroke:none}
             </style>
             <defs>
-                <marker id="mq2b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
-                <marker id="mq2bb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
-                <marker id="mq2br" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
+                <marker id="mq23bk" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="10" markerHeight="10" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
+                <marker id="mq23bb" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="10" markerHeight="10" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
+                <marker id="mq23br" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="10" markerHeight="10" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
             </defs>
-            <g id="q2b">
-                <line class="dash" x1="560" y1="16" x2="560" y2="504"/>
-                <text class="s w8 f12" x="20" y="30">1) NOVO ÍNDICE DA TABELA DE PÁGINAS</text>
-                <text class="s f11" x="20" y="58">índice (Q2) = 0010 0110 01₂  (153)</text>
-                <text class="s f11" x="20" y="80">menos 2     = 0000 0000 10₂</text>
-                <rect class="blr" x="20" y="96" width="300" height="34"/>
-                <text x="170" y="114" class="lr">índice novo = 0010 0101 11₂ = 151</text>
-                <text class="s f11" x="20" y="158">×4 (acrescenta 00): 0010 0101 1100₂</text>
-                <text class="s f11 az" x="20" y="180">&rarr; 0000 025c  (soma com ETP)</text>
-                <text class="s f11 lr" x="20" y="220">PÁGINA (Q2) 0040 0000 − 0000 2000 = 003f e000</text>
-                <text class="s f11 gd" x="20" y="244">OFFSET permanece 302</text>
+            <g id="q23b">
+                <line class="dash" x1="560" y1="16" x2="560" y2="484"/>
+                <text class="st w8 f12" x="20" y="28">1) NOVO ÍNDICE DA TABELA DE PÁGINAS (2 QUADROS ANTES)</text>
+                <text class="st f12" x="20" y="56">índice pg (Q2) = 0010 0110 01₂   ( 153 )</text>
+                <text class="st f12 r" x="20" y="80">− 2 quadros   = 0000 0000 10₂   ( −0010₂ )</text>
+                <rect class="rr" x="20" y="94" width="360" height="36"/>
+                <text class="r" x="200" y="113">índice pg (Q3) = 0010 0101 11₂ = 151</text>
+                <text class="st f12" x="20" y="156">×4 (acrescenta 2 zeros) e converte p/ hexa:</text>
+                <text class="st f11" x="20" y="178" xml:space="preserve">0010 0101 11 + 00 = 0010 0101 1100₂</text>
+                <text class="st f11 r" x="20" y="198">&rarr; 0000 025c   (soma com ETP)</text>
+                <text class="st f11 r" x="20" y="236">PÁGINA (Q3) = PÁGINA (Q2) − 0000 2000</text>
+                <text class="st f11 r" x="20" y="256">            = 0040 0000 − 0000 2000 = 003F E000</text>
+                <text class="st f11 b" x="20" y="292">OFFSET permanece 302 (a posição dentro da página não muda)</text>
 
-                <text class="s w8 f12" x="600" y="30">2) COMPONENTES MONTADOS</text>
-                <rect class="baz" x="600" y="52" width="230" height="34"/>
-                <text x="715" y="70" class="az">CR3 = 0003 4cf0</text>
-                <rect class="baz" x="600" y="112" width="230" height="34"/>
-                <text x="715" y="130" class="az">EETDIR = 0003 4cfc</text>
-                <text class="s f11 az" x="842" y="106">não mudou</text>
-                <rect x="600" y="172" width="230" height="34"/>
-                <text x="715" y="190">ETP = 000f 0000</text>
-                <text class="s f11 gd" x="842" y="166">NÃO muda</text>
-                <rect class="blr" x="600" y="232" width="230" height="34"/>
-                <text x="715" y="250" class="lr">EETP = 000f 025c</text>
-                <text class="s f11 lr" x="842" y="226">muda (−0010₂)</text>
-                <rect class="blr" x="600" y="292" width="230" height="34"/>
-                <text x="715" y="310" class="lr">PÁGINA = 003f e000</text>
-                <rect class="blr" x="600" y="352" width="230" height="34"/>
-                <text x="715" y="370" class="lr">OFFSET = 302</text>
-                <rect class="blr" x="600" y="412" width="230" height="34"/>
-                <text x="715" y="430" class="lr">END. FÍSICO = 003f e302</text>
-                <line class="baz" x1="715" y1="86" x2="715" y2="112" marker-end="url(#mq2bb)"/>
-                <line x1="715" y1="146" x2="715" y2="172" marker-end="url(#mq2b)"/>
-                <line class="blr" x1="715" y1="206" x2="715" y2="232" marker-end="url(#mq2br)"/>
-                <line class="blr" x1="715" y1="266" x2="715" y2="292" marker-end="url(#mq2br)"/>
-                <line class="blr" x1="715" y1="326" x2="715" y2="352" marker-end="url(#mq2br)"/>
-                <line class="blr" x1="715" y1="386" x2="715" y2="412" marker-end="url(#mq2br)"/>
-                <text class="f12" x="658" y="405" fill="#ff7b7b">+</text>
+                <text class="st w8 f12" x="620" y="28">2) COMPONENTES MONTADOS</text>
+                <rect class="rb" x="620" y="52" width="250" height="34"/>
+                <text class="b" x="745" y="70">CR3 = 0003 4CF0</text>
+                <text class="st f11 b" x="884" y="46">não mudou</text>
+                <rect class="rb" x="620" y="112" width="250" height="34"/>
+                <text class="b" x="745" y="130">EETDIR = 0003 4CFC</text>
+                <text class="st f11 b" x="884" y="146">não mudou</text>
+                <rect x="620" y="172" width="250" height="34"/>
+                <text x="745" y="190">ETP = 000F 0000</text>
+                <text class="st f11" x="884" y="206">NÃO muda</text>
+                <rect class="rr" x="620" y="232" width="250" height="34"/>
+                <text class="r" x="745" y="250">EETP = 000F 025C</text>
+                <text class="st f11 r" x="884" y="266">muda (−0010₂)</text>
+                <rect class="rr" x="620" y="292" width="250" height="34"/>
+                <text class="r" x="745" y="310">PÁGINA = 003F E000</text>
+                <text class="st f11 r" x="884" y="326">muda (−0000 2000)</text>
+                <rect class="rr" x="620" y="412" width="250" height="34"/>
+                <text class="r" x="745" y="430">END. FÍSICO = 003F E302</text>
+                <line class="sb" x1="745" y1="86" x2="745" y2="112" marker-end="url(#mq23bb)"/>
+                <line x1="745" y1="146" x2="745" y2="172" marker-end="url(#mq23bk)"/>
+                <line class="sr" x1="745" y1="206" x2="745" y2="232" marker-end="url(#mq23br)"/>
+                <line class="sr" x1="745" y1="266" x2="745" y2="292" marker-end="url(#mq23br)"/>
+                <line class="sr" x1="745" y1="326" x2="745" y2="353"/>
+                <line class="sr" x1="745" y1="387" x2="745" y2="412" marker-end="url(#mq23br)"/>
+                <ellipse class="sr" cx="745" cy="370" rx="13" ry="17"/>
+                <line class="sr" x1="744.5" y1="366" x2="744.5" y2="374"/>
+                <line class="sr" x1="741" y1="370" x2="749" y2="370"/>
+                <line class="sr" x1="470" y1="370" x2="730" y2="370" marker-end="url(#mq23br)"/>
+                <text class="st f11 r" x="340" y="366">OFFSET = 302</text>
             </g>
         </svg>
     </div>
