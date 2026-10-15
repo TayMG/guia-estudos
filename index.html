@@ -4477,11 +4477,11 @@
         </ol>
     </div>
 
-    <!-- ==================== SEÇÃO 23: QUESTÃO DO PROFESSOR (1000/100a/100b/100c) ==================== -->
+        <!-- ==================== SEÇÃO 23: QUESTÃO DO PROFESSOR (1000/100a/100b/100c) ==================== -->
     <h2 id="sec-23">23. A Questão do Professor Resolvida &mdash; Nova Tabela de Segmentos (1000 · 100a · 100b · 100c)</h2>
 
     <div class="card-prova">
-        <p><strong>Esta seção resolve, do zero e bem devagar, a questão que o professor passou no quadro.</strong> Ela usa uma <em>tabela de descritores diferente</em> das que você viu até aqui (agora os seletores são <code>1000</code>, <code>100a</code>, <code>100b</code> e <code>100c</code>). O objetivo é você entender <u>cada número</u>: de onde ele vem, por que ele é aquele, e o que aconteceria se fosse outro. Trate esta seção como um "caderno de cálculos comentado".</p>
+        <p><strong>Esta seção resolve, do zero e bem devagar, a questão que o professor passou no quadro.</strong> Ela usa uma <em>tabela de descritores diferente</em> das que você viu até aqui (agora os seletores são <code>1000</code>, <code>100a</code>, <code>100b</code> e <code>100c</code>). O objetivo é você entender <u>cada número</u>: de onde ele vem, por que ele é aquele, e o que aconteceria se fosse outro.</p>
         <p style="margin-top:.7rem;">Ela tem 3 partes que se encaixam: <strong>(1)</strong> a segmentação (achar o endereço linear da instrução e dos seus operandos); <strong>(2)</strong> a paginação desse linear; <strong>(3)</strong> o que muda quando a página é recarregada em outro quadro. A <strong>Questão 3 é continuação da Questão 2</strong> &mdash; você reaproveita os passos e só troca o final.</p>
     </div>
 
@@ -4547,7 +4547,7 @@
         <ol class="passo-lista">
             <li>
                 <strong>Limite do Código (seletor 1000).</strong>
-                <p style="margin:.5rem 0 0;">O próximo segmento é a Pilha, que começa em <code>0057 af01</code>. Então o código termina um endereço antes disso:</p>
+                <p style="margin:.5rem 0 0;">O próximo segmento é a Pilha, que começa em <code>0057 af01</code>. O código termina um endereço antes disso:</p>
                 <p style="margin:.5rem 0 0;"><code>0057 af01 − 1 = 0057 af00</code> &nbsp;✓ (bate com a tabela)</p>
             </li>
             <li>
@@ -4594,41 +4594,40 @@
         </div>
 
         <h4 style="margin-top:1rem;">Passo A &mdash; Onde está a instrução? (buscar a instrução)</h4>
-        <p>A instrução é buscada usando o par <code>CS:EIP</code>. O <code>CS</code> é o seletor <code>1000</code>, cuja base é <code>0010 0000</code>. O <code>EIP</code> é <code>0000 2000</code>. Logo:</p>
-        <p style="padding:.5rem .8rem; background:var(--surface2); border-left:3px solid var(--accent); border-radius:0 6px 6px 0;"><code>Linear da instrução = 0010 0000 + 0000 2000 = 0010 2000</code></p>
+        <p>A instrução é buscada usando o par <code>CS:EIP</code>. O <code>CS</code> é o seletor <code>1000</code>, cuja base é <code>0010 0000</code>. O <code>EIP</code> é <code>0000 2000</code>. Somamos base + offset:</p>
+        <div class="diagrama" style="color:var(--prova-text);">
+  Linear da instrução = Base (CS) + EIP
+                      = 0010 0000 + 0000 2000
+                      = 0010 2000
+</div>
         <p>Teste do limite do código (<code>0057 af00</code>): <code>0010 2000 ≤ 0057 af00</code> &rarr; <strong>OK</strong>, a instrução pode ser buscada.</p>
 
         <h4 style="margin-top:1rem;">Passo B &mdash; Operando destino: <code>0006 5202</code> (segmento de Dados)</h4>
         <p>Operandos de dado usam, por padrão, o segmento de <strong>Dados</strong> (<code>DS</code>), aqui o seletor <code>100b</code>, base <code>00c3 4100</code>. O endereço linear é <code>Base + Offset</code>:</p>
         <div class="diagrama" style="color:var(--prova-text);">
-  Linear (destino) = Base (DS) + Offset
-                   = 00c3 4100 + 0006 5202
-
    00c3 4100     ← base do segmento de Dados
  + 0006 5202     ← offset do operando destino
  -----------
    00c9 9302     ← endereço LINEAR do destino
 </div>
-        <p>Some coluna a coluna (primeiro a parte baixa, depois a parte alta):</p>
+        <p>Some coluna a coluna (hexa):</p>
         <ul>
             <li>parte baixa: <code>4100 + 5202 = 9302</code> &nbsp;(0+2=2, 0+0=0, 1+2=3, 4+5=9);</li>
             <li>parte alta: <code>00c3 + 0006 = 00c9</code> &nbsp;(c+0=c, 3+6=9);</li>
             <li>não houve "vai um".</li>
         </ul>
+        <p>Conferindo em binário (basta olhar os mesmos bits): <code>1100 0011 0100 0001 0000 0000</code> + <code>0000 0110 0101 0010 0000 0010</code> = <code>1100 1001 1001 0011 0000 0010</code>, que é justamente <code>00c9 9302</code>.</p>
         <p>Teste do limite dos Dados (<code>00d6 7000</code>): <code>00c9 9302 ≤ 00d6 7000</code> &rarr; <strong>OK</strong>. Este endereço linear (<code>00c9 9302</code>) é justamente o que alimenta a <strong>Questão 2</strong>.</p>
 
         <h4 style="margin-top:1rem;">Passo C &mdash; Operando origem: <code>00AB F410</code> (segmento de Dados)</h4>
         <p>Mesmo segmento <code>DS = 100b</code>, base <code>00c3 4100</code>:</p>
         <div class="diagrama" style="color:var(--prova-text);">
-  Linear (origem) = Base (DS) + Offset
-                  = 00c3 4100 + 00ab f410
-
    00c3 4100     ← base do segmento de Dados
  + 00ab f410     ← offset do operando origem
  -----------
    016f 3510     ← endereço LINEAR da origem
 </div>
-        <p>Some coluna a coluna:</p>
+        <p>Some coluna a coluna (hexa):</p>
         <ul>
             <li>parte baixa: <code>4100 + f410 = 1 3510</code> &nbsp;(aqui houve <strong>"vai um"</strong>);</li>
             <li>parte alta: <code>00c3 + 00ab + 1 = 016f</code> &nbsp;(o <code>+ 1</code> é o "vai um" que veio da parte baixa).</li>
@@ -4664,54 +4663,145 @@
             </tbody>
         </table>
 
-        <h4>Passo 1 &mdash; Fatiar o endereço linear em <code>10 | 10 | 12</code></h4>
-        <p>Um endereço linear tem 32 bits. Ele é lido como três campos: 10 bits de <strong>índice da tabela de diretório</strong>, 10 bits de <strong>índice da tabela de páginas</strong> e 12 bits de <strong>OFFSET DA PÁGINA</strong>.</p>
+        <div class="card-dica">
+            <strong>A regra do ×4 (o jeito do professor, sem complicar):</strong>
+            <ol>
+                <li>Escreva o <strong>índice em binário</strong>.</li>
+                <li>Multiplique por 4 <strong>acrescentando 2 zeros à direita</strong> (4 = <code>100₂</code>, então ×4 = andar 2 casas).</li>
+                <li><strong>Converta esse resultado para hexa</strong> (agrupe os bits de 4 em 4, da direita para a esquerda).</li>
+                <li><strong>Some</strong> com o valor que já está em hexa (<code>CR3</code> ou <code>ETP</code>).</li>
+            </ol>
+            O <strong>offset (12 bits)</strong> é o único que <u>não</u> é multiplicado por 4 &mdash; por isso ele <strong>permanece em hexa</strong> como está (aqui, <code>302</code>).
+        </div>
+
+        <h4>Passo 1 &mdash; Fatiar o endereço linear em <code>10 | 10 | 12</code> (em binário)</h4>
+        <p>Um endereço linear tem 32 bits, lidos como <strong>índice da tabela de diretório</strong> (10 bits) + <strong>índice da tabela de páginas</strong> (10 bits) + <strong>OFFSET DA PÁGINA</strong> (12 bits). Primeiro, converta o linear para binário (cada dígito hexa vira 4 bits):</p>
         <div class="diagrama" style="color:var(--prova-text);">
-  Endereço linear: 00c9 9302
+  00c9 9302  →  0=0000  0=0000  c=1100  9=1001  9=1001  3=0011  0=0000  2=0010
 
-  Em binário (32 bits):
-  0000 0000 1100 1001 1001 0011 0000 0010
-  └─────10─────┘└─────10─────┘└─────12─────┘
+  binário:  0000 0000 1100 1001 1001 0011 0000 0010
+            └─────10─────┘└─────10─────┘└─────12─────┘
 
-  índice da tabela de diretório = 0000000011 (bin) = 0000 0003 (hex) = 3
-  índice da tabela de páginas   = 0010011001 (bin) = 0000 0099 (hex) = 153
-  OFFSET DA PÁGINA              = 001100000010 (bin) = 0000 0302 (hex)
+  índice da tabela de diretório = 0000 0000 11  (bin) = 0000 0003 (hex) = 3
+  índice da tabela de páginas   = 00 1001 1001   (bin) = 0000 0099 (hex) = 153
+  OFFSET DA PÁGINA              = 0011 0000 0010(bin) = 302        (hex, 12 bits)
 </div>
         <div class="card-dica">
-            <strong>Atalho para a prova:</strong> os <strong>3 últimos dígitos hexa</strong> do endereço linear são sempre o <strong>OFFSET DA PÁGINA</strong>. Aqui: <code>9302</code> &rarr; últimos 3 = <code>302</code>. Os 20 bits que sobram viram os dois índices.
+            <strong>Atalho:</strong> os <strong>3 últimos dígitos hexa</strong> do linear já são o <strong>OFFSET DA PÁGINA</strong> (12 bits = 3 dígitos). Aqui: <code>9302</code> &rarr; <code>302</code>. O offset <u>fica em hexa</u>, porque é o único campo que não é multiplicado por 4.
         </div>
-        <p>Conferindo: <strong>índice da tabela de diretório = 3</strong>, <strong>índice da tabela de páginas = 153</strong> (<code>0000 0099</code>) e <strong>OFFSET DA PÁGINA = 0000 0302</strong>.</p>
 
-        <h4>Passo 2 &mdash; Achar o EETDIR (endereço de leitura no diretório)</h4>
-        <p>Cada entrada das tabelas ocupa <code>4</code> bytes (no quadro 20.1 aparece como <code>× 100</code> em binário, que é o mesmo que <code>× 4</code>). Multiplica-se o <strong>índice da tabela de diretório</strong> por 4 e soma-se com <code>CR3</code>:</p>
+        <h4>Passo 2 &mdash; Achar o EETDIR</h4>
+        <p>Começamos pelo <strong>índice da tabela de diretório</strong> (10 bits): <code>0000 0000 11₂</code>. Multiplicamos por 4 <strong>acrescentando 2 zeros</strong> e depois convertemos para hexa:</p>
         <div class="diagrama" style="color:var(--prova-text);">
+  índice da tabela de diretório = 0000 0000 11₂
+  × 4 (acrescenta 00)           = 0000 0000 1100₂
+  converte para hexa            = 0000 0000 1100 → 00c  →  0000 000c
+
   EETDIR = CR3 + (índice da tabela de diretório × 4)
-         = 0003 4cf0 + (0000 0003 × 4)
          = 0003 4cf0 + 0000 000c
          = 0003 4cfc
-  Conteúdo lido em 0003 4cfc  →  ETP = 000f 0000   (base da tabela de páginas)
 </div>
+        <p>Conteúdo lido em <code>0003 4cfc</code> &rarr; <code>ETP = 000f 0000</code> (é a base da tabela de páginas).</p>
 
-        <h4>Passo 3 &mdash; Achar o EETP (endereço de leitura na tabela de páginas)</h4>
-        <p>Agora, usando o <strong>índice da tabela de páginas</strong>, multiplica-se por 4 e soma-se com <code>ETP</code> (o conteúdo lido no passo 2):</p>
+        <h4>Passo 3 &mdash; Achar o EETP</h4>
+        <p>Agora o <strong>índice da tabela de páginas</strong>: <code>0010 0110 01₂</code> (= 153). Multiplicando por 4 (acrescenta 2 zeros) e convertendo para hexa:</p>
         <div class="diagrama" style="color:var(--prova-text);">
+  índice da tabela de páginas = 0010 0110 01₂        ( = 153 )
+  × 4 (acrescenta 00)         = 0010 0110 0100₂
+  converte para hexa          = 0010 0110 0100 → 264  →  0000 0264
+
   EETP = ETP + (índice da tabela de páginas × 4)
-       = 000f 0000 + (0000 0099 × 4)
        = 000f 0000 + 0000 0264
        = 000f 0264
-  Conteúdo lido em 000f 0264  →  PÁGINA = 0040 0000   (base do quadro onde a página está)
 </div>
+        <p>Conteúdo lido em <code>000f 0264</code> &rarr; <code>PÁGINA = 0040 0000</code> (é a base do quadro onde a página está).</p>
 
         <h4>Passo 4 &mdash; END. FÍSICO</h4>
-        <p>Basta somar <code>PÁGINA</code> com o <code>OFFSET DA PÁGINA</code>:</p>
+        <p>Basta somar <code>PÁGINA</code> com o <code>OFFSET DA PÁGINA</code> (que ficou em hexa):</p>
         <div class="diagrama" style="color:var(--prova-text);">
   END. FÍSICO = PÁGINA + OFFSET DA PÁGINA
-              = 0040 0000 + 0000 0302
+              = 0040 0000 + 302
               = 0040 0302
 </div>
         <div class="card-importante">
             <strong>Resposta da Questão 2.</strong> O endereço linear <code>00c9 9302</code> corresponde ao <strong>END. FÍSICO 0040 0302</strong>.
         </div>
+
+        <p style="margin-top:1.2rem;"><strong>O caminho todo em uma figura</strong> (só as duas extremidades: o fatia­mento dos 32 bits e os componentes montados):</p>
+        <svg class="fc" viewBox="0 0 1180 520" role="img" aria-label="Questao 2: fatiamento do endereco linear 00C9 9302 em 10-10-12 bits e montagem dos componentes CR3, EETDIR, ETP, EETP, PAGINA e END. FISICO" style="max-width:1100px">
+            <style>
+                #q2a text{fill:var(--text);font-size:13px;font-weight:600;text-anchor:middle;dominant-baseline:middle}
+                #q2a .s{text-anchor:start}
+                #q2a .f12{font-size:12px}#q2a .f11{font-size:11px}#q2a .f10{font-size:10px}
+                #q2a .w8{font-weight:800}
+                #q2a .az{fill:var(--accent)}
+                #q2a .gd{fill:var(--prova-text)}
+                #q2a .lr{fill:#ff7b7b}
+                #q2a rect,#q2a line,#q2a path{fill:none;stroke:var(--text);stroke-width:1.6}
+                #q2a .baz{stroke:var(--accent)}#q2a .bgd{stroke:var(--prova-text)}#q2a .blr{stroke:#ff7b7b}
+                #q2a .dash{stroke-dasharray:6 5;stroke:var(--border)}
+                #q2a .fillaz{fill:var(--accent);stroke:none}#q2a .filllr{fill:#ff7b7b;stroke:none}
+                #mq2a path{fill:var(--text);stroke:none}
+                #mq2ab path{fill:var(--accent);stroke:none}
+                #mq2ar path{fill:#ff7b7b;stroke:none}
+            </style>
+            <defs>
+                <marker id="mq2a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
+                <marker id="mq2ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
+                <marker id="mq2ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
+            </defs>
+            <g id="q2a">
+                <line class="dash" x1="560" y1="16" x2="560" y2="504"/>
+                <text class="s w8 f12" x="20" y="30">1) FATIAR O ENDEREÇO LINEAR (32 BITS)</text>
+                <text class="s f12" x="20" y="56">linear = 00c9 9302</text>
+                <text class="s f11" x="20" y="78">binário (cada dígito hexa = 4 bits):</text>
+                <text class="s f11" x="20" y="100" xml:space="preserve">0000 0000 1100 1001 1001 0011 0000 0010</text>
+                <rect x="20" y="116" width="160" height="34"/>
+                <rect x="180" y="116" width="160" height="34"/>
+                <rect x="340" y="116" width="180" height="34"/>
+                <text class="f11" x="100" y="133">0000000011</text>
+                <text class="f11" x="260" y="133">0010011001</text>
+                <text class="f11" x="430" y="133">0011 0000 0010</text>
+                <text class="f11 gd" x="100" y="163">10 bits = índice dir.</text>
+                <text class="f11 gd" x="260" y="163">10 bits = índice págs.</text>
+                <text class="f11 lr" x="430" y="163">12 bits = OFFSET</text>
+                <text class="f11 az" x="100" y="190">= 3</text>
+                <text class="f11 az" x="260" y="190">= 153</text>
+                <text class="f11 lr" x="430" y="190">= 302 (fica em hexa)</text>
+                <text class="s f11 az" x="20" y="222">×4 (acrescenta 2 zeros) e converte p/ hexa:</text>
+                <text class="s f11" x="20" y="243" xml:space="preserve">0000000011 + 00 = 000000001100₂</text>
+                <text class="s f11 az" x="20" y="263">&rarr; 0000 000c   (soma com CR3)</text>
+                <text class="s f11" x="20" y="288" xml:space="preserve">0010011001 + 00 = 001001100100₂</text>
+                <text class="s f11 az" x="20" y="308">&rarr; 0000 0264   (soma com ETP)</text>
+
+                <text class="s w8 f12" x="600" y="30">2) COMPONENTES MONTADOS</text>
+                <rect class="baz" x="600" y="52" width="230" height="34"/>
+                <text x="715" y="70" class="az">CR3 = 0003 4cf0</text>
+                <rect class="baz" x="600" y="112" width="230" height="34"/>
+                <text x="715" y="130" class="az">EETDIR = 0003 4cfc</text>
+                <text class="s f11 az" x="842" y="106">índice dir ×4 = 000c</text>
+                <rect x="600" y="172" width="230" height="34"/>
+                <text x="715" y="190">ETP = 000f 0000</text>
+                <text class="s f11" x="842" y="166">lê em 0003 4cfc</text>
+                <rect class="bgd" x="600" y="232" width="230" height="34"/>
+                <text x="715" y="250" class="gd">EETP = 000f 0264</text>
+                <text class="s f11 az" x="842" y="226">índice págs ×4 = 0264</text>
+                <rect class="blr" x="600" y="292" width="230" height="34"/>
+                <text x="715" y="310" class="lr">PÁGINA = 0040 0000</text>
+                <text class="s f11" x="842" y="286">lê em 000f 0264</text>
+                <rect class="blr" x="600" y="352" width="230" height="34"/>
+                <text x="715" y="370" class="lr">OFFSET = 302</text>
+                <rect class="blr" x="600" y="412" width="230" height="34"/>
+                <text x="715" y="430" class="lr">END. FÍSICO = 0040 0302</text>
+                <line class="baz" x1="715" y1="86" x2="715" y2="112" marker-end="url(#mq2ab)"/>
+                <line x1="715" y1="146" x2="715" y2="172" marker-end="url(#mq2a)"/>
+                <line class="bgd" x1="715" y1="206" x2="715" y2="232" marker-end="url(#mq2a)"/>
+                <line class="blr" x1="715" y1="266" x2="715" y2="292" marker-end="url(#mq2ar)"/>
+                <line class="blr" x1="715" y1="326" x2="715" y2="352" marker-end="url(#mq2ar)"/>
+                <line class="blr" x1="715" y1="386" x2="715" y2="412" marker-end="url(#mq2ar)"/>
+                <text class="f12" x="658" y="405" fill="#ff7b7b">+</text>
+            </g>
+        </svg>
     </div>
 
     <h3>23.6 &mdash; Questão 3: a página é recarregada 2 quadros antes</h3>
@@ -4720,28 +4810,32 @@
         <p>Esta é a <strong>continuação da Questão 2</strong>. A mesma página é recarregada <strong>2 quadros antes</strong>. O professor, além de refazer o endereço, <strong>recalcula o índice da tabela de páginas</strong> e, por meio dele, acha o <strong>novo EETP</strong>. Vamos passo a passo.</p>
 
         <div class="card-dica">
-            <strong>Tamanho de 1 quadro:</strong> 1 quadro = 1 página = 4 KB = <code>0000 1000</code>. Logo, <strong>2 quadros = 2 × 0000 1000 = 0000 2000</strong>.
+            <strong>Tamanho de 1 quadro:</strong> 1 quadro = 1 página = 4 KB = <code>1000 0000 0000₂</code> = <code>0000 1000</code> (hex). Logo, <strong>2 quadros = 2 × 0000 1000 = 0000 2000</strong>.
         </div>
 
         <h4>Passo 1 &mdash; Novo índice da tabela de páginas</h4>
-        <p>Como a página desceu 2 quadros (e cada quadro corresponde a 1 posição na tabela de páginas), o índice cai 2:</p>
+        <p>Como a página desceu <strong>2 quadros</strong> e cada quadro é <strong>1 posição</strong> na tabela de páginas, o índice cai <strong>2</strong>. Fazendo em binário (2 = <code>0010₂</code>):</p>
         <div class="diagrama" style="color:var(--prova-text);">
-  índice da tabela de páginas (novo) = índice da tabela de páginas (Q2) − 0000 0002
-                                    = 0000 0099 − 0000 0002
-                                    = 0000 0097        ( = 151 )
+  índice da tabela de páginas (Q2)    = 0010 0110 01₂   ( 153 )
+  menos 2                             = 0000 0000 10₂   ( 2 )
+  -----------------------------------------
+  índice da tabela de páginas (novo)  = 0010 0101 11₂   ( 151 )   &rarr;  0000 0097 (hex)
 </div>
 
         <h4>Passo 2 &mdash; Novo EETP</h4>
-        <p>O <code>ETP</code> <strong>NÃO muda</strong> (a tabela de páginas fica onde está: <code>000f 0000</code>). O que muda é o índice; por isso o <strong>EETP muda</strong>:</p>
+        <p>O <code>ETP</code> <strong>NÃO muda</strong> (a tabela de páginas fica onde está: <code>000f 0000</code>). O que muda é o <strong>índice</strong>; por isso o <strong>EETP muda</strong>. Mesma regra do ×4 (acrescenta 2 zeros e converte p/ hexa):</p>
         <div class="diagrama" style="color:var(--prova-text);">
+  índice da tabela de páginas (novo) = 0010 0101 11₂        ( = 151 )
+  × 4 (acrescenta 00)                = 0010 0101 1100₂
+  converte para hexa                 = 0010 0101 1100 → 25c  →  0000 025c
+
   EETP (novo) = ETP + (índice da tabela de páginas (novo) × 4)
-              = 000f 0000 + (0000 0097 × 4)
               = 000f 0000 + 0000 025c
               = 000f 025c
 </div>
-        <p>Confira a diferença: <code>000f 0264 − 000f 025c = 0000 0008</code>, que é exatamente <code>0000 0002 × 4 = 0000 0008</code> (os 2 índices a menos).</p>
+        <p>Confira pela diferença: <code>000f 0264 − 000f 025c = 0008</code>, que é <code>2 × 4</code> (os 2 índices a menos, cada um ×4).</p>
 
-        <h4>Passo 3 &mdash; Nova PÁGINA (novo endereço da página)</h4>
+        <h4>Passo 3 &mdash; Nova PÁGINA</h4>
         <p>A página também desceu 2 quadros, então o conteúdo lido (a <code>PÁGINA</code>) cai <code>0000 2000</code>:</p>
         <div class="diagrama" style="color:var(--prova-text);">
   PÁGINA (nova) = PÁGINA (Q2) − 0000 2000
@@ -4750,10 +4844,10 @@
 </div>
 
         <h4>Passo 4 &mdash; Novo END. FÍSICO</h4>
-        <p>O <code>OFFSET DA PÁGINA</code> continua o mesmo (<code>0000 0302</code>), porque a posição <em>dentro</em> da página não muda:</p>
+        <p>O <code>OFFSET DA PÁGINA</code> continua o mesmo (<code>302</code>), porque a posição <em>dentro</em> da página não muda:</p>
         <div class="diagrama" style="color:var(--prova-text);">
   END. FÍSICO (novo) = PÁGINA (nova) + OFFSET DA PÁGINA
-                     = 003f e000 + 0000 0302
+                     = 003f e000 + 302
                      = 003f e302
 </div>
 
@@ -4765,23 +4859,87 @@
         <table>
             <thead><tr><th>Valor</th><th>Q2</th><th>Q3 (2 quadros antes)</th><th>Mudou?</th></tr></thead>
             <tbody>
-                <tr><td>Endere&ccedil;o linear</td><td>00c9 9302</td><td>00c9 9302</td><td>Não</td></tr>
+                <tr><td>Endereço linear</td><td>00c9 9302</td><td>00c9 9302</td><td>Não</td></tr>
                 <tr><td>índice da tabela de diretório</td><td>0000 0003</td><td>0000 0003</td><td>Não</td></tr>
                 <tr><td><code>CR3</code></td><td>0003 4cf0</td><td>0003 4cf0</td><td>Não</td></tr>
                 <tr><td><code>EETDIR</code></td><td>0003 4cfc</td><td>0003 4cfc</td><td>Não</td></tr>
                 <tr><td><code>ETP</code> (conteúdo lido)</td><td>000f 0000</td><td>000f 0000</td><td>Não</td></tr>
-                <tr><td>índice da tabela de páginas</td><td>0000 0099</td><td>0000 0097</td><td><strong>Sim</strong> (−2)</td></tr>
-                <tr><td><code>EETP</code> (endere&ccedil;o de leitura)</td><td>000f 0264</td><td>000f 025c</td><td><strong>Sim</strong> (−0000 0008)</td></tr>
+                <tr><td>índice da tabela de páginas</td><td>0000 0099</td><td>0000 0097</td><td><strong>Sim</strong> (−0010₂)</td></tr>
+                <tr><td><code>EETP</code> (endereço de leitura)</td><td>000f 0264</td><td>000f 025c</td><td><strong>Sim</strong> (−0010₂)</td></tr>
                 <tr><td><code>PÁGINA</code> (conteúdo lido)</td><td>0040 0000</td><td>003f e000</td><td><strong>Sim</strong> (−0000 2000)</td></tr>
-                <tr><td><code>OFFSET DA PÁGINA</code></td><td>0000 0302</td><td>0000 0302</td><td>Não</td></tr>
+                <tr><td><code>OFFSET DA PÁGINA</code></td><td>302</td><td>302</td><td>Não</td></tr>
                 <tr><td><strong>END. FÍSICO</strong></td><td>0040 0302</td><td>003f e302</td><td><strong>Sim</strong></td></tr>
             </tbody>
         </table>
 
         <div class="card-dica">
-            <strong>Por que o EETP muda (explicação do professor).</strong> A página mudou de quadro. Como cada quadro é uma posição na tabela de páginas, ao descer <strong>2 quadros</strong> o índice usado desce <strong>2</strong> &mdash; e o <code>EETP</code> (que é <code>ETP + índice × 4</code>) desce <code>0000 0002 × 4 = 0000 0008</code>. Repare que o <strong>ETP não muda</strong>: a base da tabela continua a mesma; quem mudou foi apenas o índice apontado.
+            <strong>Por que o EETP muda (explicação do professor).</strong> A página mudou de quadro. Como cada quadro é uma posição na tabela de páginas, ao descer <strong>2 quadros</strong> o índice usado desce <strong>2</strong> (<code>0010₂</code>) &mdash; e o <code>EETP</code> (que é <code>ETP + índice × 4</code>) desce <code>0000 0008</code>. Repare que o <strong>ETP não muda</strong>: a base da tabela continua a mesma; quem mudou foi apenas o índice apontado.
         </div>
+
+        <p style="margin-top:1.2rem;"><strong>O caminho todo em uma figura</strong> (só as duas extremidades, agora com os valores novos):</p>
+        <svg class="fc" viewBox="0 0 1180 520" role="img" aria-label="Questao 3: nova pagina 2 quadros antes, indice 151, EETP 000f 025c, PAGINA 003f e000 e END. FISICO 003f e302" style="max-width:1100px">
+            <style>
+                #q2b text{fill:var(--text);font-size:13px;font-weight:600;text-anchor:middle;dominant-baseline:middle}
+                #q2b .s{text-anchor:start}
+                #q2b .f12{font-size:12px}#q2b .f11{font-size:11px}#q2b .f10{font-size:10px}
+                #q2b .w8{font-weight:800}
+                #q2b .az{fill:var(--accent)}
+                #q2b .gd{fill:var(--prova-text)}
+                #q2b .lr{fill:#ff7b7b}
+                #q2b rect,#q2b line,#q2b path{fill:none;stroke:var(--text);stroke-width:1.6}
+                #q2b .baz{stroke:var(--accent)}#q2b .bgd{stroke:var(--prova-text)}#q2b .blr{stroke:#ff7b7b}
+                #q2b .dash{stroke-dasharray:6 5;stroke:var(--border)}
+                #q2b .filllr{fill:#ff7b7b;stroke:none}
+                #mq2b path{fill:var(--text);stroke:none}
+                #mq2bb path{fill:var(--accent);stroke:none}
+                #mq2br path{fill:#ff7b7b;stroke:none}
+            </style>
+            <defs>
+                <marker id="mq2b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
+                <marker id="mq2bb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
+                <marker id="mq2br" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0.5 L9.5,5 L0,9.5 z"/></marker>
+            </defs>
+            <g id="q2b">
+                <line class="dash" x1="560" y1="16" x2="560" y2="504"/>
+                <text class="s w8 f12" x="20" y="30">1) NOVO ÍNDICE DA TABELA DE PÁGINAS</text>
+                <text class="s f11" x="20" y="58">índice (Q2) = 0010 0110 01₂  (153)</text>
+                <text class="s f11" x="20" y="80">menos 2     = 0000 0000 10₂</text>
+                <rect class="blr" x="20" y="96" width="300" height="34"/>
+                <text x="170" y="114" class="lr">índice novo = 0010 0101 11₂ = 151</text>
+                <text class="s f11" x="20" y="158">×4 (acrescenta 00): 0010 0101 1100₂</text>
+                <text class="s f11 az" x="20" y="180">&rarr; 0000 025c  (soma com ETP)</text>
+                <text class="s f11 lr" x="20" y="220">PÁGINA (Q2) 0040 0000 − 0000 2000 = 003f e000</text>
+                <text class="s f11 gd" x="20" y="244">OFFSET permanece 302</text>
+
+                <text class="s w8 f12" x="600" y="30">2) COMPONENTES MONTADOS</text>
+                <rect class="baz" x="600" y="52" width="230" height="34"/>
+                <text x="715" y="70" class="az">CR3 = 0003 4cf0</text>
+                <rect class="baz" x="600" y="112" width="230" height="34"/>
+                <text x="715" y="130" class="az">EETDIR = 0003 4cfc</text>
+                <text class="s f11 az" x="842" y="106">não mudou</text>
+                <rect x="600" y="172" width="230" height="34"/>
+                <text x="715" y="190">ETP = 000f 0000</text>
+                <text class="s f11 gd" x="842" y="166">NÃO muda</text>
+                <rect class="blr" x="600" y="232" width="230" height="34"/>
+                <text x="715" y="250" class="lr">EETP = 000f 025c</text>
+                <text class="s f11 lr" x="842" y="226">muda (−0010₂)</text>
+                <rect class="blr" x="600" y="292" width="230" height="34"/>
+                <text x="715" y="310" class="lr">PÁGINA = 003f e000</text>
+                <rect class="blr" x="600" y="352" width="230" height="34"/>
+                <text x="715" y="370" class="lr">OFFSET = 302</text>
+                <rect class="blr" x="600" y="412" width="230" height="34"/>
+                <text x="715" y="430" class="lr">END. FÍSICO = 003f e302</text>
+                <line class="baz" x1="715" y1="86" x2="715" y2="112" marker-end="url(#mq2bb)"/>
+                <line x1="715" y1="146" x2="715" y2="172" marker-end="url(#mq2b)"/>
+                <line class="blr" x1="715" y1="206" x2="715" y2="232" marker-end="url(#mq2br)"/>
+                <line class="blr" x1="715" y1="266" x2="715" y2="292" marker-end="url(#mq2br)"/>
+                <line class="blr" x1="715" y1="326" x2="715" y2="352" marker-end="url(#mq2br)"/>
+                <line class="blr" x1="715" y1="386" x2="715" y2="412" marker-end="url(#mq2br)"/>
+                <text class="f12" x="658" y="405" fill="#ff7b7b">+</text>
+            </g>
+        </svg>
     </div>
+
 
     <!-- ==================== RODAPÉ ==================== -->
 
