@@ -4582,7 +4582,7 @@
         <table>
             <thead><tr><th>Parte da linha</th><th>O que é</th><th>Valor</th></tr></thead>
             <tbody>
-                <tr><td><code>0000 2000</code></td><td><strong>Onde a instrução está</strong> na memória (é o <code>EIP</code>, o deslocamento da instrução dentro do segmento de código)</td><td>offset <code>0000 2000</code></td></tr>
+                <tr><td><code>0000 2000</code></td><td><strong>Endereço na linha de código (EIP)</strong>: o <code>EIP</code> aponta para a instrução. Por convenção, na maioria dos exercícios, considera-se o valor dado como <code>EIP = 0000 2000</code>. </td><td><code>EIP = 0000 2000</code></td></tr>
                 <tr><td><code>ADD</code></td><td>A operação: somar o destino com a origem</td><td>&mdash;</td></tr>
                 <tr><td><code>0006 5202</code></td><td><strong>Operando destino</strong> (dst): o <em>deslocamento</em> (offset) de um dado</td><td>offset <code>0006 5202</code></td></tr>
                 <tr><td><code>00AB F410</code></td><td><strong>Operando origem</strong> (src): o <em>deslocamento</em> (offset) de um dado</td><td>offset <code>00AB F410</code></td></tr>
@@ -4594,7 +4594,7 @@
         </div>
 
         <h4 style="margin-top:1rem;">Passo A &mdash; Onde está a instrução? (buscar a instrução)</h4>
-        <p>A instrução é buscada usando o par <code>CS:EIP</code>. O <code>CS</code> é o seletor <code>1000</code>, cuja base é <code>0010 0000</code>. O <code>EIP</code> é <code>0000 2000</code>. Somamos base + offset:</p>
+        <p>A instrução é buscada usando o par <code>CS:EIP</code>. O <code>CS</code> é o seletor <code>1000</code>, cuja base é <code>0010 0000</code>. O <code>EIP</code> dado é <code>0000 2000</code>. Somamos <code>Base + EIP</code>:</p>
         <div class="diagrama" style="color:var(--prova-text);">
   Linear da instrução = Base (CS) + EIP
                       = 0010 0000 + 0000 2000
