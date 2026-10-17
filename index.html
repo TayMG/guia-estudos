@@ -5013,6 +5013,32 @@
         </svg>
     </div>
 
+    <div id="q4-zero" class="q4-zero">
+    <style>
+        .q4-zero .q4-bar{ display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; margin:.2rem 0 1rem; }
+        .q4-zero .q4-bar .q4-hint{ font-size:.78rem; color:var(--text-muted); }
+        .q4-zero button.q4-btn{
+            font: inherit; font-size:.82rem; font-weight:600;
+            color:var(--accent); background:var(--surface2);
+            border:1px solid var(--border); border-radius:8px;
+            padding:.35rem .8rem; cursor:pointer;
+        }
+        .q4-zero button.q4-btn:hover{ border-color:var(--accent); }
+        .q4-zero td.fill{ cursor:text; min-width:5ch; }
+        .q4-zero td.fill:hover{ background:rgba(124,58,237,.08); box-shadow:inset 0 0 0 1px rgba(124,58,237,.45); }
+        .q4-zero td.fill:focus{ background:rgba(124,58,237,.15); outline:none; box-shadow:inset 0 0 0 2px var(--accent2); }
+        .q4-zero td.fill:empty::before{ content:"—"; color:var(--text-muted); opacity:.5; }
+        @media print{
+            .q4-zero .q4-bar{ display:none; }
+            .q4-zero td.fill:empty::before{ content:""; }
+        }
+    </style>
+
+    <div class="q4-bar">
+        <button type="button" class="q4-btn" id="q4-limpar">Limpar tudo</button>
+        <span class="q4-hint">Clique em qualquer célula com “&mdash;” e digite. As respostas ficam salvas automaticamente neste navegador.</span>
+    </div>
+
     <h3>23.7 &mdash; Questão 4 (nova): monte a tabela do ZERO, com os SEUS números</h3>
 
     <div class="card-prova">
@@ -5182,6 +5208,66 @@
             <li>Na Parte VIII, ficou claro que mudam s&oacute; o <strong>quadro (PFN)</strong> e o <code>EETP</code>; <em><code>ETP</code>, dir, tab e offset permanecem</em>.</li>
         </ul>
     </div>
+    </div>
+
+    <script>
+    (function () {
+        var root = document.getElementById('q4-zero');
+        if (!root) return;
+        var KEY = 'q4_zero_respostas_v1';
+
+        function carregar() {
+            try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
+            catch (e) { return {}; }
+        }
+        function salvar(obj) {
+            try { localStorage.setItem(KEY, JSON.stringify(obj)); } catch (e) {}
+        }
+
+        var dados = carregar();
+        var tabelas = Array.prototype.slice.call(root.querySelectorAll('table'));
+        var campos = [];
+
+        tabelas.forEach(function (tab, ti) {
+            Array.prototype.slice.call(tab.querySelectorAll('tbody tr')).forEach(function (tr, ri) {
+                Array.prototype.slice.call(tr.children).forEach(function (td, ci) {
+                    if (td.textContent.trim()) return;            /* só células vazias viram campo */
+                    if (td.querySelector('table')) return;
+                    var id = ti + '.' + ri + '.' + ci;
+                    td.setAttribute('contenteditable', 'true');
+                    td.setAttribute('spellcheck', 'false');
+                    td.setAttribute('data-fill', id);
+                    td.classList.add('fill');
+                    if (dados[id]) td.textContent = dados[id];
+
+                    td.addEventListener('input', function () {
+                        dados[id] = td.textContent;
+                        salvar(dados);
+                    });
+                    td.addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter') e.preventDefault();       /* campo de uma linha */
+                    });
+                    td.addEventListener('paste', function (e) {
+                        e.preventDefault();
+                        var txt = (e.clipboardData || window.clipboardData).getData('text/plain');
+                        document.execCommand('insertText', false, txt);
+                    });
+                    campos.push(td);
+                });
+            });
+        });
+
+        var btn = document.getElementById('q4-limpar');
+        if (btn) {
+            btn.addEventListener('click', function () {
+                if (!confirm('Apagar todas as suas respostas desta questão?')) return;
+                campos.forEach(function (td) { td.textContent = ''; });
+                dados = {};
+                salvar(dados);
+            });
+        }
+    })();
+    </script>
 
 
     <!-- ==================== RODAPÉ ==================== -->
