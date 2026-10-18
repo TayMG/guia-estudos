@@ -5055,11 +5055,10 @@
     <div class="card-dica">
         <strong>Regras do jogo (leia antes de come&ccedil;ar)</strong>
         <ul>
-            <li><strong>Voc&ecirc; escolhe tudo:</strong> base, limite, DPL, <code>CR3</code>, seletores e os quadros (PFN).</li>
+            <li><strong>Voc&ecirc; escolhe tudo:</strong> seletores, base, limite, DPL, <code>CR3</code>, <code>ETP</code> e <code>P&Aacute;GINA</code>.</li>
             <li>Em todo acesso, o <strong>offset deve ser &le; limite</strong> do segmento (sen&atilde;o &eacute; GPF e o c&aacute;lculo n&atilde;o vale).</li>
-            <li>O <code>CR3</code> deve estar <strong>alinhado a 4 KB</strong> (os 12 bits baixos = 0).</li>
             <li>Use <strong>hexa agrupado de 16 em 16 bits</strong>, no estilo do quadro: <code>0003 4cf0</code>.</li>
-            <li>A instru&ccedil;&atilde;o &eacute; um <code>ADD</code> com mem&oacute;ria (ex.: <code>ADD DS:[reg], reg</code>) &mdash; informe os registradores usados.</li>
+            <li>A instru&ccedil;&atilde;o &eacute; um <code>ADD</code> com dois operandos (destino e origem), como na Quest&atilde;o 1.</li>
         </ul>
     </div>
 
@@ -5077,26 +5076,22 @@
                 <tr><td>Base do segmento EXTRA</td><td></td></tr>
                 <tr><td>Limite do segmento EXTRA</td><td></td></tr>
                 <tr><td><code>CR3</code> (base do diret&oacute;rio de p&aacute;ginas)</td><td></td></tr>
-                <tr><td><code>ETP</code> (base da tabela de p&aacute;ginas)</td><td></td></tr>
-                <tr><td>Quadro (PFN) da p&aacute;gina de C&Oacute;DIGO</td><td></td></tr>
-                <tr><td>Quadro (PFN) da p&aacute;gina de DADOS</td><td></td></tr>
-                <tr><td>Quadro (PFN) da p&aacute;gina de PILHA</td><td></td></tr>
+                <tr><td><code>ETP</code> (valor lido no <code>EETDIR</code>)</td><td></td></tr>
+                <tr><td><code>P&Aacute;GINA</code> (valor lido no <code>EETP</code>)</td><td></td></tr>
             </tbody>
         </table>
     </div>
 
     <h4>Parte II &mdash; Tabela de descritores (feita por voc&ecirc;)</h4>
     <div class="card">
-        <p>Ordem sugerida (a padr&atilde;o do professor): <strong>c&oacute;digo, pilha, dados, extra</strong> &mdash; cont&iacute;guos, um colado atr&aacute;s do outro. N&atilde;o esque&ccedil;a o <strong>descritor nulo</strong> no &iacute;ndice 0.</p>
-        <p>Lembre: <code>seletor = (índice &lt;&lt; 3) | (TI &lt;&lt; 2) | RPL</code>.</p>
+        <p>Ordem do professor: <strong>c&oacute;digo, pilha, dados, extra</strong> &mdash; cont&iacute;guos, um colado atr&aacute;s do outro.</p>
         <table>
-            <thead><tr><th>&Iacute;ndice</th><th>Seletor</th><th>Segmento</th><th>Base</th><th>Limite</th><th>G</th><th>D/B</th><th>DPL</th><th>P</th></tr></thead>
+            <thead><tr><th>Seletor</th><th>Segmento</th><th>Registrador</th><th>Base</th><th>Limite</th><th>DPL</th></tr></thead>
             <tbody>
-                <tr><td>0</td><td></td><td>Nulo</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>1</td><td></td><td>C&oacute;digo</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>2</td><td></td><td>Pilha</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>3</td><td></td><td>Dados</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>4</td><td></td><td>Extra</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td>C&oacute;digo</td><td><code>CS</code></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td>Pilha</td><td><code>SS</code></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td>Dados</td><td><code>DS</code></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td>Extra</td><td><code>ES</code></td><td></td><td></td><td></td></tr>
             </tbody>
         </table>
         <div class="card-dica"><strong>Lembrete de limite:</strong> como os segmentos s&atilde;o colados, <code>limite = base do próximo &minus; 1</code>. O &uacute;ltimo (extra) usa o topo de mem&oacute;ria que voc&ecirc; escolher.</div>
@@ -5105,27 +5100,24 @@
     <h4>Parte III &mdash; Seletores carregados nos registradores</h4>
     <div class="card">
         <table>
-            <thead><tr><th>Registrador</th><th>Seletor</th><th>&Iacute;ndice</th><th>TI</th><th>RPL</th></tr></thead>
+            <thead><tr><th>Registrador</th><th>Seletor</th></tr></thead>
             <tbody>
-                <tr><td><code>CS</code></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td><code>SS</code></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td><code>DS</code></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td><code>ES</code></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td><code>FS</code></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td><code>GS</code></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td><code>CS</code></td><td></td></tr>
+                <tr><td><code>SS</code></td><td></td></tr>
+                <tr><td><code>DS</code></td><td></td></tr>
+                <tr><td><code>ES</code></td><td></td></tr>
+                <tr><td><code>FS</code></td><td></td></tr>
+                <tr><td><code>GS</code></td><td></td></tr>
             </tbody>
         </table>
     </div>
 
-    <h4>Parte IV &mdash; Registradores de trabalho e offsets do <code>ADD</code></h4>
+    <h4>Parte IV &mdash; A instru&ccedil;&atilde;o <code>ADD</code>: EIP e offsets</h4>
     <div class="card">
         <table>
-            <thead><tr><th>Registro / campo</th><th>Valor (hex)</th></tr></thead>
+            <thead><tr><th>Campo</th><th>Valor (hex)</th></tr></thead>
             <tbody>
                 <tr><td><code>EIP</code> (aponta a pr&oacute;xima instru&ccedil;&atilde;o)</td><td></td></tr>
-                <tr><td>Registrador do operando destino (ex.: <code>EBX</code>)</td><td></td></tr>
-                <tr><td>Registrador do operando origem (ex.: <code>ESI</code>)</td><td></td></tr>
-                <tr><td><code>ESP</code> (topo da pilha)</td><td></td></tr>
                 <tr><td>Offset do operando destino</td><td></td></tr>
                 <tr><td>Offset do operando origem</td><td></td></tr>
             </tbody>
@@ -5146,23 +5138,23 @@
         </table>
     </div>
 
-    <h4>Parte VI &mdash; Endere&ccedil;o linear &rarr; campos de PAGINA&Ccedil;&Atilde;O (10 | 10 | 12)</h4>
+    <h4>Parte VI &mdash; Endere&ccedil;o linear &rarr; campos da PAGINA&Ccedil;&Atilde;O (10 | 10 | 12)</h4>
     <div class="card">
         <table>
-            <thead><tr><th>Endere&ccedil;o linear</th><th>Bin&aacute;rio (32 bits)</th><th>Dir (10)</th><th>Tab (10)</th><th>Offset (12)</th><th>Dir dec</th><th>Tab dec</th><th>Offset dec</th></tr></thead>
+            <thead><tr><th>Endere&ccedil;o linear</th><th>Bin&aacute;rio (32 bits)</th><th>&Iacute;ndice dir (10)</th><th>&Iacute;ndice tab (10)</th><th>Offset (12)</th><th>&iacute;ndice dir (decimal)</th><th>&iacute;ndice tab (decimal)</th></tr></thead>
             <tbody>
-                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             </tbody>
         </table>
     </div>
 
     <h4>Parte VII &mdash; Cadeia de pagina&ccedil;&atilde;o (do <code>CR3</code> ao END. F&Iacute;SICO)</h4>
     <div class="card">
-        <p>Mesma sequ&ecirc;ncia do quadro <a href="#sec-20">20.1</a>: <code>EETDIR = CR3 + dir&times;4</code>; <code>EETP = ETP + tab&times;4</code>; <code>END. F&Iacute;SICO = P&Aacute;GINA + OFFSET</code>. Lembre que <code>&times;4</code>, em binário, é <strong>acrescentar 2 zeros</strong>.</p>
+        <p>Mesma sequ&ecirc;ncia do quadro <a href="#sec-20">20.1</a>: <code>EETDIR = CR3 + &iacute;ndice dir &times; 4</code>; <code>EETP = ETP + &iacute;ndice tab &times; 4</code>; <code>END. F&Iacute;SICO = P&Aacute;GINA + OFFSET</code>. Lembre que <code>&times;4</code>, em binário, é <strong>acrescentar 2 zeros</strong>.</p>
         <table>
-            <thead><tr><th>Acesso</th><th>Linear</th><th>Dir</th><th>EETDIR</th><th>ETP (lido)</th><th>Tab</th><th>EETP</th><th>P&Aacute;GINA (lida)</th><th>Offset</th><th>END. F&Iacute;SICO</th></tr></thead>
+            <thead><tr><th>Acesso</th><th>Linear</th><th>&Iacute;ndice dir</th><th>EETDIR</th><th>ETP (lido)</th><th>&Iacute;ndice tab</th><th>EETP</th><th>P&Aacute;GINA (lida)</th><th>Offset</th><th>END. F&Iacute;SICO</th></tr></thead>
             <tbody>
                 <tr><td>Instru&ccedil;&atilde;o</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                 <tr><td>Operando destino</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
@@ -5198,14 +5190,12 @@
     <h4>Checklist de consist&ecirc;ncia (s&oacute; marque OK se tudo bater)</h4>
     <div class="card">
         <ul class="passo-lista">
-            <li>Todo seletor corresponde ao &iacute;ndice do descritor (bits 15..3), ao TI e ao RPL.</li>
-            <li>Existe o descritor nulo no &iacute;ndice 0.</li>
+            <li>Todo seletor que voc&ecirc; usou existe na sua tabela de descritores da Parte II.</li>
             <li>Em <strong>todos</strong> os acessos, <code>offset &le; limite</code>.</li>
             <li>Cada endere&ccedil;o linear tem exatamente 32 bits, e <code>10 + 10 + 12 = 32</code>.</li>
-            <li>O <code>CR3</code> termina em <code>000</code> (alinhado a 4 KB).</li>
-            <li><code>EETDIR = CR3 + dir&times;4</code> e <code>EETP = ETP + tab&times;4</code>.</li>
-            <li><code>END. F&Iacute;SICO = P&Aacute;GINA + OFFSET</code>.</li>
-            <li>Na Parte VIII, ficou claro que mudam s&oacute; o <strong>quadro (PFN)</strong> e o <code>EETP</code>; <em><code>ETP</code>, dir, tab e offset permanecem</em>.</li>
+            <li><code>EETDIR = CR3 + &iacute;ndice dir &times; 4</code> e <code>EETP = ETP + &iacute;ndice tab &times; 4</code>.</li>
+            <li><code>END. F&Iacute;SICO = P&Aacute;GINA + OFFSET DA P&Aacute;GINA</code>.</li>
+            <li>Na Parte VIII, o <strong>&iacute;ndice da tabela de p&aacute;ginas</strong> cai 2 e o <code>EETP</code> acompanha; o <code>ETP</code> n&atilde;o muda.</li>
         </ul>
     </div>
     </div>
@@ -5214,7 +5204,7 @@
     (function () {
         var root = document.getElementById('q4-zero');
         if (!root) return;
-        var KEY = 'q4_zero_respostas_v1';
+        var KEY = 'q4_zero_respostas_v2';
 
         function carregar() {
             try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
