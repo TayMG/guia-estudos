@@ -5270,301 +5270,271 @@
 
 </div>
 </section>
+<!-- =============================================================
+     ABA POO / DIAGRAMAS & ESTRUTURAS  (reescrita — foco nas 3
+     questões da prova). A aba "Arquitetura" acima permanece igual.
+     ============================================================= -->
 <section class="tab-panel" id="panel-poo">
-<nav class="sidebar poo-sidebar" aria-label="Navega&ccedil;&atilde;o">
-    <div class="logo">POO &amp; Estruturas<small>Navega&ccedil;&atilde;o r&aacute;pida</small></div>
 
-  <h2>Comece por aqui</h2>
-  <a href="#poo-sec-comece">🌟 A ideia toda (bem devagar)</a>
-  <h2>Conceitos &amp; Diagramas</h2>
-  <a href="#poo-sec-0">0. Como ler um diagrama UML</a>
-  <a href="#poo-sec-5">1. Conceitos de POO</a>
-  <a href="#poo-sec-6">2. Diagrama: Transporte Coletivo</a>
-  <a href="#poo-sec-7">3. Diagrama: Delivery</a>
-  <a href="#poo-sec-8">4. Diagrama: Serpentário</a>
-  <a href="#poo-sec-vigenere">5. Cifra de Vigenère (Python &amp; Java)</a>
-  <h2>Fundamentos</h2>
-  <a href="#poo-sec-1">6. Estruturas de Dados</a>
-  <a href="#poo-sec-2">7. Árvores e Percursos</a>
-  <a href="#poo-sec-3">8. Big O e Eficiência</a>
-  <a href="#poo-sec-4">9. Buscas e Ordenação</a>
-  <a href="#poo-sec-hash">10. Funções hash e colisões</a>
-  <a href="#poo-sec-9">11. Blockchain — Parte 1</a>
-  <a href="#poo-sec-10">12. Blockchain — Parte 2</a>
+<nav class="sidebar poo-sidebar" aria-label="Navegação">
+  <div class="logo">Prova de POO<small>Diagramas · Buscas · Árvores</small></div>
+
+  <h2>Comece aqui</h2>
+  <a href="#comece">Como é a prova</a>
+
+  <h2>Questão 01 — Diagramas</h2>
+  <a href="#q1">1.1 O que cai e o que não é foco</a>
+  <a href="#q1-receita">1.2 A receita em 7 passos</a>
+  <a href="#q1-pecas">1.3 As peças do desenho</a>
+  <a href="#q1-modelo">1.4 O modelo de referência</a>
+  <a href="#q1-transporte">1.5 Transporte coletivo</a>
+  <a href="#q1-delivery">1.6 Delivery de restaurante</a>
+  <a href="#q1-serpentario">1.7 Serpentário</a>
+  <a href="#q1-erros">1.8 Erros e variações aceitas</a>
+  <a href="#q1-checklist">1.9 Checklist final</a>
+
+  <h2>Questão 02 — Buscas &amp; Big O</h2>
+  <a href="#q2">2.1 O que a questão pede</a>
+  <a href="#q2-duas">2.2 As duas buscas</a>
+  <a href="#q2-combinar">2.3 Como combinar as duas</a>
+  <a href="#q2-bigo">2.4 Big O sem decoreba</a>
+  <a href="#q2-calculo">2.5 Os cálculos da prova</a>
+  <a href="#q2-tabela">2.6 Tabela de números</a>
+  <a href="#q2-pilhafila">2.7 Pilha e fila</a>
+  <a href="#q2-situacoes">2.8 Situações para resolver</a>
+  <a href="#q2-aceitas">2.9 Respostas aceitas</a>
+
+  <h2>Questão 03 — Árvores</h2>
+  <a href="#q3">3.1 Vocabulário</a>
+  <a href="#q3-bst">3.2 Binária e BST</a>
+  <a href="#q3-montar">3.3 Como montar a árvore</a>
+  <a href="#q3-percursos">3.4 Os três percursos</a>
+  <a href="#q3-metodo">3.5 Método à prova de erro</a>
+  <a href="#q3-exemplos">3.6 Exemplos do slide</a>
+  <a href="#q3-treinar">3.7 Treino com gabarito oculto</a>
+  <a href="#q3-aplic">3.8 Aplicações</a>
+
   <h2>Revisão</h2>
-  <a href="#poo-sec-11">13. Glossário</a>
-  <a href="#poo-sec-12">14. Cheat Sheet</a>
-  <a href="#poo-sec-13">15. Roteiro de Estudo</a>
-  <h2>Praticar</h2>
-  <a href="#poo-sec-exemplos">16. Exemplos extras (resolvidos)</a>
-  <a href="#poo-sec-prova">17. Questões do professor (enunciados + gabarito)</a>
-  <a href="#poo-sec-questoes">18. Questões para praticar</a>
-
+  <a href="#cheatsheet">Cheat sheet de bolso</a>
+  <a href="#simulado">Simulado relâmpago</a>
 </nav>
 <div class="container">
 
 <header class="hero">
-  <h1>Guia de Estudo</h1>
-  <p>Diagramas UML · Conceitos de POO · Estruturas de Dados · Big O · Blockchain em Python</p>
-  <div class="focus">🎯 <strong>Foco: DIAGRAMAS e CONCEITOS.</strong> O professor forneceu o <strong>modelo de referência do Transporte Coletivo</strong> (seção 2), que serve de <em>formato</em> para qualquer diagrama — a prova pode usar outro contexto. O guia traz como ler um diagrama de classes, os conceitos de POO e os diagramas resolvidos (Transporte, Delivery, Serpentário e Vigenère), sempre com <em>o que é · como funciona · quando usar · onde usar</em>.</div>
+  <h1>Guia da Prova — POO, Diagramas, Buscas e Árvores</h1>
+  <p>Reescrito e enxuto a partir dos slides do professor (Aula&nbsp;Revisão) — focado <strong>só</strong> nas 3 questões anunciadas.</p>
+  <div class="focus">
+    🎯 <strong>As 3 questões da prova:</strong><br>
+    <strong>01)</strong> montar um <strong>diagrama de classes</strong> (contextos: transporte coletivo, delivery de restaurante, serpentário).<br>
+    <strong>02)</strong> <strong>combinar busca binária + busca linear</strong> e explicar o impacto no <strong>Big O</strong>.<br>
+    <strong>03)</strong> <strong>árvores</strong>: montar a árvore e fazer os percursos (foco em <strong>pré-ordem</strong> e <strong>em ordem</strong>).
+  </div>
 </header>
 
-<!-- ===================== COMECE AQUI ===================== -->
-<h2 id="poo-sec-comece">🌟 Comece aqui: a ideia toda em 5 minutos (bem devagar)</h2>
-<p>Relaxa. Antes de qualquer palavra difícil, guarda esta ideia: <strong>um diagrama de classes é só um jeito de desenhar as coisas do mundo e como elas se ligam — antes de escrever o código.</strong> É como a <strong>planta de uma casa</strong>: mostra os cômodos e as passagens; o pedreiro (o programador) só constrói depois. Nada mais que isso.</p>
+<!-- ============================ COMECE AQUI ============================ -->
+<h2 id="comece">Como é a prova (a ideia toda em 2 minutos)</h2>
+<p>Respira. São três questões, cada uma de um assunto diferente. Este guia tem exatamente três blocos — um por questão — e nada mais. Você não precisa estudar "POO inteiro" nem "estruturas de dados inteiro": só o que cai.</p>
 
-<div class="box good"><strong>Você só precisa responder 3 perguntas, sempre:</strong>
-<ol>
-<li><strong>Quais são as "coisas"?</strong> → cada coisa vira uma <strong>caixinha</strong> chamada <strong>classe</strong>.</li>
-<li><strong>O que cada coisa "tem" e "faz"?</strong> → o que tem = <strong>atributos</strong>; o que faz = <strong>métodos</strong>.</li>
-<li><strong>Como elas se ligam?</strong> → desenha <strong>setas</strong> entre as caixinhas.</li>
-</ol>
-</div>
-
-<h3>Analogia que resolve 90% da prova: o molde de bolo 🍰</h3>
 <table>
-<tr><th>Palavra difícil</th><th>Traduzindo com calma…</th><th>Exemplo do problema</th></tr>
-<tr><td><strong>Classe</strong></td><td>O <strong>molde</strong> (a forma de bolo). Você ainda <em>não</em> tem bolo, só o molde.</td><td>"Ônibus" (a ideia, o conceito)</td></tr>
-<tr><td><strong>Objeto</strong> (instância)</td><td>O <strong>bolo pronto</strong>, feito do molde. Pode fazer vários bolos do mesmo molde.</td><td>O ônibus de verdade, placa "ABC1D23"</td></tr>
-<tr><td><strong>Atributo</strong></td><td>O que o bolo <strong>tem</strong> (sabor, cobertura, tamanho).</td><td><code>placa</code>, <code>capacidade</code>, <code>linha</code></td></tr>
-<tr><td><strong>Método</strong></td><td>Uma <strong>ação</strong> que o objeto sabe fazer.</td><td><code>embarcarPassageiro()</code>, <code>desembarcar()</code></td></tr>
-<tr><td><strong>Encapsulamento</strong></td><td>O bolo está na <strong>vitrine com tampa</strong>: você vê, mas só pega pedindo ao atendente.</td><td>atributo <code>-</code> privado + "atendente" = getter</td></tr>
-<tr><td><strong>Herança</strong> ("<strong>é um</strong>")</td><td>"Cachorro <strong>é um</strong> Animal": já nasce com tudo que todo animal tem e acrescenta o seu.</td><td>Ônibus <strong>é um</strong> Veículo</td></tr>
-<tr><td><strong>Interface</strong> ("<strong>promete fazer</strong>")</td><td>Uma <strong>tomada padrão</strong>: qualquer aparelho que encaixe funciona ali, não importa a marca.</td><td>"ser elétrico" (coisa que BRT e Metrô <em>têm em comum</em>)</td></tr>
-<tr><td><strong>Classe abstrata</strong></td><td>O <strong>conceito de fruta</strong>: ninguém compra "uma fruta genérica" — só maçã, banana, uva…</td><td>"Veículo genérico" não existe; só Ônibus, Metrô…</td></tr>
-<tr><td><strong>Polimorfismo</strong></td><td>O <strong>mesmo botão</strong> "tocar": no rádio toca música, na TV toca vídeo — mesma ordem, respostas diferentes.</td><td>chamar <code>embarcar()</code> e cada veículo embarcar do seu jeito</td></tr>
+<tr><th>Questão</th><th>Assunto</th><th>O que você faz na folha</th><th>Seção deste guia</th></tr>
+<tr><td><strong>01</strong></td><td>Diagrama de classes UML</td><td>Desenha as caixinhas (classes), escreve atributos/métodos e liga com as setas certas</td><td><a href="#q1">Questão 01</a></td></tr>
+<tr><td><strong>02</strong></td><td>Busca binária + busca linear e Big O</td><td>Explica <em>quando</em> usar cada busca, o que fazer quando a lista muda, e mostra o custo (n, log n, ordenar)</td><td><a href="#q2">Questão 02</a></td></tr>
+<tr><td><strong>03</strong></td><td>Árvores</td><td>Monta a árvore a partir dos valores e escreve os percursos (pré-ordem e em ordem)</td><td><a href="#q3">Questão 03</a></td></tr>
 </table>
 
-<div class="box takeaway"><strong>A frase que amarra tudo</strong>"Eu desenho os <strong>moldes</strong> (classes). Digo o que cada molde <strong>tem</strong> (atributos) e <strong>faz</strong> (métodos). Depois ligo os moldes com <strong>setas</strong>: uma seta diz que um molde <strong>é</strong> o outro (herança); a outra diz que ele <strong>promete fazer</strong> o que o outro pede (interface). Pronto: isso é um diagrama de classes."</div>
+<div class="box good">
+<strong>Aviso do professor que muda tudo (já está embutido no guia):</strong>
+<ul>
+<li><strong>Questão 01:</strong> os contextos <strong>não vão fugir</strong> dos três dos slides — <strong>transporte coletivo</strong>, <strong>delivery de restaurante</strong> e <strong>serpentário</strong>. E ele avisou que <strong>não é foco</strong> a parte fina de notação (deixar a classe abstrata em <em>itálico</em>, colocar o <code>+</code>/<code>-</code>/<code>#</code> de encapsulamento). O foco é <strong>acertar as classes, os relacionamentos e o método polimórfico</strong>.</li>
+<li><strong>Questão 03:</strong> o slide-base é o <strong>“Árvore — Percursos e Aplicações”</strong>. Foco em <strong>pré-ordem</strong> e <strong>em ordem</strong>.</li>
+<li><strong>Questão 02:</strong> o slide-base é o <strong>“Big O e Eficiência”</strong> (buscas em listas, quando ordenar, trade-off).</li>
+</ul>
+</div>
 
 <details open>
-<summary>Como usar este guia sem se perder</summary>
+<summary>Ordem sugerida de estudo</summary>
 <ol>
-<li><strong>Leia esta página uma vez</strong>, sem tentar decorar. Só para criar a "imagem mental".</li>
-<li>Depois vá para a <strong>seção 0</strong> (as peças do desenho) e a <strong>seção 1</strong> (POO, com analogias).</li>
-<li>Na <strong>seção 2</strong> está o <strong>modelo de referência (Transporte)</strong>. Estude ele até conseguir <em>refazer de memória</em> — o formato se repete em outras questões.</li>
-<li>As outras (Delivery, Serpentário, Vigenère) são treino extra do mesmo raciocínio.</li>
-<li>No fim, use o <strong>Cheat Sheet (14)</strong> e o <strong>Roteiro (15)</strong> para revisar.</li>
+<li>Comece pela <strong>Questão 03 (árvores)</strong>: é a mais mecânica e a que dá mais pontos fáceis.</li>
+<li>Depois <strong>Questão 02</strong>: decore o quadro “quando ordenar / quando não ordenar” e treine os cálculos.</li>
+<li>Por último <strong>Questão 01</strong>: treine <em>reproduzir de memória</em> os 3 diagramas (eles são quase o mesmo exercício três vezes).</li>
+<li>No fim, faça a <a href="#simulado">simulado relâmpago</a> e leia a <a href="#cheatsheet">cheat sheet</a>.</li>
 </ol>
 </details>
 
-<!-- ===================== 0 ===================== -->
-<h2 id="poo-sec-0">0. Como ler um diagrama de classes UML</h2>
-<p>Um diagrama de classes é só um <strong>desenho da estrutura do sistema</strong>. Pensa num <strong>organograma de empresa</strong> ou numa <strong>árvore genealógica</strong>: caixinhas com nomes e linhas ligando quem é quem. Aqui as caixinhas são classes e as linhas dizem como elas se relacionam.</p>
-<div class="box"><strong>Ordem de leitura (é sempre a mesma, não pule etapa):</strong><br>
-<strong>1)</strong> leia o <strong>nome</strong> da caixa → <strong>2)</strong> o que ela <strong>tem</strong> (atributos) → <strong>3)</strong> o que ela <strong>faz</strong> (métodos) → <strong>4)</strong> siga as <strong>setas</strong> que entram e saem dela.<br>
-É literalmente ler de cima para baixo e depois olhar as linhas. Nada de decorar tudo de uma vez: uma caixa por vez.</div>
+<!-- ============================ QUESTÃO 01 ============================ -->
+<h2 id="q1">Questão 01 — Diagrama de classes</h2>
 
-<h3>0.1 A caixa de uma classe (3 compartimentos)</h3>
-<div class="diagram">┌──────────────────────────────┐
-│          NomeDaClasse        │  ← 1º: nome (em itálico se for ABSTRATA)
-├──────────────────────────────┤
-│ - atributoPrivado: Tipo      │  ← 2º: atributos (o que ela TEM)
-│ # atributoProtegido: Tipo    │
-├──────────────────────────────┤
-│ + metodoPublico(): Tipo      │  ← 3º: métodos (o que ela FAZ)
-│ # metodoAbstrato(): void     │     (em itálico = abstrato)
-└──────────────────────────────┘</div>
+<h3 id="q1-foco">1.1 O que cai e o que <em>não</em> é foco</h3>
+<div class="box warn">
+<strong>O que o professor disse que vai cair:</strong> um <strong>diagrama de classes</strong>, num dos três contextos dos slides: <strong>serpentário</strong>, <strong>transporte coletivo</strong> ou <strong>delivery de restaurante</strong>.
+</div>
+<table>
+<tr><th>É FOCO (faça sem errar)</th><th>NÃO é foco (pode simplificar)</th></tr>
+<tr>
+<td>
+<ul>
+<li>As <strong>classes</strong> certas (superclasse abstrata, classe intermediária, subclasses concretas).</li>
+<li>As <strong>interfaces</strong> certas (as "capacidades de alguns").</li>
+<li>O <strong>tipo de cada seta</strong>: <strong>herança</strong> (linha cheia) ou <strong>realização</strong> (linha tracejada).</li>
+<li>O <strong>método polimórfico</strong> (aquele que cada tipo faz de um jeito) e o que cada um faz.</li>
+<li>Os <strong>atributos e métodos</strong> principais de cada classe.</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>Deixar o nome da classe abstrata em <em>itálico</em> / o método abstrato em itálico.</li>
+<li>Colocar os símbolos de encapsulamento <code>+</code> <code>-</code> <code>#</code> em cada linha.</li>
+<li>Detalhes de tipos genéricos (<code>List&lt;String&gt;</code> etc.).</li>
+</ul>
+<p style="margin-top:.4rem"><em>Mesmo assim, o guia mostra tudo completo — se sobrar tempo, coloque. Só não deixe a energia acabar antes de acertar o que é foco.</em></p>
+</td>
+</tr>
+</table>
+
+<h3 id="q1-receita">1.2 A receita em 7 passos (serve para qualquer contexto)</h3>
+<p>O slide do <strong>serpentário</strong> ensina um roteiro de 7 passos. Ele <strong>não</strong> vale só para serpentes: é a receita para <em>qualquer</em> diagrama da prova. Decore a ordem.</p>
+<div class="diagram">PASSO 1 — LER E MARCAR AS PALAVRAS
+   substantivo  ->  é uma COISA ...... classe ou atributo
+   verbo        ->  é uma AÇÃO ....... método
+   adjetivo de capacidade (de várias classes) -> CONTRATO (interface)
+
+PASSO 2 — SEPARAR O QUE É COMUM A TODOS
+   "toda/todo ..." -> sobe para a classe-mãe
+
+PASSO 3 — DECIDIR O QUE É ABSTRATO
+   existe "um genérico"? NÃO  -> classe ABSTRATA
+   método que cada filha faz diferente -> método ABSTRATO
+
+PASSO 4 — ACHAR AS FILHAS (teste "X é um Y?")
+   passou no teste -> linha cheia de herança
+
+PASSO 5 — SEPARAR O QUE É PRÓPRIO DE CADA FILHA
+   fica na subclasse, NÃO repete na mãe
+
+PASSO 6 — TRANSFORMAR CAPACIDADES EM CONTRATOS
+   capacidade de ALGUNS e que cruza tipos -> «interface»
+
+PASSO 7 — ACHAR O POLIMORFISMO
+   o método que cada filha redefine (o "de um jeito próprio")</div>
+
+<div class="box good">
+<strong>Adjetivo que vira interface × adjetivo que NÃO vira:</strong> use a pergunta <em>"algumas classes têm isso, e essas classes estão em ramos diferentes?"</em>
+<ul>
+<li><strong>Vira contrato (interface):</strong> "venenosa", "peçonhenta", "elétrica", "semiaquática" — valem para <em>algumas</em> espécies/tipos que estão espalhados.</li>
+<li><strong>Não vira contrato:</strong> "constritora" (só a sucuri é) → vira o <em>comportamento</em> dela: o jeito como ela faz <code>abaterPresa()</code>.</li>
+</ul>
+</div>
+
+<h3 id="q1-pecas">1.3 As peças do desenho (o mínimo que você precisa saber)</h3>
+<p>Um diagrama de classes é só um <strong>organograma</strong>: caixinhas (classes) ligadas por linhas (relações). Leia/escreva sempre nesta ordem: <strong>nome → o que tem (atributos) → o que faz (métodos) → setas</strong>.</p>
+
+<h4>A caixa de uma classe — 3 compartimentos</h4>
+<div class="diagram">┌───────────────────────────────┐
+│        NomeDaClasse           │  <- 1) NOME   (itálico se for abstrata)
+├───────────────────────────────┤
+│ - atributoPrivado: Tipo       │  <- 2) o que TEM (atributos)
+├───────────────────────────────┤
+│ + metodoPublico(): Tipo       │  <- 3) o que FAZ  (métodos)
+└───────────────────────────────┘</div>
 
 <div class="legend">
-  <span><code>+</code> público (todo mundo pode usar)</span>
-  <span><code>-</code> privado (só a própria classe — nem as filhas)</span>
-  <span><code>#</code> protegido (a própria classe <strong>e</strong> as filhas)</span>
+  <span><code>+</code> público</span>
+  <span><code>-</code> privado</span>
+  <span><code>#</code> protegido (a classe e as filhas)</span>
 </div>
+<p style="color:var(--muted)"><em>Lembrete do aviso: o professor disse que <code>+ - #</code> <strong>não é foco</strong>. Se não der tempo, escreva os atributos e métodos sem os símbolos — mas não esqueça as setas.</em></p>
 
-<div class="box"><strong>Regra de ouro da visibilidade:</strong> a pergunta é sempre <em>"quem pode mexer nesta informação?"</em>.
+<h4>As setas (o que REALMENTE importa)</h4>
+<table>
+<tr><th>Desenho (UML)</th><th>Nome</th><th>Leitura</th><th>Traz código/estado?</th></tr>
+<tr><td class="arrow">————▷ &nbsp;(linha cheia, triângulo vazio)</td><td><strong>Herança</strong></td><td>"X <strong>é um</strong> Y"</td><td>Sim — a filha ganha os atributos e métodos da mãe</td></tr>
+<tr><td class="arrow">- - - -▷ &nbsp;(linha tracejada, triângulo vazio)</td><td><strong>Realização</strong></td><td>"X <strong>cumpre o contrato</strong> de Y"</td><td>Não — só assinaturas (promessa)</td></tr>
+</table>
+<p><strong>Macete:</strong> <strong>cheia = é um</strong> (herança). <strong>tracejada = promete fazer</strong> (interface). O triângulo vazio é igual nos dois; só muda o traço da linha. <em>Nomear o tipo de cada seta é ponto na prova.</em></p>
+
+<div class="box">
+<strong>Duas etiquetas («estereótipos») que aparecem nas caixas:</strong>
 <ul>
-<li><strong>Atributos são "fechados"</strong> (<code>-</code> ou <code>#</code>) porque guardam os <em>dados internos</em> — a classe deve proteger o que está dentro dela. É a ideia de <strong>encapsulamento</strong> (a vitrine com tampa).</li>
-<li><strong>Métodos são "abertos"</strong> (<code>+</code>) porque são o <em>serviço</em> que a classe oferece para o mundo usar. Quem quer mexer nos dados de fora faz isso <strong>através</strong> dos métodos públicos.</li>
+<li><code>«abstract»</code> → classe abstrata: <strong>nunca vira objeto sozinha</strong> (ninguém cria "um meio de entrega genérico").</li>
+<li><code>«interface»</code> → contrato: <strong>lista de métodos</strong> que a classe promete cumprir. Não guarda dados.</li>
 </ul>
-<strong>A diferença entre <code>-</code> e <code>#</code> (essa é a dúvida clássica):</strong>
+</div>
+
+<h3 id="q1-modelo">1.4 O "modelo de referência" — o que o professor entrega</h3>
+<p>Nas questões tipo-delivery o professor entrega um <strong>modelo de referência</strong>: o diagrama <em>já desenhado, mas com buracos</em> para completar. Entenda cada símbolo:</p>
+<table>
+<tr><th>No modelo vem…</th><th>Você troca por…</th></tr>
+<tr><td><code>xxxxxxx</code></td><td>um <strong>nome, estereótipo, tipo ou parâmetro</strong></td></tr>
+<tr><td><code>□</code></td><td>o <strong>símbolo de visibilidade</strong> (<code>+</code> <code>-</code> <code>#</code>) — <em>não é foco, mas não custa</em></td></tr>
+<tr><td>seta já desenhada (cheia ou tracejada)</td><td>você só <strong>escreve o nome do tipo</strong>: "herança" (cheia) ou "realização" (tracejada)</td></tr>
+<tr><td><code>«xxxxxxx»</code></td><td>o estereótipo: <code>«abstract»</code> ou <code>«interface»</code></td></tr>
+</table>
+<div class="box warn">
+<strong>Como o professor corrige (mesmos critérios nos slides de transporte e delivery):</strong>
+<table style="margin-top:.5rem">
+<tr><th>Item</th><th>O que ele olha</th><th>Pontos</th></tr>
+<tr><td>a)</td><td>nomes, atributos e métodos coerentes; tipo de cada relacionamento identificado; abstratos marcados e sobrescritos repetidos na subclasse</td><td>6,0</td></tr>
+<tr><td>b)</td><td>justificar as decisões (por que a classe intermediária / por que interface)</td><td>2,0</td></tr>
+<tr><td>c)</td><td>explicar o polimorfismo e o que cada tipo faz</td><td>2,0</td></tr>
+</table>
+<em>Conceito presente mas <u>não identificado</u> (seta sem tipo, classe abstrata sem marcação) ganha só ponto parcial — então escreva o nome das setas!</em>
+</div>
+
+<h3 id="q1-transporte">1.5 Diagrama 1 — Veículo de Transporte Coletivo</h3>
+<p><strong>O problema (resumido):</strong> modelar veículos que transportam muitos passageiros numa linha. Quatro tipos concretos: <strong>Ônibus interestadual</strong>, <strong>Ônibus urbano</strong>, <strong>BRT</strong> e <strong>Metrô</strong>. Três são ônibus (têm placa); o metrô anda sobre trilhos e <strong>não tem placa</strong>.</p>
+
+<h4>Passo A — o que é comum (sobe para a mãe)</h4>
+<table>
+<tr><th>Comum a TODOS (superclasse)</th><th>Exclusivo de um</th><th>Capacidade de alguns</th></tr>
+<tr>
+<td>
+código · linha · capacidade de passageiros · passageiros a bordo<br>
+emitirFicha() · embarcar() · desembarcar() · getPassageirosABordo() · <strong>getTipoParada() (cada um de um jeito)</strong>
+</td>
+<td>
+<strong>placa</strong> (só os 3 ônibus) · assento fixo e bagageiro (só o interestadual) · tarifa e valor arrecadado (só o urbano)
+</td>
+<td>
+<strong>cobrança a bordo</strong> (só o urbano) · <strong>tração elétrica</strong> (BRT e metrô)
+</td>
+</tr>
+</table>
+
+<h4>Passo B — a hierarquia (visão geral das setas)</h4>
+<div class="diagram">                 «abstract» VeiculoTransporteColetivo
+                    # codigo  # linha  # capacidade  # passageirosABordo
+                    + emitirFicha()
+                    + embarcarPassageiro()         «abstract»
+                    + desembarcarPassageiro()
+                    + getPassageirosABordo()
+                    + getTipoParada()              «abstract»
+                                  │
+                             herança (cheia)
+                                  │
+                        «abstract» Onibus        <- aqui fica a PLACA
+                                  │
+        ┌──────────────┬──────────┴───────────┐
+        │              │                      │
+OnibusInterestadual  OnibusUrbano            BRT
+                                    Metro ──┘  <- herda DIRETO da superclasse (não tem placa)
+
+  Contratos (seta TRACEJADA, aponta para a interface):
+     OnibusUrbano  − −▷ «interface» CobrancaABordo
+     BRT           − −▷ «interface» TracaoEletrica
+     Metro         − −▷ «interface» TracaoEletrica</div>
+
+<div class="box">
+<strong>Por que ficou assim (é exatamente o item b da prova):</strong>
 <ul>
-<li><code>-</code> <strong>privado</strong>: <em>só a própria classe</em> enxerga. Nem as filhas. Use quando o dado é assunto exclusivo daquela classe.</li>
-<li><code>#</code> <strong>protegido</strong>: a própria classe <strong>e as filhas</strong> enxergam. Use quando a <em>filha precisa do dado</em> para fazer o trabalho dela.</li>
+<li><strong>Onibus é classe ABSTRATA intermediária:</strong> ela existe só para guardar o que os três ônibus têm em comum (<strong>a placa</strong>). O <strong>Metrô não é ônibus</strong> → herda direto de <code>VeiculoTransporteColetivo</code>.</li>
+<li><strong>TracaoEletrica é interface:</strong> o BRT (que é um ônibus) e o Metrô (que <em>não</em> é) são elétricos. Se "elétrico" fosse uma superclasse, o BRT teria que herdar de <em>Onibus</em> e de <em>VeiculoEletrico</em> ao mesmo tempo → herança múltipla, que o Java não permite. A interface <strong>atravessa</strong> as duas ramificações sem esse problema.</li>
+<li><strong>CobrancaABordo é interface:</strong> cobrar a bordo é uma <em>capacidade</em>, não um tipo de veículo. Hoje só o urbano tem.</li>
+<li><strong>Assento e bagageiro ficam só no interestadual:</strong> se subissem para a mãe, <em>todos</em> seriam obrigados a tê-los.</li>
+<li><strong>Regra de todos fica concreta na mãe:</strong> conferir lotação / registrar embarque (<code>registrarEmbarque()</code>, protegido) é de todos → método concreto herdado. Interface é só para o que <em>alguns</em> têm.</li>
 </ul>
-<strong>Exemplo (serpentário):</strong> na classe-mãe <code>Serpente</code>, <code>peso</code> é <code>#</code> (protegido) porque as <strong>filhas</strong> usam esse valor dentro dos métodos que elas reescrevem (ex.: a <code>Sucuri</code>, ao abater a presa, olha o próprio peso). Se fosse <code>-</code> (privado), só a classe <code>Serpente</code> veria o peso e as filhas ficariam "cegas" — não conseguiriam usar um dado que, afinal, <em>herdaram</em>.
-<br><br>
-<strong>E por que não deixar tudo <code>+</code> (público)?</strong> Porque aí qualquer código de fora poderia fazer <code>serpente.peso = -999</code> e quebrar o sistema. "Fechar" os atributos impede isso; quem quiser mudar algo passa pelos <em>métodos públicos</em>, que controlam e validam o que pode.</div>
-
-<h3>0.2 Os estereótipos (as etiquetas « »)</h3>
-<table>
-<tr><th>Etiqueta</th><th>Significa</th><th>Dica</th></tr>
-<tr><td><code>«abstract»</code> (+ nome em itálico)</td><td>Classe abstrata: <strong>não pode virar objeto</strong></td><td>Reúne o que é comum; ninguém faz <code>new X()</code></td></tr>
-<tr><td><code>«interface»</code></td><td>Contrato: só lista de métodos</td><td>Diz <em>o quê</em> a classe promete, não <em>como</em></td></tr>
-<tr><td>método em <em>itálico</em></td><td>Método abstrato (sem corpo)</td><td>Cada filha é obrigada a implementar</td></tr>
-</table>
-
-<h3>0.3 As setas (relacionamentos)</h3>
-<p>O slide “Diagrama de classes esperado” (Transporte Coletivo) define a legenda das setas:</p>
-<table>
-<tr><th>Desenho</th><th>Nome</th><th>Leitura</th></tr>
-<tr><td class="arrow">──────▷ (linha contínua, triângulo vazio)</td><td><strong>Herança</strong> (generalização entre classes)</td><td>“<em>X</em> <strong>é um</strong> <em>Y</em>”</td></tr>
-<tr><td class="arrow">- - - -▷ (linha tracejada, triângulo vazio)</td><td><strong>Realização</strong> (classe que implementa interface)</td><td>“<em>X</em> <strong>implementa</strong> o contrato <em>Y</em>”</td></tr>
-</table>
-<p>A <strong>herança</strong> (linha contínua) faz a filha receber os atributos e métodos da mãe; a <strong>realização</strong> (tracejada) só obriga a classe a implementar os métodos do contrato. É o <strong>tipo de cada seta</strong> que o professor pede para você identificar no diagrama.</p>
-
-<h3>0.4 Como decidir cada peça (passo a passo)</h3>
-<div class="diagram">1. PALAVRA é COISA (substantivo)?     → classe ou atributo
-2. PALAVRA é AÇÃO (verbo)?            → método
-3. PALAVRA é CARACTERÍSTICA (adjetivo que várias classes têm)? → CONTRATO (interface)
-4. É comum a TODAS as classes?        → sobe para a superclasse
-5. É próprio de UMA só?               → fica na subclasse
-6. Nenhum objeto genérico é criado?   → classe ABSTRATA</div>
-
-<!-- ===================== 1 (sec-5) ===================== -->
-<h2 id="poo-sec-5">1. Conceitos de POO</h2>
-<p>Cada conceito abaixo vem com <strong>o que é · como funciona · quando usar · onde usar</strong>. Leia como se fosse uma pergunta de prova.</p>
-
-<div class="concept">
-<h4>Classe — o molde</h4>
-<p><span class="lbl">O que é:</span> a planta/descrição de um tipo. Diz <strong>quais atributos e métodos</strong> todo objeto daquele tipo terá.</p>
-<p><span class="lbl">Como funciona:</span> você escreve a classe uma vez; a partir dela cria quantos objetos quiser.</p>
-<p><span class="lbl">Quando usar:</span> sempre que houver um “tipo de coisa” no problema (Ônibus, Moto, Serpente).</p>
-<p><span class="lbl">Onde usar no diagrama:</span> é o retângulo com 3 compartimentos.</p>
-<p><span class="lbl">Analogia 🍰:</span> a classe é o <strong>molde do bolo</strong>. Sozinho ele não é doce, mas todo bolo feito dele sai com a mesma forma.</p>
 </div>
 
-<div class="concept">
-<h4>Objeto / Instância — o exemplar real</h4>
-<p><span class="lbl">O que é:</span> um caso concreto da classe, com valores próprios, existindo <strong>durante a execução</strong>.</p>
-<p><span class="lbl">Como funciona:</span> <code>Onibus a = new Onibus("ABC1D23", 80)</code> cria <strong>um</strong> objeto.</p>
-<p><span class="lbl">Quando usar:</span> quando precisar que algo “exista” em memória com seus dados.</p>
-<p><span class="lbl">Objeto × instância:</span> é a <strong>mesma coisa</strong>; “instância” só olha para o objeto em relação à sua classe.</p>
-<p><span class="lbl">Analogia 🍰:</span> são os <strong>bolos prontos</strong>. Usando o mesmo molde, cada bolo pode ter cobertura diferente (valores próprios).</p>
-</div>
-
-<div class="concept">
-<h4>Atributo — o estado (o que tem)</h4>
-<p><span class="lbl">O que é:</span> um dado guardado no objeto (ex.: <code>placa</code>, <code>capacidade</code>).</p>
-<p><span class="lbl">Tipos:</span> <strong>de instância</strong> (cada objeto tem o seu) ou <strong>de classe / static</strong> (um só, compartilhado por todos).</p>
-<p><span class="lbl">Onde usar:</span> 2º compartimento da caixa, geralmente com <code>-</code> ou <code>#</code>.</p>
-<p><span class="lbl">Analogia 🍰:</span> é o <strong>sabor e a cobertura</strong>: cada bolo tem os seus, mesmo saindo do mesmo molde.</p>
-</div>
-
-<div class="concept">
-<h4>Método — o comportamento (o que faz)</h4>
-<p><span class="lbl">O que é:</span> uma ação do objeto. <strong>Assinatura</strong> = nome + parâmetros + tipo de retorno.</p>
-<p><span class="lbl">Concreto × abstrato:</span> concreto tem corpo (diz como faz); abstrato só tem assinatura (cada filha escreve o corpo).</p>
-<p><span class="lbl">Onde usar:</span> 3º compartimento, geralmente com <code>+</code>; abstrato em itálico.</p>
-<p><span class="lbl">Analogia 🍰:</span> são as <strong>ações</strong> ("assar", "cortar", "servir"): o que o objeto sabe fazer.</p>
-</div>
-
-<div class="concept">
-<h4>Encapsulamento — proteger os dados</h4>
-<p><span class="lbl">O que é:</span> esconder o estado e só deixar mexer por métodos. Marca-se com a visibilidade (<code>-</code> privado, <code>#</code> protegido, <code>+</code> público).</p>
-<p><span class="lbl">Como funciona:</span> atributos privados + getters para ler (sem setters, quando não deve mudar).</p>
-<p><span class="lbl">Quando usar:</span> quando um dado não pode ser alterado livremente de fora.</p>
-<p><span class="lbl">Onde usar:</span> é o uso do <code>-</code> e do <code>#</code> no diagrama.</p>
-<p><span class="lbl">Analogia 🔒:</span> é a <strong>vitrine com tampa</strong> — você vê a torta, mas só pega por meio do atendente (os métodos).</p>
-</div>
-
-<div class="concept">
-<h4>Herança — “é um” (extends)</h4>
-<p><span class="lbl">O que é:</span> a filha <strong>recebe</strong> atributos e métodos da mãe e pode <strong>acrescentar</strong> ou <strong>sobrescrever</strong>.</p>
-<p><span class="lbl">Como funciona:</span> teste da frase <strong>“X é um Y?”</strong>. Em Java, cada classe tem <strong>uma só</strong> superclasse.</p>
-<p><span class="lbl">Quando usar:</span> só quando a subclasse é um caso da mãe (nunca só para reaproveitar código).</p>
-<p><span class="lbl">Onde usar no diagrama:</span> <strong>linha cheia + triângulo vazio</strong> apontando para a mãe.</p>
-<p><span class="lbl">Analogia 🐶:</span> "<strong>Cachorro é um Animal</strong>": já ganha de graça o que todo animal tem (nascer, comer) e só acrescenta o que é só dele (latir).</p>
-</div>
-
-<div class="concept">
-<h4>Contrato / Interface — “cumpre o contrato” (implements)</h4>
-<p><span class="lbl">O que é:</span> uma lista de métodos que a classe <strong>promete</strong> oferecer. Diz <em>o quê</em>, não <em>como</em>.</p>
-<p><span class="lbl">Como funciona:</span> a classe pode assinar <strong>vários</strong> contratos ao mesmo tempo. Interface <strong>não guarda atributos</strong> (só métodos).</p>
-<p><span class="lbl">Quando usar:</span> para uma <strong>capacidade que só algumas classes têm</strong> e que <strong>atravessa hierarquias diferentes</strong> (ex.: “ser elétrico”).</p>
-<p><span class="lbl">Onde usar no diagrama:</span> caixa com <code>«interface»</code> + <strong>linha tracejada + triângulo vazio</strong>.</p>
-<p><span class="lbl">Analogia 🔌:</span> é a <strong>tomada padrão</strong> (ou a CNH): o que importa é "encaixar no padrão". Qualquer aparelho/motorista que cumpra o combinado serve.</p>
-</div>
-
-<div class="concept">
-<h4>Classe abstrata — o molde incompleto</h4>
-<p><span class="lbl">O que é:</span> uma classe que <strong>não pode virar objeto</strong>; reúne o comum e pode ter métodos sem corpo.</p>
-<p><span class="lbl">Quando usar:</span> quando <strong>não existe “um genérico”</strong> (não existe “veículo genérico”, “serpente genérica”) ou quando um método é comum a todas mas cada uma o faz de um jeito (vira abstrato).</p>
-<p><span class="lbl">Abstrata × interface:</span> a abstrata <strong>pode ter atributos e código</strong>; a interface não.</p>
-<p><span class="lbl">Onde usar:</span> <code>«abstract»</code> + nome em itálico.</p>
-<p><span class="lbl">Analogia 🍎:</span> é a <strong>"fruta"</strong>: todo mundo fala, mas ninguém compra "uma fruta" — compra maçã, banana. O mesmo vale para "veículo genérico".</p>
-</div>
-
-<div class="concept">
-<h4>Polimorfismo — uma chamada, vários comportamentos</h4>
-<p><span class="lbl">O que é:</span> o <strong>mesmo método</strong>, chamado do mesmo jeito, executa a <strong>versão do objeto real</strong>.</p>
-<p><span class="lbl">Como funciona:</span> ligação dinâmica — decide <strong>na execução</strong>, não na compilação. Precisa de um <strong>tipo comum</strong> (mãe ou interface) + método sobrescrito.</p>
-<p><span class="lbl">Não confundir:</span> mesmo nome com <strong>parâmetros diferentes</strong> = <strong>sobrecarga</strong> (decidida na compilação, não é polimorfismo).</p>
-<p><span class="lbl">Onde usar:</span> num <code>for</code> sobre uma lista do tipo da mãe chamando o método; cada objeto responde do seu jeito.</p>
-<p><span class="lbl">Analogia 🎵:</span> é o botão <strong>"tocar"</strong>: no rádio sai música, na TV sai vídeo. Você aperta o mesmo botão; cada aparelho responde do seu jeito.</p>
-</div>
-
-<h3>1.1 Herança × Interface (lado a lado)</h3>
-<table>
-<tr><th>Aspecto</th><th>Herança (extends)</th><th>Interface (implements)</th></tr>
-<tr><td>Relação</td><td>“é um”</td><td>“cumpre o contrato”</td></tr>
-<tr><td>Quantas (Java)</td><td>Uma superclasse</td><td>Várias interfaces</td></tr>
-<tr><td>Traz código pronto</td><td>Sim</td><td>Não (só assinaturas)</td></tr>
-<tr><td>Traz atributos</td><td>Sim</td><td>Não</td></tr>
-<tr><td>Linha na UML</td><td>Cheia + triângulo vazio</td><td>Tracejada + triângulo vazio</td></tr>
-</table>
-
-<h3>1.2 Erros comuns (que tiram ponto)</h3>
-<table>
-<tr><th>❌ Errado</th><th>✅ Certo</th></tr>
-<tr><td>“Classe e objeto são a mesma coisa”</td><td>Classe é o molde; objeto é o exemplar criado.</td></tr>
-<tr><td>Herdar só para reaproveitar código</td><td>Herde só quando passa no teste “é um”.</td></tr>
-<tr><td>“Interface é igual a classe abstrata”</td><td>Interface não guarda estado; e a classe pode ter várias.</td></tr>
-<tr><td>“Polimorfismo é repetir o nome do método”</td><td>Isso é sobrecarga. Polimorfismo escolhe a versão pelo objeto real.</td></tr>
-</table>
-
-<!-- ===================== 2 (sec-6) ===================== -->
-<h2 id="poo-sec-6">2. Diagrama: Veículo de Transporte Coletivo</h2>
-<p><strong>O problema:</strong> modelar veículos que transportam muitos passageiros numa linha. Quatro tipos concretos: Ônibus interestadual, Ônibus urbano, BRT e Metrô.</p>
-
-<h3>2.0 O modelo de referência (o formato das questões)</h3>
-<div class="box good"><strong>⭐ Este é o modelo de referência do professor.</strong> Ele entrega um <em>modelo de referência</em> — o diagrama já desenhado, mas com buracos para você completar. É este esqueleto (Veículo de Transporte Coletivo) que serve de <em>formato</em>; o contexto da prova pode ser outro.</div>
-<p><strong>O que o modelo traz e o que você preenche:</strong></p>
-<ul>
-<li>Retângulos = elementos. O <strong>nº de linhas</strong> indica quantos atributos e métodos cada um tem (métodos de interface e construtores das subclasses <em>não</em> aparecem).</li>
-<li><code>xxxxxxx</code> → troque por <strong>nome, estereótipo, tipo ou parâmetro</strong>.</li>
-<li><code>□</code> → troque pelo <strong>símbolo de visibilidade</strong> (<code>+</code> público, <code>-</code> privado, <code>#</code> protegido).</li>
-<li>As setas já vêm desenhadas (linha contínua ou tracejada) → você só <strong>nomeia o tipo</strong> de cada uma: <strong>herança</strong> (contínua) ou <strong>realização</strong> (tracejada).</li>
-<li><code>«xxxxxxx»</code> = onde vai um <strong>estereótipo</strong> (<code>«abstract»</code> ou <code>«interface»</code>).</li>
-</ul>
-<p>O diagrama pode ser reproduzido em outra folha.</p>
-<table>
-<tr><th>Item</th><th>O que é avaliado (critérios do professor)</th><th>Pontos</th></tr>
-<tr><td>a)</td><td>Nomes, atributos e métodos coerentes com o modelo, com visibilidade e tipos</td><td>3,0</td></tr>
-<tr><td>a)</td><td>Tipo de cada relacionamento identificado (herança e realização)</td><td>1,5</td></tr>
-<tr><td>a)</td><td>Abstratos marcados («abstract» / {abstract} / itálico) e sobrescritos repetidos na subclasse</td><td>1,5</td></tr>
-<tr><td>b)</td><td>(i) Ônibus como classe intermediária e Metrô fora dela; (ii) capacidades como interfaces</td><td>2,0</td></tr>
-<tr><td>c)</td><td>Polimorfismo por sobrescrita + comportamento de embarque de cada tipo</td><td>2,0</td></tr>
-</table>
-<p><em>Conceito presente mas não identificado (seta sem o tipo nomeado, classe abstrata sem marcação) recebe pontuação parcial.</em></p>
-
-<h4>Passo a passo: como preencher o modelo de referência</h4>
-<ol>
-<li><strong>Leia o enunciado e sublinhe.</strong> Substantivos (ônibus, placa, capacidade) viram classes/atributos; verbos (embarcar, parar) viram métodos; adjetivos de capacidade (elétrico, "cobra a bordo") são <em>candidatos a interface</em>.</li>
-<li><strong>Comece pela caixa do topo</strong> (a mais genérica). Ponha nela só o que <strong>todas</strong> as coisas têm em comum (código, linha, capacidade, passageiros a bordo; embarcar/desembarcar/parada).</li>
-<li><strong>Marque o abstrato:</strong> se a coisa "genérica" não existe de verdade, escreva <code>«abstract»</code> e deixe o nome em <em>itálico</em>. O método que cada filha faz de um jeito diferente também fica abstrato (itálico na mãe).</li>
-<li><strong>Desça a árvore:</strong> para cada filha pergunte "<strong>ela é um(a)</strong> (o pai)?" Se sim → <strong>linha cheia</strong>. Anote o que cada uma tem de próprio.</li>
-<li><strong>Capacidade que atravessa hierarquias → interface</strong> (linha tracejada). Ex.: "elétrico" vale para o BRT (um ônibus) e o Metrô (fora dos ônibus) — não cabe na herança, então vira contrato.</li>
-<li><strong>Olhe as setas já desenhadas</strong> e escreva do lado o tipo: "herança" ou "realização". Identificar o tipo de cada seta é um dos itens avaliados.</li>
-<li><strong>Confira os símbolos:</strong> atributo com <code>-</code> ou <code>#</code>, método com <code>+</code>, abstratos em itálico. Se esqueceu a visibilidade, perde ponto.</li>
-</ol>
-
-<h3>2.1 Hierarquia (visão geral das setas)</h3>
-<div class="diagram">              «abstract» VeiculoTransporteColetivo
-                          △  (herança ── cheia)
-                          │
-              «abstract» Onibus   ◁── placa é comum aos 3 ônibus
-                 △      △      △
-                 │      │      └────────────┐
-        OnibusInterestadual │                  │
-                    OnibusUrbano              BRT
-                                          Metro ◁── fora de Onibus (não tem placa)
-
-  Contratos (tracejado ▷):
-     CobrancaABordo  ←── OnibusUrbano
-     TracaoEletrica  ←── BRT  e  Metro</div>
-
-<h3>2.2 Cartões UML de cada classe</h3>
+<h4>Passo C — os cartões UML de cada classe</h4>
 <div class="uml-grid">
   <div class="uml abstract">
     <div class="name"><span class="stereo">«abstract»</span>VeiculoTransporteColetivo</div>
@@ -5573,29 +5543,29 @@
 # capacidade: int
 # passageirosABordo: int</div>
     <div class="sec">+ emitirFicha(): void
-+ embarcarPassageiro(): void
++ embarcarPassageiro(): void  «abstract»
 + desembarcarPassageiro(): void
 + getPassageirosABordo(): int
-+ getTipoParada(): String   «abstract»</div>
++ getTipoParada(): String  «abstract»
+# registrarEmbarque(): boolean</div>
   </div>
 
   <div class="uml abstract">
     <div class="name"><span class="stereo">«abstract»</span>Onibus</div>
     <div class="sec"># placa: String</div>
-    <div class="sec empty">(herda os métodos)
-(herda os atributos da superclasse)</div>
+    <div class="sec empty">(herda os atributos e métodos da superclasse)</div>
   </div>
 
   <div class="uml iface">
     <div class="name"><span class="stereo">«interface»</span>CobrancaABordo</div>
-    <div class="sec empty">(sem atributos)</div>
+    <div class="sec empty">(contrato: sem atributos)</div>
     <div class="sec">+ getTarifa(): double
 + getValorArrecadado(): double</div>
   </div>
 
   <div class="uml iface">
     <div class="name"><span class="stereo">«interface»</span>TracaoEletrica</div>
-    <div class="sec empty">(sem atributos)</div>
+    <div class="sec empty">(contrato: sem atributos)</div>
     <div class="sec">+ getFonteEnergia(): String
 + getConsumoKwhPorKm(): double</div>
   </div>
@@ -5624,8 +5594,8 @@
     <div class="sec">- cargaBateriaKwh: double</div>
     <div class="sec">+ embarcarPassageiro(): void
 + getTipoParada(): String  ("estações")
-+ getConsumoKwhPorKm(): double
-+ getFonteEnergia(): String ("bateria")</div>
++ getFonteEnergia(): String  ("bateria")
++ getConsumoKwhPorKm(): double</div>
   </div>
 
   <div class="uml">
@@ -5633,49 +5603,57 @@
     <div class="sec">- consumoKwhPorKm: double</div>
     <div class="sec">+ embarcarPassageiro(): void
 + getTipoParada(): String  ("estações")
-+ getConsumoKwhPorKm(): double
-+ getFonteEnergia(): String ("rede elétrica")</div>
++ getFonteEnergia(): String  ("rede elétrica")
++ getConsumoKwhPorKm(): double</div>
   </div>
 </div>
 
-<h3>2.3 Por que o diagrama ficou assim (justificativas)</h3>
+<h4>Passo D — o polimorfismo (item c da prova)</h4>
+<p>Uma lista do tipo <code>VeiculoTransporteColetivo</code> com um objeto de cada tipo. Ao chamar <code>v.embarcarPassageiro()</code>, roda <strong>a versão do objeto real</strong>:</p>
 <table>
-<tr><th>Decisão</th><th>Por quê</th></tr>
-<tr><td><strong>Onibus é classe intermediária (abstrata)</strong></td><td>A <strong>placa é comum só aos três ônibus</strong>. O metrô não tem placa → herda direto da superclasse.</td></tr>
-<tr><td><strong>TracaoEletrica é interface</strong></td><td>BRT é um Ônibus e o Metrô está <em>fora</em> de Ônibus: só uma interface atravessa as duas hierarquias sem herança múltipla.</td></tr>
-<tr><td><strong>CobrancaABordo é interface</strong></td><td>Cobrar a bordo é uma <strong>capacidade</strong>, não um tipo de veículo. Hoje só o urbano tem.</td></tr>
-<tr><td><strong>Assento e bagagem só no interestadual</strong></td><td>Se fossem na superclasse, <strong>todos</strong> seriam obrigados a tê-los.</td></tr>
-<tr><td><strong>Controle de lotação na superclasse</strong></td><td>Conferir a capacidade e registrar o embarque (<code>registrarEmbarque()</code>, <strong>protegido #</strong>) é regra de <strong>todos</strong> → método concreto herdado. Interface é só para o que <em>alguns</em> têm.</td></tr>
+<tr><th>Objeto real</th><th>O que <code>embarcarPassageiro()</code> faz</th><th><code>getTipoParada()</code></th></tr>
+<tr><td>OnibusInterestadual</td><td>Só embarca se houver passagem vendida não embarcada; depois registra.</td><td>"terminais rodoviários"</td></tr>
+<tr><td>OnibusUrbano</td><td>Registra; <strong>se coube</strong>, a catraca soma a tarifa ao valor arrecadado.</td><td>"pontos de ônibus"</td></tr>
+<tr><td>BRT</td><td>Já pagou na estação → só registra o embarque.</td><td>"estações"</td></tr>
+<tr><td>Metro</td><td>Igual ao BRT, em implementação própria.</td><td>"estações"</td></tr>
 </table>
+<p><strong>Frase-modelo para a resposta:</strong> "Como a variável é do tipo da superclasse, mas cada objeto é de uma subclasse concreta, a <strong>ligação dinâmica</strong> escolhe na execução a versão sobrescrita do <strong>objeto real</strong> — sem <code>if</code> nem <code>instanceof</code>. Isso é <strong>polimorfismo por sobrescrita</strong>."</p>
 
-<h3>2.4 Polimorfismo em ação — <code>embarcarPassageiro()</code></h3>
-<table>
-<tr><th>Objeto real</th><th>O que <code>embarcarPassageiro()</code> faz</th></tr>
-<tr><td>OnibusInterestadual</td><td>Só embarca se houver passagem vendida não embarcada; depois <code>registrarEmbarque()</code>.</td></tr>
-<tr><td>OnibusUrbano</td><td><code>registrarEmbarque()</code>; a catraca cobra a tarifa <em>se</em> o passageiro couber.</td></tr>
-<tr><td>BRT</td><td>Já pagou na estação; só registra o embarque.</td></tr>
-<tr><td>Metro</td><td>Mesmo que o BRT, em implementação própria.</td></tr>
-</table>
-<p>Uma lista do tipo <code>VeiculoTransporteColetivo</code> com um de cada: <code>v.embarcarPassageiro()</code> roda a versão do objeto real — <strong>sem <code>if</code>/<code>instanceof</code></strong>.</p>
+<h3 id="q1-delivery">1.6 Diagrama 2 — Meio de Entrega (delivery de restaurante)</h3>
+<p><strong>Mesma estrutura do transporte, outro contexto.</strong> Quatro tipos: <strong>Moto</strong>, <strong>Moto elétrica</strong>, <strong>Bike</strong> e <strong>Bike elétrica</strong>. As duas <strong>motos são emplacadas</strong>; as duas <strong>bikes não têm placa</strong>. Todo pedido já chega pago pelo app.</p>
 
-<div class="box warn"><strong>Erros a evitar:</strong> Metro herdando de Onibus (ganharia placa); superclasse <code>VeiculoEletrico</code> (obrigaria herança múltipla); booleano <code>eletrico</code> no lugar da interface; assinaturas diferentes entre as subclasses (quebra a sobrescrita); cobrar antes de checar a lotação.</div>
+<h4>A hierarquia</h4>
+<div class="diagram">                     «abstract» MeioEntrega
+              # codigo  # zona  # capacidade  # codigosEmRota
+              + emitirFicha()
+              + despacharPedido(codigo, distanciaKm)   «abstract»
+              + concluirEntrega(codigo)                 <- CONCRETO (regra de todos)
+              + getPontoEntrega()                       «abstract»
+              # registrarCarga()
+                              │
+                         herança (cheia)
+                              │
+        ┌─────────────────────┬────────────────┬───────────────┐
+        │                     │                │               │
+ «abstract» VeiculoEmplacado  │                │               │
+        (por causa da PLACA)  │                │               │
+        │            │        │                │               │
+      Moto      MotoEletrica  │              Bike        BikeEletrica
+        └────────────┘         │                             │
+             └─ − −▷ «interface» PropulsaoEletrica ◁− − ──────┘
+                             (atravessa as duas hierarquias)</div>
 
-<!-- ===================== 3 (sec-7) ===================== -->
-<h2 id="poo-sec-7">3. Diagrama: Meio de Entrega (Delivery)</h2>
-<p><strong>O problema:</strong> meios que levam pedidos até o cliente. Quatro tipos concretos: Moto, Moto elétrica, Bike e Bike elétrica. Pedido sempre pago antes, no app.</p>
+<div class="box">
+<strong>Por que ficou assim (item b):</strong>
+<ul>
+<li><strong>VeiculoEmplacado é intermediária das MOTOS</strong> porque a <strong>placa</strong> é comum às duas motos. <strong>Bike e Bike elétrica não são emplacadas</strong> → herdam direto de <code>MeioEntrega</code> (se herdassem da intermediária, ganhariam uma placa que não existe).</li>
+<li><strong>PropulsaoEletrica é interface:</strong> Moto elétrica (que é um VeiculoEmplacado) e Bike elétrica (que está fora) têm a mesma capacidade → a interface cruza as hierarquias sem herança múltipla.</li>
+<li><strong>Conferência na entrega fica na superclasse</strong> (<code>concluirEntrega()</code>, concreto): é regra de <em>todos</em>, não só de alguns.</li>
+<li><strong>Ser elétrico é uma classe própria</strong> (MotoEletrica / BikeEletrica), não um atributo <code>boolean</code> — porque um booleano não define contrato de métodos.</li>
+</ul>
+</div>
 
-<h3>3.1 Hierarquia (visão geral das setas)</h3>
-<div class="diagram">              «abstract» MeioEntrega
-                    △   (método-chave: despacharPedido)
-        ┌───────────┼───────────────┐
-        │           │               │
- «abstract» VeiculoEmplacado      Bike      BikeEletrica
-        △   △                         △
-   Moto   MotoEletrica ──▷ PropulsaoEletrica ◁── BikeEletrica  (contrato)
-
-  Contrato: PropulsaoEletrica  (elétricos, atravessa as 2 hierarquias)</div>
-
-<h3>3.2 Cartões UML de cada classe</h3>
+<h4>Os cartões UML</h4>
 <div class="uml-grid">
   <div class="uml abstract">
     <div class="name"><span class="stereo">«abstract»</span>MeioEntrega</div>
@@ -5686,7 +5664,8 @@
     <div class="sec">+ emitirFicha(): void
 + despacharPedido(codigo: String, distanciaKm: double): void  «abstract»
 + concluirEntrega(codigo: String): boolean
-+ getPontoEntrega(): String  «abstract»</div>
++ getPontoEntrega(): String  «abstract»
+# registrarCarga(codigo: String): void</div>
   </div>
 
   <div class="uml abstract">
@@ -5697,7 +5676,7 @@
 
   <div class="uml iface">
     <div class="name"><span class="stereo">«interface»</span>PropulsaoEletrica</div>
-    <div class="sec empty">(sem atributos)</div>
+    <div class="sec empty">(contrato: sem atributos)</div>
     <div class="sec">+ getAutonomiaKm(): double
 + getConsumoKwhPorKm(): double</div>
   </div>
@@ -5706,14 +5685,14 @@
     <div class="name">Moto</div>
     <div class="sec">- cilindradas: int</div>
     <div class="sec">+ despacharPedido(codigo, distanciaKm): void
-+ getPontoEntrega(): String ("porta do cliente")</div>
++ getPontoEntrega(): String  ("porta do cliente")</div>
   </div>
 
   <div class="uml">
     <div class="name"><span class="stereo">implements «PropulsaoEletrica»</span>MotoEletrica</div>
     <div class="sec">- cargaBateriaKwh: double</div>
     <div class="sec">+ despacharPedido(codigo, distanciaKm): void
-+ getPontoEntrega(): String ("porta do cliente")
++ getPontoEntrega(): String  ("porta do cliente")
 + getAutonomiaKm(): double
 + getConsumoKwhPorKm(): double</div>
   </div>
@@ -5722,74 +5701,114 @@
     <div class="name">Bike</div>
     <div class="sec empty">(sem atributos próprios)</div>
     <div class="sec">+ despacharPedido(codigo, distanciaKm): void
-+ getPontoEntrega(): String ("portaria ou ponto de encontro")</div>
++ getPontoEntrega(): String  ("portaria ou ponto de encontro")</div>
   </div>
 
   <div class="uml">
     <div class="name"><span class="stereo">implements «PropulsaoEletrica»</span>BikeEletrica</div>
     <div class="sec">- autonomiaKm: double</div>
     <div class="sec">+ despacharPedido(codigo, distanciaKm): void
-+ getPontoEntrega(): String ("portaria ou ponto de encontro")
++ getPontoEntrega(): String  ("portaria ou ponto de encontro")
 + getAutonomiaKm(): double
 + getConsumoKwhPorKm(): double</div>
   </div>
 </div>
 
-<h3>3.3 Os quatro tipos (regras que decidem o despacho)</h3>
+<h4>As regras que decidem o despacho (decore a tabela)</h4>
 <table>
 <tr><th>Tipo</th><th>Ponto de entrega</th><th>Condição para despachar</th><th>Propulsão</th><th>Placa</th><th>Dado próprio</th></tr>
 <tr><td>Moto</td><td>Porta do cliente</td><td>Qualquer distância</td><td>Combustão</td><td>Sim</td><td>Cilindradas</td></tr>
-<tr><td>Moto elétrica</td><td>Porta do cliente</td><td>Ida e volta (2×) ≤ autonomia</td><td>Elétrica (bateria kWh)</td><td>Sim</td><td>Carga da bateria</td></tr>
+<tr><td>Moto elétrica</td><td>Porta do cliente</td><td>Ida e volta (2 × distância) ≤ autonomia</td><td>Elétrica (bateria em kWh)</td><td>Sim</td><td>Carga da bateria</td></tr>
 <tr><td>Bike</td><td>Portaria / ponto de encontro</td><td>Até 3 km</td><td>Pedal</td><td>Não</td><td>—</td></tr>
-<tr><td>Bike elétrica</td><td>Portaria / ponto de encontro</td><td>Até 8 km e 2× ≤ autonomia</td><td>Elétrica (assistida)</td><td>Não</td><td>Autonomia (km)</td></tr>
+<tr><td>Bike elétrica</td><td>Portaria / ponto de encontro</td><td>Até 8 km <strong>e</strong> 2 × distância ≤ autonomia</td><td>Elétrica (assistida)</td><td>Não</td><td>Autonomia (km)</td></tr>
 </table>
 
-<h3>3.4 Por que o diagrama ficou assim</h3>
-<table>
-<tr><th>Decisão</th><th>Por quê</th></tr>
-<tr><td><strong>VeiculoEmplacado só nas motos</strong></td><td>Bike e Bike elétrica <strong>não têm placa</strong>; herdar dali ganharia uma placa inexistente.</td></tr>
-<tr><td><strong>PropulsaoEletrica é interface</strong></td><td>Moto elétrica (dentro de VeiculoEmplacado) e Bike elétrica (fora) têm a mesma capacidade → interface cruza as hierarquias sem herança múltipla.</td></tr>
-<tr><td><strong>Conferência na superclasse</strong></td><td>Conferir o código do destinatário é regra de <strong>todos</strong> → concreta em MeioEntrega, herdada.</td></tr>
-<tr><td><strong>Elétrico é classe própria, não booleano</strong></td><td>Ser elétrico não muda com o tempo → MotoEletrica e BikeEletrica são classes, não um atributo <code>boolean</code>.</td></tr>
-</table>
-
-<h3>3.5 Polimorfismo em ação — <code>despacharPedido(codigo, 5.0)</code></h3>
+<h4>Polimorfismo — <code>despacharPedido(codigo, 5.0)</code></h4>
 <table>
 <tr><th>Objeto real</th><th>Despacha 5 km?</th><th>Por quê</th></tr>
 <tr><td>Moto</td><td>✅ sim</td><td>Qualquer distância.</td></tr>
-<tr><td>MotoEletrica</td><td>✅ se 10 km ≤ autonomia</td><td>Ida e volta = 2×5.</td></tr>
+<tr><td>MotoEletrica</td><td>✅ se 10 ≤ autonomia</td><td>Ida e volta = 2 × 5.</td></tr>
 <tr><td>Bike</td><td>❌ não</td><td>Limite de 3 km.</td></tr>
-<tr><td>BikeEletrica</td><td>✅ se 10 km ≤ autonomia</td><td>Até 8 km + teste de autonomia.</td></tr>
+<tr><td>BikeEletrica</td><td>✅ se 10 ≤ autonomia</td><td>Até 8 km + teste de autonomia.</td></tr>
 </table>
-<p>Mesma chamada, quatro comportamentos — <strong>polimorfismo por sobrescrita (ligação dinâmica)</strong>, sem <code>if</code>.</p>
+<p>Mesma chamada, comportamentos diferentes — <strong>polimorfismo por sobrescrita (ligação dinâmica)</strong>, sem <code>if</code>. E <code>concluirEntrega()</code> é <strong>herdado e igual para todos</strong> (regra geral).</p>
 
-<!-- ===================== 4 (sec-8) ===================== -->
-<h2 id="poo-sec-8">4. Diagrama: Serpentário</h2>
-<p><strong>O problema:</strong> cadastrar as serpentes do zoológico. Toda serpente se locomove rastejando e se alimenta, mas <strong>cada espécie abate a presa de um jeito</strong>. Não existe “serpente genérica”.</p>
+<h3 id="q1-serpentario">1.7 Diagrama 3 — O serpentário do zoológico</h3>
+<p><strong>O problema:</strong> cadastrar as serpentes. Toda serpente se locomove e se alimenta, mas <strong>cada espécie abate a presa de um jeito</strong>. Não existe "serpente genérica".</p>
 
-<h3>4.1 O roteiro em 7 passos (como montar do zero)</h3>
-<ol>
-<li><strong>Marcar as palavras.</strong> Substantivos → classes/atributos; verbos → métodos; adjetivos de capacidade (venenosa, peçonhenta, semiaquática) → <strong>contratos</strong>.</li>
-<li><strong>O que é comum a todas:</strong> nomePopular, nomeCientifico, comprimento, peso; <code>locomover()</code>, <code>alimentar()</code>, <code>abaterPresa()</code>.</li>
-<li><strong>Qual é abstrata:</strong> Serpente — ninguém cria “uma serpente”; e <code>abaterPresa()</code> não tem jeito comum → <strong>abstrato</strong>.</li>
-<li><strong>As filhas (herança):</strong> teste “X é uma Serpente?” → Sucuri, Cascavel, Jararaca, CoralVerdadeira, FalsaCoral.</li>
-<li><strong>O que é só de cada espécie:</strong> ver tabela 4.4.</li>
-<li><strong>Transformar capacidades em contratos:</strong> Venenosa, Peconhenta (que <em>estende</em> Venenosa) e Semiaquatica.</li>
-<li><strong>Achar o polimorfismo:</strong> <code>serpente.alimentar()</code> → chama <code>abaterPresa()</code> → cada espécie executa a sua.</li>
-</ol>
+<h4>Os 7 passos aplicados</h4>
+<div class="diagram">1) MARCAR   serpente·sucuri·peso·chocalho = coisas | locomover·abater·nadar = ações
+            venenosa·peçonhenta·semiaquática = CAPACIDADES (contratos)
+            ATENÇÃO: "constritora" só a sucuri é -> comportamento, NÃO contrato
 
-<h3>4.2 Hierarquia (visão geral das setas)</h3>
-<div class="diagram">                    «abstract» Serpente
-        ┌───────────┬─────┼───────────┬────────────┐
-     Sucuri    Cascavel  Jararaca  CoralVerdadeira  FalsaCoral
-        └──▷ Semiaquatica     └──────┴──────▷ Peconhenta ──▷ Venenosa
+2) COMUM A TODAS -> mãe:  nomePopular · nomeCientifico · comprimento · peso
+                          locomover() · alimentar() · abaterPresa()
 
-  Contratos:  Semiaquatica (nadar)  ·  Venenosa (produzirVeneno, getTipoVeneno)
-              Peconhenta (inocularVeneno) ──cheia──▷ Venenosa
+3) ABSTRATA:  Serpente (não existe genérica) e abaterPresa() é abstrato
 
-  Legenda:  ──▷ herança (é um)   - -▷ realização (assina o contrato)</div>
+4) FILHAS (teste "é uma Serpente?"): Sucuri, Cascavel, Jararaca,
+            CoralVerdadeira, FalsaCoral
 
-<h3>4.3 Cartões UML — classe-mãe e contratos</h3>
+5) PRÓPRIO DE CADA UMA:
+     Sucuri .......... forcaConstricao · tempoMaxSubmersa · constringir() · nadar()
+     Cascavel ........ numeroAneisChocalho · chocalhar()
+     Jararaca ........ corPontaCauda · atrairPresaComCauda()
+     CoralVerdadeira . padraoAneis
+     FalsaCoral ...... padraoAneis
+
+6) CAPACIDADES -> contratos:
+     Venenosa     (produzirVeneno, getTipoVeneno) ..... Cascavel, Jararaca, Coral
+     Peconhenta   (inocularVeneno)  estende Venenosa .. Cascavel, Jararaca, Coral
+     Semiaquatica (nadar) ............................ Sucuri
+
+7) POLIMORFISMO: alimentar() chama abaterPresa(); cada espécie abate do seu jeito</div>
+
+<div class="box good">
+<strong>Dois detalhes que valem ponto:</strong>
+<ul>
+<li><strong>Peconhenta estende Venenosa</strong> (linha <em>cheia</em> entre as duas interfaces): "toda peçonhenta é venenosa".</li>
+<li><strong>Contrato não guarda atributo:</strong> o tipo de veneno é <em>fixo por espécie</em>, então cada espécie devolve o seu em <code>getTipoVeneno()</code> (neurotóxico para cascavel e coral; hemorrágico para jararaca). Não crie um atributo no contrato.</li>
+</ul>
+</div>
+
+<h4>A hierarquia</h4>
+<div class="diagram">                       «abstract» Serpente
+        # nomePopular  # nomeCientifico  # comprimento  # peso
+        + locomover()
+        + alimentar()          <- chama abaterPresa()
+        # abaterPresa()         «abstract»
+                       │
+                   herança (cheia)
+      ┌────────┬─────┴──────┬───────────────┬──────────────────┐
+    Sucuri  Cascavel    Jararaca   CoralVerdadeira      FalsaCoral
+      │        │            │             │                  │
+      │        └────────────┴─────────────┘                  │
+      │             (as três picam)             (não assina contrato)
+
+  Contratos (setas TRACEJADAS apontam para a interface):
+
+    Sucuri ........... − −▷ «interface» Semiaquatica
+    Cascavel ......... − −▷ «interface» Peconhenta
+    Jararaca ......... − −▷ «interface» Peconhenta
+    CoralVerdadeira .. − −▷ «interface» Peconhenta
+    Peconhenta ....... ─────▷ «interface» Venenosa   (herança ENTRE interfaces)
+    FalsaCoral ....... (nenhuma seta para interface)</div>
+
+<div class="box warn">
+<strong>Cuidado com a FalsaCoral:</strong> ela <strong>não é venenosa</strong> (no exercício) e <strong>não assina nenhum contrato</strong>. Ela abate a presa <em>engolindo viva</em>. O que ela e a coral têm em comum é só o <em>padrão de anéis</em> — e isso <strong>não</strong> justifica criar uma classe-mãe "Coral" (a falsa-coral não é uma coral). Duas classes terem o mesmo atributo não obriga a criar um pai comum.
+</div>
+
+<h4>Quem assina cada contrato</h4>
+<table>
+<tr><th>Espécie</th><th>Venenosa</th><th>Peconhenta</th><th>Semiaquática</th></tr>
+<tr><td>Sucuri</td><td>—</td><td>—</td><td>✔</td></tr>
+<tr><td>Cascavel</td><td>✔</td><td>✔</td><td>—</td></tr>
+<tr><td>Jararaca</td><td>✔</td><td>✔</td><td>—</td></tr>
+<tr><td>Coral-verdadeira</td><td>✔</td><td>✔</td><td>—</td></tr>
+<tr><td>Falsa-coral</td><td>—</td><td>—</td><td>—</td></tr>
+</table>
+
+<h4>Os cartões UML</h4>
 <div class="uml-grid">
   <div class="uml abstract">
     <div class="name"><span class="stereo">«abstract»</span>Serpente</div>
@@ -5798,37 +5817,35 @@
 # comprimento: double
 # peso: double</div>
     <div class="sec">+ locomover(): void
-+ alimentar(): void   (chama abaterPresa)
-# abaterPresa(): void   «abstract»</div>
++ alimentar(): void
+# abaterPresa(): void  «abstract»</div>
   </div>
 
   <div class="uml iface">
     <div class="name"><span class="stereo">«interface»</span>Venenosa</div>
-    <div class="sec empty">(sem atributos)</div>
+    <div class="sec empty">(contrato: sem atributos)</div>
     <div class="sec">+ produzirVeneno(): void
 + getTipoVeneno(): String</div>
   </div>
 
   <div class="uml iface">
-    <div class="name"><span class="stereo">«interface»</span>Peconhenta<br><span class="stereo">extends «Venenosa»</span></div>
-    <div class="sec empty">(herda os métodos de Venenosa)</div>
-    <div class="sec">+ inocularVeneno(): void</div>
+    <div class="name"><span class="stereo">«interface»</span>Peconhenta</div>
+    <div class="sec empty">(estende Venenosa)</div>
+    <div class="sec">+ inocularVeneno(): void
+(herda de Venenosa)</div>
   </div>
 
   <div class="uml iface">
     <div class="name"><span class="stereo">«interface»</span>Semiaquatica</div>
-    <div class="sec empty">(sem atributos)</div>
+    <div class="sec empty">(contrato: sem atributos)</div>
     <div class="sec">+ nadar(): void</div>
   </div>
-</div>
 
-<h3>4.4 Cartões UML — as cinco espécies</h3>
-<div class="uml-grid">
   <div class="uml">
-    <div class="name"><span class="stereo">implements «Semiaquatica»</span>Sucuri</div>
+    <div class="name">Sucuri</div>
     <div class="sec">- forcaConstricao: double
 - tempoMaxSubmersa: int</div>
-    <div class="sec">+ abaterPresa(): void   (esmaga — chama constringir)
+    <div class="sec">+ abaterPresa(): void  (sobrescreve: esmaga)
 + constringir(): void
 + nadar(): void</div>
   </div>
@@ -5836,1042 +5853,837 @@
   <div class="uml">
     <div class="name"><span class="stereo">implements «Peconhenta»</span>Cascavel</div>
     <div class="sec">- numeroAneisChocalho: int</div>
-    <div class="sec">+ abaterPresa(): void   (pica e inocula)
+    <div class="sec">+ abaterPresa(): void  (sobrescreve: pica)
 + chocalhar(): void
 + produzirVeneno(): void
-+ getTipoVeneno(): String   ("neurotóxico")
++ getTipoVeneno(): String  ("neurotóxico")
 + inocularVeneno(): void</div>
   </div>
 
   <div class="uml">
     <div class="name"><span class="stereo">implements «Peconhenta»</span>Jararaca</div>
     <div class="sec">- corPontaCauda: String</div>
-    <div class="sec">+ abaterPresa(): void   (pica e inocula)
+    <div class="sec">+ abaterPresa(): void  (sobrescreve: pica)
 + atrairPresaComCauda(): void
 + produzirVeneno(): void
-+ getTipoVeneno(): String   ("hemorrágico")
++ getTipoVeneno(): String  ("hemorrágico")
 + inocularVeneno(): void</div>
   </div>
 
   <div class="uml">
     <div class="name"><span class="stereo">implements «Peconhenta»</span>CoralVerdadeira</div>
     <div class="sec">- padraoAneis: String</div>
-    <div class="sec">+ abaterPresa(): void   (pica e inocula)
+    <div class="sec">+ abaterPresa(): void  (sobrescreve: pica)
 + produzirVeneno(): void
-+ getTipoVeneno(): String   ("neurotóxico")
++ getTipoVeneno(): String  ("neurotóxico")
 + inocularVeneno(): void</div>
   </div>
 
   <div class="uml">
     <div class="name">FalsaCoral</div>
     <div class="sec">- padraoAneis: String</div>
-    <div class="sec">+ abaterPresa(): void   (engole viva)
-+ imitarCoral(): void
+    <div class="sec">+ abaterPresa(): void  (sobrescreve: engole viva)
 (não assina nenhum contrato)</div>
   </div>
 </div>
 
-<h4>Resumo das espécies</h4>
+<h4>Polimorfismo — <code>serpente.alimentar()</code></h4>
+<p><code>alimentar()</code> é concreto na mãe e chama <code>abaterPresa()</code>, que é abstrato. Cada espécie executa a sua versão:</p>
 <table>
-<tr><th>Espécie</th><th>Atributos próprios</th><th>abaterPresa() faz…</th><th>Contratos</th></tr>
-<tr><td>Sucuri</td><td>forcaConstricao, tempoMaxSubmersa</td><td>Envolve e esmaga (constrição)</td><td>Semiaquatica</td></tr>
-<tr><td>Cascavel</td><td>numeroAneisChocalho</td><td>Pica e inocula veneno</td><td>Peconhenta — neurotóxico</td></tr>
-<tr><td>Jararaca</td><td>corPontaCauda</td><td>Pica e inocula veneno</td><td>Peconhenta — hemorrágico</td></tr>
-<tr><td>CoralVerdadeira</td><td>padraoAneis</td><td>Pica e inocula veneno</td><td>Peconhenta — neurotóxico</td></tr>
-<tr><td>FalsaCoral</td><td>padraoAneis</td><td>Engole a presa viva</td><td>Nenhum (imita a coral)</td></tr>
+<tr><th>Espécie</th><th>O que <code>abaterPresa()</code> faz</th></tr>
+<tr><td>Sucuri</td><td>envolve e esmaga a presa (constrição).</td></tr>
+<tr><td>Cascavel</td><td>pica e inocula veneno.</td></tr>
+<tr><td>Jararaca</td><td>pica e inocula veneno.</td></tr>
+<tr><td>CoralVerdadeira</td><td>pica e inocula veneno.</td></tr>
+<tr><td>FalsaCoral</td><td>engole a presa viva.</td></tr>
 </table>
 
-<h3>4.5 Por que o diagrama ficou assim</h3>
-<table>
-<tr><th>Decisão</th><th>Por quê</th></tr>
-<tr><td><strong>Serpente é abstrata</strong></td><td>“Não existe serpente genérica”; <code>abaterPresa()</code> é comum a todas mas sem jeito único → abstrato.</td></tr>
-<tr><td><strong>Atributos comuns com <code>#</code> (protegido)</strong></td><td>As filhas precisam enxergar nome/peso/comprimento. O que é só de uma filha fica <strong>privado</strong> (<code>-</code>).</td></tr>
-<tr><td><strong>Nadar é interface (Semiaquatica)</strong></td><td>Só a sucuri nada → capacidade isolada, e não método na mãe (senão todas seriam obrigadas).</td></tr>
-<tr><td><strong>Venenosa/Peconhenta são interfaces</strong></td><td>Ser venenosa é capacidade de <strong>algumas</strong>; e toda peçonhenta é venenosa por isso Peconhenta <em>estende</em> Venenosa.</td></tr>
-<tr><td><strong>Tipo de veneno não é atributo da interface</strong></td><td>Interface não guarda atributo: cada espécie devolve o seu valor fixo em <code>getTipoVeneno()</code>.</td></tr>
-<tr><td><strong>FalsaCoral não assina contrato</strong></td><td>Não é venenosa; só <em>imita</em> a coral com o padrão de anéis.</td></tr>
-</table>
-
-<h3>4.6 Legenda de notação UML (decore)</h3>
-<table>
-<tr><th>Notação</th><th>Significa</th></tr>
-<tr><td><code>«abstract»</code> + nome em <em>itálico</em></td><td>Classe abstrata</td></tr>
-<tr><td>Método em <em>itálico</em></td><td>Método abstrato (sem corpo)</td></tr>
-<tr><td><code>«interface»</code></td><td>Contrato</td></tr>
-<tr><td>Linha <strong>cheia</strong> + triângulo vazio</td><td>Herança (“é um”)</td></tr>
-<tr><td>Linha <strong>tracejada</strong> + triângulo vazio</td><td>Realização (assina o contrato)</td></tr>
-<tr><td><code>+</code> <code>-</code> <code>#</code></td><td>público · privado · protegido</td></tr>
-</table>
-
-<div class="box good"><strong>Como resolver na prova (todos os diagramas):</strong> 1) ache o genérico e marque abstrato; 2) liste o que é comum → sobe para a mãe; 3) o que é de um só → fica na filha; 4) capacidade de alguns que cruza hierarquias → interface; 5) regra de todos → método concreto na mãe; 6) aponte o método polimórfico (aquele que cada filha sobrescreve).</div>
-
-<!-- ===================== 5 (sec-vigenere) ===================== -->
-<h2 id="poo-sec-vigenere">5. Diagrama: Cifra de Vigenère (Python &amp; Java)</h2>
-<p><strong>O que é, bem simples:</strong> uma <strong>cifra</strong> é um jeito de "embaralhar" um texto para ninguém entender, e depois conseguir voltar ao original. Imagine combinar com um amigo uma <strong>palavra secreta</strong> e, para cada letra da mensagem, "andar" no alfabeto o número de casas indicado pela letra da palavra secreta. Isso é a Cifra de Vigenère.</p>
-<p><strong>Por que este exemplo está no guia?</strong> Porque o código mostra duas ideias de POO: um <strong>contrato</strong> ("toda cifra sabe criptografar e descriptografar") e uma <strong>implementação</strong> (a Cifra de Vigenère, que faz isso de um jeito). E o mesmo programa aparece em <strong>Python</strong> e em <strong>Java</strong>, ótimo para comparar as duas linguagens.</p>
-
-<h3>5.1 A ideia e as fórmulas</h3>
-<div class="diagram">Texto:    A  T  T  A  C  K  A  T  D  A  W  N
-Chave:    L  E  M  O  N  L  E  M  O  N  L  E   (LEMON repete)
-Cifrado:  L  X  F  O  P  V  E  F  R  N  H  R
-
-Criptografar:    C = (P + K) mod 26
-Descriptografar: P = (C − K) mod 26
-"mod 26" dá a volta no alfabeto: W(22)+L(11)=33 → 33 mod 26 = 7 → H</div>
-<table>
-<tr><th>Regra do código</th><th>O que faz</th></tr>
-<tr><td>Caixa preservada</td><td>Maiúscula continua maiúscula; minúscula continua minúscula.</td></tr>
-<tr><td>Não-letras passam</td><td>Espaços, números e pontuação não mudam e não gastam letra da chave.</td></tr>
-<tr><td>Sem acentos</td><td>"Ação" vira "Acao" antes de cifrar.</td></tr>
-<tr><td>Chave validada</td><td>Só A–Z contam; chave sem letras é recusada com erro.</td></tr>
-</table>
-<p>Exemplo: <code>"attack at dawn!"</code> + <code>LEMON</code> → <code>"lxfopv ef rnhr!"</code></p>
-
-<h3>5.2 Diagrama de classes</h3>
-<div class="diagram">           «interface»  Cifra            ← o contrato ("o quê")
-        + criptografar(texto: String): String
-        + descriptografar(texto: String): String
-                     △
-                     ┆  realização / herança
-                     │
-              CifraVigenere                ← a implementação ("como")
-        - TAMANHO_ALFABETO: int = 26   (static final)
-        - deslocamentos: int[]
-        + criptografar(texto): String
-        + descriptografar(texto): String
-        + toString(): String   (@Override / __repr__)
-        # removerAcentos(texto): String
-        - prepararChave(chave): int[]
-        - processar(texto, sentido): String</div>
-<div class="uml-grid">
-  <div class="uml iface">
-    <div class="name"><span class="stereo">«interface» / contrato</span>Cifra</div>
-    <div class="sec empty">(sem atributos)</div>
-    <div class="sec">+ criptografar(texto: String): String
-+ descriptografar(texto: String): String</div>
-  </div>
-  <div class="uml">
-    <div class="name"><span class="stereo">implements «Cifra»</span>CifraVigenere</div>
-    <div class="sec">- TAMANHO_ALFABETO: int = 26  (static final)
-- deslocamentos: int[]</div>
-    <div class="sec">+ criptografar(texto: String): String
-+ descriptografar(texto: String): String
-+ toString(): String   (@Override / __repr__)
-# removerAcentos(texto: String): String
-- prepararChave(chave: String): int[]
-- processar(texto: String, sentido: int): String</div>
-  </div>
+<div class="box">
+<strong>Observação de honestidade (está nos slides):</strong> como no serpentário <em>toda</em> venenosa também é peçonhenta, uma <strong>classe abstrata intermediária</strong> <code>SerpentePeconhenta</code> também resolveria (e guardaria o tipo de veneno num lugar só). A <strong>interface ganha</strong> quando a capacidade <strong>atravessa hierarquias diferentes</strong> — é o caso do "elétrico" no transporte/delivery. Se o professor perguntar "por que interface e não classe intermediária?", essa é a resposta.
 </div>
-<p><strong>Java:</strong> <code>Cifra</code> é <code>interface</code> → <code>CifraVigenere implements Cifra</code>. <strong>Python:</strong> <code>Cifra</code> é classe-base → <code>CifraVigenere(Cifra)</code>. Nos dois casos o "como" fica numa só classe, e outra cifra (CifraCesar) entraria sem mexer em quem usa (polimorfismo).</p>
 
-<h3>5.3 O algoritmo em 3 passos (igual nas duas linguagens)</h3>
+<h3 id="q1-erros">1.8 Erros que tiram ponto e variações que o professor aceita</h3>
+<div class="grid2">
+<div class="box warn">
+<strong>Erros a NÃO cometer</strong>
+<ul>
+<li>Metrô herdando de <strong>Onibus</strong> (ganharia placa que não tem).</li>
+<li>Bike/BikeEletrica herdando de <strong>VeiculoEmplacado</strong> (mesma coisa).</li>
+<li>Criar superclasse <code>VeiculoEletrico</code> (obrigaria herança múltipla).</li>
+<li>Usar <code>boolean eletrico</code> no lugar da interface.</li>
+<li>Subir para a mãe o que é de um só (assento/bagagem, tarifa, cilindradas, placa).</li>
+<li>Assinaturas diferentes do método polimórfico nas filhas (quebra a sobrescrita).</li>
+<li>Repetir a conferência/conclusão em cada filha em vez de deixar concreta na mãe.</li>
+</ul>
+</div>
+<div class="box good">
+<strong>Variações aceitas (o slide diz que valem)</strong>
+<ul>
+<li>Atributos <strong>protegidos (#)</strong> na superclasse (o professor até cita como válido).</li>
+<li>Usar <code>enum</code> em vez de <code>String</code> (ex.: PontoEntrega, TipoParada).</li>
+<li>Marcar abstrato com <code>{abstract}</code> <em>ou</em> itálico em vez de <code>«abstract»</code>.</li>
+<li>Classe extra <code>Pedido</code>/<code>Estacao</code>/<code>Rodoviaria</code> associada (extensão).</li>
+<li>Regra de ida e volta como método <code>default</code> na interface.</li>
+<li>Coral/FalsaCoral e as motos reaproveitando lógica por um método auxiliar.</li>
+</ul>
+</div>
+</div>
+
+<h3 id="q1-checklist">1.9 Checklist final (passe os olhos antes de entregar)</h3>
+<div class="box takeaway">
+<strong>Antes de virar a folha, confira:</strong>
 <ol>
-<li><strong>Preparar a chave:</strong> remover acentos, deixar maiúscula, manter só A–Z e virar números. <code>"Lémon 2!"</code> → <code>[11, 4, 12, 14, 13]</code> (L,E,M,O,N). Chave sem letras → erro.</li>
-<li><strong>Remover acentos:</strong> decompor (NFD) e apagar as marcas. Python: <code>unicodedata</code> (categoria "Mn"); Java: <code>Normalizer.normalize(...,NFD)</code> + regex <code>\p{M}</code>. <code>"Ação" → "Acao"</code>.</li>
-<li><strong>Processar (o laço):</strong> para cada caractere — (1) é maiúscula? minúscula? (senão mantém e segue); (2) pega o deslocamento da chave na posição <code>posição % tamanhoDaChave</code>; (3) <code>novo = (ord(c) − base + sentido×desloc) mod 26</code>; (4) <code>posição++</code>. <code>sentido = +1</code> criptografa, <code>−1</code> descriptografa.</li>
+<li>Marquei a <strong>superclasse abstrata</strong> e o <strong>método polimórfico abstrato</strong>?</li>
+<li>A <strong>classe intermediária</strong> está só com o que é comum às filhas dela (a placa)?</li>
+<li>Cada <strong>capacidade de alguns</strong> virou <strong>interface</strong> (tracejada)?</li>
+<li>Escrevi o <strong>tipo de cada seta</strong> ("herança"/"realização")?</li>
+<li>Consegui explicar o <strong>que cada subclasse faz diferente</strong> no método polimórfico?</li>
+<li>Consegui justificar <strong>por que a intermediária</strong> e <strong>por que a interface</strong>?</li>
 </ol>
-<div class="diagram">"Ab!" com a chave "LE":
-c='A'  base='A'  chave L=11  (0+11)%26=11 → 'L'   pos 0→1
-c='b'  base='a'  chave E=4   (1+4)%26=5   → 'f'   pos 1→2
-c='!'  não é letra → '!'                           pos 2
-Resultado: "Lf!"</div>
-<p><strong>Eficiência: O(n)</strong> — percorre o texto uma vez; a chave é convertida uma vez no construtor.</p>
+</div>
 
-<h3>5.4 Python × Java e o símbolo "@"</h3>
-<table>
-<tr><th>Etapa</th><th>Python</th><th>Java</th></tr>
-<tr><td>Letra → número</td><td><code>ord(c) - ord("A")</code></td><td><code>c - 'A'</code></td></tr>
-<tr><td>Número → letra</td><td><code>chr(base + n)</code></td><td><code>(char)(base + n)</code></td></tr>
-<tr><td>Guardar a chave</td><td><code>list[int]</code></td><td><code>int[]</code></td></tr>
-<tr><td>Montar o texto</td><td><code>"".join(lista)</code></td><td><code>StringBuilder</code></td></tr>
-<tr><td>Dar a volta (+ mod)</td><td><code>%</code></td><td><code>Math.floorMod</code></td></tr>
-<tr><td>Tirar acentos</td><td><code>unicodedata</code></td><td><code>Normalizer + regex</code></td></tr>
-<tr><td>Chave inválida</td><td><code>ValueError</code></td><td><code>IllegalArgumentException</code></td></tr>
-</table>
-<div class="box warn"><strong>Cuidado (Java):</strong> <code>-4 % 26</code> dá <code>-4</code> (o sinal acompanha o dividendo) e a letra sairia do alfabeto. Use <code>Math.floorMod(-4, 26) = 22</code> (W) — é o que o <code>%</code> do Python já faz.</div>
-<p><strong>Encapsulamento:</strong> Python usa convenção — <code>nome</code> público, <code>_nome</code> uso interno, <code>__nome</code> privado (name mangling: vira <code>_CifraVigenere__deslocamentos</code>). Java usa <code>public</code> / <code>private</code> / <code>protected</code> + <code>static</code> / <code>final</code>.</p>
-<table>
-<tr><th>Símbolo "@"</th><th>O que é</th></tr>
-<tr><td><code>@Override</code> (Java)</td><td><strong>Anotação</strong>: só um aviso que o compilador confere — não executa código nem muda o método.</td></tr>
-<tr><td><code>@decorator</code> (Python)</td><td><strong>Função que recebe e devolve outra função</strong> — pode mudar o comportamento e executa código.</td></tr>
-<tr><td><code>@abstractmethod · @property · @staticmethod · @classmethod</code></td><td>Decorators do Python. Nesta versão didática foram trocados por código explícito (métodos que lançam <code>NotImplementedError</code>, <code>get_chave()</code>, etc.).</td></tr>
-</table>
-<div class="box good"><strong>Pegadinha de prova:</strong> <code>@Override</code> (Java) <em>não</em> é decorator e <em>não</em> muda o método — é metadado para o compilador. O <code>@</code> tem o mesmo símbolo nas duas linguagens, mas a função é bem diferente.</div>
+<!-- ============================ QUESTÃO 02 ============================ -->
+<h2 id="q2">Questão 02 — Combinar busca binária + busca linear (e o Big O)</h2>
 
-<!-- ===================== 6 (sec-1) ===================== -->
-<h2 id="poo-sec-1">6. Estruturas de Dados</h2>
-<p><strong>O que é:</strong> uma <em>estrutura de dados</em> é só a <strong>forma de guardar</strong> as coisas. Não muda <em>o que</em> você guarda, muda <em>como</em>. Ex.: guardar os convidados de uma festa numa lista por ordem de chegada, numa pilha (o último a chegar sai primeiro) ou numa tabela por nome (acha na hora).</p>
-<p><strong>Por que importa:</strong> a mesma informação guardada de formas diferentes responde <em>rápido</em> a perguntas diferentes. Achar por nome é rápido numa tabela; achar o "menor" é rápido numa árvore; "desfazer" é rápido numa pilha. Escolher a estrutura certa é metade da eficiência.</p>
-<p>Sete estruturas essenciais, com conceito e uso no mundo real:</p>
-
-<table>
-<tr><th>#</th><th>Estrutura</th><th>Conceito</th><th>Ponto forte</th><th>Ponto fraco</th></tr>
-<tr><td>1</td><td><strong>Vetor</strong></td><td>Tamanho fixo, acesso pelo índice</td><td>Acesso direto <code>v[3]</code></td><td>Tamanho fixo; inserir no meio desloca</td></tr>
-<tr><td>2</td><td><strong>Lista</strong></td><td>Sequência ordenada que cresce e diminui</td><td>Tamanho variável, mantém ordem</td><td>Inserir no meio pode custar</td></tr>
-<tr><td>3</td><td><strong>Lista encadeada</strong></td><td>Nós com dado + ponteiro para o próximo</td><td>Inserir/remover só troca ponteiros</td><td>Acesso percorrendo do início</td></tr>
-<tr><td>4</td><td><strong>Pilha</strong></td><td>LIFO — entra e sai pelo topo</td><td><code>push</code>/<code>pop</code> imediatos</td><td>Só acessa o topo</td></tr>
-<tr><td>5</td><td><strong>Fila</strong></td><td>FIFO — entra no fim, sai no início</td><td>Mantém ordem de chegada</td><td>Só acessa o início</td></tr>
-<tr><td>6</td><td><strong>Árvore</strong></td><td>Hierarquia: raiz → filhos → folhas (BST: menores à esquerda)</td><td>Hierarquia e busca rápida</td><td>Mais complexa de manter</td></tr>
-<tr><td>7</td><td><strong>Hash</strong></td><td>chave → função hash → índice → valor</td><td>Busca média O(1)</td><td>Não guarda ordem; colisões</td></tr>
-</table>
-
-<h4>Analogias para não esquecer</h4>
-<table>
-<tr><th>Estrutura</th><th>Pense em…</th></tr>
-<tr><td>Vetor</td><td>Uma <strong>fileira de cadeiras numeradas</strong> — você senta direto na cadeira 3.</td></tr>
-<tr><td>Lista</td><td>Uma <strong>fila de supermercado</strong> que cresce e diminui.</td></tr>
-<tr><td>Lista encadeada</td><td>Uma <strong>caça ao tesouro</strong>: cada pista diz onde está a próxima.</td></tr>
-<tr><td>Pilha</td><td>Uma <strong>pilha de pratos</strong>: põe e tira sempre do topo.</td></tr>
-<tr><td>Fila</td><td>A <strong>fila do banco</strong>: primeiro a chegar, primeiro a ser atendido.</td></tr>
-<tr><td>Árvore</td><td>As <strong>pastas do computador</strong> ou uma <strong>árvore genealógica</strong>.</td></tr>
-<tr><td>Hash</td><td>Um <strong>armário de gavetas numeradas</strong> — vai direto à gaveta certa.</td></tr>
-</table>
-
-<h3>6.1 Aplicações no mundo real</h3>
-<table>
-<tr><th>Estrutura</th><th>Exemplos</th></tr>
-<tr><td>Vetor</td><td>Imagens (matriz de pixels), notas da turma, leituras de sensor</td></tr>
-<tr><td>Lista</td><td>Lista de tarefas, playlist, contatos</td></tr>
-<tr><td>Encadeada</td><td>Voltar/avançar do navegador (dupla), repetir playlist (circular), memória livre do SO</td></tr>
-<tr><td>Pilha</td><td>Ctrl+Z, chamadas de função, validar parênteses</td></tr>
-<tr><td>Fila</td><td>Fila de impressão, atendimento por senha, uso da CPU</td></tr>
-<tr><td>Árvore</td><td>Pastas de arquivos, índices B de banco, HTML/DOM</td></tr>
-<tr><td>Hash</td><td>Busca por CPF, cache de sites, contar palavras</td></tr>
-</table>
-
-<h3>6.2 Qual estrutura usar?</h3>
-<table>
-<tr><th>Se você precisa…</th><th>Use</th></tr>
-<tr><td>Acessar por posição, tamanho conhecido</td><td>Vetor</td></tr>
-<tr><td>Guardar itens que mudam de quantidade</td><td>Lista</td></tr>
-<tr><td>Inserir/remover no meio com frequência</td><td>Lista encadeada</td></tr>
-<tr><td>Desfazer / voltar atrás</td><td>Pilha</td></tr>
-<tr><td>Atender na ordem de chegada</td><td>Fila</td></tr>
-<tr><td>Representar hierarquia</td><td>Árvore</td></tr>
-<tr><td>Achar rápido por uma chave</td><td>Hash</td></tr>
-</table>
-
-<!-- ===================== 6 (sec-2) ===================== -->
-<h2 id="poo-sec-2">7. Árvores e Percursos</h2>
-<p><strong>O que é, bem simples:</strong> uma <em>árvore</em> é um jeito de organizar coisas <strong>em níveis</strong> — como as pastas do computador. Tem uma <strong>raiz</strong> (o topo), ela aponta para <strong>filhos</strong>, que apontam para outros, até chegar nas <strong>folhas</strong> (as pontas, que não têm filhos).</p>
-<p><strong>Por que importa:</strong> quando está organizada (menores à esquerda, maiores à direita), dá para <strong>achar quase tudo em poucos passos</strong> — a cada passo você descarta metade das opções, como procurar uma palavra no dicionário abrindo no meio, não página por página.</p>
-<p><strong>Percursos</strong> = as ordens possíveis de visitar tudo. O que muda entre elas é só <em>quando</em> a raiz é visitada. São três, mostradas abaixo.</p>
-
-<h3>7.1 Conceitos</h3>
+<h3 id="q2-foco">2.1 O que a questão pede (palavras do professor)</h3>
+<div class="box warn">
+<strong>Ele disse, em resumo:</strong>
 <ul>
-  <li><strong>Raiz</strong>: nó do topo, sem pai. <strong>Folha</strong>: nó sem filhos.</li>
-  <li><strong>Árvore binária</strong>: no máximo 2 filhos (esquerda/direita).</li>
-  <li><strong>Árvore binária de busca (BST)</strong>: menores à esquerda, maiores à direita — busca descarta um lado a cada passo.</li>
+<li>Como <strong>combinar dois métodos de busca</strong>: a <strong>binária</strong> serve quando a lista está <strong>ordenada</strong>; a <strong>linear</strong> serve quando <strong>não está</strong>.</li>
+<li><strong>O que fazer quando a lista muda</strong> (e a ordem se perde / o custo de manter a ordem).</li>
+<li>O <strong>impacto no Big O</strong>: <code>n</code> é a busca linear, <code>log n</code> é a binária.</li>
+<li>Saber fazer <strong>as contas</strong>: comparar os custos e os crescimentos (envolvendo <code>n</code>, <code>log n</code> e <code>n log n</code>).</li>
 </ul>
+</div>
+<div class="box good">
+<strong>Resposta de uma linha (o que a prova quer ouvir):</strong> "Se a lista está ordenada (ou vale a pena ordená-la porque vou buscar muitas vezes), uso <strong>busca binária — O(log n)</strong>. Se não está ordenada e as buscas são poucas, uso <strong>busca linear — O(n)</strong>. Se a lista muda o tempo todo, <strong>manter a ordem custa caro</strong>, então fico na linear (ou troco de estrutura)."
+</div>
 
-<h3>7.2 Os três percursos</h3>
-<p>Percorrer = visitar cada nó uma vez. Só muda <strong>quando a raiz é visitada</strong> (R = raiz, E = esquerda, D = direita; esquerda sempre antes da direita).</p>
+<h3 id="q2-duas">2.2 As duas buscas, lado a lado</h3>
 <table>
-<tr><th>Percurso</th><th>Ordem</th><th>Use quando…</th><th>Exemplos</th></tr>
-<tr><td><strong>Pré-ordem</strong></td><td>R, E, D</td><td>Pai antes dos filhos</td><td>Copiar/salvar árvore; listar pastas com recuo</td></tr>
-<tr><td><strong>Em ordem</strong></td><td>E, R, D</td><td>Quer valores ordenados (em BST)</td><td>Listar do menor ao maior</td></tr>
-<tr><td><strong>Pós-ordem</strong></td><td>E, D, R</td><td>Filhos antes do pai</td><td>Apagar árvore; somar pastas; calcular expressões</td></tr>
+<tr><th></th><th>Busca linear</th><th>Busca binária</th></tr>
+<tr><td>Custo (Big O)</td><td><strong>O(n)</strong></td><td><strong>O(log n)</strong></td></tr>
+<tr><td>Requisito</td><td>Nenhum: funciona em <strong>qualquer</strong> lista</td><td>Lista <strong>ordenada</strong> + <strong>acesso por índice</strong> (chegar no meio na hora)</td></tr>
+<tr><td>Como funciona</td><td>Olha um por um, do começo ao fim, até achar</td><td>Olha o meio; se o alvo é menor, joga fora a metade da direita; se é maior, joga fora a esquerda; repete</td></tr>
+<tr><td>Pior caso</td><td>Examina <strong>todos</strong> os n itens</td><td>Faz ~<code>log₂ n</code> comparações</td></tr>
+<tr><td>Exemplo (achar o 19 numa lista de 7)</td><td>Encontra na <strong>4ª</strong> tentativa</td><td>Encontra em <strong>3</strong> tentativas</td></tr>
+<tr><td>Quando usar</td><td>Lista desordenada, ou buscas raras, ou estrutura sem acesso ao meio (pilha/fila/encadeada)</td><td>Lista ordenada e buscas repetidas</td></tr>
 </table>
 
-<h3>7.3 Exemplo (árvore A–G)</h3>
-<div class="diagram">        A
-      /   \
-     B     C
-    / \   / \
-   D   E F   G</div>
-<table>
-<tr><th>Percurso</th><th>Resultado</th></tr>
-<tr><td>Pré-ordem</td><td><code>A B D E C F G</code></td></tr>
-<tr><td>Em ordem</td><td><code>D B E A F C G</code></td></tr>
-<tr><td>Pós-ordem</td><td><code>D E B F G C A</code></td></tr>
-</table>
-
-<h3>7.4 Aplicações</h3>
-<p><strong>Árvore de expressão:</strong> pré-ordem = prefixa (<code>× + 3 4 − 5 2</code>), em ordem = infixa (<code>(3+4)×(5−2)</code>), pós-ordem = pós-fixa e <strong>calcula</strong> (<code>3 4 + 5 2 − ×</code> → 21).</p>
-<p><strong>Pastas:</strong> pré-ordem lista; pós-ordem soma (o pai só sabe o tamanho depois dos filhos). Também: banco (árvore B), DOM, compiladores, árvore de decisão, organogramas.</p>
-
-<h3>7.5 Árvores nos bancos de dados (da BST à árvore B)</h3>
-<p>A BST é ótima na memória, mas no disco cada nó visitado pode ser uma <strong>leitura de disco</strong>.</p>
-<table>
-<tr><th>Problema em disco</th><th>Por quê</th></tr>
-<tr><td>Muitos níveis</td><td>Com 1 milhão de chaves a BST tem ≥ 20 níveis = até 20 leituras.</td></tr>
-<tr><td>Árvore torta</td><td>Inserir em ordem vira uma lista; a busca deixa de ser rápida.</td></tr>
-</table>
-<p><strong>Solução: árvore B.</strong> Várias chaves por nó, poucos níveis e <em>sempre</em> balanceada (quando um nó enche, ele se divide e todas as folhas ficam na mesma profundidade). Com 500 chaves por nó: 500×500×500 ≈ <strong>125 milhões</strong> de chaves em só 3 níveis.</p>
-<table>
-<tr><th>Aspecto</th><th>Árvore binária</th><th>Árvore B / B+</th></tr>
-<tr><td>Chaves por nó</td><td>1</td><td>centenas</td></tr>
-<tr><td>Níveis para 1 milhão</td><td>20 ou mais</td><td>3 ou 4</td></tr>
-<tr><td>Equilíbrio</td><td>depende da ordem</td><td>sempre garantido</td></tr>
-<tr><td>Onde aparece</td><td>memória / estudo</td><td>MySQL, MongoDB, PostgreSQL</td></tr>
-</table>
-<p><strong>MySQL (InnoDB):</strong> a tabela é uma árvore B+. A consulta <code>WHERE email = ?</code> usa o índice secundário <code>email → id</code> e depois o índice clusterizado <code>id → linha</code> (as folhas do clusterizado são as próprias linhas, em ordem e encadeadas).</p>
-<p><strong>MongoDB (WiredTiger):</strong> coleção e índices em árvore B. <code>find({email})</code> usa <code>email → RecordId</code> e depois <code>RecordId → documento</code>; o índice <code>_id</code> sempre existe. O índice <em>hashed</em> é a mesma árvore com o hash do valor como chave, usada para distribuir dados entre servidores (sharding).</p>
-
-<!-- ===================== 7 (sec-3) ===================== -->
-<h2 id="poo-sec-3">8. Big O e Eficiência</h2>
-<p><strong>O que é, bem simples:</strong> Big O é só uma <strong>etiqueta que diz "quanto o trabalho cresce"</strong> quando a quantidade de dados aumenta. Não mede segundos — mede a <em>forma da curva</em>. Pensa em procurar um nome:
+<div class="box">
+<strong>Por que a binária é "log n" (a intuição que não esquece):</strong> a cada passo ela <strong>joga metade fora</strong>. Começa com n, depois n/2, depois n/4, n/8… Você pergunta "quantas vezes posso dividir n por 2 até sobrar 1?" — é o <strong>log₂ n</strong>.
 <ul>
-<li><strong>O(1)</strong> — "abrir a gaveta certa": sempre 1 passo, não importa se tem 10 ou 10 milhões. (hash)</li>
-<li><strong>O(log n)</strong> — "abrir o dicionário no meio": cada passo corta o resto pela metade. (busca binária, árvore)</li>
-<li><strong>O(n)</strong> — "ler a lista inteira": o trabalho cresce junto com os dados. (busca linear)</li>
+<li>1.000 itens → ~<strong>10</strong> passos (pois 2¹⁰ = 1024).</li>
+<li>1.000.000 de itens → ~<strong>20</strong> passos (pois 2²⁰ ≈ 1 milhão).</li>
+<li>Isso é o "abrir o dicionário no meio": em vez de ler página por página, você corta o livro em metades.</li>
 </ul>
-Saber isso é o que separa um programa que voa de um que trava.</p>
+</div>
 
-<h3>8.1 Por que eficiência importa</h3>
-<ul>
-  <li><strong>Escala</strong>: 100 usuários ≠ 100 milhões — soluções ingênuas não escalam.</li>
-  <li><strong>Custo real</strong>: tempo de processamento = espera do usuário, nuvem mais cara, bateria.</li>
-  <li><strong>Previsibilidade</strong>: saber a complexidade prevê travamento antes de produção.</li>
-</ul>
-<div class="box">Big O é a linguagem para descrever e comparar o <strong>crescimento do esforço</strong> conforme <code>n</code> (tamanho da entrada) aumenta.</div>
+<div class="box warn">
+<strong>O detalhe que quase todo mundo erra:</strong> "lista ordenada" <strong>não basta</strong> para a busca binária — é preciso <strong>acesso direto por índice</strong> (como num vetor/array: pular direto para a posição do meio). Numa <strong>lista encadeada</strong>, para chegar ao meio você tem que <em>percorrer</em> os nós do começo → a binária perde a vantagem. E em <strong>pilha/fila</strong> nem se fala (só o topo/início é acessível). Nesses casos, a busca é <strong>linear, O(n)</strong>, mesmo com os dados ordenados.
+</div>
 
-<h3>8.2 O que é Big O</h3>
+<h3 id="q2-combinar">2.3 Como combinar as duas (a resposta da prova)</h3>
+<p>Não existe "a melhor busca". Existe a busca certa para a <strong>situação</strong>. Decida nesta ordem:</p>
+<div class="diagram">PASSO 1 — A lista está ORDENADA?
+   NÃO . . . . . . . . . . . . . -> busca LINEAR (O(n))
+   SIM . . . . . . . . . . . . . -> busca BINÁRIA (O(log n))  [precisa de índice]
+
+PASSO 2 — Se não está ordenada: vale a pena ORDENAR antes?
+   Ordenar custa O(n log n)  (é um investimento, pago UMA vez)
+   - vou buscar POUCAS vezes  -> NÃO ordena: LINEAR toda vez
+   - vou buscar MUITAS vezes   -> ordena 1x e usa BINÁRIA depois   (ver 2.5)
+
+PASSO 3 — A lista MUDA com frequência?
+   Inserir/remover no lugar certo de uma lista ordenada custa O(n)
+   (tem que "abrir espaço" e deslocar todo mundo)
+   - muda o tempo todo -> manter a ordem é caro -> volta pra LINEAR
+     (ou troca a estrutura: hash O(1) médio, ou árvore balanceada O(log n))
+
+PASSO 4 — A ordem original significa algo?
+   (linha do tempo, ordem de chegada, histórico de navegação)
+   -> NÃO ordene: você destruiria a informação.
+
+PASSO 5 — É pilha ou fila?
+   -> só LINEAR, sempre O(n): não há acesso ao meio.</div>
+
+<div class="box good">
+<strong>"O que fazer quando a lista muda" — resposta pronta:</strong> ordenar só vale se a ordem for <em>aproveitada</em>. Se os dados mudam a todo instante, cada inserção numa lista ordenada custa <strong>O(n)</strong> para deslocar os elementos, e esse custo contínuo <strong>destrói</strong> a economia das buscas rápidas. As saídas são:
 <ol>
-  <li><strong>Ignora constantes</strong>: O(2n) e O(n) viram O(n) — importa a forma da curva.</li>
-  <li><strong>Foca no pior caso</strong>: limite garantido de esforço.</li>
-  <li><strong>Compara crescimento, não velocidade</strong>: não mede segundos.</li>
+<li><strong>Ficar na busca linear</strong> (se as buscas são raras).</li>
+<li><strong>Reordenar em lote:</strong> junto as mudanças do dia e reordeno de uma vez (ex.: de madrugada) — aí as buscas do dia usam binária.</li>
+<li><strong>Trocar de estrutura:</strong> <em>hash</em> (busca por chave em O(1) médio) ou <em>árvore balanceada</em> (O(log n), insere e busca rápido, mantém a ordem).</li>
 </ol>
+</div>
 
-<h3>8.3 Classes de complexidade</h3>
+<h3 id="q2-bigo">2.4 Big O sem decoreba</h3>
+<p><strong>Big O não mede segundos</strong> — mede <strong>"como o esforço cresce"</strong> quando a quantidade de dados (n) aumenta. Três verdades que resolvem a maior parte das perguntas:</p>
+<ol>
+<li><strong>Ignora constantes:</strong> O(2n) vira O(n); O(3 log n) vira O(log n). O que importa é a <em>forma da curva</em>.</li>
+<li><strong>Foca no pior caso:</strong> é a garantia de "nunca vai ser pior que isso".</li>
+<li><strong>Compara crescimento, não velocidade:</strong> não diz quantos segundos, diz como o esforço cresce quando n dobra ou triplica.</li>
+</ol>
 <table>
-<tr><th>Notação</th><th>Classe</th><th>Descrição</th><th>Exemplo</th></tr>
-<tr><td><strong>O(1)</strong></td><td>Constante</td><td>Tempo sempre igual</td><td>Topo da pilha</td></tr>
-<tr><td><strong>O(log n)</strong></td><td>Logarítmica</td><td>Cada passo elimina metade</td><td>Dicionário pela metade</td></tr>
-<tr><td><strong>O(n)</strong></td><td>Linear</td><td>Cresce na proporção dos dados</td><td>Ler livro página a página</td></tr>
-<tr><td><strong>O(n log n)</strong></td><td>Linearítmica</td><td>Boas ordenações</td><td>Organizar baralho em grupos</td></tr>
-<tr><td><strong>O(n²)</strong></td><td>Quadrática</td><td>Todos contra todos</td><td>Cada pessoa × todas as outras</td></tr>
+<tr><th>Notação</th><th>Classe</th><th>O que significa</th><th>Exemplo</th></tr>
+<tr><td><strong>O(1)</strong></td><td>Constante</td><td>Mesmo tempo, não importa n</td><td>Item do topo da pilha / hash médio</td></tr>
+<tr><td><strong>O(log n)</strong></td><td>Logarítmica</td><td>Cada passo elimina metade</td><td><strong>Busca binária</strong>; dicionário no meio</td></tr>
+<tr><td><strong>O(n)</strong></td><td>Linear</td><td>Cresce junto com os dados</td><td><strong>Busca linear</strong>; ler o livro página a página</td></tr>
+<tr><td><strong>O(n log n)</strong></td><td>Linearítmica</td><td>Boas ordenações</td><td><strong>Merge Sort, Quicksort</strong></td></tr>
+<tr><td><strong>O(n²)</strong></td><td>Quadrática</td><td>Todos contra todos</td><td>Bubble/Seleção/Inserção; inserir no meio</td></tr>
 <tr><td><strong>O(2ⁿ)</strong></td><td>Exponencial</td><td>Cada item dobra o trabalho</td><td>Todas as combinações de senha</td></tr>
 </table>
+<div class="box">
+<strong>Ordem de crescimento (do melhor para o pior):</strong>
+<div class="diagram" style="margin:.6rem 0 0">O(1)  &lt;  O(log n)  &lt;  O(n)  &lt;  O(n log n)  &lt;  O(n²)  &lt;  O(2ⁿ)
+const.    log         linear    linearítmica     quadrática   exponencial</div>
+</div>
 
-<h3>8.4 Impacto prático</h3>
+<h3 id="q2-calculo">2.5 Os cálculos que a prova pode pedir</h3>
+<p>O professor disse que é preciso "saber fazer o cálculo". Os três cálculos que caem são estes:</p>
+
+<h4>(a) Achar o log₂ de um n (a busca binária)</h4>
+<p>Pergunta-se: "quantas vezes divido n por 2 até sobrar 1?" (ou "2 elevado a quê dá n?").</p>
 <table>
-<tr><th>n</th><th>O(log n)</th><th>O(n)</th><th>O(n²)</th><th>O(2ⁿ)</th></tr>
-<tr><td>10</td><td>~3</td><td>10</td><td>100</td><td>1.024</td></tr>
-<tr><td>100</td><td>~7</td><td>100</td><td>10.000</td><td>~1,27 × 10³⁰</td></tr>
-<tr><td>1.000</td><td>~10</td><td>1.000</td><td>1.000.000</td><td>número com &gt;300 dígitos</td></tr>
-</table>
-<div class="box">O(n²) assusta em mil itens; O(2ⁿ) fica impossível a partir de poucas centenas.</div>
-
-<!-- ===================== 8 (sec-4) ===================== -->
-<h2 id="poo-sec-4">9. Buscas, Listas/Pilhas/Filas e Ordenação</h2>
-<p><strong>O que é, bem simples:</strong> aqui a pergunta é "<strong>como eu acho uma coisa</strong>" e "<strong>como eu organizo</strong>". Procurar um nome numa lista bagunçada é lento (olha um por um). Numa lista <em>ordenada</em>, você vai cortando no meio e acha rápido. E "organizar" (ordenar) tem um preço — vale a pena só quando você vai buscar muitas vezes.</p>
-
-<h3>9.1 Busca linear vs binária</h3>
-<table>
-<tr><th></th><th>Busca linear — O(n)</th><th>Busca binária — O(log n)</th></tr>
-<tr><td>Requisito</td><td>Funciona em qualquer lista</td><td>Lista ordenada + acesso por índice</td></tr>
-<tr><td>Como</td><td>Olha um por um; pior caso = n itens</td><td>Descarta metade a cada passo</td></tr>
-<tr><td>Ex: achar 19 em 7 itens</td><td>4ª tentativa</td><td>3 tentativas</td></tr>
+<tr><th>n</th><th>log₂ n (passos da binária)</th><th>Como conferir</th></tr>
+<tr><td>10</td><td>≈ 3</td><td>2³ = 8 (passou de 8?)</td></tr>
+<tr><td>100</td><td>≈ 7</td><td>2⁷ = 128</td></tr>
+<tr><td>1.000</td><td>≈ 10</td><td>2¹⁰ = 1.024</td></tr>
+<tr><td>1.024</td><td>= 10 (exato)</td><td>2¹⁰</td></tr>
+<tr><td>1.000.000</td><td>≈ 20</td><td>2²⁰ ≈ 1.048.576</td></tr>
 </table>
 
-<h3>9.2 Por que pilha e fila não têm busca binária</h3>
-<p>Sem acesso aleatório ao meio: só o topo (pilha) ou o início (fila) é acessível. Busca sempre <strong>O(n)</strong>, mesmo ordenado.</p>
-
-<h3>9.3 Complexidade lado a lado</h3>
+<h4>(b) O custo de ORDENAR (o "pedágio") — O(n log n)</h4>
+<p>Ordenar bem (Merge/Quicksort) custa <strong>n × log n</strong>. Multiplique o n pelo log dele:</p>
 <table>
-<tr><th>Operação</th><th>Lista</th><th>Pilha</th><th>Fila</th></tr>
-<tr><td>Acesso direto</td><td>O(1)</td><td>O(1)</td><td>O(1)</td></tr>
-<tr><td>Busca (não ordenada)</td><td>O(n)</td><td>O(n)</td><td>O(n)</td></tr>
-<tr><td>Busca ordenada com índice</td><td>O(log n)</td><td>O(n) sem atalho</td><td>O(n) sem atalho</td></tr>
-<tr><td>Inserir/remover numa ponta</td><td>O(1)</td><td>O(1)</td><td>O(1)*</td></tr>
-<tr><td>Inserir no meio/início</td><td>O(n)</td><td>não se aplica</td><td>não se aplica</td></tr>
+<tr><th>n</th><th>log₂ n</th><th>Custo de ordenar ≈ n × log n</th></tr>
+<tr><td>1.000</td><td>10</td><td>10.000 operações</td></tr>
+<tr><td>1.000.000</td><td>20</td><td>20.000.000 operações</td></tr>
 </table>
-<p style="color:var(--muted);font-size:.9rem">* Fila O(1) exige boa implementação (ponteiro de início ou encadeada).</p>
+<p style="color:var(--muted)"><em>As ordenações básicas (Bubble, Seleção, Inserção) são O(n²) — piores. As boas (Merge, Quicksort) são O(n log n) e são as que valem a pena.</em></p>
 
-<h3>9.4 Ordenação: o preço de organizar</h3>
+<h4>(c) O cálculo central: vale a pena ordenar antes de buscar?</h4>
+<p>Compare o custo total das duas estratégias, fazendo <strong>k buscas</strong> ao longo do tempo:</p>
+<div class="diagram">SEM ORDENAR:   custo = k × n
+               (cada uma das k buscas faz O(n))
+
+ORDENANDO 1x:  custo = (n log n)  +  k × log n
+               (paga o pedágio UMA vez; depois cada busca é O(log n))</div>
+<div class="box good">
+<strong>Regra prática (decore):</strong> o investimento de ordenar se paga quando o número de buscas passa de mais ou menos <strong>log₂ n</strong>.
+<div class="diagram" style="margin:.6rem 0 0">n = 100    -> compensa a partir de ~7 buscas
+n = 1.000  -> compensa a partir de ~10 buscas
+n = 1e6    -> compensa a partir de ~20 buscas</div>
+</div>
+
+<h4>Exemplo numérico completo (o jeito de responder na prova)</h4>
+<div class="box">
+<strong>Situação:</strong> um catálogo de <strong>1.000.000</strong> de produtos, <strong>não ordenado</strong>. Vou fazer <strong>5 consultas</strong> por dia. Vale ordenar?
+<div class="diagram" style="margin:.6rem 0 0">Busca linear .......... 1.000.000 por consulta
+Ordenar (1x) .......... 1.000.000 × 20 = 20.000.000
+Busca binária ......... ~20 por consulta
+
+5 buscas, LINEAR ...... 5 × 1.000.000        = 5.000.000
+5 buscas, ORDENANDO ... 20.000.000 + 5×20     = 20.000.100
+
+VEREDITO: com 5 buscas, a LINEAR ganha (20x mais barato).
+          Só valeria ordenar a partir de ~20 buscas por dia.</div>
+</div>
+<div class="box">
+<strong>Mesma situação, mas com 100 consultas:</strong>
+<div class="diagram" style="margin:.6rem 0 0">100 buscas, LINEAR ...... 100 × 1.000.000       = 100.000.000
+100 buscas, ORDENANDO ... 20.000.000 + 100×20     = 20.002.000
+VEREDITO: agora ORDENAR ganha (5x mais barato).</div>
+</div>
+
+<h4>Cálculo de "quantas vezes maior" (o que ele chamou de n / log n)</h4>
+<p>É comum pedirem a <strong>razão</strong> entre os custos. É só dividir um pelo outro:</p>
 <table>
-<tr><th>Classe</th><th>Técnicas</th></tr>
-<tr><td>O(n²) — básicas</td><td><strong>Bubble</strong>, <strong>Seleção</strong>, <strong>Inserção</strong> (O(n) se quase ordenado)</td></tr>
-<tr><td>O(n log n) — avançadas</td><td><strong>Merge Sort</strong>, <strong>Quicksort</strong></td></tr>
+<tr><th>Comparação</th><th>Como calcular</th><th>Com n = 1.000.000</th></tr>
+<tr><td>n é quantas vezes maior que log n?</td><td>n ÷ log n</td><td>1.000.000 ÷ 20 = <strong>50.000×</strong></td></tr>
+<tr><td>n² é quantas vezes maior que n log n?</td><td>n² ÷ (n log n) = n ÷ log n</td><td>1.000.000 ÷ 20 = <strong>50.000×</strong></td></tr>
+<tr><td>n² é quantas vezes maior que n?</td><td>n² ÷ n = n</td><td><strong>1.000.000×</strong></td></tr>
 </table>
-<div class="box">Reorganizar n itens custa, no melhor caso teórico, <strong>O(n log n)</strong>. O pedágio só compensa se for aproveitado depois.</div>
+<p style="color:var(--muted)"><em>Bônus: n² ÷ (n log n) sempre dá o mesmo que n ÷ log n. Guarde isso — cai em pegadinha.</em></p>
 
-<h3>9.5 Trade-off: ordenar antes de buscar?</h3>
+<h3 id="q2-tabela">2.6 Tabela de números (para consultar e citar na prova)</h3>
+<table>
+<tr><th>n</th><th>O(log n)</th><th>O(n)</th><th>O(n log n)</th><th>O(n²)</th></tr>
+<tr><td>10</td><td>~3</td><td>10</td><td>~33</td><td>100</td></tr>
+<tr><td>100</td><td>~7</td><td>100</td><td>~700</td><td>10.000</td></tr>
+<tr><td>1.000</td><td>~10</td><td>1.000</td><td>~10.000</td><td>1.000.000</td></tr>
+<tr><td>1.000.000</td><td>~20</td><td>1.000.000</td><td>~20.000.000</td><td>10¹²</td></tr>
+</table>
+<div class="box">
+<strong>Leia a tabela com um exemplo:</strong> com 1 milhão de itens, a busca <strong>linear</strong> faz até 1.000.000 de comparações; a <strong>binária</strong>, ~20. É cerca de <strong>50.000 vezes</strong> menos trabalho. Por isso vale ordenar quando se busca muito.
+</div>
+
+<h3 id="q2-pilhafila">2.7 Por que pilha e fila nunca têm busca binária</h3>
+<p>Mesmo que os dados estejam ordenados, você <strong>não alcança o meio</strong>: na <strong>pilha</strong> só o topo é acessível; na <strong>fila</strong>, só o início. Para buscar, é preciso desempilhar/desenfileirar um a um.</p>
+<table>
+<tr><th>Estrutura</th><th>Acesso</th><th>Busca</th><th>Por quê</th></tr>
+<tr><td>Pilha (LIFO)</td><td>Só o topo</td><td><strong>O(n)</strong> sempre</td><td>O meio é inacessível; ordenar não ajuda</td></tr>
+<tr><td>Fila (FIFO)</td><td>Só o início</td><td><strong>O(n)</strong> sempre</td><td>Idem: só sai do começo</td></tr>
+</table>
+<div class="box warn">
+<strong>Por que não "ordenar" uma pilha ou uma fila?</strong> Porque a ordem <em>é o produto</em>: a pilha guarda o histórico (Ctrl+Z sempre pega o mais recente) e a fila garante justiça (quem chegou primeiro sai primeiro). "Ordenar" destruiria exatamente aquilo que elas foram feitas para garantir. Se a regra de negócio precisa de prioridade, usa-se uma estrutura diferente (fila de prioridade) — não se reordena a pilha/fila.
+</div>
+
+<h3 id="q2-situacoes">2.8 Situações para você resolver (resolução oculta)</h3>
+<p>Resolva no papel: <strong>qual busca usar, se vale ordenar, e o custo em Big O</strong>. Depois abra a resolução.</p>
+
+<div class="concept">
+<h4>Situação 1 — Contatos fixos, busca milhares de vezes por dia</h4>
+<p><em>Uma agenda com 1.000.000 de contatos que quase nunca muda. O aplicativo recebe milhares de buscas por nome todos os dias.</em></p>
+<details><summary>Ver resolução</summary>
+<p><strong>Usar:</strong> ordenar uma vez por nome (O(n log n)) e usar <strong>busca binária</strong> (O(log n)) em todas as consultas.</p>
+<p><strong>Por quê:</strong> o custo de ordenar é pago uma única vez, e há muitas buscas para amortizar. Cada busca cai de 1.000.000 para ~20 comparações.</p>
+<p><strong>Big O:</strong> preparo O(n log n) + buscas O(log n).</p>
+<p><strong>Aceita também:</strong> um <em>índice</em> (hash por nome → O(1) médio, ou árvore → O(log n)).</p>
+</details>
+</div>
+
+<div class="concept">
+<h4>Situação 2 — E-mails que chegam a cada segundo, busca ocasional</h4>
+<p><em>Uma caixa de entrada que recebe mensagens o tempo todo. O usuário busca por assunto só de vez em quando.</em></p>
+<details><summary>Ver resolução</summary>
+<p><strong>Usar:</strong> <strong>busca linear</strong> (O(n)).</p>
+<p><strong>Por quê:</strong> a lista muda a todo instante → manter ordenado custaria O(n) por inserção (deslocar), arruinando a economia. E as buscas são raras, então não vale o investimento.</p>
+<p><strong>Big O:</strong> O(n) por busca.</p>
+<p><strong>Alternativa aceita:</strong> índice por hash ou árvore, se as buscas por assunto forem frequentes.</p>
+</details>
+</div>
+
+<div class="concept">
+<h4>Situação 3 — Catálogo de produtos estável para um site</h4>
+<p><em>10.000 produtos que mudam raramente. Cada visitante consulta vários produtos.</em></p>
+<details><summary>Ver resolução</summary>
+<p><strong>Usar:</strong> manter <strong>ordenado por nome/código</strong> e usar <strong>busca binária</strong> (ou índice).</p>
+<p><strong>Por quê:</strong> dados estáveis + muitas buscas = o pedágio de ordenar se paga. 10.000 itens → ~14 passos por busca (2¹⁴ ≈ 16.384), em vez de 10.000.</p>
+<p><strong>Big O:</strong> O(n log n) uma vez + O(log n) por consulta.</p>
+</details>
+</div>
+
+<div class="concept">
+<h4>Situação 4 — Botão "voltar" do navegador</h4>
+<p><em>O histórico de páginas visitadas, onde "voltar" retorna à última página.</em></p>
+<details><summary>Ver resolução</summary>
+<p><strong>Usar:</strong> é uma <strong>pilha (LIFO)</strong>; a busca/voltar é <strong>linear O(n)</strong> e <strong>não se ordena</strong>.</p>
+<p><strong>Por quê:</strong> a ordem (cronologia) <strong>é</strong> a informação. Reordenar destruiria o histórico. E a pilha não dá acesso ao meio → binária impossível.</p>
+<p><strong>Big O:</strong> O(n) (na prática, "voltar" é O(1), pois só olha o topo).</p>
+</details>
+</div>
+
+<div class="concept">
+<h4>Situação 5 — Fila de impressão</h4>
+<p><em>Documentos enviados à impressora imprimem na ordem de chegada.</em></p>
+<details><summary>Ver resolução</summary>
+<p><strong>Usar:</strong> <strong>fila (FIFO)</strong>; busca por um documento é <strong>O(n)</strong>. Não ordenar.</p>
+<p><strong>Por quê:</strong> a regra de negócio é a ordem de chegada (justiça). Ordenar destrói essa garantia.</p>
+<p><strong>Big O:</strong> O(n) para procurar; O(1) para inserir/remover nas pontas.</p>
+</details>
+</div>
+
+<div class="concept">
+<h4>Situação 6 — Vetor NÃO ordenado de 1.000.000 de CPFs, apenas 5 consultas</h4>
+<details><summary>Ver resolução</summary>
+<p><strong>Usar:</strong> <strong>busca linear</strong>.</p>
+<p><strong>Cálculo:</strong> 5 buscas lineares = 5.000.000. Ordenar (1x) ≈ 20.000.000 só de pedágio → <strong>não compensa</strong>.</p>
+<p><strong>Big O:</strong> O(n) por busca. Regra: compensaria ordenar só a partir de ~log₂(1e6) ≈ 20 buscas.</p>
+</details>
+</div>
+
+<div class="concept">
+<h4>Situação 7 — O MESMO vetor, mas com 100.000 consultas</h4>
+<details><summary>Ver resolução</summary>
+<p><strong>Usar:</strong> <strong>ordenar 1 vez + busca binária</strong>.</p>
+<p><strong>Cálculo:</strong> linear = 100.000 × 1.000.000 = 10¹¹. Ordenado = 20.000.000 + 100.000 × 20 = 22.000.000. A diferença é gigantesca.</p>
+<p><strong>Big O:</strong> O(n log n) + O(log n) por busca. Muitas buscas "pagam o pedágio".</p>
+</details>
+</div>
+
+<div class="concept">
+<h4>Situação 8 — Lista ENCADEADA já ordenada, buscar 1 item</h4>
+<details><summary>Ver resolução</summary>
+<p><strong>Usar:</strong> <strong>busca linear</strong> (O(n)).</p>
+<p><strong>Por quê:</strong> mesmo ordenada, a lista encadeada <strong>não tem acesso por índice</strong> — para "ir ao meio" teria que percorrer os nós, então a binária perde o sentido. E é uma busca só, então nem se fala em preparo.</p>
+<p><strong>Big O:</strong> O(n).</p>
+</details>
+</div>
+
+<div class="concept">
+<h4>Situação 9 — Busca exata por CPF em milhões de cadastros, acesso constante</h4>
+<details><summary>Ver resolução</summary>
+<p><strong>Usar:</strong> <strong>hash</strong> (chave → índice → valor): O(1) <em>em média</em>.</p>
+<p><strong>Por quê:</strong> não precisamos de ordem, só de "achar pela chave exata" rapidamente. O hash faz isso praticamente em 1 acesso, não importa se há 10 ou 10 milhões.</p>
+<p><strong>Cuidado:</strong> O(1) é <strong>média</strong>; com colisões/ função ruim, o pior caso é O(n).</p>
+<p><strong>Alternativa aceita:</strong> árvore balanceada (O(log n)) se também precisar listar em ordem.</p>
+</details>
+</div>
+
+<div class="concept">
+<h4>Situação 10 — Dados que mudam muito, mas buscas frequentes</h4>
+<p><em>Um sistema de entregas onde as posições dos pedidos mudam a cada segundo e o operador consulta a lista o tempo todo.</em></p>
+<details><summary>Ver resolução</summary>
+<p><strong>Não ordenar a cada mudança</strong> (cada inserção ordenada custa O(n)).</p>
+<p><strong>Usar:</strong> (a) ordenar <strong>em lote</strong> (reconstruir de tempos em tempos) e usar binária no intervalo; ou (b) <strong>trocar de estrutura</strong> — árvore balanceada (insere/busca O(log n) e mantém ordem) ou hash (busca O(1) médio, sem ordem).</p>
+<p><strong>Big O:</strong> a resposta depende da estratégia; o importante é justificar que manter ordenado a cada mudança é O(n) por operação.</p>
+</details>
+</div>
+
+<div class="concept">
+<h4>Situação 11 — Preciso listar "do menor para o maior" e buscar faixas</h4>
+<details><summary>Ver resolução</summary>
+<p><strong>Usar:</strong> manter <strong>ordenado</strong> (vetor ordenado + binária, ou <strong>árvore</strong>).</p>
+<p><strong>Por quê:</strong> a ordem <em>é</em> o requisito. A busca binária acha um valor; a árvore também ajuda a achar "faixas" (menores/maiores) com eficiência.</p>
+<p><strong>Big O:</strong> busca O(log n); listagem completa O(n).</p>
+</details>
+</div>
+
+<div class="concept">
+<h4>Situação 12 — Dados chegam em lotes (1x ao dia) e são consultados o dia todo</h4>
+<details><summary>Ver resolução</summary>
+<p><strong>Usar:</strong> ao receber o lote, <strong>ordenar uma vez</strong> (O(n log n)); durante o dia, <strong>busca binária</strong> (O(log n)).</p>
+<p><strong>Por quê:</strong> as mudanças são concentradas (não é a cada segundo), então o custo de reordenar é pequeno perto do número de consultas do dia. É o caso ideal do trade-off.</p>
+</details>
+</div>
+
+<h3 id="q2-aceitas">2.9 Respostas aceitas (variações que também valem)</h3>
 <div class="grid2">
-<div class="box"><strong>Sem ordenar</strong><br>Cada busca O(n). Buscas raras → força bruta.<br>Ideal: dados que mudam o tempo todo.</div>
-<div class="box"><strong>Ordenando primeiro</strong><br>O(n log n) 1× + buscas O(log n). Milhares de buscas → compensa.<br>Ideal: dados estáveis, buscas repetidas.</div>
+<div class="box good">
+<strong>Aceita como "combinar as buscas"</strong>
+<ul>
+<li>"Uso binária quando está ordenado; linear quando não está."</li>
+<li>"Ordeno sob demanda": só ordeno quando o número de buscas justificar.</li>
+<li>"Mantenho ordenado em lote" (reordeno de tempos em tempos).</li>
+<li>"Troco de estrutura": hash (O(1) médio) ou árvore (O(log n)) quando a lista muda muito.</li>
+</ul>
+</div>
+<div class="box warn">
+<strong>Erros que derrubam a nota</strong>
+<ul>
+<li>Dizer que a binária funciona em <strong>qualquer</strong> lista ordenada (esquece o acesso por índice).</li>
+<li>Achar que ordenar é "de graça" (ignora o O(n log n)).</li>
+<li>Esquecer que manter ordenado com dados que mudam custa <strong>O(n)</strong> por inserção.</li>
+<li>Garantir O(1) do hash no pior caso (é média).</li>
+<li>Confundir os crescimentos (não é "n e log n são quase iguais").</li>
+</ul>
+</div>
 </div>
 
-<h3>9.6 Quando NÃO ordenar</h3>
-<ol>
-  <li><strong>Busca única/raríssima</strong>: pagar O(n log n) &gt; só O(n).</li>
-  <li><strong>Dados mutáveis</strong>: inserir em lista ordenada = O(n).</li>
-  <li><strong>Ordem original significa algo</strong>: cronologia/fluxo.</li>
-</ol>
-<p><strong>Pilha e fila não se reordenam:</strong> a ordem é o produto. Prioridade = fila de prioridade, estrutura distinta.</p>
+<!-- ============================ QUESTÃO 03 ============================ -->
+<h2 id="q3">Questão 03 — Árvores (foco em pré-ordem e em ordem)</h2>
 
-<h3>9.7 Hash O(1)</h3>
-<p>Função converte a chave em endereço fixo → tempo médio O(1), independente de 10 ou 10 milhões de itens.</p>
-
-<div class="box takeaway"><strong>Takeaway</strong>Eficiência não é escolher sempre o algoritmo “mais rápido” — é dominar o trade-off entre preparar os dados e usá-los.</div>
-
-<!-- ===================== 10 (sec-hash) ===================== -->
-<h2 id="poo-sec-hash">10. Funções hash e colisões</h2>
-<p><strong>O que é, bem simples:</strong> uma <em>função hash</em> é uma <strong>máquina de dar endereço</strong>. Você joga um nome ("Maria") e ela devolve um número (ex.: 7). Aí, para guardar ou achar "Maria", você não procura em tudo — vai direto na <strong>gaveta 7</strong>, como num armário de gavetas numeradas.</p>
-<p><strong>O detalhe que a aula resolve:</strong> às vezes duas chaves caem na <em>mesma</em> gaveta (isso é a <strong>colisão</strong>). A questão é: como escolher uma boa função e o que fazer quando isso acontece.</p>
-<p><strong>Recapitulando em uma frase:</strong> a chave vira um número, a divisão (resto) escolhe a gaveta, e para guardar ou buscar refaz-se a mesma conta — sem percorrer a tabela.</p>
-
-<h3>10.1 Uma boa função usa a ordem das letras</h3>
+<h3 id="q3-vocab">3.1 Vocabulário (o mínimo para não travar na leitura)</h3>
 <table>
-<tr><th>Função</th><th>Conta</th><th>Problema / ganho</th></tr>
-<tr><td>Soma dos códigos</td><td>"Roma" = 82+111+109+97 = 399</td><td>Não vê a ordem → <strong>qualquer anagrama colide</strong> ("Amor" também dá 399). Só serve para ensinar.</td></tr>
-<tr><td>Polinomial ×31</td><td><code>h = h×31 + código</code></td><td>A ordem conta: "Roma" e "Amor" caem em gavetas diferentes. Boa e barata.</td></tr>
-</table>
-<p><strong>O tamanho da tabela importa:</strong> <code>mod 8</code> (potência de 2) olha só os últimos bits e amontoa; <code>mod 11</code> (primo) espalha melhor. Na prática usam-se MurmurHash e xxHash.</p>
-<table>
-<tr><th>Função</th><th>Espalhamento</th><th>Custo</th><th>Uso</th></tr>
-<tr><td>Soma das letras</td><td>ruim</td><td>mínimo</td><td>só para ensinar</td></tr>
-<tr><td>Polinomial ×31</td><td>bom</td><td>baixo</td><td>tabelas simples (tamanho primo)</td></tr>
-<tr><td>MurmurHash / xxHash</td><td>muito bom</td><td>baixo</td><td>uso geral</td></tr>
-<tr><td>SHA-256</td><td>excelente</td><td>alto</td><td>segurança, não gavetas</td></tr>
+<tr><th>Termo</th><th>O que é (bem simples)</th><th>No exemplo</th></tr>
+<tr><td><strong>Nó</strong></td><td>Cada "caixinha" com um valor.</td><td>A, B, C…</td></tr>
+<tr><td><strong>Raiz</strong></td><td>O nó do topo; não tem pai.</td><td>A</td></tr>
+<tr><td><strong>Pai / Filho</strong></td><td>Quem está acima / abaixo ligado direto.</td><td>A é pai de B e C</td></tr>
+<tr><td><strong>Folha</strong></td><td>Nó <strong>sem filhos</strong> (a ponta).</td><td>D, E, F, G</td></tr>
+<tr><td><strong>Subárvore</strong></td><td>Um nó e todos os seus descendentes.</td><td>"subárvore de B" = B, D, E</td></tr>
+<tr><td><strong>Altura</strong></td><td>Número de níveis (contando a raiz como nível 1).</td><td>3 níveis</td></tr>
+<tr><td><strong>Esquerda / Direita</strong></td><td>Os dois lados de cada nó. Em árvore binária, no máximo 2 filhos.</td><td>B é filho esquerdo; C é direito</td></tr>
 </table>
 
-<h3>10.2 Colisões são inevitáveis (e como tratar)</h3>
-<p>12 nomes em 11 gavetas → pelo menos uma colisão (<strong>princípio da casa dos pombos</strong>). Nenhuma função evita colisão; ela só espalha. A tabela precisa tratar:</p>
-<table>
-<tr><th>Estratégia</th><th>Como funciona</th></tr>
-<tr><td><strong>Encadeamento</strong></td><td>Cada gaveta guarda uma pequena lista. Buscar "Pedro": calcula o hash → vai à gaveta 7 → percorre só a lista dela (Maria? não. Pedro? sim).</td></tr>
-<tr><td><strong>Endereçamento aberto</strong></td><td>Sem listas: se a gaveta está ocupada, vai para a próxima livre por uma regra fixa. A busca repete o mesmo caminho.</td></tr>
-<tr><td><strong>Fator de carga</strong></td><td><code>itens ÷ gavetas</code>. No <code>HashMap</code> o limite é <strong>0,75</strong>: passou, a tabela <strong>dobra</strong> de tamanho e redistribui. As listas ficam com ~1 item e a busca segue O(1).</td></tr>
-</table>
-<p><strong>Lista que vira árvore:</strong> no Java, até 7 itens a gaveta é lista (busca O(n) naquela gaveta); a partir de <strong>8 itens</strong> (tabela com 64+ gavetas) vira <strong>árvore balanceada</strong> (O(log n)). O hash escolhe a gaveta; a árvore organiza o que caiu nela.</p>
-<table>
-<tr><th>Aspecto</th><th>Listas por gaveta</th><th>Endereçamento aberto</th></tr>
-<tr><td>Memória por item</td><td>um nó extra (ponteiro)</td><td>nenhum nó extra</td></tr>
-<tr><td>Gavetas vazias</td><td>tolera tabela mais cheia</td><td>precisa de mais folga</td></tr>
-<tr><td>Muitas colisões</td><td>a lista cresce</td><td>itens se aglomeram</td></tr>
-<tr><td>Remoção</td><td>simples: tira da lista</td><td>exige marcar "removido"</td></tr>
-</table>
-<div class="box warn"><strong>Custo escondido de dobrar:</strong> durante a redistribuição existem a tabela velha e a nova (pico de memória); logo depois ~metade das gavetas fica vazia; e cada item tem o hash recalculado (ou guardado).</div>
-
-<h3>10.3 Hash × lista × árvore (eficiência)</h3>
-<table>
-<tr><th>Estrutura</th><th>Buscar por chave</th><th>Buscar por faixa</th><th>Mantém ordem</th></tr>
-<tr><td>Lista sem ordem</td><td>O(n)</td><td>O(n)</td><td>Não</td></tr>
-<tr><td>Árvore B</td><td>O(log n)</td><td>Sim, eficiente</td><td>Sim</td></tr>
-<tr><td>Tabela hash</td><td>O(1) em média</td><td>O(n) no pior caso</td><td>Não</td></tr>
-</table>
-<p>Com 1 milhão de chaves: a lista faz até 1 milhão de comparações, a árvore balanceada ~20 e o hash, em média, <strong>1 acesso</strong>.</p>
-
-<h3>10.4 Onde o hash aparece</h3>
+<h3 id="q3-bst">3.2 Árvore binária × Árvore binária de BUSCA (BST)</h3>
+<div class="box">
 <ul>
-<li><strong>Dicionários:</strong> <code>dict</code> (Python), <code>HashMap</code> (Java), <code>Map</code> (JS).</li>
-<li><strong>Bancos de dados:</strong> índices hash e <em>hash join</em>.</li>
-<li><strong>Distribuição:</strong> decidir em qual servidor cada registro fica (<em>sharding</em>).</li>
-<li><strong>Senhas:</strong> guarda-se o hash, nunca a senha.</li>
-<li><strong>Integridade:</strong> conferir se um download chegou intacto.</li>
-<li><strong>Git:</strong> cada commit é identificado pelo seu hash.</li>
+<li><strong>Árvore binária:</strong> cada nó tem <strong>no máximo dois</strong> filhos (um à esquerda, um à direita). Só isso.</li>
+<li><strong>Árvore binária de busca (BST):</strong> é uma árvore binária com uma <strong>regra de ordem</strong>: à <strong>esquerda</strong> de um nó ficam só valores <strong>menores</strong>; à <strong>direita</strong>, só valores <strong>maiores</strong>.</li>
 </ul>
-<p><strong>Propriedades de uma boa função:</strong> determinística (mesma entrada → mesma saída), rápida, espalha bem e tem tamanho fixo. As <em>criptográficas</em> (SHA-256) acrescentam: não dá pra voltar da saída à entrada, e é inviável achar duas entradas com o mesmo hash. Trocar uma letra (M→m) muda o resultado inteiro.</p>
-<p><strong>No MongoDB:</strong> o índice <code>_id</code> sempre existe e há o índice <em>hashed</em> (hash do valor como chave), usado para distribuir dados entre servidores.</p>
+</div>
+<div class="box good">
+<strong>Por que a BST importa:</strong> a regra permite <strong>buscar como a busca binária</strong> — para achar o 60: <code>50 → direita → 70 → esquerda → 60</code>. Cada passo descarta metade: busca em <strong>O(log n)</strong> (a mesma ideia da Questão 02!). E o percurso <strong>em ordem</strong> de uma BST sempre sai <strong>em ordem crescente</strong>.
+</div>
 
-<!-- ===================== 11 (sec-9) ===================== -->
-<h2 id="poo-sec-9">11. Blockchain em Python — Parte 1 (Lógica)</h2>
+<h3 id="q3-montar">3.3 Como MONTAR a árvore (a partir da lista de valores)</h3>
+<p>Na prova geralmente vem uma lista de números e você insere <strong>na ordem em que aparecem</strong>. A regra de inserção é sempre:</p>
+<div class="diagram">Para inserir um valor:
+1. Comece na raiz.
+2. É menor que o nó atual? -> vá para a ESQUERDA.
+   É maior?              -> vá para a DIREITA.
+   É igual?              -> (normalmente) ignore / já existe.
+3. Repita até achar um "espaço vazio".
+4. Coloque o valor ali.</div>
 
-<h3>11.1 O que o programa faz (4 etapas)</h3>
+<div class="box warn">
+<strong>Dica de ouro:</strong> o <strong>primeiro</strong> valor da lista vira a <strong>raiz</strong>. Se os números vierem já <em>em ordem crescente</em> (ex.: 1, 2, 3, 4, 5), a árvore fica <strong>torta</strong> (uma "lista" para a direita) — deixa de ser eficiente, mas a regra continua valendo.
+</div>
+
+<h4>Exemplo passo a passo (inserindo 50, 30, 70, 20, 40)</h4>
+<div class="diagram">inserir 50 -> raiz.                          50
+
+inserir 30 -> 30 < 50 -> esquerda            50
+                                          30
+
+inserir 70 -> 70 > 50 -> direita             50
+                                       30        70
+
+inserir 20 -> 20<50 (esq) -> 20<30 (esq)     50
+                                       30        70
+                                    20
+
+inserir 40 -> 40<50 (esq) -> 40>30 (dir)     50
+                                       30        70
+                                    20    40</div>
+
+<h3 id="q3-percursos">3.4 Os três percursos (foco: pré-ordem e em ordem)</h3>
+<p>Percorrer = <strong>visitar todos os nós numa certa ordem</strong>. A diferença entre os três é só <strong>onde fica a RAIZ (o pai)</strong> em relação aos filhos. Pense no <strong>pai</strong>:</p>
 <table>
-<tr><th>Etapa</th><th>Papel</th></tr>
-<tr><td>Transação</td><td>quem paga, quem recebe, quanto</td></tr>
-<tr><td>Bloco</td><td>agrupa transações e calcula o hash</td></tr>
-<tr><td>Blockchain</td><td>encadeia os blocos</td></tr>
-<tr><td>Auditoria</td><td>detecta adulterações</td></tr>
+<tr><th>Percurso</th><th>Ordem</th><th>Regra com o pai</th><th>Pense assim</th></tr>
+<tr><td><strong>PRÉ-ordem</strong></td><td><strong>R</strong>aiz → <strong>E</strong>squerda → <strong>D</strong>ireita</td><td>o pai vem <strong>ANTES</strong> dos filhos</td><td>"pré" = primeiro o pai</td></tr>
+<tr><td><strong>EM ordem</strong> (em-ordem)</td><td><strong>E</strong>squerda → <strong>R</strong>aiz → <strong>D</strong>ireita</td><td>o pai vem <strong>NO MEIO</strong></td><td>"em" = entre os filhos</td></tr>
+<tr><td>PÓS-ordem</td><td><strong>E</strong>squerda → <strong>D</strong>ireita → <strong>R</strong>aiz</td><td>o pai vem <strong>DEPOIS</strong> dos filhos</td><td>"pós" = por último o pai</td></tr>
+</table>
+<div class="box good">
+<strong>Macete que nunca falha:</strong> a <strong>esquerda vem sempre antes da direita</strong>. O que muda é <em>quando</em> você escreve o pai (antes / no meio / depois). Então decore só isso: <strong>pai primeiro (pré)</strong>, <strong>pai no meio (em)</strong>, <strong>pai por último (pós)</strong>.
+</div>
+
+<div class="box">
+<strong>A receita recursiva (é exatamente o que você faz na mão):</strong>
+<div class="diagram" style="margin:.6rem 0 0">pre-ordem(no):
+    se no == vazio: pare
+    escreva no          <- pai
+    pre-ordem(no.esquerda)
+    pre-ordem(no.direita)
+
+em-ordem(no):
+    se no == vazio: pare
+    em-ordem(no.esquerda)
+    escreva no          <- pai
+    em-ordem(no.direita)
+
+pos-ordem(no):
+    se no == vazio: pare
+    pos-ordem(no.esquerda)
+    pos-ordem(no.direita)
+    escreva no          <- pai</div>
+</div>
+
+<div class="box good">
+<strong>CONFIRA sempre assim:</strong> se a árvore for uma <strong>BST</strong>, o percurso <strong>em ordem</strong> tem que sair em <strong>ordem crescente</strong>. Se saiu bagunçado, você errou o desenho ou o percurso. Esse é o seu "gabarito automático" para as questões de BST.
+</div>
+
+<h3 id="q3-metodo">3.5 Método à prova de erro (faça sempre nesta ordem)</h3>
+<div class="diagram">1) DESENHE a árvore com calma (raiz primeiro, depois cada inserção).
+2) IDENTIFIQUE as subárvores esquerda e direita de cada nó.
+3) Para cada percurso, escreva na ordem e VÁ DESCENDO até a folha,
+   antes de voltar. Não misture os níveis.
+
+   pré:  escreva o nó, vá para a esquerda...
+   em:   desça TODA a esquerda primeiro, aí escreva, aí vá para a direita
+   pós:  desça tudo, só escreva na volta
+
+4) Se for BST, confira o "em ordem" = crescente.</div>
+
+<h3 id="q3-exemplos">3.6 Exemplo 1 — a árvore pequena (A, B, C…)</h3>
+<div class="diagram">            A
+          ┌─┴─┐
+          B   C
+        ┌─┴─┐ ┌─┴─┐
+        D   E F   G</div>
+<table>
+<tr><th>Percurso</th><th>Resultado</th><th>Como saiu</th></tr>
+<tr><td><strong>Pré-ordem</strong></td><td><strong>A B D E C F G</strong></td><td>A (pai) → B (subárvore esquerda: B D E) → C (subárvore direita: C F G)</td></tr>
+<tr><td><strong>Em ordem</strong></td><td><strong>D B E A F C G</strong></td><td>D B E (esquerda de A) → A → F C G (direita de A)</td></tr>
+<tr><td>Pós-ordem</td><td>D E B F G C A</td><td>filhos primeiro: D E B, depois F G C, e A por último</td></tr>
 </table>
 
-<h3>11.2 Algoritmos-chave</h3>
-<p><strong>Validar transação</strong>: recusa nomes vazios e valor ≤ 0 com <code>ValueError</code>; após criada, não muda.</p>
-<p><strong>Calcular hash</strong>: dict (índice, momento, transações, hash_anterior) → <code>json.dumps(..., sort_keys=True)</code> → <code>hashlib.sha256</code> (64 hex).</p>
-<p><strong>Encadear</strong>: índice = tamanho da cadeia; hash_anterior = hash do topo.</p>
-<p><strong>Auditar</strong> (encontrar_quebra): (1) o bloco bate com o próprio hash? (2) o elo bate com o hash real do anterior? Devolve o índice do problema ou None.</p>
+<h3 id="q3-slide">3.7 Exemplo 2 — a árvore do slide (com todos os percursos)</h3>
+<p><strong>Valores (em ordem crescente):</strong> 5, 10, 20, 25, 30, 35, 38, 40, 45, 50, 60, 62, 65, 70, 80, 90, 95.</p>
+<h4>Passo 1 — a árvore montada</h4>
+<div class="diagram">                        50
+              ┌──────────┴──────────┐
+             30                     70
+        ┌─────┴─────┐         ┌─────┴─────┐
+       20          40        60          80
+      ┌─┴─┐       ┌─┴─┐       └─┐         └─┐
+     10   25     35   45        65          90
+    ┌─┘         └─┐             ┌─┘         └─┐
+    5            38            62            95</div>
 
-<h3>11.3 Por que a fraude não se sustenta</h3>
+<div class="box">
+<strong>Estrutura (para conferir a sua):</strong>
+<div class="diagram" style="margin:.6rem 0 0">50
+├── esquerda: 30
+│   ├── esquerda: 20
+│   │   ├── esquerda: 10 -> (esquerda: 5)
+│   │   └── direita: 25
+│   └── direita: 40
+│       ├── esquerda: 35 -> (direita: 38)
+│       └── direita: 45
+└── direita: 70
+    ├── esquerda: 60 -> (direita: 65 -> (esquerda: 62))
+    └── direita: 80 -> (direita: 90 -> (direita: 95))</div>
+</div>
+
+<h4>Passo 2 — os três percursos</h4>
 <table>
-<tr><th>Ataque</th><th>Bloco íntegro?</th><th>Cadeia válida?</th><th>Quebra</th></tr>
-<tr><td>Muda valor sem refazer hash</td><td>não</td><td>não</td><td>no bloco alterado</td></tr>
-<tr><td>Refaz o hash do bloco</td><td>sim</td><td>não</td><td>no próximo bloco (elo antigo)</td></tr>
+<tr><th>Percurso</th><th>Resultado</th></tr>
+<tr><td><strong>Pré-ordem</strong> (raiz, esq, dir)</td><td><strong>50, 30, 20, 10, 5, 25, 40, 35, 38, 45, 70, 60, 65, 62, 80, 90, 95</strong></td></tr>
+<tr><td><strong>Em ordem</strong> (esq, raiz, dir)</td><td><strong>5, 10, 20, 25, 30, 35, 38, 40, 45, 50, 60, 62, 65, 70, 80, 90, 95</strong> (crescente ✔)</td></tr>
+<tr><td>Pós-ordem (esq, dir, raiz)</td><td>5, 10, 25, 20, 38, 35, 45, 40, 30, 62, 65, 60, 95, 90, 80, 70, 50</td></tr>
 </table>
-<p>Para esconder, seria preciso refazer <strong>todos</strong> os blocos seguintes até o topo.</p>
+<div class="box good">
+<strong>Repare:</strong> o <strong>em ordem</strong> é exatamente a lista em ordem crescente — é a assinatura de uma BST. E o <strong>50 (a raiz)</strong> aparece: em <strong>1º</strong> na pré-ordem, no <strong>meio</strong> na em-ordem e em <strong>último</strong> na pós-ordem. Anchore nisso: onde está o 50? Isso já te diz se você começou certo.
+</div>
 
-<div class="box takeaway"><strong>Para levar</strong>(1) Transações validadas na criação e imutáveis. (2) Cada bloco selado por SHA-256 e guarda o hash do anterior. (3) Auditoria confere conteúdo e elos.</div>
-
-<!-- ===================== 10 ===================== -->
-<h2 id="poo-sec-10">12. Blockchain em Python — Parte 2 (POO e Decorators)</h2>
-
-<h3>12.1 Quatro classes</h3>
+<h4>Passo 3 — física da coisa (o que significa cada percurso)</h4>
 <table>
-<tr><th>Classe</th><th>Papel</th><th>Atributos privados</th></tr>
-<tr><td>Transacao</td><td>Valida e não muda</td><td>__remetente, __destinatario, __valor</td></tr>
-<tr><td>Bloco</td><td>Agrupa e “nasce selado” (hash no __init__)</td><td>__indice, __momento, __transacoes, __hash_anterior, __hash</td></tr>
-<tr><td>BlocoGenesis(Bloco)</td><td>Primeiro bloco; MANCHETE no lugar do hash anterior</td><td>herda + MANCHETE (classe)</td></tr>
-<tr><td>Blockchain</td><td>Adiciona e audita; nunca vazia</td><td>__cadeia</td></tr>
-</table>
-
-<h3>12.2 Encapsulamento e composição</h3>
-<ul>
-  <li><strong>Getters sem setters</strong> + <em>name mangling</em> (<code>_Transacao__valor</code>).</li>
-  <li><strong>Cópias defensivas</strong>: <code>list(...)</code> — lista é passada por referência.</li>
-  <li><strong>Herança</strong>: BlocoGenesis é um Bloco (<code>super().__init__</code>).</li>
-  <li><strong>Composição</strong>: Blockchain ◆ Bloco. <strong>Agregação</strong>: Bloco ◇ Transacao.</li>
-  <li><strong>Polimorfismo</strong>: <code>__str__</code> diferente por classe.</li>
-</ul>
-
-<h3>12.3 Decorators</h3>
-<p>Decorator = função que recebe função/classe e devolve versão modificada. <code>@registrar</code> ≡ <code>adicionar = registrar(adicionar)</code>.</p>
-<table>
-<tr><th>Decorator</th><th>Papel</th><th>Onde caberia</th></tr>
-<tr><td><code>@property</code></td><td>Lê método como atributo</td><td><code>bloco.hash</code></td></tr>
-<tr><td><code>@dataclass(frozen=True)</code></td><td>Gera __init__ e impede alterações</td><td>Transacao imutável</td></tr>
-<tr><td><code>@staticmethod</code></td><td>Método sem self</td><td>Só calcula SHA-256 de um texto</td></tr>
-<tr><td><code>@classmethod</code></td><td>Construtor alternativo (cls)</td><td><code>Transacao.de_dicionario(d)</code></td></tr>
-<tr><td><code>@override</code> (3.12)</td><td>Marca sobrescrita (como no Java)</td><td>BlocoGenesis.__str__</td></tr>
-</table>
-
-<!-- ===================== 11 ===================== -->
-<h2 id="poo-sec-11">13. Glossário</h2>
-<table>
-<tr><th>Termo</th><th>Definição</th></tr>
-<tr><td>LIFO / FIFO</td><td>Último a entrar, primeiro a sair / primeiro a entrar, primeiro a sair</td></tr>
-<tr><td>Colisão (hash)</td><td>Duas chaves geram o mesmo índice</td></tr>
-<tr><td>Big O</td><td>Notação do crescimento do esforço no pior caso</td></tr>
-<tr><td>Ligação dinâmica</td><td>Polimorfismo decide a versão do método em execução</td></tr>
-<tr><td>Sobrecarga</td><td>Mesmo nome, parâmetros diferentes — decidida na compilação</td></tr>
-<tr><td>Sobrescrita</td><td>Subclasse redefine um método herdado (mesma assinatura)</td></tr>
-<tr><td>Classe abstrata</td><td>Não instanciada; reúne o comum; métodos sem corpo</td></tr>
-<tr><td>Interface/contrato</td><td>Lista de métodos prometidos; sem estado</td></tr>
-<tr><td>Realização</td><td>Classe que implementa uma interface (linha tracejada)</td></tr>
-<tr><td>Generalização</td><td>Herança entre classes (linha cheia)</td></tr>
-<tr><td>Name mangling</td><td>Python vira <code>__x</code> em <code>_Classe__x</code></td></tr>
-<tr><td>SHA-256</td><td>Hash criptográfico de 64 caracteres hexadecimais</td></tr>
-<tr><td>Serialização</td><td><code>json.dumps(sort_keys=True)</code> — mesma ordem sempre</td></tr>
+<tr><th>Percurso</th><th>Serve para…</th></tr>
+<tr><td><strong>Pré-ordem</strong></td><td>Copiar/serializar a árvore (registrar a estrutura), listar hierarquia "do topo para baixo".</td></tr>
+<tr><td><strong>Em ordem</strong></td><td><strong>Listar os dados em ordem</strong> (crescente) numa BST. É o percurso mais cobrado.</td></tr>
+<tr><td>Pós-ordem</td><td>Apagar a árvore, calcular expressões (filhos antes do operador), somar tamanhos de pastas.</td></tr>
 </table>
 
-<!-- ===================== 12 ===================== -->
-<h2 id="poo-sec-12">14. Cheat Sheet</h2>
-
-<h3>Como montar um diagrama (receita)</h3>
-<div class="diagram">1. Ache o GENÉRICO .................. «abstract»
-2. Comum a todas as classes .......... sobe p/ a superclasse
-3. Próprio de uma só ................. fica na subclasse
-4. Capacidade de ALGUNS (cruza) ...... «interface» (tracejado)
-5. Regra de TODOS .................... método concreto na mãe
-6. Método que cada filha redefine .... abstrato/sobrescrito → POLIMORFISMO</div>
-
-<h3>Qual seta usar?</h3>
-<div class="diagram">"X é um Y" e reaproveita código ..... Herança   ────▷ (cheia)
-"cumpre o contrato" ................. Realização - -▷ (tracejada)
-"tem, e cria o outro" ............... Composição ◆────
-"tem, mas o outro já existia" ....... Agregação  ◇────</div>
-
-<h3>Big O — ordem de crescimento</h3>
-<div class="diagram">O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²) &lt; O(2ⁿ)
-constante  log      linear   lineararitm.  quadrática  exponencial</div>
-
-<h3>Qual percurso de árvore?</h3>
-<div class="diagram">Pai primeiro?          → Pré-ordem  (R E D)
-Preciso ordenado?      → Em ordem   (E R D)
-Filhos primeiro?       → Pós-ordem  (E D R)  ← os dois filhos e depois o pai</div>
-
-<h3>Herança ou interface?</h3>
-<div class="diagram">"é um" / reusa estado e código     → Herança (extends)
-"tem a capacidade" / contrato     → Interface (implements)
-Cruza hierarquias diferentes      → Interface (sem herança múltipla)
-Regra de todos os tipos           → Método concreto na superclasse</div>
-
-<h3>Complexidade das estruturas</h3>
-<div class="diagram">              acesso   busca   inserir ponta   inserir meio
-Lista         O(1)     O(n)    O(1)            O(n)
-Pilha (topo)  O(1)     O(n)    O(1)            —
-Fila (início) O(1)*    O(n)    O(1)*           —
-Hash (média)  —        O(1)    O(1)            —</div>
-
-<!-- ===================== 13 ===================== -->
-<h2 id="poo-sec-13">15. Roteiro de Estudo (foco em diagramas)</h2>
-
-<details open>
-<summary>Dia 1–2 — Base de POO (conceitos)</summary>
-<ol>
-  <li>Explicar em voz alta cada cartão da seção 1 (o que é / quando / onde).</li>
-  <li>Recitar a tabela herança × interface até sair sem olhar.</li>
-  <li>Desenhar a caixa de 3 compartimentos e a legenda de setas de memória.</li>
-</ol>
-</details>
-
-<details open>
-<summary>Dia 3–4 — Os diagramas (o modelo de referência é o Transporte)</summary>
-<ol>
-  <li><strong>Transporte (modelo de referência):</strong> treinar preencher o “modelo de referência” (2.0) — nomes, estereótipos, visibilidade, tipos, parâmetros e o tipo de cada seta. Depois explicar por que Onibus é intermediária e por que 2 interfaces.</li>
-  <li>Serpentário: refazer os 7 passos antes de olhar o gabarito.</li>
-  <li>Delivery: explicar por que as bikes não herdam de VeiculoEmplacado.</li>
-  <li>Vigenère: contrato × implementação; @Override (Java) × decorator (Python).</li>
-  <li>Em todos: apontar o método polimórfico e descrever cada comportamento.</li>
-</ol>
-</details>
-
-<details>
-<summary>Dia 5 — Fundamentos (estruturas / árvores / Big O)</summary>
-<ol>
-  <li>Tabela “qual estrutura usar”.</li>
-  <li>Os 3 percursos da árvore A–G.</li>
-  <li>Por que busca binária não existe em pilha/fila.</li>
-</ol>
-</details>
-
-<details>
-<summary>Dia 6 — Blockchain</summary>
-<ol>
-  <li>Implementar Transacao + Bloco + Blockchain do zero.</li>
-  <li>Simular os 2 ataques e explicar onde a cadeia quebra.</li>
-</ol>
-</details>
-
-<details>
-<summary>Dia 7 — Questões oficiais (seção 17)</summary>
-<ol>
-  <li>Fazer a <strong>Questão 1 (Transporte)</strong> cronometrada, sem olhar o gabarito.</li>
-  <li>Fazer a <strong>Questão 2 (Delivery)</strong> — é a mesma estrutura, para fixar.</li>
-  <li>Fazer a <strong>Questão 3 (Serpentário)</strong> e a <strong>Questão 4 (percursos da árvore)</strong>.</li>
-  <li>Depois resolver as <strong>10 questões para praticar</strong> (seção 18).</li>
-</ol>
-</details>
-
-<details>
-<summary>Simulado — perguntas de conceito</summary>
-<ol>
-  <li>Diferencie classe, objeto e instância.</li>
-  <li>Quando uma classe deve ser abstrata? Dê um exemplo dos diagramas.</li>
-  <li>Por que “ser elétrico” vira interface e não subclasse?</li>
-  <li>O que é polimorfismo e como ele aparece no embarque/despacho/alimentar?</li>
-  <li>Qual a diferença entre herança e realização no desenho?</li>
-  <li>Desenhe de memória o diagrama do serpentário com setas corretas.</li>
-</ol>
-</details>
-
-<!-- ===================== 16 (sec-exemplos) ===================== -->
-<h2 id="poo-sec-exemplos">16. Exemplos extras (o mesmo raciocínio em outros problemas)</h2>
-<p>O diagrama da prova pode <strong>não</strong> ser exatamente o do Transporte. Mas o <strong>raciocínio é sempre o mesmo</strong>. Aqui vão três problemas resolvidos passo a passo — repare que a "receita" se repete.</p>
-<div class="box"><strong>A receita que serve para qualquer diagrama:</strong>
-<ol>
-<li>Ache o <strong>genérico</strong> (o "todo mundo") → vira a superclasse, quase sempre <strong>abstrata</strong>.</li>
-<li>O que é <strong>de todos</strong> → sobe para a superclasse.</li>
-<li>O que é <strong>de um só</strong> → fica na subclasse.</li>
-<li>O que <strong>agrupa alguns</strong> → classe <strong>intermediária</strong> abstrata.</li>
-<li>Capacidade que <strong>atravessa hierarquias</strong> → vira <strong>interface</strong>.</li>
-<li>Ache o método que cada filha faz <strong>diferente</strong> → esse é o método <strong>polimórfico</strong> (abstrato na mãe).</li>
-</ol></div>
-
-<h3>Exemplo 1 — Zoológico (classe intermediária + interface que cruza hierarquia)</h3>
-<p><strong>Enunciado:</strong> "Cadastre os animais do zoológico. Todo animal tem <em>nome</em>, <em>idade</em> e <em>emite um som</em> (cada espécie do seu jeito). Mamíferos <em>amamentam</em>; aves <em>botam ovos</em>. O golfinho e o pinguim <em>nadam</em>; a águia <em>voa</em>."</p>
-<p><strong>Como pensar (seguindo a receita):</strong></p>
-<ul>
-<li><strong>Genérico:</strong> <code>Animal</code> (nome, idade, <code>emitirSom()</code>). Não existe "um animal sem espécie" → <strong>abstrata</strong>; e o som é diferente em cada um → <code>emitirSom()</code> é <strong>abstrato</strong>.</li>
-<li><strong>Agrupa alguns:</strong> <code>Mamifero</code> (amamenta) e <code>Ave</code> (bota ovo) → <strong>intermediárias abstratas</strong>.</li>
-<li><strong>Atravessa hierarquias:</strong> "nadar" aparece no golfinho (mamífero) <em>e</em> no pinguim (ave) → não cabe na herança → <strong>interface Nadador</strong>.</li>
-<li><strong>Capacidade isolada:</strong> "voar" só na águia → interface <strong>Voador</strong> (capacidade) ou simplesmente um método da própria águia.</li>
-</ul>
-<div class="diagram">                   «abstract» Animal
-              # nome: String · # idade: int
-              + emitirSom(): void           «abstract»
-                       △                     △
-              «abstract» Mamifero     «abstract» Ave
-                + amamentar(): void     + botarOvo(): void
-                △             △          △          △
-            Cachorro      Golfinho    Aguia      Pinguim
-                              ┆          ┆          ┆
-   «interface» Nadador  ◁─────┴──────────┴──────────┘   (Golfinho, Pinguim)
-   «interface» Voador   ◁───── Aguia</div>
-<table>
-<tr><th>Decisão</th><th>Por quê</th></tr>
-<tr><td><strong>Mamifero e Ave intermediárias</strong></td><td>Reúnem o que é comum (amamentar / botar ovo) sem repetir o mesmo em cada filha.</td></tr>
-<tr><td><strong>Nadador como interface</strong></td><td>Golfinho é um Mamifero e Pinguim é uma Ave: não têm o mesmo pai → só uma interface cruza as duas ramificações.</td></tr>
-<tr><td><strong>emitirSom abstrato</strong></td><td>Todo animal emite som, mas cada um de um jeito → regra de todos, corpo de cada um.</td></tr>
-<tr><td><strong>nome e idade na superclasse</strong></td><td>São comuns a <em>todos</em> → não devem ser repetidos nas filhas.</td></tr>
-</table>
-<p><strong>Polimorfismo:</strong> <code>for (Animal a : animais) a.emitirSom();</code> — o cachorro late, o golfinho assobia, a águia grita, o pinguim grasna. Mesma chamada, cada um responde do seu jeito, <strong>sem <code>if</code></strong>.</p>
-
-<h3>Exemplo 2 — Loja (duas capacidades = duas interfaces)</h3>
-<p><strong>Enunciado:</strong> "A loja aceita <em>Cartão de crédito</em>, <em>Pix</em> e <em>Boleto</em>. Toda forma de pagamento tem um <em>valor</em> e <em>processa</em> o pagamento (cada uma do seu jeito). Cartão e Boleto podem ser <em>parcelados</em>; Cartão e Pix podem ser <em>estornados</em>."</p>
-<p><strong>Como pensar:</strong> genérico = <code>FormaPagamento</code> (valor, <code>processar()</code>). "Parcelável" e "Estornável" são capacidades que só <em>algumas</em> formas têm → viram <strong>interfaces</strong> (e cruzam os tipos, pois o cartão está nas duas).</p>
-<div class="diagram">        «abstract» FormaPagamento
-        # valor: double
-        + processar(): void             «abstract»
-        + getComprovante(): String
-         △           △           △
-   CartaoCredito    Pix        Boleto
-     ┆      ┆       ┆           ┆
- «interface» Parcelavel ◁── CartaoCredito, Boleto
- «interface» Estornavel ◁── CartaoCredito, Pix</div>
-<table>
-<tr><th>Decisão</th><th>Por quê</th></tr>
-<tr><td><strong>Parcelavel e Estornavel são interfaces</strong></td><td>São capacidades de <em>algumas</em> formas (não de todas) e aparecem em tipos diferentes.</td></tr>
-<tr><td><strong>processar() abstrato</strong></td><td>Cada forma processa de um jeito (cartão autoriza, Pix gera QR, boleto gera código de barras).</td></tr>
-<tr><td><strong>valor na superclasse</strong></td><td>Toda forma tem um valor.</td></tr>
-</table>
-<p><strong>Polimorfismo:</strong> <code>for (FormaPagamento f : formas) f.processar();</code> — sem perguntar "que tipo é?".</p>
-
-<h3>Exemplo 3 — Streaming (bem simples, para fixar)</h3>
-<p><strong>Enunciado:</strong> "Um catálogo tem <em>Filmes</em>, <em>Séries</em> e <em>Documentários</em>. Todo item tem <em>título</em> e <em>duração</em> e sabe <em>reproduzir</em>. Filmes e Séries podem ser <em>baixados</em> para ver offline; documentários, não."</p>
-<div class="diagram">     «abstract» Conteudo
-     # titulo: String · # duracaoMin: int
-     + reproduzir(): void               «abstract»
-      △          △            △
-   Filme       Serie     Documentario
-                 ┆             
- «interface» Baixavel ◁── Filme, Serie</div>
-<p><strong>Polimorfismo:</strong> <code>reproduzir()</code> — o filme roda, a série começa pelo episódio 1, o documentário mostra a introdução. Mesmo método, comportamentos diferentes.</p>
-
-<div class="box good"><strong>Percebeu o padrão?</strong> Em todos: (1) uma <strong>superclasse abstrata</strong> no topo com o comum; (2) o método que cada um faz diferente fica <strong>abstrato</strong> ali; (3) capacidades de alguns viram <strong>interfaces</strong> (linha tracejada); (4) às vezes há uma <strong>classe intermediária</strong> para agrupar parte dos filhos. Se você dominar essas 4 ideias, resolve qualquer diagrama da prova.</div>
-
-<!-- ===================== 17 (sec-questoes) ===================== -->
-<!-- ===================== 17 (sec-prova) ===================== -->
-<h2 id="poo-sec-prova">17. Questões oficiais do professor (enunciados + gabaritos)</h2>
-<p>Estes enunciados estão <strong>dentro dos próprios slides do professor</strong>. Ele não disse que "são da prova", mas têm formato de prova (itens <strong>a) 6,0 · b) 2,0 · c) 2,0</strong>) — então vale treinar como possíveis questões. Resolva primeiro; o gabarito está escondido.</p>
-<div class="box warn"><strong>O molde de todas elas:</strong>
-<ul>
-<li><strong>a)</strong> desenhar o diagrama (atributos, métodos, visibilidade, tipos e o tipo de cada seta).</li>
-<li><strong>b)</strong> justificar as decisões (por que a classe intermediária, por que interface).</li>
-<li><strong>c)</strong> explicar o polimorfismo (mesma chamada, comportamentos diferentes).</li>
-</ul></div>
+<h3 id="q3-treinar">3.8 Treino com gabarito oculto</h3>
+<p>Monte a árvore no papel e escreva os percursos. Depois confira.</p>
 
 <div class="concept">
-<h4>Questão 1 (oficial) — Veículo de Transporte Coletivo</h4>
-<p><em>Enunciado (como nos slides):</em></p>
-<blockquote>
-<p>Considere a abstração <strong>Veículo de Transporte Coletivo</strong>: um veículo que transporta muitos passageiros e percorre uma linha (rota). Todo veículo de transporte coletivo possui <em>código</em>, <em>linha</em>, <em>capacidade de passageiros</em> e <em>quantidade de passageiros a bordo</em>.</p>
-<p>Todo veículo deve ser capaz de <em>emitir sua ficha de cadastro</em>, <em>embarcar passageiros</em> (sem ultrapassar a capacidade), <em>desembarcar passageiros</em> (sem desembarcar mais do que há a bordo), <em>informar quantos passageiros estão a bordo</em> e <em>informar o tipo de parada que utiliza</em>.</p>
-<p>A abstração não existe sozinha: todo veículo concreto é de um dos <strong>quatro tipos</strong> abaixo, que derivam dela e se diferenciam pela forma de embarcar (incluindo onde a passagem é paga) e de parar. Três são ônibus, que possuem <strong>placa</strong>; o metrô circula sobre trilhos e <strong>não tem placa</strong>.</p>
-</blockquote>
-<table>
-<tr><th>Tipo</th><th>Paradas</th><th>Pagamento</th><th>Tração</th><th>Assento</th><th>Bagagem</th></tr>
-<tr><td>Ônibus interestadual</td><td>Só terminais rodoviários</td><td>Comprada antes; só embarca quem comprou</td><td>Não elétrica</td><td>Fixo e numerado (limita as passagens)</td><td>Bagageiro em kg (recusa excesso)</td></tr>
-<tr><td>Ônibus urbano</td><td>Pontos ao longo da rota</td><td>Catraca dentro; cobra a cada embarque</td><td>Não elétrica</td><td>Livre</td><td>Não transporta</td></tr>
-<tr><td>BRT</td><td>Estações de embarque</td><td>Catraca na estação, antes de entrar</td><td>Elétrica (bateria)</td><td>Livre</td><td>Não transporta</td></tr>
-<tr><td>Metrô</td><td>Estações de embarque</td><td>Catraca na estação, antes de entrar</td><td>Elétrica (rede)</td><td>Livre</td><td>Não transporta</td></tr>
-</table>
-<p><strong>Capacidades de alguns veículos:</strong></p>
-<ul>
-<li><strong>Cobrança a bordo:</strong> a catraca interna cobra a tarifa a cada embarque, só se o passageiro couber; o veículo informa a <em>tarifa</em> e o <em>valor arrecadado</em>. <strong>Só o ônibus urbano.</strong></li>
-<li><strong>Tração elétrica:</strong> o veículo informa sua <em>fonte de energia</em> (bateria no BRT, rede no metrô) e seu <em>consumo em kWh por km</em>. <strong>BRT e metrô.</strong></li>
-</ul>
-<p><strong>Itens:</strong></p>
-<ul>
-<li><strong>a) 6,0</strong> — Elabore o diagrama de classes UML, tomando como referência o modelo fornecido, com atributos, métodos, visibilidade, tipos e o tipo de cada relacionamento.</li>
-<li><strong>b) 2,0</strong> — Justifique: (i) por que o metrô não herda da mesma classe que os ônibus; (ii) a forma como representou a cobrança a bordo e a tração elétrica, em vez de criar novas subclasses.</li>
-<li><strong>c) 2,0</strong> — Uma lista do tipo da abstração contém um objeto de cada tipo derivado. Explique o que acontece ao chamar o método de embarque para cada elemento e qual conceito de POO está envolvido.</li>
-</ul>
-<details><summary>Ver gabarito comentado</summary>
-<p><strong>a) Diagrama</strong> — o completo está na <strong>seção 2</strong>. Estrutura:</p>
-<div class="diagram">              «abstract» VeiculoTransporteColetivo
-   # codigo · # linha · # capacidade · # passageirosABordo
-   + emitirFicha() · + embarcarPassageiro() «abstract»
-   + desembarcar(qtd) · + getPassageirosABordo()
-   + getTipoParada() «abstract»   (# protegido: registrarEmbarque())
-                        △  herança (linha cheia)
-              «abstract» Onibus   (# placa)
-          △          △             △
- OnibusInterestadual  OnibusUrbano   BRT
-                                    Metro  ◁─ direto da superclasse (sem placa)
-   «interface» CobrancaABordo ◁-- OnibusUrbano          (realização, tracejada)
-   «interface» TracaoEletrica ◁-- BRT  e  Metro         (realização, tracejada)</div>
-<p>Os critérios de correção avaliam: abstratos em <em>itálico</em> e <strong>repetidos (sobrescritos)</strong> nas filhas; cada seta <strong>nomeada</strong> (herança × realização); visibilidade em tudo.</p>
-<p><strong>b) Justificativas:</strong></p>
-<ul>
-<li>(i) <strong>Metrô não herda de Onibus</strong>: a placa é comum só aos três ônibus. O metrô anda sobre trilhos e não tem placa — herdando, ganharia uma placa que não existe.</li>
-<li>(ii) <strong>Cobrança a bordo</strong> e <strong>tração elétrica</strong> são <em>capacidades</em> de alguns, não tipos de veículo → viram <strong>interfaces</strong>. <code>CobrancaABordo</code> (hoje só o urbano) e <code>TracaoEletrica</code>, que <strong>atravessa as duas hierarquias</strong> (BRT é um ônibus, metrô não é) sem herança múltipla. Um veículo novo (ex.: intermunicipal metropolitano que cobre a bordo) implementaria a interface sem mudar a árvore.</li>
-</ul>
-<p><strong>c) Polimorfismo (ligação dinâmica):</strong> a variável é do tipo <code>VeiculoTransporteColetivo</code>, mas roda a versão do <strong>objeto real</strong>.</p>
-<table>
-<tr><th>Objeto</th><th>O que <code>embarcarPassageiro()</code> faz</th></tr>
-<tr><td>Interestadual</td><td>Só embarca se houver passagem vendida não embarcada; depois registra.</td></tr>
-<tr><td>Urbano</td><td>Registra e, se coube, a catraca soma a tarifa ao valor arrecadado.</td></tr>
-<tr><td>BRT</td><td>Já pagou na estação; só registra o embarque.</td></tr>
-<tr><td>Metrô</td><td>Igual ao BRT, em implementação própria.</td></tr>
-</table>
-<p>Conceito: <strong>polimorfismo por sobrescrita</strong>, sem <code>if/instanceof</code>.</p>
+<h4>Exercício 1 — insira nesta ordem: 50, 30, 70, 20, 40, 60, 80</h4>
+<p>Dê a <strong>pré-ordem</strong> e a <strong>em ordem</strong>.</p>
+<details><summary>Ver resolução</summary>
+<p><strong>Árvore:</strong></p>
+<div class="diagram">          50
+       ┌───┴───┐
+      30       70
+     ┌─┴─┐   ┌─┴─┐
+    20   40 60   80</div>
+<p><strong>Pré-ordem:</strong> 50, 30, 20, 40, 70, 60, 80</p>
+<p><strong>Em ordem:</strong> 20, 30, 40, 50, 60, 70, 80 (crescente ✔)</p>
+<p><em>Em ordem (opcional):</em> 20, 40, 30, 60, 80, 70, 50.</p>
 </details>
 </div>
 
 <div class="concept">
-<h4>Questão 2 (oficial) — Meio de Entrega (Delivery)</h4>
-<p><em>Enunciado (como nos slides):</em></p>
-<blockquote>
-<p>Considere a abstração <strong>Meio de Entrega</strong>: um meio que leva pedidos de um restaurante até os clientes e atende uma zona de entrega. Todo meio de entrega possui <em>código</em>, <em>zona</em>, <em>capacidade de pedidos</em> e os <em>códigos de confirmação dos pedidos em rota</em>.</p>
-<p>Todo meio de entrega deve ser capaz de <em>emitir sua ficha de cadastro</em>, <em>despachar um pedido informando a distância</em> (sem ultrapassar a capacidade), <em>concluir a entrega conferindo o destinatário pelo código de confirmação</em> (código que não está em rota não conclui) e <em>informar o tipo de ponto de entrega que utiliza</em>. Todo pedido chega já pago pelo aplicativo.</p>
-<p>A abstração não existe sozinha: todo meio concreto é de um dos <strong>quatro tipos</strong> abaixo (moto, moto elétrica, bike e bike elétrica). As duas motos são <strong>emplacadas</strong>; as duas bikes, <strong>não</strong>.</p>
-</blockquote>
+<h4>Exercício 2 — insira nesta ordem: 8, 3, 10, 1, 6, 14, 4, 7, 13</h4>
+<p>Dê a <strong>pré-ordem</strong> e a <strong>em ordem</strong>.</p>
+<details><summary>Ver resolução</summary>
+<p><strong>Árvore:</strong></p>
+<div class="diagram">                8
+          ┌─────┴─────┐
+          3           10
+        ┌─┴─┐          └─┐
+        1   6            14
+           ┌─┴─┐        ┌─┘
+           4   7        13</div>
+<p><strong>Pré-ordem:</strong> 8, 3, 1, 6, 4, 7, 10, 14, 13</p>
+<p><strong>Em ordem:</strong> 1, 3, 4, 6, 7, 8, 10, 13, 14 (crescente ✔)</p>
+</details>
+</div>
+
+<div class="concept">
+<h4>Exercício 3 — insira nesta ordem: 1, 2, 3, 4, 5</h4>
+<p>Dê a <strong>pré-ordem</strong> e a <strong>em ordem</strong>. O que aconteceu com a árvore?</p>
+<details><summary>Ver resolução</summary>
+<p><strong>Árvore (torta!):</strong></p>
+<div class="diagram">1
+ └─► 2
+      └─► 3
+           └─► 4
+                └─► 5</div>
+<p><strong>Pré-ordem:</strong> 1, 2, 3, 4, 5 &nbsp;&nbsp;<strong>Em ordem:</strong> 1, 2, 3, 4, 5</p>
+<p><strong>Comentário:</strong> inserir valores já ordenados gera uma árvore <strong>degenerada</strong> (vira uma "lista"). O "em ordem" ainda sai crescente, mas a busca deixa de ser O(log n) e passa a ser <strong>O(n)</strong> — vira uma busca linear. É aí que entram as árvores <strong>balanceadas</strong> (ex.: AVL, rubro-negra).</p>
+</details>
+</div>
+
+<div class="concept">
+<h4>Exercício 4 — insira nesta ordem: 10, 5, 15, 3, 7, 12, 20, 1</h4>
+<p>Dê a <strong>pré-ordem</strong>, a <strong>em ordem</strong> e a <strong>pós-ordem</strong>.</p>
+<details><summary>Ver resolução</summary>
+<div class="diagram">              10
+        ┌─────┴─────┐
+        5           15
+      ┌─┴─┐        ┌─┴─┐
+      3   7       12   20
+    ┌─┘
+    1</div>
+<p><strong>Pré-ordem:</strong> 10, 5, 3, 1, 7, 15, 12, 20</p>
+<p><strong>Em ordem:</strong> 1, 3, 5, 7, 10, 12, 15, 20 (crescente ✔)</p>
+<p><strong>Pós-ordem:</strong> 1, 3, 7, 5, 12, 20, 15, 10</p>
+</details>
+</div>
+
+<div class="concept">
+<h4>Exercício 5 — o professor só te deu a PRÉ-ordem de uma BST: 25, 15, 10, 20, 35, 30, 40</h4>
+<p>Monte a árvore e dê a <strong>em ordem</strong> e a <strong>pós-ordem</strong>.</p>
+<details><summary>Ver resolução</summary>
+<div class="box good" style="margin-top:.4rem">
+<strong>Truque:</strong> numa <strong>BST</strong>, a pré-ordem já "entrega" a árvore: basta <strong>inserir os valores na própria ordem dada</strong> (o pai aparece sempre antes dos filhos). Comece raiz = 25 e siga a regra menor-esquerda / maior-direita.
+</div>
+<div class="diagram">              25
+        ┌─────┴─────┐
+       15           35
+      ┌─┴─┐        ┌─┴─┐
+     10   20      30   40</div>
+<p><strong>Em ordem:</strong> 10, 15, 20, 25, 30, 35, 40 (crescente ✔)</p>
+<p><strong>Pós-ordem:</strong> 10, 20, 15, 30, 40, 35, 25</p>
+</details>
+</div>
+
+<div class="concept">
+<h4>Exercício 6 — usando a árvore do slide (a grande), responda</h4>
+<p>(a) Qual é a altura? (b) Quais são as folhas? (c) Qual o caminho para achar o <strong>38</strong>? (d) Qual percurso dá a ordem crescente?</p>
+<details><summary>Ver resolução</summary>
+<p>(a) <strong>5 níveis</strong> (50 / 30-70 / 20-40-60-80 / 10-25-35-45-65-90 / 5-38-62-95).</p>
+<p>(b) <strong>5, 25, 38, 45, 62, 95</strong>.</p>
+<p>(c) <code>50 → esquerda → 30 → direita → 40 → esquerda → 35 → direita → 38</code>.</p>
+<p>(d) O percurso <strong>em ordem</strong> (esquerda, raiz, direita).</p>
+</details>
+</div>
+
+<h3 id="q3-aplic">3.9 Aplicações reais (para justificar/interpretar)</h3>
 <table>
-<tr><th>Tipo</th><th>Ponto de entrega</th><th>Condição p/ despachar</th><th>Propulsão</th><th>Placa</th><th>Dado próprio</th></tr>
-<tr><td>Moto</td><td>Porta do cliente</td><td>Qualquer distância</td><td>Combustão</td><td>Sim</td><td>Cilindradas</td></tr>
-<tr><td>Moto elétrica</td><td>Porta do cliente</td><td>Ida e volta (2×) ≤ autonomia</td><td>Elétrica (bateria kWh)</td><td>Sim</td><td>Carga da bateria (kWh)</td></tr>
-<tr><td>Bike</td><td>Portaria / ponto de encontro</td><td>Até 3 km</td><td>Pedal</td><td>Não</td><td>—</td></tr>
-<tr><td>Bike elétrica</td><td>Portaria / ponto de encontro</td><td>Até 8 km e 2× ≤ autonomia</td><td>Elétrica (assistida)</td><td>Não</td><td>Autonomia (km)</td></tr>
+<tr><th>Percurso</th><th>Aplicação real</th></tr>
+<tr><td><strong>Pré-ordem</strong></td><td>Copiar uma árvore/pasta (<code>cp -r</code>), salvar a estrutura num arquivo para reconstruí-la depois, numerar itens de um índice hierárquico.</td></tr>
+<tr><td><strong>Em ordem</strong></td><td>Listar de forma ordenada (relatório em ordem alfabética/numérica); validar se é uma BST.</td></tr>
+<tr><td>Pós-ordem</td><td>Apagar pasta e todo o conteúdo; avaliar expressões matemáticas (ex.: <code>(2+3)*(4-1)</code>); calcular o tamanho de cada pasta.</td></tr>
 </table>
-<p><strong>Capacidades:</strong> a <em>conferência na entrega</em> é de <strong>todos</strong> (regra geral). A <em>propulsão elétrica</em> (moto elétrica e bike elétrica) informa a autonomia restante em km e o consumo em kWh por km.</p>
-<p><strong>Itens:</strong></p>
+
+<div class="box warn">
+<strong>Erros clássicos na Questão 03</strong>
 <ul>
-<li><strong>a) 6,0</strong> — Elabore o diagrama UML com atributos, métodos, visibilidade, tipos e o tipo de cada relacionamento.</li>
-<li><strong>b) 2,0</strong> — Justifique: (i) por que as bikes não herdam da mesma classe que as motos; (ii) por que a conferência na entrega e a propulsão elétrica ficaram em lugares diferentes, em vez de virarem novas subclasses.</li>
-<li><strong>c) 2,0</strong> — Uma lista do tipo da abstração contém um objeto de cada tipo derivado. Explique o que acontece ao chamar o método de despacho para cada elemento e qual conceito de POO está envolvido.</li>
+<li>Trocar a ordem dos filhos (esquerda/direita). Sempre <strong>esquerda primeiro</strong>.</li>
+<li>"Pular" níveis: numa <strong>pré-ordem</strong>, depois do 20 você desce para 10 <em>antes</em> de 25 — não escreva "50, 30, 70…" misturando níveis.</li>
+<li>Esquecer de voltar (recursão): depois de terminar uma subárvore, continue de onde parou no pai.</li>
+<li>Inventar que \"em ordem\" só existe em BST — existe em qualquer árvore; o que a BST garante é que sai <strong>crescente</strong>.</li>
+<li>Montar a BST com os valores <strong>fora da ordem dada</strong>. A ordem de inserção vem do enunciado (ou é inferida se ele disser "insira nesta ordem").</li>
 </ul>
-<details><summary>Ver gabarito comentado</summary>
-<p><strong>a) Diagrama</strong> — o completo está na <strong>seção 3</strong>. Estrutura:</p>
-<div class="diagram">              «abstract» MeioEntrega
-   # codigo · # zona · # capacidade · # codigosEmRota
-   + emitirFicha()
-   + despacharPedido(codigo, distanciaKm) «abstract»
-   + concluirEntrega(codigo)  ← concreto (regra de todos)
-   + getPontoEntrega() «abstract»
-        △                    △              △
-  «abstract» VeiculoEmplacado   Bike   BikeEletrica
-       △          △
-     Moto     MotoEletrica ──▷ PropulsaoEletrica ◁── BikeEletrica
-   «interface» PropulsaoEletrica: getAutonomiaKm() · getConsumoKwhPorKm()</div>
-<p><strong>b) Justificativas:</strong></p>
-<ul>
-<li>(i) <strong>As bikes não herdam de VeiculoEmplacado</strong>: essa intermediária existe só por causa da placa, que é comum às duas motos. Bike e bike elétrica não são emplacadas → herdam direto de MeioEntrega.</li>
-<li>(ii) <strong>Conferência na entrega</strong> é regra de <em>todos</em> → método <strong>concreto</strong> na superclasse (<code>concluirEntrega</code>), herdado por todos. <strong>Propulsão elétrica</strong> é capacidade de <em>alguns</em> → <strong>interface</strong> <code>PropulsaoEletrica</code>, que atravessa as duas hierarquias (moto elétrica é emplacada, bike elétrica não). Ser elétrico <em>não</em> é um booleano nem uma subclasse: é um tipo próprio (MotoEletrica, BikeEletrica).</li>
-</ul>
-<p><strong>c) Polimorfismo</strong> — chamando <code>despacharPedido(codigo, 5.0)</code>:</p>
-<table>
-<tr><th>Objeto</th><th>Despacha 5 km?</th><th>Por quê</th></tr>
-<tr><td>Moto</td><td>Sim</td><td>Qualquer distância.</td></tr>
-<tr><td>MotoEletrica</td><td>Se 10 ≤ autonomia</td><td>Ida e volta = 2×5.</td></tr>
-<tr><td>Bike</td><td>Não</td><td>Limite de 3 km.</td></tr>
-<tr><td>BikeEletrica</td><td>Se 10 ≤ autonomia</td><td>Até 8 km + autonomia.</td></tr>
-</table>
-<p>Conceito: <strong>polimorfismo por sobrescrita</strong>; <code>concluirEntrega()</code> é herdado e igual para todos.</p>
+</div>
+
+<!-- ============================ REVISÃO ============================ -->
+<h2 id="cheatsheet">Cheat sheet de bolso (revisão relâmpago)</h2>
+
+<h3>Questão 01 — diagrama de classes</h3>
+<div class="diagram">RECEITA:  1 achar o genérico -> 2 comum sobe -> 3 abstrato? -> 4 filhas
+          5 próprio de uma fica na filha -> 6 capacidade de alguns = interface
+          7 método que cada filha redo = POLIMORFISMO
+
+SETAS:    cheia  ────▷  = HERANÇA .......... "X é um Y" (herda código)
+          tracejada - -▷ = REALIZAÇÃO ....... "X cumpre o contrato" (interface)
+
+CAIXAS:   «abstract» = não vira objeto | «interface» = só contrato
+
+3 REGRAS DE OURO:
+  - o que é de TODOS fica concreto na mãe
+  - o que é de ALGUNS (e cruza) vira INTERFACE
+  - o que é de UM só fica na subclasse
+
+CONTEXTOS DA PROVA: serpentário | transporte coletivo | delivery</div>
+
+<h3>Questão 02 — buscas e Big O</h3>
+<div class="diagram">LISTA ORDENADA?  NÃO -> LINEAR O(n)   |  SIM -> BINÁRIA O(log n) [precisa índice]
+
+VALE ORDENAR?    Ordenar = O(n log n) (pedágio 1x)
+                 compensa se #buscas &gt; ~log₂ n
+                 (n=1.000 -> ~10 buscas; n=1e6 -> ~20 buscas)
+
+LISTA MUDA?      manter ordenado = O(n) por inserção -> se muda muito, LINEAR
+                 (ou troca p/ HASH O(1) médio / ÁRVORE O(log n))
+
+PILHA/FILA?      só LINEAR O(n). Ordem é o produto, não se reordena.
+
+CRESCIMENTO:     O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²) &lt; O(2ⁿ)
+
+NÚMEROS ÚTEIS:   log₂(1.000)=10 | log₂(1e6)=20 | ordenar 1e6 ≈ 2e7</div>
+
+<h3>Questão 03 — árvores</h3>
+<div class="diagram">MONTAR (BST): começa raiz = 1º valor; menor esquerda / maior direita
+
+PERCURSOS:   PRÉ = PAI primeiro .... raiz, esq, dir
+             EM  = PAI no meio ...... esq, raiz, dir   (BST = crescente!)
+             PÓS = PAI por último ... esq, dir, raiz
+
+ESQUERDA SEMPRE ANTES DA DIREITA. Só muda quando você escreve o PAI.
+
+CONFERE:     "em ordem" de uma BST TEM que sair em ordem crescente.</div>
+
+<h2 id="simulado">Simulado relâmpago (responda e confira)</h2>
+
+<div class="concept">
+<h4>1. Verdadeiro ou falso: "toda lista ordenada pode usar busca binária".</h4>
+<details><summary>Ver resposta</summary>
+<p><strong>Falso.</strong> Precisa também de <strong>acesso por índice</strong> (chegar direto no meio). Uma lista <strong>encadeada</strong> ordenada não permite binária eficiente; pilha e fila, tampouco.</p>
 </details>
 </div>
 
 <div class="concept">
-<h4>Questão 3 (oficial) — Serpentário do zoológico</h4>
-<p><em>Enunciado (como nos slides) — tarefa: construa o diagrama de classes UML.</em></p>
-<blockquote>
-<p>Toda serpente tem <em>nome popular</em>, <em>nome científico</em>, <em>comprimento</em> (m) e <em>peso</em> (kg). Toda serpente se locomove rastejando e se alimenta, mas <strong>cada espécie abate sua presa de um jeito próprio</strong>. Não existe "serpente genérica": todo animal pertence a uma espécie.</p>
-<p><strong>Sucuri</strong> é constritora (abate por constrição; registra força de constrição em newtons) e <strong>semiaquática</strong> (nada; registra tempo máximo submersa em minutos). <strong>Cascavel</strong> é venenosa e peçonhenta, abate com picada, tem chocalho (registra nº de anéis) e chocalha. <strong>Jararaca</strong> é venenosa e peçonhenta, abate com picada, atrai presas com a ponta da cauda (registra a cor). <strong>Coral-verdadeira</strong> é venenosa e peçonhenta, abate com picada, tem padrão de anéis coloridos. <strong>Falsa-coral</strong> <em>não</em> é venenosa: abate engolindo a presa viva e também tem padrão de anéis (imita a coral).</p>
-<p>Toda serpente <strong>venenosa</strong> produz veneno e informa o tipo (fixo por espécie: cascavel e coral-verdadeira, neurotóxico; jararaca, hemorrágico). Toda <strong>peçonhenta</strong> é venenosa e também inocula veneno. Produzir veneno, inocular veneno e nadar são capacidades que <em>nem todas</em> têm.</p>
-</blockquote>
-<details><summary>Ver gabarito comentado</summary>
-<p><strong>Os 7 passos:</strong> (1) ler e marcar substantivos/verbos/capacidades; (2) subir o comum para a mãe; (3) <code>Serpente</code> é <strong>abstrata</strong> (não existe genérica; <code>abaterPresa()</code> é abstrato); (4) achar as filhas pelo teste "é uma"; (5) separar o específico de cada uma; (6) capacidades → contratos; (7) achar o polimórfico (<code>alimentar()</code> → <code>abaterPresa()</code>).</p>
-<div class="diagram">                «abstract» Serpente
-   # nomePopular · # nomeCientifico · # comprimento · # peso
-   + locomover() · + alimentar() · # abaterPresa() «abstract»
-      △        △          △              △            △
-   Sucuri  Cascavel   Jararaca  CoralVerdadeira  FalsaCoral
-
-  «interface» Venenosa    ◁-- Cascavel, Jararaca, CoralVerdadeira
-                              (via Peconhenta)
-  «interface» Peconhenta  ◁-- Cascavel, Jararaca, CoralVerdadeira
-  «interface» Semiaquatica◁-- Sucuri</div>
-<p><strong>Quem assina cada contrato:</strong></p>
-<table>
-<tr><th>Espécie</th><th>Venenosa</th><th>Peçonhenta</th><th>Semiaquática</th></tr>
-<tr><td>Sucuri</td><td>—</td><td>—</td><td>Sim</td></tr>
-<tr><td>Cascavel</td><td>Sim</td><td>Sim</td><td>—</td></tr>
-<tr><td>Jararaca</td><td>Sim</td><td>Sim</td><td>—</td></tr>
-<tr><td>Coral-verdadeira</td><td>Sim</td><td>Sim</td><td>—</td></tr>
-<tr><td>Falsa-coral</td><td>—</td><td>—</td><td>—</td></tr>
-</table>
-<p>Detalhes: <code>Peconhenta</code> <strong>estende</strong> <code>Venenosa</code> (linha cheia entre interfaces). Contrato não guarda atributo — cada espécie devolve seu tipo fixo em <code>getTipoVeneno()</code>. A falsa-coral não assina nenhum contrato.</p>
-<p><strong>Polimorfismo:</strong> <code>alimentar()</code> chama <code>abaterPresa()</code>; a sucuri esmaga, a cascavel/jararaca/coral picam e inoculam, a falsa-coral engole viva.</p>
+<h4>2. Lista de 1.000.000 ordenada, 50 buscas por dia. Qual busca e por quê?</h4>
+<details><summary>Ver resposta</summary>
+<p><strong>Binária, O(log n) ≈ 20 comparações</strong> por busca. A lista já está ordenada, então nem há pedágio a pagar. Linear faria 1.000.000 por busca (50.000× pior).</p>
 </details>
 </div>
 
 <div class="concept">
-<h4>Questão 4 (oficial) — Percursos na árvore (exercício com gabarito)</h4>
-<p><em>Enunciado (slide "Exercício"):</em> para a árvore binária de busca de 5 níveis abaixo, escreva os três percursos (pré-ordem, em ordem, pós-ordem).</p>
-<div class="diagram">Níveis:  1: 40
-         2: 20 · 60
-         3: 10 · 30 · 50 · 70
-         4: 5 · 25 · 35 · 52 · 55 · 80
-         5: 33 · 85
-   (raiz 40; à esquerda menores, à direita maiores)</div>
-<details><summary>Ver gabarito comentado</summary>
-<ul>
-<li><strong>Pré-ordem</strong> (raiz antes): 40, 20, 10, 5, 30, 25, 35, 33, 60, 50, 55, 52, 70, 80, 85</li>
-<li><strong>Em ordem</strong> (raiz no meio → <em>sai ordenado</em>): 5, 10, 20, 25, 30, 33, 35, 40, 50, 52, 55, 60, 70, 80, 85</li>
-<li><strong>Pós-ordem</strong> (raiz depois): 5, 10, 25, 33, 35, 30, 20, 52, 55, 50, 85, 80, 70, 60, 40</li>
-</ul>
-<p><strong>Como conferir sozinha:</strong> o <em>em ordem</em> de uma árvore de busca sai sempre em ordem crescente; a <em>pré</em> começa pela raiz (40) e a <em>pós</em> termina nela.</p>
-</details>
-</div>
-
-<div class="box good"><strong>Por que isso importa:</strong> as questões 1 e 2 são o <strong>mesmo exercício com contextos diferentes</strong> (transporte e delivery). Os slides até sugerem aplicar o Delivery como fixação logo após o Transporte. Se você entender um, entende o outro. A estrutura é <em>sempre</em>: superclasse abstrata + (às vezes) classe intermediária + interfaces para capacidades de alguns + um método polimórfico.</div>
-
-<h2 id="poo-sec-questoes">18. Questões para praticar (dissertativas — resposta escondida)</h2>
-<p>Resolva <strong>no papel primeiro</strong>. Só depois clique em <em>"Ver resposta comentada"</em>. A prova é dissertativa: treine também <strong>escrever as justificativas</strong>, não só desenhar.</p>
-
-<div class="concept">
-<h4>Questão 1 — Estacionamento (desenhe o diagrama e justifique)</h4>
-<p><em>Enunciado:</em> "Um estacionamento controla <em>Carros</em>, <em>Motos</em> e <em>Caminhões</em>. Todo veículo tem <em>placa</em> e sabe <em>calcular o valor a pagar</em> (cada tipo tem uma regra: moto é mais barata, caminhão paga mais). Carros e Motos usam a <em>cancela automática (Tag)</em>; caminhões pagam na cabine. Carros e Caminhões podem ter <em>versão elétrica</em>."</p>
-<details><summary>Ver resposta comentada</summary>
-<p><strong>Como raciocinar:</strong> genérico = <code>Veiculo</code> (placa, <code>calcularValor()</code> abstrato). "Usa Tag" e "é elétrico" são capacidades de alguns → <strong>interfaces</strong>.</p>
-<div class="diagram">        «abstract» Veiculo
-        # placa: String
-        + calcularValor(horas: double): double   «abstract»
-         △          △            △
-      Carro        Moto       Caminhao
-       ┆  ┆                      ┆
- «interface» PagavelComTag ◁── Carro, Moto
- «interface» Eletrico      ◁── Carro, Caminhao</div>
-<p><strong>Justificativas (o que a prova quer ler):</strong></p>
-<ul>
-<li><strong>Veiculo abstrato</strong> porque não existe "veículo genérico" e porque <code>calcularValor()</code> é diferente em cada tipo.</li>
-<li><strong>PagavelComTag</strong> é interface porque é uma <em>capacidade</em> (pagar pela cancela) que só <em>alguns</em> têm — não é um tipo de veículo.</li>
-<li><strong>Eletrico</strong> é interface porque atravessa tipos diferentes (um Carro e um Caminhão podem ser elétricos) — criar subclasses obrigaria herança múltipla.</li>
-<li><strong>placa</strong> fica na superclasse, pois todos têm.</li>
-</ul>
-<p><strong>Polimorfismo:</strong> <code>for (Veiculo v : veiculos) total += v.calcularValor(3);</code> — cada tipo calcula do seu jeito, sem <code>if</code>.</p>
-<p><strong>Bônus:</strong> se depois pedissem "ônibus", bastaria criar <code>Onibus extends Veiculo</code> — nada mais mudaria (é a vantagem do polimorfismo).</p>
+<h4>3. Mesma lista, mas desordenada e com 5 buscas. Ordeno ou não?</h4>
+<details><summary>Ver resposta</summary>
+<p><strong>Não ordeno.</strong> 5 buscas lineares = 5.000.000; ordenar sozinho ≈ 20.000.000. Compensaria só a partir de ~20 buscas. → <strong>busca linear</strong>.</p>
 </details>
 </div>
 
 <div class="concept">
-<h4>Questão 2 — Classe abstrata × interface (explique e dê exemplo)</h4>
-<details><summary>Ver resposta comentada</summary>
-<p><strong>Classe abstrata:</strong> um "molde incompleto" que <strong>não pode virar objeto</strong>; pode ter atributos <em>e</em> métodos com código. Serve para reunir o que é comum. Ex.: <code>Veiculo</code> (tem <code>placa</code> e um método pronto <code>emitirFicha()</code>).</p>
-<p><strong>Interface:</strong> um <strong>contrato</strong> que só lista <em>métodos</em> (sem atributos e — tradicionalmente — sem código). Diz <em>o quê</em> a classe promete, não <em>como</em>. Ex.: <code>Eletrico</code> (promete <code>getConsumoKwhPorKm()</code>).</p>
-<table>
-<tr><th></th><th>Classe abstrata</th><th>Interface</th></tr>
-<tr><td>Pode virar objeto?</td><td>Não</td><td>Não</td></tr>
-<tr><td>Tem atributos?</td><td>Sim</td><td>Não</td></tr>
-<tr><td>Tem código pronto?</td><td>Sim</td><td>Não (só assinaturas)</td></tr>
-<tr><td>Quantas posso ter?</td><td>Uma superclasse (Java)</td><td>Várias ao mesmo tempo</td></tr>
-<tr><td>Frase para decidir</td><td>"<strong>é um</strong>"</td><td>"<strong>promete fazer</strong>"</td></tr>
-</table>
-<p><strong>Regra de ouro:</strong> use herança/abstrata quando a relação é "<em>é um</em>"; use interface quando é uma <strong>capacidade</strong> que só alguns têm (e que pode atravessar tipos diferentes).</p>
+<h4>4. Por que a busca binária é O(log n) e a linear é O(n)?</h4>
+<details><summary>Ver resposta</summary>
+<p>A binária <strong>descarta metade</strong> a cada passo: n, n/2, n/4… → ~log₂ n passos. A linear, no pior caso, olha <strong>todos</strong> os n elementos → O(n).</p>
 </details>
 </div>
 
 <div class="concept">
-<h4>Questão 3 — Por que "ser elétrico" vira interface e não subclasse?</h4>
-<details><summary>Ver resposta comentada</summary>
-<p>Porque elétrico <strong>não é um tipo de veículo, é uma capacidade</strong>. BRT (um ônibus) e Metrô (que está fora dos ônibus) são coisas de ramificações diferentes, mas <em>ambos</em> são elétricos.</p>
-<p>Se "elétrico" fosse uma superclasse (ex.: <code>VeiculoEletrico</code>), o BRT precisaria herdar de <code>Onibus</code> <strong>e</strong> de <code>VeiculoEletrico</code> ao mesmo tempo → <strong>herança múltipla</strong>, que o Java não permite. A <strong>interface</strong> resolve isso: ela "atravessa" as hierarquias sem esse problema, e ainda obriga a classe a fornecer os métodos do contrato.</p>
-<p>Além disso, criar <code>OnibusEletrico</code>, <code>MetroEletrico</code> etc. multiplicaria classes a cada combinação nova. Com interface, basta um <code>implements</code>.</p>
+<h4>5. Monte a BST inserindo 30, 20, 40, 10 e dê a pré-ordem.</h4>
+<details><summary>Ver resposta</summary>
+<div class="diagram">      30
+     ┌─┴─┐
+    20   40
+   ┌─┘
+  10</div>
+<p><strong>Pré-ordem:</strong> 30, 20, 10, 40. (Em ordem: 10, 20, 30, 40.)</p>
 </details>
 </div>
 
 <div class="concept">
-<h4>Questão 4 — O que é polimorfismo? Por que ele evita o <code>if/instanceof</code>?</h4>
-<details><summary>Ver resposta comentada</summary>
-<p><strong>Polimorfismo</strong> é: a <strong>mesma chamada</strong> (<code>v.embarcar()</code>) executa a <strong>versão do objeto real</strong>. Isso se chama ligação dinâmica — a decisão de "qual método rodar" acontece <em>na execução</em>, não na escrita do código.</p>
-<p>Ele exige duas coisas: um <strong>tipo comum</strong> (a superclasse ou a interface) e um <strong>método sobrescrito</strong> nas filhas.</p>
-<p><strong>Sem polimorfismo</strong> você escreveria assim, feio e frágil:</p>
-<pre><code>if (v instanceof Onibus) { ... }
-else if (v instanceof Metro) { ... }
-else if (v instanceof BRT) { ... }</code></pre>
-<p>Toda vez que aparecesse um tipo novo, você teria de mexer nesse <code>if</code> (e rezar para não esquecer nenhum). <strong>Com polimorfismo</strong> basta:</p>
-<pre><code>for (Veiculo v : veiculos) v.embarcar();</code></pre>
-<p>O novo tipo "se vira sozinho" — nenhum código antigo muda. Por isso dizemos que o polimorfismo <strong>elimina os <code>if</code> de tipo</strong>.</p>
+<h4>6. O percurso em ordem da árvore do exercício 5 dá o quê? Por quê?</h4>
+<details><summary>Ver resposta</summary>
+<p>Dá <strong>10, 20, 30, 40</strong> — crescente. Porque numa <strong>BST</strong> o percurso em ordem visita esquerda (menores), raiz, direita (maiores), resultando sempre em ordem crescente.</p>
 </details>
 </div>
 
 <div class="concept">
-<h4>Questão 5 — Identifique o tipo de cada seta</h4>
-<p><em>Dado:</em> "No diagrama, <code>OnibusUrbano</code> aponta com <strong>linha cheia e triângulo vazio</strong> para <code>Onibus</code>; <code>OnibusUrbano</code> aponta com <strong>linha tracejada e triângulo vazio</strong> para <code>CobrancaABordo</code>."</p>
-<details><summary>Ver resposta comentada</summary>
-<ul>
-<li>Linha <strong>cheia</strong> + triângulo vazio = <strong>herança</strong> (generalização). Leitura: "OnibusUrbano <strong>é um</strong> Onibus". Leva estado e código.</li>
-<li>Linha <strong>tracejada</strong> + triângulo vazio = <strong>realização</strong>. Leitura: "OnibusUrbano <strong>cumpre o contrato</strong> de CobrancaABordo". Não leva estado, só as assinaturas dos métodos.</li>
-</ul>
-<div class="box good"><strong>Macete:</strong> <strong>cheia = é um</strong> (herança). <strong>tracejada = promete fazer</strong> (interface). O triângulo vazio é igual nos dois; o que muda é o tipo da linha.</div>
+<h4>7. Um sistema de senhas (fila de atendimento) deve ordenar a fila por prioridade de senha?</h4>
+<details><summary>Ver resposta</summary>
+<p><strong>Não</strong> se a regra é ordem de chegada (FIFO) — reordenar quebraria a justiça. Se precisar de prioridade, usa-se uma <strong>fila de prioridade</strong>, que é outra estrutura. Busca nessa fila é <strong>O(n)</strong>.</p>
 </details>
 </div>
 
 <div class="concept">
-<h4>Questão 6 — O que é o "modelo de referência" e o que é avaliado?</h4>
-<details><summary>Ver resposta comentada</summary>
-<p>É o diagrama que o professor entrega <strong>já desenhado, mas com buracos</strong>: há <code>xxxxxxx</code> onde você escreve nomes, estereótipos, tipos ou parâmetros, e <code>□</code> onde você põe o símbolo de visibilidade (<code>+ - #</code>). As setas já vêm desenhadas (cheia ou tracejada), e <strong>você nomeia o tipo de cada uma</strong>.</p>
-<p><strong>O que é avaliado (critérios do professor):</strong></p>
-<table>
-<tr><th>Item</th><th>O que conta</th><th>Pontos</th></tr>
-<tr><td>a)</td><td>Nomes/atributos/métodos coerentes com visibilidade e tipos</td><td>3,0</td></tr>
-<tr><td>a)</td><td>Tipo de cada relacionamento identificado</td><td>1,5</td></tr>
-<tr><td>a)</td><td>Abstratos marcados e sobrescritos repetidos na subclasse</td><td>1,5</td></tr>
-<tr><td>b)</td><td>Justificar as decisões de modelagem</td><td>2,0</td></tr>
-<tr><td>c)</td><td>Explicar o polimorfismo e cada comportamento</td><td>2,0</td></tr>
-</table>
-<p><strong>Dica:</strong> conceito presente mas não identificado (seta sem o tipo escrito, classe abstrata sem marcação) ganha só <em>ponto parcial</em>. Então <strong>escreva tudo</strong>: nome, estereótipo, visibilidade e o tipo de cada seta.</p>
+<h4>8. Diferencie herança de realização (interface), com exemplo.</h4>
+<details><summary>Ver resposta</summary>
+<p><strong>Herança</strong> (seta cheia): "é um" — a filha herda atributos e métodos, ex.: <code>Metro</code> é um <code>VeiculoTransporteColetivo</code>. <strong>Realização</strong> (seta tracejada): "cumpre contrato" — implementa métodos de uma interface, ex.: <code>BRT</code> implementa <code>TracaoEletrica</code>. A herança reaproveita código; a interface só promete o comportamento.</p>
 </details>
 </div>
 
 <div class="concept">
-<h4>Questão 7 — Complete o modelo de referência (Transporte Coletivo)</h4>
-<p><em>Enunciado:</em> desenhe o diagrama de classes do Veículo de Transporte Coletivo (superclasse abstrata, classe intermediária <code>Onibus</code>, quatro concretas, as interfaces <code>CobrancaABordo</code> e <code>TracaoEletrica</code>) <strong>com visibilidade, tipos e o tipo de cada relacionamento</strong>. Depois justifique por que o Metrô não herda de <code>Onibus</code> e por que a tração elétrica virou interface.</p>
-<details><summary>Ver resposta comentada</summary>
-<div class="diagram">              «abstract» VeiculoTransporteColetivo
-   # codigo: String · # linha: String
-   # capacidadePassageiros: int · # passageirosABordo: int
-   + emitirFicha(): void
-   + embarcarPassageiro(): void
-   + desembarcarPassageiro(): void
-   + getPassageirosABordo(): int
-   + getTipoParada(): String          «abstract»
-                    △
-              «abstract» Onibus          (placa é comum aos 3 ônibus)
-   # placa: String
-          △         △                △                △
- OnibusInterestadual  OnibusUrbano   BRT          Metro
- - assentosVendidos   - tarifa       - cargaBateria   - consumoKwhPorKm
- - pesoBagagem        - valorArrec.  - fonteEnergia   - fonteEnergia
-                    ┆                                     ┆
-  «interface» CobrancaABordo ◁── OnibusUrbano
-  «interface» TracaoEletrica ◁── BRT   e   Metro   (atravessa: BRT está em Onibus, Metrô não)</div>
-<ul>
-<li><strong>Herança</strong> (linha cheia): <code>Onibus</code> → <code>VeiculoTransporteColetivo</code>; as quatro concretas → seus pais.</li>
-<li><strong>Realização</strong> (linha tracejada): <code>OnibusUrbano</code> → <code>CobrancaABordo</code>; <code>BRT</code> e <code>Metro</code> → <code>TracaoEletrica</code>.</li>
-<li><strong>Por que Metrô não herda de Onibus:</strong> Metrô <strong>não tem placa</strong>. Se herdasse de <code>Onibus</code>, ganharia uma placa que não existe → por isso herda direto da superclasse.</li>
-<li><strong>Por que tração elétrica é interface:</strong> vale para BRT (que <em>é um</em> ônibus) e para Metrô (que <strong>não</strong> é) → cruza as duas ramificações sem herança múltipla.</li>
-<li><strong>Polimorfismo:</strong> <code>for (VeiculoTransporteColetivo v : veiculos) v.embarcarPassageiro();</code> — o interestadual só embarca quem tem passagem, o urbano cobra na catraca, BRT e Metrô só registram (já pagaram na estação).</li>
-</ul>
+<h4>9. Por que "TracaoEletrica" (transporte) é interface e não superclasse?</h4>
+<details><summary>Ver resposta</summary>
+<p>Porque a capacidade <strong>cruza ramos diferentes</strong>: BRT é um <em>ônibus</em> e Metrô <em>não</em> é. Como superclasse, exigiria <strong>herança múltipla</strong> (herdar de <code>Onibus</code> e de <code>VeiculoEletrico</code>), proibida em Java. A interface resolve.</p>
 </details>
 </div>
 
 <div class="concept">
-<h4>Questão 8 — Big O e hash (explique com suas palavras)</h4>
-<details><summary>Ver resposta comentada</summary>
-<p><strong>Busca linear O(n):</strong> se eu procuro um nome numa lista bagunçada, no pior caso olho <em>todos</em> os itens. Com 1 milhão de nomes, até 1 milhão de comparações — o trabalho cresce junto com os dados.</p>
-<p><strong>Busca binária O(log n):</strong> numa lista <em>ordenada</em>, olho o do meio e descarto metade, depois metade da metade… Com 1 milhão de itens, acho em cerca de <strong>20</strong> passos.</p>
-<p><strong>Hash O(1) em média:</strong> a função transforma a chave num número → gaveta. Vou <em>direto</em> na gaveta, sem percorrer nada. É praticamente <strong>1 acesso</strong>, não importa se há 10 ou 10 milhões de itens (na média).</p>
-<div class="box warn"><strong>Importante:</strong> O(1) do hash é <strong>média</strong>. Se uma função hash for ruim e gerar muitas colisões, as gavetas viram listas compridas e a busca degenera para O(n).</div>
+<h4>10. Ordenar 1.000.000 custa quanto, aproximadamente, e quanto custa cada busca depois?</h4>
+<details><summary>Ver resposta</summary>
+<p>Ordenar ≈ n log n = 1.000.000 × 20 = <strong>~20.000.000</strong> operações (uma vez). Depois, cada busca binária ≈ <strong>20</strong> comparações.</p>
 </details>
 </div>
 
-<div class="concept">
-<h4>Questão 9 — Colisão de hash: o que é e como tratar</h4>
-<details><summary>Ver resposta comentada</summary>
-<p><strong>Colisão</strong> é quando <strong>duas chaves diferentes caem na mesma gaveta</strong> (mesmo resultado da função). É inevitável — pelo <strong>princípio da casa dos pombos</strong>, se há mais chaves do que gavetas, alguma gaveta receberá duas.</p>
-<p><strong>Duas formas de tratar:</strong></p>
-<ul>
-<li><strong>Encadeamento:</strong> cada gaveta guarda uma <em>pequena lista</em>. Para achar, percorro só a lista daquela gaveta (Maria? não. Pedro? sim).</li>
-<li><strong>Endereçamento aberto:</strong> não há listas; se a gaveta está ocupada, procuro a <em>próxima livre</em> por uma regra fixa, e a busca segue o mesmo caminho.</li>
-</ul>
-<p><strong>Fator de carga</strong> = itens ÷ gavetas. Quando passa de <strong>0,75</strong> (no <code>HashMap</code>), a tabela <strong>dobra</strong> de tamanho e redistribui, mantendo as listas curtas e a busca rápida.</p>
-<p><strong>Curiosidade:</strong> no Java, quando uma gaveta passa de <strong>8 itens</strong>, a lista vira uma <strong>árvore balanceada</strong> e a busca naquela gaveta cai de O(n) para O(log n).</p>
-</details>
+<!-- ============================ RODAPÉ ============================ -->
+<div style="text-align:center; margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border); color:var(--text-muted); font-size:0.85rem;">
+    Guia da Prova — POO, Diagramas, Buscas e Árvores<br>
+    Reescrito a partir dos slides do professor (Aula Revisão). Foco nas 3 questões anunciadas.<br>
+    Para salvar como PDF: <code>Ctrl + P</code> → Salvar como PDF
 </div>
 
-<div class="concept">
-<h4>Questão 10 — Por que bancos de dados usam árvore B e não árvore binária?</h4>
-<details><summary>Ver resposta comentada</summary>
-<p>Porque em disco <strong>cada nó visitado pode ser uma leitura de disco</strong> (operação lenta). Uma árvore binária de busca:</p>
-<ul>
-<li><strong>Tem muitos níveis:</strong> com 1 milhão de chaves, ≥ 20 níveis → até 20 leituras.</li>
-<li><strong>Pode ficar torta:</strong> se os dados entram em ordem, ela vira uma lista e a busca perde a graça.</li>
-</ul>
-<p>A <strong>árvore B</strong> resolve os dois:</p>
-<ul>
-<li><strong>Várias chaves por nó</strong> (centenas) → poucos níveis. Com 500 chaves/nó, 3 níveis guardam ~125 milhões de chaves.</li>
-<li><strong>É sempre balanceada:</strong> quando um nó enche, ele se divide, e todas as folhas ficam na mesma profundidade.</li>
-</ul>
-<p><strong>Na prática:</strong> o MySQL (InnoDB) guarda a tabela numa árvore B+; o MongoDB (WiredTiger) guarda coleção e índices em árvore B. A ideia da BST continua (comparar e descer), só que "mais chaves por nó = menos idas ao disco".</p>
-</details>
 </div>
 
-<div class="box takeaway"><strong>Fim! 🎉</strong>Se você conseguiu responder as <strong>questões oficiais (seção 17)</strong> e as <strong>10 de prática (seção 18)</strong>, mesmo parcialmente, e refazer de memória o diagrama do Transporte, você está pronto(a). Volte nas seções 0, 1 e 2 sempre que um conceito escapar.</div>
-
-
-</div>
 </section>
 </body>
 <script>
