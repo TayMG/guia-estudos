@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("a3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Prática · Base de Estudos A3 — Tema 2</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">A3</div>
+    <div class="brand-text"><strong>Base de Estudos</strong><span>Tema 2 · Fila + Leis</span></div>
+  </div>
+  <div class="study-switch" aria-label="Trocar de estudo">
+    <a href="../Euclerio/index.html">Euclerio</a>
+    <a href="../Sergio/index.html" class="active">Sergio</a>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
+    <div class="search-results"></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Comece aqui</div>
+    <a href="index.html"><span class="n">00</span> Início</a>
+    <div class="nav-label">Fundamentos</div>
+    <a href="teoria.html"><span class="n">01</span> Teoria</a>
+    <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
+    <div class="nav-label">O trabalho</div>
+    <a href="pratica.html"><span class="n">03</span> Prática</a>
+    <a href="codigo.html"><span class="n">04</span> Código</a>
+    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <div class="nav-label">Treino</div>
+    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">07</span> Quiz</a>
+    <a href="plano.html"><span class="n">08</span> Plano</a>
+    <a href="banca.html"><span class="n">09</span> Banca</a>
+  </nav>
+  <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" data-menu aria-label="Abrir menu">☰</button>
+    <span class="topbar-title">03 · Execução</span>
+  </div>
+
+  <div class="content">
+    <div class="eyebrow">03 · Execução</div>
+    <h1>Prática: do zero ao primeiro <code>popleft()</code></h1>
+    <p class="lead">Esta é a sequência que você precisa saber executar e explicar. Cada comando vem com o motivo de existir —
+      porque na banca você não vai só digitar, vai justificar.</p>
+
+    <div class="callout warn">
+      <div class="ct">Antes de tudo: o que você precisa ter</div>
+      <p>Python 3.10+ (o projeto não fixa versão), Git, uma conta no Supabase e um terminal. No Windows, os comandos de
+        ativação da venv são diferentes; estão indicados abaixo. O projeto foi escrito para rodar com internet, porque o
+        banco fica na nuvem.</p>
+    </div>
+
+    <h2 id="ordem">1. A ordem de criação — cada peça, do zero</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>O que você cria</th><th>Artefato</th><th>Onde está o passo a passo</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>O ambiente Python</td><td>venv + dependências</td><td><a href="#pre">Prática §2</a></td></tr>
+          <tr><td>2</td><td>O projeto no Supabase</td><td>URL + chave</td><td><a href="#env">Prática §3</a></td></tr>
+          <tr><td>3</td><td>O schema e o seed</td><td>4 tabelas + 3 níveis + 9 motivos</td><td><a href="#supabase">Prática §4</a></td></tr>
+          <tr><td>4</td><td>Os clientes sintéticos</td><td><code>gerar_clientes.py 500</code></td><td><a href="#dados">Prática §5</a></td></tr>
+          <tr><td>5</td><td>O teste do núcleo</td><td>15 testes</td><td><a href="#testes">Prática §6</a></td></tr>
+          <tr><td>6</td><td>A simulação</td><td><code>gerenciador_filas.py</code></td><td><a href="#modulos">Prática §7</a></td></tr>
+          <tr><td>7</td><td>A interface</td><td><code>streamlit.py</code> (parcial)</td><td><a href="#streamlit">Prática §10</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="pre">2. Pré-requisitos e instalação</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Ferramenta</th><th>Para quê</th><th>Como verificar</th></tr></thead>
+        <tbody>
+          <tr><td>Python 3.10+</td><td>rodar o núcleo, os testes e o gerador</td><td><code>python --version</code></td></tr>
+          <tr><td>pip</td><td>instalar dependências</td><td><code>python -m pip --version</code></td></tr>
+          <tr><td>Git</td><td>clonar o repositório</td><td><code>git --version</code></td></tr>
+          <tr><td>Conta Supabase</td><td>banco PostgreSQL e API REST</td><td>dashboard do Supabase</td></tr>
+          <tr><td>Navegador</td><td>Streamlit e dashboard</td><td>qualquer um atualizado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+<pre><code>git clone https://github.com/Cauapm/A3---Sergio.git
+cd A3---Sergio
+
+python -m venv .venv
+<span class="c"># Windows (PowerShell):</span>
+.venv\Scripts\Activate.ps1
+<span class="c"># Windows (cmd):</span>
+.venv\Scripts\activate.bat
+<span class="c"># Linux/macOS:</span>
+source .venv/bin/activate
+
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+pip install pandas   <span class="c"># o requirements não lista, mas o código importa</span></code></pre>
+
+    <div class="callout warn">
+      <div class="ct">Dependência escondida</div>
+      <p>O <code>requirements.txt</code> tem <code>streamlit</code>, <code>supabase</code>, <code>python-dotenv</code> e
+        <code>faker</code>, mas não tem <code>pandas</code>. O Streamlit instala pandas como dependência transitiva, então
+        pode funcionar por acidente. Em um ambiente limpo, instale explicitamente — ou o <code>import pandas</code> do
+        <code>gerenciador_filas.py</code> pode falhar.</p>
+    </div>
+
+    <h2 id="env">3. Configurar o <code>.env</code></h2>
+    <p>Copie o exemplo e preencha com a URL e a chave do <strong>seu</strong> projeto Supabase:</p>
+
+<pre><code>cp .env.example .env       <span class="c"># Windows: copy .env.example .env</span></code></pre>
+
+<pre><code>SUPABASE_URL=https://SEU-PROJETO.supabase.co
+SUPABASE_KEY=sua-chave-publica-aqui</code></pre>
+
+    <p>Não use a chave que aparece no README do repositório. Ela é pública por natureza, mas o projeto não é seu e as
+      políticas estão abertas. Crie um projeto novo, com as suas credenciais. O arquivo <code>.env</code> não deve ir para
+      o Git.</p>
+
+    <h2 id="supabase">4. Criar o schema no Supabase</h2>
+    <p>No dashboard do Supabase, abra <strong>SQL Editor</strong> e execute o conteúdo de
+      <code>supabase/setup_supabase.sql</code>. Ele é idempotente: cria o tipo <code>status_senha</code>, as tabelas
+      <code>tipo_prioridade</code>, <code>motivo_prioridade</code>, <code>clientes_fila</code> e <code>atendimentos</code>,
+      o índice parcial, as views e as políticas de RLS, e insere o seed.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Objeto</th><th>Para que serve</th><th>Chave</th></tr></thead>
+        <tbody>
+          <tr><td><code>tipo_prioridade</code></td><td>os três níveis (0, 1, 2)</td><td><code>id_prioridade</code></td></tr>
+          <tr><td><code>motivo_prioridade</code></td><td>os sete motivos legais do nível 1</td><td><code>id_motivo</code></td></tr>
+          <tr><td><code>clientes_fila</code></td><td>a fila em si</td><td><code>id</code> UUID</td></tr>
+          <tr><td><code>atendimentos</code></td><td>histórico de chamadas por guichê</td><td><code>id_chamada</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Depois de executar, confira em <strong>Table Editor</strong> se <code>tipo_prioridade</code> tem três linhas e
+      <code>motivo_prioridade</code> tem sete. Se o SQL reclamar de <code>gen_random_uuid()</code>, verifique se a extensão
+      <code>pgcrypto</code> está disponível — no Supabase ela já vem habilitada.</p>
+
+    <h2 id="dados">5. Gerar clientes com Faker</h2>
+    <p>O script aceita a quantidade como argumento. O padrão do <code>main</code> é 20; a função tem 50; o documento fala
+      em 500. Use 500 para testar volume:</p>
+
+<pre><code>python gerar_clientes.py 500</code></pre>
+
+    <p>Ele sorteia a categoria com pesos 15/35/50, gera nome, CPF e data de nascimento com Faker pt_BR, e insere em lotes
+      de 25 via <code>supabase-py</code>. O campo <code>data_chegada</code> não é enviado; o banco usa <code>now()</code>.
+      Se você rodar duas vezes, os clientes se acumulam — não há <code>ON CONFLICT</code> para CPF.</p>
+
+    <div class="callout tip">
+      <div class="ct">Quer ver os dados sem inserir?</div>
+      <p>Abra um Python interativo e chame <code>gerar_cliente()</code>. Ele devolve um dicionário; não toca no banco.
+        É útil para explicar a distribuição sem depender de rede.</p>
+    </div>
+
+    <h2 id="testes">6. Rodar os testes</h2>
+<pre><code>python -m unittest testes_frente2.py -v</code></pre>
+
+    <p>Os testes que não dependem de rede usam <code>ExtratorFalso</code> e devem passar. O teste
+      <code>test_extracao_real_supabase</code> é pulado se <code>SUPABASE_URL</code> ou <code>SUPABASE_KEY</code> não
+      estiverem definidos; se estiverem, ele tenta conectar e pode falhar por rede. Para uma demo, rode sem o
+      <code>.env</code> ou aceite o skip.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Teste</th><th>O que ele prova</th></tr></thead>
+        <tbody>
+          <tr><td><code>test_prioridade_absoluta_80_mais_e_ciclo_21</code></td><td>4S/3P/3C → S,S,S,S,P,P,C</td></tr>
+          <tr><td><code>test_super_nao_altera_contador_do_ciclo_21</code></td><td>P0, S0, P1, C0</td></tr>
+          <tr><td><code>test_fifo_convencional</code></td><td>ordem de chegada dentro da convencional</td></tr>
+          <tr><td><code>test_fifo_super_e_intercalacao_21</code></td><td>S1,S2,P1,P2,C1</td></tr>
+          <tr><td><code>test_ciclo_encurta_quando_prioritarias_vazias</code></td><td>convencionais não ficam presos</td></tr>
+          <tr><td><code>test_anti_inanicao_sob_pico_de_padrao</code></td><td>100P + 1C → P,P,C</td></tr>
+          <tr><td><code>test_gerenciador_nao_altera_status</code></td><td>o status continua <code>aguardando</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="modulos">7. Rodar o gerenciador e o algoritmo</h2>
+    <p>Os dois arquivos têm um bloco <code>if __name__ == "__main__"</code> que carrega do Supabase e imprime 12 chamadas.
+      Eles precisam de <code>.env</code> e de rede:</p>
+
+<pre><code>python gerenciador_filas.py
+python Alexandre.py</code></pre>
+
+    <p>O <code>gerenciador_filas.py</code> tem o bloco <code>__main__</code> duplicado; a função roda duas vezes. Não é
+      fatal, mas é um sinal de descuido. O <code>Alexandre.py</code> tem uma segunda classe <code>GerenciadorFilas</code>
+      completa, que não é usada pelo gerenciador principal — só a função <code>aplicar_starvation</code> é importada.</p>
+
+    <h2 id="simulador">8. Laboratório: veja o ciclo acontecer</h2>
+    <p>Este simulador replica a função <code>aplicar_starvation</code> no navegador. Adicione clientes, chame e observe
+      etapa, contador e a ordem. Ele começa com 2 super, 3 padrão e 2 convencionais para você ver o caso do teste.</p>
+
+    <div class="sim">
+      <div class="sim-head">
+        <h3>Simulador 80+ / 2:1</h3>
+        <button class="sim-btn" id="sim-reset" type="button">↻ Reiniciar</button>
+      </div>
+      <div class="sim-queues">
+        <div class="sim-q">
+          <h4>Super (80+) <span class="count" id="sim-c-super">0</span></h4>
+          <ul class="sim-list" id="sim-super"></ul>
+        </div>
+        <div class="sim-q">
+          <h4>Padrão <span class="count" id="sim-c-padrao">0</span></h4>
+          <ul class="sim-list" id="sim-padrao"></ul>
+        </div>
+        <div class="sim-q">
+          <h4>Convencional <span class="count" id="sim-c-conv">0</span></h4>
+          <ul class="sim-list" id="sim-conv"></ul>
+        </div>
+      </div>
+      <div class="sim-controls">
+        <button class="sim-btn" data-add="0" type="button">+ 80+</button>
+        <button class="sim-btn" data-add="1" type="button">+ padrão</button>
+        <button class="sim-btn" data-add="2" type="button">+ convencional</button>
+        <button class="sim-btn primary" id="sim-call" type="button">Chamar próximo →</button>
+      </div>
+      <div class="sim-status" id="sim-status">Etapa: <strong>0 (padrão)</strong> · contador: <strong>0/2</strong> · próxima chamada segue a regra.</div>
+      <div class="sim-log" id="sim-log">— log de chamadas —</div>
+    </div>
+
+    <div class="callout">
+      <div class="ct">O que observar</div>
+      <p>Adicione um 80+ no meio do ciclo: a etapa e o contador não mudam. Esvazie a fila padrão: o simulador salta para
+        a convencional sem “gastar” chamada. Esvazie tudo: a etapa zera. É exatamente o que os testes verificam.</p>
+    </div>
+
+    <h2 id="streamlit">9. Streamlit: o que roda e o que não roda</h2>
+    <p>O README manda rodar <code>streamlit run app.py</code>, mas não existe <code>app.py</code>. O arquivo é
+      <code>streamlit.py</code>. Tente:</p>
+
+<pre><code>streamlit run streamlit.py</code></pre>
+
+    <p>Se funcionar, você verá “Sistema de Gerenciamento de Fila Bancária”, um aviso de conexão e dois números: categorias
+      configuradas e clientes na fila. Não há botão de chamar. Se der erro de <code>AttributeError</code> no
+      <code>import streamlit</code>, é o conflito de nome: o Python está importando o próprio arquivo. A correção é renomear
+      para <code>app.py</code> e rodar <code>streamlit run app.py</code>.</p>
+
+    <div class="callout warn">
+      <div class="ct">Por que o nome sombreia o pacote</div>
+      <p>Quando você executa um script, o diretório dele entra no <code>sys.path</code>. Se existe <code>streamlit.py</code>
+        na pasta, <code>import streamlit</code> pode resolver para o arquivo local antes do pacote instalado. É um erro
+        clássico de nome de módulo. Renomear é a solução mais simples.</p>
+    </div>
+
+    <h2 id="offline">10. Plano B: rodar sem Supabase</h2>
+    <p>Para uma demo sem internet, use o <code>ExtratorFalso</code> dos testes ou crie um DataFrame em memória. Exemplo
+      mínimo:</p>
+
+<pre><code>import pandas as pd
+from gerenciador_filas import GerenciadorFilas
+
+df = pd.DataFrame([
+    {"nome": "S1", "nivel_prioridade": 0, "motivo": "80+", "status": "aguardando",
+     "data_chegada": "2026-01-01T09:00:00"},
+    {"nome": "P1", "nivel_prioridade": 1, "motivo": "PCD", "status": "aguardando",
+     "data_chegada": "2026-01-01T09:01:00"},
+    {"nome": "C1", "nivel_prioridade": 2, "motivo": "convencional", "status": "aguardando",
+     "data_chegada": "2026-01-01T09:02:00"},
+])
+
+g = GerenciadorFilas()
+g.carregar_fila(df)
+for _ in range(3):
+    c = g.chamar_proximo()
+    print(c.nome, c.nivel_prioridade.name)</code></pre>
+
+    <p>Isso não prova a integração com o banco, mas prova o algoritmo na frente da banca sem depender de rede.</p>
+
+    <h2 id="troubleshooting">11. Erros comuns</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Sintoma</th><th>Causa provável</th><th>Correção</th></tr></thead>
+        <tbody>
+          <tr><td><code>ModuleNotFoundError: pandas</code></td><td>requirements incompleto</td><td><code>pip install pandas</code></td></tr>
+          <tr><td><code>SUPABASE_URL</code> vazio</td><td><code>.env</code> não carregado</td><td>confira o arquivo e o <code>load_dotenv()</code></td></tr>
+          <tr><td><code>401</code> / <code>403</code></td><td>chave errada ou RLS</td><td>use a chave do projeto e confira as policies</td></tr>
+          <tr><td><code>relation "clientes_fila" does not exist</code></td><td>schema não aplicado</td><td>rode <code>setup_supabase.sql</code></td></tr>
+          <tr><td><code>AttributeError: module 'streamlit' has no attribute ...</code></td><td>nome do arquivo sombreia o pacote</td><td>renomeie para <code>app.py</code></td></tr>
+          <tr><td>Teste real do Supabase falha</td><td>sem rede ou credenciais</td><td>rode sem <code>.env</code>; o teste é skip</td></tr>
+          <tr><td>Cliente chamado duas vezes</td><td>status não é atualizado</td><td>recarregue do zero ou implemente a transação</td></tr>
+          <tr><td>Ordem inesperada no lote</td><td><code>data_chegada</code> iguais</td><td>use um timestamp com microssegundos ou sequência</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="limpeza">12. Limpeza e cuidados</h2>
+    <p>Para não deixar dados de teste no projeto:</p>
+<pre><code>-- no SQL Editor do Supabase
+DELETE FROM atendimentos;
+DELETE FROM clientes_fila;</code></pre>
+    <p>Não apague as tabelas <code>tipo_prioridade</code> e <code>motivo_prioridade</code> se quiser manter o seed. Se for
+      recriar tudo, rode o <code>setup_supabase.sql</code> novamente; ele é idempotente para tabelas e políticas, mas os
+      <code>INSERT</code> usam <code>ON CONFLICT</code>.</p>
+
+    <div class="callout danger">
+      <div class="ct">Regra do trabalho</div>
+      <p>Não altere o repositório original para “consertar” os bugs durante a apresentação. Estude o que está lá. Se quiser
+        demonstrar uma correção, faça uma cópia local e deixe claro que é uma proposta, não o código entregue.</p>
+    </div>
+
+<script src="assets/simulador.js"></script>
+
+  </div>
+</div>
+
+<script src="assets/search-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

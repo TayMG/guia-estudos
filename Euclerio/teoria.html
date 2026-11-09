@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("a3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Teoria · Base de Estudos A3 — Tema 1</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">A3</div>
+    <div class="brand-text"><strong>Base de Estudos</strong><span>Tema 1 · Kubernetes + API</span></div>
+  </div>
+  <div class="study-switch" aria-label="Trocar de estudo">
+    <a href="../Euclerio/index.html" class="active">Euclerio</a>
+    <a href="../Sergio/index.html">Sergio</a>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
+    <div class="search-results"></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Comece aqui</div>
+    <a href="index.html"><span class="n">00</span> Início</a>
+    <div class="nav-label">Fundamentos</div>
+    <a href="teoria.html"><span class="n">01</span> Teoria</a>
+    <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
+    <div class="nav-label">O trabalho</div>
+    <a href="pratica.html"><span class="n">03</span> Prática</a>
+    <a href="codigo.html"><span class="n">04</span> Código</a>
+    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <div class="nav-label">Treino</div>
+    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">07</span> Quiz</a>
+    <a href="plano.html"><span class="n">08</span> Plano</a>
+    <a href="banca.html"><span class="n">09</span> Banca</a>
+  </nav>
+  <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" data-menu aria-label="Abrir menu">☰</button>
+    <span class="topbar-title">Teoria</span>
+  </div>
+
+  <div class="content">
+    <div class="eyebrow">01 · Fundamentos</div>
+    <h1>Teoria: do processo ao Pod</h1>
+    <p class="lead">Esta página vai do conceito mais básico do sistema operacional (o que é um processo) até o objeto mais
+      alto do Kubernetes que você usa (o HPA). A ordem é deliberada: cada camada só existe porque a de baixo resolveu um problema.</p>
+
+    <div class="callout">
+      <div class="ct">A frase que resume tudo</div>
+      <p>Um <strong>container</strong> é um processo isolado por <strong>namespaces</strong> e limitado por <strong>cgroups</strong>.
+         O <strong>Kubernetes</strong> é um loop que compara o estado desejado com o real e age para igualá-los.
+         O <strong>HPA</strong> é um desses loops, especializado em número de réplicas.
+         A sua <strong>API</strong> é só um processo Python que lê <code>/proc</code> — e enxerga o nó inteiro porque compartilha o namespace de PID.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="processo">1. Processo, PID e ciclo de vida</h2>
+
+    <p><strong>Programa</strong> é um arquivo no disco. <strong>Processo</strong> é esse programa em execução, com tudo o que o
+      kernel precisa para mantê-lo vivo: um PID, um estado, um espaço de memória, uma tabela de arquivos abertos,
+      um diretório de trabalho, permissões e um pai.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Campo</th><th>Significado</th><th>Como o psutil expõe</th></tr></thead>
+        <tbody>
+          <tr><td><code>pid</code></td><td>identificador único no namespace de PID</td><td><code>proc.pid</code></td></tr>
+          <tr><td><code>ppid</code></td><td>PID do processo pai</td><td><code>proc.ppid()</code></td></tr>
+          <tr><td><code>state</code></td><td>estado de execução (R, S, D, Z, T)</td><td><code>proc.status()</code></td></tr>
+          <tr><td><code>cmdline</code></td><td>linha de comando completa</td><td><code>proc.cmdline()</code></td></tr>
+          <tr><td><code>user</code></td><td>dono do processo</td><td><code>proc.username()</code></td></tr>
+          <tr><td><code>cpu / mem</code></td><td>uso relativo</td><td><code>cpu_percent()</code>, <code>memory_percent()</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Como um processo nasce</h3>
+    <p>No Linux, um processo novo nasce de outro processo por <strong><code>fork()</code></strong> (o kernel duplica o processo atual)
+      seguido de <strong><code>exec()</code></strong> (o filho troca o próprio código pelo programa desejado). Por isso todo processo
+      tem um pai, e por isso existe uma árvore de processos cuja raiz é o <strong>PID 1</strong>.</p>
+
+    <p>Quando você chama <code>subprocess.Popen(["sleep", "60"])</code> na API, o Python faz exatamente isso: clona a si mesmo
+      e executa o <code>sleep</code>. O <code>sleep</code> passa a ser <strong>filho do uvicorn</strong>.</p>
+
+    <h3>Estados de um processo</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Letra</th><th>Nome</th><th>O que significa</th></tr></thead>
+        <tbody>
+          <tr><td><code>R</code></td><td>running / runnable</td><td>executando ou na fila da CPU</td></tr>
+          <tr><td><code>S</code></td><td>sleeping (interruptible)</td><td>esperando evento — é o estado da maioria dos daemons ociosos</td></tr>
+          <tr><td><code>D</code></td><td>uninterruptible sleep</td><td>esperando I/O; não recebe sinal até terminar</td></tr>
+          <tr><td><code>Z</code></td><td>zombie</td><td>terminou, mas o pai ainda não leu o status de saída</td></tr>
+          <tr><td><code>T</code></td><td>stopped</td><td>parado por SIGSTOP ou por um depurador</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>No <code>/processes</code> da sua API, quase tudo aparece como <code>sleeping</code> — inclusive o <code>nginx</code>, o <code>crond</code>
+      e os componentes do Kubernetes. Isso é normal e é uma boa resposta para "por que o nginx está dormindo?": um daemon
+      passa a maior parte do tempo bloqueado esperando conexão ou o próximo minuto do cron.</p>
+
+    <details>
+      <summary>Aprofundando: o que é o <code>/proc</code></summary>
+      <div class="body">
+        <p>O <code>/proc</code> é um sistema de arquivos virtual: cada processo tem uma pasta <code>/proc/&lt;pid&gt;</code> com arquivos
+          como <code>status</code>, <code>cmdline</code>, <code>stat</code> e <code>fd/</code>. Não há nada em disco — o kernel gera o conteúdo na hora.</p>
+        <p>O psutil é basicamente um leitor sofisticado desse diretório (no Linux). É por isso que ele não precisa de root para
+          listar processos, mas precisa para ler detalhes de processos de outro usuário — e é por isso que a sua API devolve
+          <strong>403</strong> quando o psutil levanta <code>AccessDenied</code>.</p>
+        <p><strong>Consequência prática:</strong> com <code>hostPID: true</code>, o <code>/proc</code> que o container enxerga é o do nó.
+          Sem ele, é só o do container.</p>
+      </div>
+    </details>
+
+    <!-- ============================================================ -->
+    <h2 id="zumbi">2. Zumbi e órfão (as duas palavras que aparecem em toda prova)</h2>
+
+    <p><strong>Zumbi</strong> é um processo que terminou mas cujo pai ainda não chamou <code>wait()</code> para ler o código de saída.
+      Ele não consome CPU nem memória — só uma entrada na tabela de processos. Desaparece quando o pai colhe
+      (<em>reap</em>) ou quando o pai morre.</p>
+
+    <p><strong>Órfão</strong> é o contrário: o pai morreu primeiro. O kernel reparenta o órfão ao PID 1 (ou ao <em>subreaper</em>
+      mais próximo), que passa a colhê-lo.</p>
+
+    <div class="callout ok">
+      <div class="ct">Aplicado ao seu projeto</div>
+      <p>O <code>subprocess</code> do Python colhe os filhos de forma <strong>preguiçosa</strong>: quando você cria um novo <code>Popen</code>,
+         ele roda um <code>_cleanup()</code> que faz <code>poll()</code> nos processos ativos; e no <code>__del__</code> ele também verifica.
+         Então um <code>sleep</code> curto vira zumbi por instantes. Mas, se o processo demora a morrer e nenhum novo <code>Popen</code>
+         acontece depois, ele pode ficar zumbi até a próxima chamada — não é colheita imediata. <strong>Não há acúmulo ilimitado neste
+         projeto</strong>, mas também não é um reaper explícito; a resposta madura é dizer que o correto seria <code>wait()</code> em uma
+         thread ou um reaper dedicado.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="sinais">3. Sinais: SIGTERM, SIGKILL e por que os dois existem</h2>
+
+    <p>Sinal é uma interrupção assíncrona que o kernel entrega a um processo. Os que importam aqui:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Sinal</th><th>Número</th><th>Comportamento</th><th>Uso no projeto</th></tr></thead>
+        <tbody>
+          <tr><td><code>SIGTERM</code></td><td>15</td><td>pedido educado de encerramento; o processo pode capturar, salvar estado e sair</td><td><code>DELETE /processes/{pid}</code> com <code>force=false</code></td></tr>
+          <tr><td><code>SIGKILL</code></td><td>9</td><td>morte imediata pelo kernel; <strong>não pode ser capturado nem ignorado</strong></td><td><code>force=true</code></td></tr>
+          <tr><td><code>SIGINT</code></td><td>2</td><td>Ctrl+C no terminal</td><td>parar o uvicorn localmente</td></tr>
+          <tr><td><code>SIGHUP</code></td><td>1</td><td>terminal fechou; historicamente usados para "recarregar configuração"</td><td>—</td></tr>
+          <tr><td><code>SIGCHLD</code></td><td>17</td><td>avisos ao pai de que um filho mudou de estado</td><td>base do mecanismo de colheita</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>A ordem correta é sempre <strong>terminar, esperar, matar</strong>: SIGTERM dá ao processo a chance de fechar conexões e
+      arquivos; se ele não morrer em alguns segundos, SIGKILL resolve. É exatamente o que a API oferece com o parâmetro
+      <code>force</code> — e é a mesma lógica que o Kubernetes usa ao encerrar um Pod (<code>terminationGracePeriodSeconds</code>, padrão 30 s).</p>
+
+    <div class="callout warn">
+      <div class="ct">Ponto de atenção para a banca</div>
+      <p>O <code>DELETE</code> da sua API devolve <code>{"status": "encerrado"}</code> imediatamente após enviar o sinal. Ele <strong>não espera</strong>
+         o processo morrer. Se o professor consultar o PID logo depois, ele pode ainda aparecer por alguns milissegundos.
+         Resposta pronta: <em>"o endpoint dispara o sinal e retorna; a confirmação de morte seria um <code>wait()</code>, que eu não
+         implementei porque o escopo era disparar o encerramento."</em></p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="daemon">4. O que é um daemon</h2>
+
+    <p>Daemon é um processo de longa duração que roda em segundo plano, sem terminal associado, esperando eventos:
+      conexões, horários, requisições. O nome vem do "demônio" de Maxwell — algo que trabalha invisível.</p>
+
+    <p>Características clássicas:</p>
+    <ul>
+      <li>não tem terminal de controle (o clássico <em>double fork</em> + <code>setsid()</code>);</li>
+      <li>vive até ser parado explicitamente;</li>
+      <li>normalmente escreve log em arquivo ou no journal;</li>
+      <li>costuma ser gerenciado por um supervisor (systemd, no host; o kubelet, no cluster).</li>
+    </ul>
+
+    <p><strong>No seu projeto, os três daemons são:</strong></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Daemon</th><th>O que faz</th><th>Como roda no container</th></tr></thead>
+        <tbody>
+          <tr><td><code>uvicorn</code> (API)</td><td>escuta HTTP na 8000 e responde as rotas</td><td><code>CMD ["uvicorn", ...]</code> → seria o PID 1 sem <code>hostPID</code>; com <code>hostPID: true</code>, recebe um PID do nó</td></tr>
+          <tr><td><code>nginx</code></td><td>serve a página na 80 e o <code>cron.txt</code></td><td><code>nginx -g "daemon off;"</code> (em foreground, exigência de container)</td></tr>
+          <tr><td><code>crond</code></td><td>executa a tarefa agendada a cada minuto</td><td><code>busybox crond -f</code> no container de cron; <code>-b</code> dentro do container do Nginx</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="ct">Três containers ou quatro daemons?</div>
+      <p>O edital pede <strong>três containers com daemons diferentes</strong>: API (uvicorn), Nginx (nginx) e cron (crond). Mas o container do
+         Nginx roda <strong>dois</strong> processos de longa duração — o <code>crond -b</code> e o <code>nginx</code> — porque a página precisa mostrar
+         o log gerado no mesmo sistema de arquivos. Então: <strong>3 imagens, 3 containers, 4 processos daemon</strong> (o crond aparece duas vezes).
+         Se a banca contar "quatro daemons" e cobrar o edital, a resposta é essa — e a ressalva de que o cron isolado existe justamente para
+         provar o agendador separado.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="ct">Detalhe que vale ponto</div>
+      <p>Em container, o daemon <strong>não pode</strong> fazer <em>double fork</em>: se ele se desprender e virar background, o PID 1 do
+         container termina e o container morre. Por isso todo mundo usa a flag de "não daemonizar" — <code>nginx -g "daemon off;"</code>
+         e <code>crond -f</code> (foreground). Saber explicar isso mostra que você entendeu a diferença entre "daemon" e "processo em background".</p>
+    </div>
+
+    <div class="callout danger">
+      <div class="ct">Cuidado com “PID 1 do container” no Pod da API</div>
+      <p>Sem <code>hostPID</code>, o uvicorn seria o PID 1 do container. Mas o Deployment da API tem <code>hostPID: true</code>: o Pod
+         <strong>compartilha o namespace de PID do nó</strong>, então o uvicorn recebe um PID do host (não 1) e o PID 1 visível é o init do nó.
+         A frase correta é: <em>“no container do Nginx, que não usa hostPID, o PID 1 tende a ser o script de entrada; no Pod da API, com hostPID,
+         o processo vê os PIDs do nó e não é PID 1.”</em> Confundir os dois é uma das pegadinhas mais fáceis de armar.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="namespaces">5. Namespaces do Linux: o isolamento</h2>
+
+    <p>Namespace é uma abstração do kernel que faz um processo enxergar <strong>uma visão própria</strong> de um recurso global.
+      É o que faz dois containers no mesmo host não se verem.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Namespace</th><th>Isola</th><th>Efeito prático</th></tr></thead>
+        <tbody>
+          <tr><td><code>pid</code></td><td>números de processo</td><td>o container vê o próprio processo como PID 1</td></tr>
+          <tr><td><code>net</code></td><td>interfaces, IPs, portas</td><td>cada Pod tem IP próprio; dois Pods podem usar a 8000</td></tr>
+          <tr><td><code>mnt</code></td><td>pontos de montagem</td><td>o container tem seu próprio sistema de arquivos</td></tr>
+          <tr><td><code>uts</code></td><td>hostname e domínio</td><td>o hostname é o nome do Pod</td></tr>
+          <tr><td><code>ipc</code></td><td>memória compartilhada, semáforos</td><td>containers do mesmo Pod podem compartilhar IPC</td></tr>
+          <tr><td><code>user</code></td><td>UIDs e GIDs</td><td>root no container pode ser não-root no host</td></tr>
+          <tr><td><code>cgroup</code></td><td>visão da hierarquia de cgroups</td><td>relevante para limites aninhados</td></tr>
+          <tr><td><code>time</code></td><td>relógio do sistema</td><td>permite boot com hora diferente (raro)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>O <code>hostPID: true</code> do seu YAML é a negação de um namespace:</strong> em vez de criar um namespace de PID novo para
+      o Pod, ele usa o namespace de PID do nó. É por isso que o <code>/processes</code> lista 83 processos com
+      <code>kubelet</code>, <code>etcd</code> e <code>kube-apiserver</code> — e é a prova visual do print.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="cgroups">6. cgroups: o limite</h2>
+
+    <p>Se namespace é "o que eu vejo", cgroup é "quanto eu posso usar". Control groups contabilizam e limitam CPU, memória,
+      I/O e número de processos, em uma hierarquia.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>No cgroup v2</th><th>Significa</th><th>Onde aparece no projeto</th></tr></thead>
+        <tbody>
+          <tr><td><code>cpu.max</code></td><td>quanto de CPU o grupo pode consumir por período</td><td><code>limits.cpu: 500m</code> no Deployment da API</td></tr>
+          <tr><td><code>cpu.weight</code></td><td>peso relativo quando há disputa</td><td><code>requests.cpu: 100m</code></td></tr>
+          <tr><td><code>memory.max</code></td><td>teto de memória; estourar gera OOM kill</td><td>não configurado (limitação do projeto)</td></tr>
+          <tr><td><code>pids.max</code></td><td>número máximo de processos</td><td>padrão do runtime</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>A ligação com o HPA é direta:</strong> o <code>metrics-server</code> obtém o uso de CPU do cAdvisor, que lê os cgroups.
+      O percentual que o HPA mostra é <code>uso real ÷ request</code>. Sem <code>requests.cpu</code>, o divisor não existe e o HPA não calcula nada.</p>
+
+    <div class="callout warn">
+      <div class="ct">Pergunta provável</div>
+      <p>"O que acontece se o container da API estourar o <code>limits.cpu</code>?" — Ele não é morto; é <strong>estrangulado</strong> (throttled):
+         passa a receber menos tempo de CPU por período. Já o estouro de <strong>memória</strong> mata o processo (OOMKilled), porque memória
+         não pode ser "emprestada" com a mesma facilidade. O projeto só limita CPU, então OOM não é um risco aqui.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="container-vm">7. Container vs máquina virtual</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Aspecto</th><th>Container</th><th>Máquina virtual</th></tr></thead>
+        <tbody>
+          <tr><td>Kernel</td><td>compartilha o do host</td><td>tem kernel próprio</td></tr>
+          <tr><td>Isolamento</td><td>namespaces + cgroups (mais fraco)</td><td>hypervisor (mais forte)</td></tr>
+          <tr><td>Início</td><td>milissegundos a segundos</td><td>dezenas de segundos a minutos</td></tr>
+          <tr><td>Tamanho</td><td>MB (imagem alpine: ~5 MB)</td><td>GB (imagem de SO completo)</td></tr>
+          <tr><td>Densidade</td><td>centenas por host</td><td>dezenas por host</td></tr>
+          <tr><td>Sistema operacional</td><td>precisa ser compatível com o kernel do host</td><td>qualquer SO</td></tr>
+          <tr><td>Segurança</td><td>fronteira mais fina; um kernel compartilhado</td><td>fronteira mais grossa</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Resposta de 20 segundos:</strong> "Container não é uma máquina pequena; é um processo normal do Linux com três coisas
+      adicionais — namespaces para isolar o que ele vê, cgroups para limitar o que ele consome e um sistema de arquivos próprio
+      (via overlayfs). Como compartilha o kernel, sobe em milissegundos; como compartilha o kernel, o isolamento é mais fraco que o de uma VM."</p>
+
+    <!-- ============================================================ -->
+    <h2 id="docker">8. Docker: imagem, camada e container</h2>
+
+    <p><strong>Imagem</strong> é um pacote imutável: sistema de arquivos em camadas + metadados (comando de entrada, variáveis,
+      portas). <strong>Container</strong> é uma instância em execução dessa imagem, com uma camada gravável no topo.</p>
+
+    <div class="diagram">
+      <div class="diagram-title">Camadas de uma imagem</div>
+      <div class="stack">
+        <div class="node acc">camada gravável do container (efêmera — morre com o container)</div>
+        <div class="node">COPY main.py .</div>
+        <div class="node">RUN pip install -r requirements.txt</div>
+        <div class="node">COPY requirements.txt .</div>
+        <div class="node">WORKDIR /app</div>
+        <div class="node acc2">FROM python:3.11-slim (camadas base, compartilhadas entre imagens)</div>
+      </div>
+    </div>
+
+    <p>Cada instrução do Dockerfile gera uma camada, e camadas são <strong>cacheadas</strong> e <strong>compartilhadas</strong> entre imagens.
+      É por isso que a ordem importa: copiar o <code>requirements.txt</code> e instalar antes de copiar o <code>main.py</code> faz com que
+      uma mudança no código não invalide a instalação das dependências.</p>
+
+    <h3>As peças do ecossistema</h3>
+    <ul>
+      <li><strong>Docker CLI / daemon</strong> — constrói imagens e orquestra o ciclo local.</li>
+      <li><strong>containerd</strong> — runtime de alto nível; é quem o Kubernetes usa via CRI.</li>
+      <li><strong>runc</strong> — runtime de baixo nível; é quem chama <code>clone()</code>/<code>unshare()</code> e monta o container.</li>
+      <li><strong>overlayfs</strong> — o sistema de arquivos em camadas.</li>
+      <li><strong>registry</strong> — onde as imagens ficam (Docker Hub, GHCR). <em>No seu projeto não há registry: as imagens ficam só no nó.</em></li>
+    </ul>
+
+    <div class="callout">
+      <div class="ct">Por que <code>imagePullPolicy: Never</code></div>
+      <p>O kubelet roda em um "nó" que, no Minikube com driver Docker, é um <strong>container separado</strong> com seu próprio containerd.
+         Imagens construídas no seu WSL não existem lá. Por isso o roteiro faz <code>minikube image load</code> (que copia a imagem para dentro do nó)
+         e os YAMLs usam <code>Never</code>, proibindo o kubelet de tentar baixar de um registry onde ela não está. Se esquecer o <code>load</code>,
+         o Pod fica em <code>ErrImageNeverPull</code>.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="dockerfile">9. Dockerfile: cada instrução</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Instrução</th><th>O que faz</th><th>Por que está no projeto</th></tr></thead>
+        <tbody>
+          <tr><td><code>FROM</code></td><td>define a imagem base</td><td><code>python:3.11-slim</code> (API), <code>nginx:alpine</code>, <code>alpine:latest</code></td></tr>
+          <tr><td><code>WORKDIR</code></td><td>diretório de trabalho dentro da imagem</td><td><code>/app</code>, para o código não ficar na raiz</td></tr>
+          <tr><td><code>COPY</code></td><td>copia arquivos do contexto de build</td><td><code>requirements.txt</code>, <code>main.py</code>, <code>html/</code></td></tr>
+          <tr><td><code>RUN</code></td><td>executa no <em>build</em>, gera camada</td><td>instalar pip; criar o <code>entrypoint.sh</code> e o <code>crontab</code></td></tr>
+          <tr><td><code>EXPOSE</code></td><td>documenta a porta (não publica)</td><td><code>8000</code> na API</td></tr>
+          <tr><td><code>CMD</code></td><td>comando padrão ao iniciar</td><td><code>uvicorn</code>, <code>/entrypoint.sh</code>, <code>busybox crond -f</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><code>EXPOSE</code> não abre nada: quem publica porta é <code>docker run -p</code> ou, no Kubernetes, o <code>containerPort</code> + Service.
+      Confundir isso é uma das perguntas clássicas.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="porque-k8s">10. Por que o Kubernetes existe</h2>
+
+    <p>Docker resolve "rodar um container". Ele não resolve: e se cair? e se precisar de 10? e se a máquina morrer? e se
+      precisar atualizar sem downtime? e como descobrir o IP de quem está rodando?</p>
+
+    <p>Kubernetes resolve isso com uma ideia só: <strong>declaração de estado desejado + loop de reconciliação</strong>. Você diz
+      "quero 2 réplicas desta imagem"; os controladores olham o que existe e agem para igualar, continuamente, para sempre.</p>
+
+    <div class="callout tip">
+      <div class="ct">A frase que a banca quer ouvir</div>
+      <p>"O Kubernetes não executa comandos; ele reconcilia estados. Eu declaro o alvo, e os controladores convergem para ele.
+         Por isso o self-healing não é um evento especial: é o loop normal funcionando."</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="k8s-arquitetura">11. Arquitetura do Kubernetes</h2>
+
+    <div class="diagram">
+      <div class="diagram-title">Control plane e nó</div>
+      <div class="flow">
+        <div class="node acc"><strong>kube-apiserver</strong><small>porta de entrada REST; valida e grava</small></div>
+        <div class="node acc"><strong>etcd</strong><small>banco chave-valor com todo o estado</small></div>
+        <div class="node acc"><strong>kube-scheduler</strong><small>decide em qual nó o Pod roda</small></div>
+        <div class="node acc"><strong>controller-manager</strong><small>roda os loops (ReplicaSet, HPA…)</small></div>
+      </div>
+      <div class="arrow" style="text-align:center;padding:10px 0">↓</div>
+      <div class="flow">
+        <div class="node acc2"><strong>kubelet</strong><small>agente do nó; garante que os containers rodem</small></div>
+        <div class="node acc2"><strong>kube-proxy</strong><small>regras de rede dos Services</small></div>
+        <div class="node acc2"><strong>containerd</strong><small>runtime que executa os containers</small></div>
+        <div class="node acc2"><strong>cAdvisor</strong><small>coleta métricas dos cgroups</small></div>
+      </div>
+    </div>
+
+    <p>O fluxo de criação de um Pod: você aplica o YAML → o <strong>apiserver</strong> valida e grava no <strong>etcd</strong> → o
+      <strong>scheduler</strong> escolhe um nó → o <strong>kubelet</strong> daquele nó vê o Pod e pede ao <strong>containerd</strong> para rodar →
+      o <strong>kube-proxy</strong> ajusta as regras para o Service alcançar o Pod.</p>
+
+    <p><strong>No Minikube, tudo isso vive em um único nó</strong> (que, no driver Docker, é um container). Ou seja: você tem um
+      control plane completo e um worker no mesmo lugar. Isso é suficiente para demonstrar os conceitos, mas não é alta disponibilidade.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="pod">12. Pod: a menor unidade</h2>
+
+    <p>Pod é um ou mais containers que <strong>compartilham rede e IPC</strong>. Todos os containers do Pod têm o mesmo IP e o mesmo
+      namespace de rede — por isso dois containers do mesmo Pod não podem usar a mesma porta.</p>
+
+    <p>Todo Pod tem um container invisível chamado <strong>pause</strong> (ou sandbox), que segura os namespaces vivos. É ele que
+      aparece no <code>/processes</code> com o nome <code>pause</code>.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Estado</th><th>Significa</th></tr></thead>
+        <tbody>
+          <tr><td><code>Pending</code></td><td>aceito pelo cluster, mas ainda sem nó ou sem imagem</td></tr>
+          <tr><td><code>ContainerCreating</code></td><td>nó escolhido, baixando/montando a imagem</td></tr>
+          <tr><td><code>Running</code></td><td>pelo menos um container rodando</td></tr>
+          <tr><td><code>CrashLoopBackOff</code></td><td>container morre e o kubelet reinicia com backoff exponencial</td></tr>
+          <tr><td><code>ErrImageNeverPull</code></td><td><code>imagePullPolicy: Never</code> e a imagem não existe no nó</td></tr>
+          <tr><td><code>ImagePullBackOff</code></td><td>tentou baixar e falhou (nome errado, sem credencial)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Pod é <strong>efêmero por definição</strong>: não se "conserta" um Pod, deleta-se e deixa outro nascer. Isso é projeto, não limitação.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="deployment">13. Deployment e ReplicaSet</h2>
+
+    <p><strong>Deployment</strong> descreve o estado desejado de um conjunto de Pods (imagem, réplicas, labels, recursos) e cuida de
+      atualizações graduais. Ele não cria Pods diretamente: cria um <strong>ReplicaSet</strong>, que é quem garante o número de réplicas.</p>
+
+    <div class="diagram">
+      <div class="diagram-title">Hierarquia</div>
+      <div class="flow">
+        <div class="node acc"><strong>Deployment</strong><small>api-deployment · replicas: 2</small></div>
+        <div class="arrow">→</div>
+        <div class="node"><strong>ReplicaSet</strong><small>api-deployment-7487485766</small></div>
+        <div class="arrow">→</div>
+        <div class="node acc2"><strong>Pods</strong><small>...-2chk4 · ...-j6pb2</small></div>
+      </div>
+    </div>
+
+    <p>Por que a separação existe: quando você muda a imagem, o Deployment cria um <strong>ReplicaSet novo</strong> e vai migrando os Pods
+      aos poucos (rolling update), mantendo o antigo para permitir <code>rollback</code>. O número esquisito no nome
+      (<code>7487485766</code>) é o hash do template — é assim que o Deployment sabe quais Pods são "dele".</p>
+
+    <div class="callout">
+      <div class="ct">Pergunta clássica</div>
+      <p>"Por que não criei Pods direto?" — Porque um Pod sozinho não é recriado se morrer. O Deployment traz réplicas,
+         rolling update, rollback e histórico de revisões. Pod solto é para teste; Deployment é para serviço.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="service">14. Service: ClusterIP, NodePort, LoadBalancer</h2>
+
+    <p>Pod nasce e morre com IP novo. Um Service dá um <strong>nome e um IP estável</strong> para um conjunto de Pods, selecionados por label.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tipo</th><th>Onde expõe</th><th>Quando usar</th><th>No projeto</th></tr></thead>
+        <tbody>
+          <tr><td><code>ClusterIP</code></td><td>IP virtual interno</td><td>comunicação entre serviços</td><td>não usado diretamente (é a base de todos)</td></tr>
+          <tr><td><code>NodePort</code></td><td>porta 30000–32767 em cada nó</td><td>acesso externo simples, sem nuvem</td><td><code>30080</code> (API) e <code>30081</code> (Nginx)</td></tr>
+          <tr><td><code>LoadBalancer</code></td><td>IP externo do provedor</td><td>produção em nuvem</td><td>não usado: exigiria provedor ou MetalLB</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Todo NodePort é, por baixo, um ClusterIP mais uma regra no nó. Quem aplica essa regra é o <strong>kube-proxy</strong> (iptables ou IPVS).
+      O Service também ganha um nome DNS interno: <code>api-service.daemon-lab.svc.cluster.local</code>.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="namespace-k8s">15. Namespace do Kubernetes (não é o do Linux)</h2>
+
+    <p>São conceitos diferentes com o mesmo nome:</p>
+    <ul>
+      <li><strong>Namespace do Linux</strong> → isolamento de recursos do kernel (PID, rede, mount). É o que o container usa.</li>
+      <li><strong>Namespace do Kubernetes</strong> → divisão lógica de objetos dentro do cluster, como uma "pasta" de nomes.</li>
+    </ul>
+
+    <p>O projeto usa <code>daemon-lab</code>. Vantagens: não colidir com <code>default</code>, permitir <code>kubectl delete namespace</code>
+      como limpeza total e separar cotas/políticas no futuro.</p>
+
+    <div class="callout warn">
+      <div class="ct">Cuidado</div>
+      <p>Quase todos os recursos precisam declarar <code>namespace: daemon-lab</code>. Se um YAML esquecer, ele vai para <code>default</code>
+         e o Service não encontra o Pod. Se a banca perguntar "por que os Pods não aparecem?", a primeira suspeita é namespace.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="labels">16. Labels e selectors</h2>
+
+    <p>Label é um par chave-valor. Selector é o filtro que usa labels para achar objetos. É o "SQL" do Kubernetes.</p>
+
+<pre><code>template:
+  metadata:
+    labels:
+      app: process-api     <span class="c"># etiqueta colada no Pod</span>
+selector:
+  matchLabels:
+    app: process-api       <span class="c"># o ReplicaSet só conta Pods com esta etiqueta</span></code></pre>
+
+    <p>O mesmo label é usado pelo Service. Se o Deployment colocar <code>app: api</code> e o Service procurar <code>app: process-api</code>,
+      o Service fica com <strong>zero endpoints</strong> — e o sintoma é <code>connection refused</code>, não um erro de validação. Por isso o
+      <code>docs/interfaces.md</code> do projeto insiste tanto nesse ponto.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="hpa">17. HPA: como o escalonamento automático decide</h2>
+
+    <p>O HorizontalPodAutoscaler lê métricas periodicamente (a cada ~15 s), calcula quantas réplicas seriam necessárias e escreve
+      esse número no campo <code>replicas</code> do Deployment. Não cria Pods: só ajusta o alvo.</p>
+
+    <p>A fórmula, simplificada, é:</p>
+<pre><code>réplicasDesejadas = ceil( réplicasAtuais × métricaAtual / métricaAlvo )</code></pre>
+
+    <p>Com os números do projeto: <code>ceil(2 × 204 / 50) = ceil(8,16) = 9</code>. O print mostra exatamente 9 em um dos passos,
+      antes de chegar a 10 (o máximo permitido).</p>
+
+    <h3>As três regras que explicam o comportamento observado</h3>
+    <ul>
+      <li><strong>Tolerância de 10%</strong>: se a diferença entre atual e alvo for pequena, ele não mexe (evita oscilação).</li>
+      <li><strong>Janela de estabilização</strong>: scale-up é imediato; scale-down espera 300 s (5 min) por padrão — é o "~5 min" do
+        <code>resultados.md</code>.</li>
+      <li><strong>Precisa de <code>requests.cpu</code></strong>: a métrica é percentual do request. Sem request, <code>&lt;unknown&gt;</code>.</li>
+    </ul>
+
+    <p>E precisa do <code>metrics-server</code> rodando, que no Minikube é um addon (<code>minikube addons enable metrics-server</code>).</p>
+
+    <div class="callout">
+      <div class="ct">HPA vs VPA vs Cluster Autoscaler</div>
+      <p><strong>HPA</strong> = mais Pods (horizontal). <strong>VPA</strong> = mais CPU/memória por Pod (vertical). <strong>Cluster Autoscaler</strong> =
+         mais nós (quando não há onde caber o Pod). O projeto usa apenas HPA.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="selfhealing">18. Self-healing em dois níveis</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>O que morreu</th><th>Quem reage</th><th>O que acontece</th><th>Evidência</th></tr></thead>
+        <tbody>
+          <tr><td>o <strong>container</strong></td><td><code>kubelet</code></td><td>reinicia o container <strong>no mesmo Pod</strong> (restartPolicy: Always), com backoff</td><td>RESTARTS &gt; 0 no <code>kubectl get pods</code></td></tr>
+          <tr><td>o <strong>Pod</strong></td><td>ReplicaSet controller</td><td>cria um <strong>Pod novo</strong>, com outro nome</td><td><code>RecriacaoPod.png</code></td></tr>
+          <tr><td>o <strong>nó</strong></td><td>control plane</td><td>recria os Pods em outro nó (se houver)</td><td>não demonstrado (Minikube tem 1 nó)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>A demonstração do projeto é do segundo tipo: <code>kubectl delete pod api-deployment-7487485766-2chk4</code> → o ReplicaSet
+      percebe que tem 1 de 2 e cria <code>...-fbkvn</code> em <strong>9 segundos</strong>.</p>
+
+    <p><strong>Distinção que vale nota:</strong> deletar o <strong>Deployment</strong> não é self-healing — nada recria um Deployment removido.
+      O loop atua do ReplicaSet para baixo.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="scaling">19. Escalonamento horizontal e vertical</h2>
+
+    <p><strong>Horizontal</strong>: mais instâncias (réplicas). <strong>Vertical</strong>: instância maior (mais CPU/RAM). O projeto usa horizontal
+      porque a API é <em>stateless</em>: qualquer réplica atende qualquer requisição.</p>
+
+    <p>Se houvesse estado (um banco, um arquivo compartilhado), escalar horizontalmente exigiria cuidado: dois Pods escrevendo
+      o mesmo arquivo precisariam de volume compartilhado e coordenação. É justamente o caso do cron, que por isso tem
+      <strong>1 réplica</strong>.</p>
+
+    <p>Escalonamento também pode ser <strong>manual</strong>: <code>kubectl scale deployment api-deployment --replicas=5 -n daemon-lab</code>.
+      O HPA faz o mesmo, só que automático. E se você escalar manualmente com HPA ativo, o HPA desfaz na próxima leitura.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="rede">20. Rede no Kubernetes e o túnel do Minikube</h2>
+
+    <p>O caminho de uma requisição até o Pod:</p>
+    <ol>
+      <li>O navegador chama <code>http://IP_DO_NÓ:30080/processes</code>.</li>
+      <li>O <strong>kube-proxy</strong> no nó tem uma regra: porta 30080 → Service <code>api-service</code>.</li>
+      <li>O kube-proxy encaminha para um <strong>endpoint</strong> (IP de um Pod <code>Ready</code> com o label <code>app: process-api</code>).</li>
+      <li>A requisição chega ao IP do Pod, na porta 8000 (o <code>targetPort</code>).</li>
+      <li>O <code>uvicorn</code> dentro do Pod responde.</li>
+    </ol>
+
+    <div class="callout danger">
+      <div class="ct">“O Service escolhe um Pod” é uma simplificação perigosa</div>
+      <p>O Service <strong>não é um processo</strong> e não tem um balanceador rodando. Ele é um objeto com um <strong>VIP (ClusterIP)</strong> e uma
+         lista de <strong>endpoints</strong> (IP:porta dos Pods prontos). Quem intercepta o tráfego é o <code>kube-proxy</code> em cada nó, com regras
+         de iptables/IPVS que fazem <strong>DNAT</strong> para um endpoint. A escolha é por probabilidade, não por carga: o kube-proxy não sabe
+         qual Pod está mais ocupado. Se a banca perguntar “como o Service balanceia?”, a resposta é essa — e é por isso que um Pod lento
+         pode receber a mesma fatia de tráfego que um saudável.</p>
+    </div>
+
+    <p><strong>De onde vem o IP do Pod:</strong> o nó tem um <em>pod CIDR</em>, e o <strong>CNI</strong> (Container Network Interface) é o plugin que
+      cria a interface de rede do Pod e distribui esse IP. No Minikube, o CNI padrão é simples (bridge + NAT); em clusters gerenciados,
+      costuma ser Calico, Cilium ou o CNI do provedor. O <strong>CoreDNS</strong> é o DNS do cluster: ele resolve
+      <code>api-service.daemon-lab.svc.cluster.local</code> para o ClusterIP, e é por isso que um Pod consegue chamar outro pelo nome do
+      Service em vez do IP.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tipo de Service</th><th>Quem alcança</th><th>Como funciona</th><th>No projeto</th></tr></thead>
+        <tbody>
+          <tr><td><code>ClusterIP</code> (padrão)</td><td>só dentro do cluster</td><td>VIP virtual + regras do kube-proxy</td><td>seria a escolha de produção com <code>port-forward</code></td></tr>
+          <tr><td><code>NodePort</code></td><td>quem alcança o IP do nó</td><td>abre uma porta fixa (30000–32767) em todos os nós e encaminha ao Service</td><td><code>30080</code> e <code>30081</code></td></tr>
+          <tr><td><code>LoadBalancer</code></td><td>externo, via IP público</td><td>pede um balanceador ao provedor (ou MetalLB on-premise)</td><td>não usado: não há provedor de nuvem</td></tr>
+          <tr><td><code>ExternalName</code></td><td>dentro do cluster</td><td>é um CNAME para um nome externo, sem proxy</td><td>não usado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="ct">Por que <code>minikube service</code> abre um túnel</div>
+      <p>Com o driver Docker, o "nó" tem IP <code>192.168.49.2</code>, que <strong>não é roteável a partir do Windows</strong> — ele vive dentro
+         de uma rede do Docker. O <code>minikube service</code> cria um encaminhamento de porta (<code>127.0.0.1:&lt;porta aleatória&gt;</code> → nó:30080)
+         para que o navegador do Windows alcance o cluster. É por isso que o terminal precisa ficar aberto: fechou, cai o túnel.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="rest">21. HTTP e REST</h2>
+
+    <p>REST é um estilo de arquitetura sobre HTTP em que cada URL identifica um <strong>recurso</strong> e o verbo indica a <strong>ação</strong>.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Verbo</th><th>Semântica</th><th>Idempotente?</th><th>No projeto</th></tr></thead>
+        <tbody>
+          <tr><td><code>GET</code></td><td>ler</td><td>sim</td><td><code>/processes</code>, <code>/processes/{pid}</code></td></tr>
+          <tr><td><code>POST</code></td><td>criar / disparar ação</td><td>não</td><td><code>/processes/start</code></td></tr>
+          <tr><td><code>DELETE</code></td><td>remover</td><td>sim</td><td><code>/processes/{pid}</code></td></tr>
+          <tr><td><code>PUT</code> / <code>PATCH</code></td><td>atualizar</td><td>sim / não</td><td>não usado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Idempotente</strong> = repetir a chamada produz o mesmo estado final. Chamar <code>DELETE</code> duas vezes é idempotente no
+      sentido de estado (o processo continua morto), mas a segunda chamada devolve <strong>404</strong>, porque o PID não existe mais —
+      e isso está correto.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Código</th><th>Quando a sua API devolve</th></tr></thead>
+        <tbody>
+          <tr><td><code>200</code></td><td>sucesso em GET, POST e DELETE</td></tr>
+          <tr><td><code>403</code></td><td><code>psutil.AccessDenied</code> — processo de outro usuário</td></tr>
+          <tr><td><code>404</code></td><td><code>psutil.NoSuchProcess</code> — PID inexistente</td></tr>
+          <tr><td><code>422</code></td><td>validação do FastAPI falhou (ex.: <code>/processes/abc</code>)</td></tr>
+          <tr><td><code>500</code></td><td>exceção inesperada no <code>Popen</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="fastapi">22. FastAPI, ASGI e uvicorn</h2>
+
+    <p><strong>FastAPI</strong> é um framework web que usa <strong>type hints</strong> para validar entrada e gerar documentação. Você declara
+      <code>pid: int</code> e ele converte, valida e documenta — sem código extra.</p>
+
+    <p><strong>ASGI</strong> é a interface assíncrona entre servidor e aplicação (o sucessor do WSGI). <strong>uvicorn</strong> é o servidor
+      que implementa ASGI e escuta a porta.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Peça</th><th>Papel</th></tr></thead>
+        <tbody>
+          <tr><td><code>@app.get(...)</code></td><td>decorator que registra rota e método</td></tr>
+          <tr><td><code>Pydantic</code></td><td>valida e serializa dados; gera o schema OpenAPI</td></tr>
+          <tr><td><code>HTTPException</code></td><td>devolve erro HTTP com <code>detail</code></td></tr>
+          <tr><td><code>/docs</code></td><td>Swagger UI gerado automaticamente</td></tr>
+          <tr><td><code>/openapi.json</code></td><td>o contrato da API em JSON</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Por que FastAPI e não Flask?</strong> Validação automática de tipos, documentação Swagger de graça e suporte nativo a async.
+      Para uma API de 4 rotas, o ganho é a documentação — que é justamente o print usado como evidência.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="psutil">23. psutil: como a API enxerga processos</h2>
+
+    <p>O <strong>psutil</strong> (Python System and Process Utilities) é uma biblioteca multiplataforma que lê informações do sistema
+      operacional. No Linux, ele lê <code>/proc</code>; no Windows, usa a API do sistema. Dava para ler <code>/proc</code> na mão, mas
+      psutil já resolve o parsing dos arquivos, as diferenças de plataforma, os erros de permissão e a corrida de processos que somem —
+      para uma API didática, isso vale mais que economizar uma dependência.</p>
+
+<pre><code><span class="k">for</span> proc <span class="k">in</span> psutil.<span class="f">process_iter</span>([<span class="s">'pid'</span>, <span class="s">'name'</span>, <span class="s">'username'</span>, <span class="s">'status'</span>]):
+    processes.<span class="f">append</span>(proc.info)   <span class="c"># já vem como dicionário, sem syscall extra</span></code></pre>
+
+    <p>Passar a lista de campos no <code>process_iter</code> é uma otimização: o psutil coleta só o necessário, em vez de tudo.
+      O <code>try/except</code> em volta do <code>append</code> tenta proteger a corrida de um processo que morre durante a coleta — mas, com
+      <code>process_iter(attrs)</code>, o próprio psutil já ignora esses processos ao montar o dicionário. O <code>append</code> em si não
+      levanta exceção. Ou seja: funciona como defesa em profundidade, mas é redundante — e saber dizer isso é leitura crítica, não crítica
+      gratuita.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Método</th><th>Efeito</th><th>Cuidado</th></tr></thead>
+        <tbody>
+          <tr><td><code>proc.terminate()</code></td><td>SIGTERM</td><td>o processo pode ignorar</td></tr>
+          <tr><td><code>proc.kill()</code></td><td>SIGKILL</td><td>sem cleanup; pode deixar arquivos travados</td></tr>
+          <tr><td><code>proc.cpu_percent()</code></td><td>% de CPU</td><td>primeira chamada = 0.0 (precisa de duas amostras)</td></tr>
+          <tr><td><code>proc.memory_percent()</code></td><td>% de RAM</td><td>instantâneo e <strong>não cgroup-aware</strong>: o denominador é a RAM do nó (<code>/proc/meminfo</code>), não o limite do Pod</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="hostpid">24. hostPID: a peça central do trabalho</h2>
+
+    <p>Sem nada, um container tem seu <strong>próprio</strong> namespace de PID: ele vê apenas os processos que ele mesmo criou, e o
+      primeiro deles é o PID 1. Se você rodar <code>ps aux</code> dentro do container da API sem <code>hostPID</code>, veria só o uvicorn.</p>
+
+    <p>Com <code>hostPID: true</code>, o Pod <strong>entra</strong> no namespace de PID do nó. Aí o <code>/proc</code> mostra todos os processos
+      do nó — inclusive <code>kubelet</code>, <code>etcd</code>, <code>kube-apiserver</code>, <code>containerd-shim</code> e os <code>pause</code>.</p>
+
+    <p><strong>Não confunda com <code>shareProcessNamespace: true</code>:</strong> esse campo compartilha o namespace de PID apenas entre os
+      containers <em>do mesmo Pod</em> (útil para sidecar de log, por exemplo); ele não dá visão do nó. E <code>hostPID</code> sozinho
+      <strong>não dá root nem capabilities</strong>: ele só muda o namespace. O poder de enviar sinal vem do UID e de <code>CAP_KILL</code>;
+      é a combinação dos três que cria o risco.</p>
+
+    <p>Outra precisão importante: no Minikube com driver Docker, o “nó” é uma <strong>VM/container Linux</strong> separado. O <code>hostPID</code>
+      mostra os processos <em>desse nó</em> (kubelet, etcd, containerd), <strong>não</strong> os processos do Windows. É por isso que o print
+      tem 83 processos e não os milhares de um Windows — e é por isso que a API não vê o seu VS Code nem o Explorer.</p>
+
+<pre><code>spec:
+  hostPID: true        <span class="c"># compartilha o namespace de PID do nó</span>
+  containers:
+  - name: api
+    image: process-api:latest</code></pre>
+
+    <p>É isso que transforma "uma API que lista processos do próprio container" em "uma API que gerencia processos do sistema
+      operacional" — que é exatamente o que o edital pede.</p>
+
+    <div class="callout danger">
+      <div class="ct">O preço</div>
+      <p>Com <code>hostPID</code>, o <code>DELETE /processes/{pid}</code> pode matar <strong>qualquer</strong> processo do nó, e a API está exposta
+         em NodePort sem autenticação. Além disso, <code>hostPID: true</code> viola o <strong>Pod Security Standard baseline</strong>, então num cluster
+         com essa política aplicada o Pod nem seria admitido. Isso é decisão consciente do projeto e deve ser assumido como limitação.</p>
+    </div>
+
+    <div class="callout ok">
+      <div class="ct">A resposta correta sobre mitigação (não é RBAC)</div>
+      <p>RBAC controla quem pode chamar o <strong>kube-apiserver</strong>, não quem chama a sua API HTTP. As mitigações reais são:
+         <strong>ClusterIP + port-forward</strong> em vez de NodePort, <strong>NetworkPolicy</strong> limitando origens, <strong>autenticação na API</strong>
+         (token/mTLS), <strong>allowlist de PIDs/sinais</strong> em vez de kill arbitrário e um namespace privilegiado com política explícita
+         (já que o PSS baseline bloqueia host namespaces).</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="probes">25. Probes: como o Kubernetes sabe que o Pod está saudável</h2>
+
+    <p>O Kubernetes não adivinha. Ele pergunta. Existem três sondas, e cada uma responde a uma pergunta diferente:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Probe</th><th>Pergunta</th><th>Se falhar</th></tr></thead>
+        <tbody>
+          <tr><td><code>livenessProbe</code></td><td>"o processo ainda está vivo e funcional?"</td><td>o kubelet <strong>reinicia o container</strong></td></tr>
+          <tr><td><code>readinessProbe</code></td><td>"posso mandar tráfego para ele?"</td><td>o Pod sai dos <strong>endpoints do Service</strong> (não é reiniciado)</td></tr>
+          <tr><td><code>startupProbe</code></td><td>"ele já terminou de inicializar?"</td><td>as outras probes são suspensas até ela passar</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>A distinção entre liveness e readiness é a pergunta preferida de banca. <strong>Liveness</strong> é sobre estar vivo; <strong>readiness</strong>
+      é sobre estar pronto para atender. Um Pod pode estar vivo e não estar pronto — durante o carregamento de um cache, por exemplo.</p>
+
+    <div class="callout warn">
+      <div class="ct">No projeto não há probes</div>
+      <p>Os YAMLs não declaram nenhuma. Consequência: o Service considera o Pod pronto assim que o container inicia, mesmo que o
+         uvicorn ainda esteja subindo (uma janela de milissegundos, neste caso). Como a API é simples e rápida, o risco prático é
+         baixo — mas é a primeira coisa que um revisor de produção apontaria.</p>
+      <p><strong>Como corrigir:</strong> criar <code>@app.get("/health")</code> na API e declarar <code>livenessProbe</code> e
+         <code>readinessProbe</code> com <code>httpGet</code> na porta 8000.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="escalonamento-so">26. Escalonamento do SO × escalonamento do Kubernetes</h2>
+
+    <p>Existem <strong>três</strong> escalonadores em jogo, e confundi-los é um erro clássico. Cada um trabalha em um nível diferente:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Escalonador</th><th>Decide</th><th>Granularidade</th></tr></thead>
+        <tbody>
+          <tr><td>Escalonador do SO (CFS, no Linux)</td><td>qual thread recebe CPU e por quanto tempo</td><td>milissegundos (quantum)</td></tr>
+          <tr><td>kube-scheduler</td><td>em qual <strong>nó</strong> cada Pod vai rodar</td><td>uma vez, na criação do Pod</td></tr>
+          <tr><td>HPA</td><td>quantas <strong>réplicas</strong> existem</td><td>dezenas de segundos</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>O escalonador do SO é <strong>preemptivo</strong>: ele interrompe um processo que está rodando para dar vez a outro de maior prioridade
+      ou para cumprir o <em>quantum</em>. A troca de contexto (<em>context switch</em>) salva o estado do processo atual e restaura o do
+      próximo — é por isso que "milhares de processos" não significa "milhares de CPUs".</p>
+
+    <p>O <code>requests.cpu: 100m</code> do projeto não é um quantum: é um peso no cgroup. Na prática, o kernel usa esse valor para
+      calcular a fatia de CPU que o grupo recebe quando há disputa. O <strong>cgroup throttling</strong> (limite de 500m) é aplicado pelo
+      mesmo subsistema, não pelo Kubernetes.</p>
+
+    <div class="callout tip">
+      <div class="ct">Resposta que mostra maturidade</div>
+      <p>"O HPA escala o <em>número de Pods</em>, não a CPU de cada um. Quem distribui CPU entre processos é o escalonador do SO; quem escolhe
+         o nó é o kube-scheduler. São três níveis distintos, e o projeto usa os três."</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="qos">27. QoS, OOMKilled e o que acontece sob pressão</h2>
+
+    <p>O Kubernetes classifica cada Pod em uma classe de qualidade de serviço, derivada do que você declarou de <code>requests</code>
+      e <code>limits</code>:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Classe</th><th>Condição</th><th>No projeto</th></tr></thead>
+        <tbody>
+          <tr><td><code>Guaranteed</code></td><td><code>requests</code> = <code>limits</code> para CPU e memória</td><td>não</td></tr>
+          <tr><td><code>Burstable</code></td><td>tem <code>requests</code> mas não é Guaranteed</td><td><strong>API</strong> (100m/500m, sem memória)</td></tr>
+          <tr><td><code>BestEffort</code></td><td>não declara nada</td><td><strong>Nginx e cron</strong> (nenhum <code>resources</code>)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Sob pressão de memória no nó, o kubelet <strong>despeja</strong> Pods nesta ordem: BestEffort → Burstable → Guaranteed. E, se um
+      container ultrapassa o <code>memory.max</code> do cgroup, o kernel o mata com <strong>OOMKilled</strong> — não é o Kubernetes decidindo,
+      é o kernel.</p>
+
+    <div class="callout">
+      <div class="ct">Aplicado ao projeto</div>
+      <p>Só a <strong>API</strong> declara recursos (100m/500m), então é <em>Burstable</em>. Como não há limite de <strong>memória</strong>, não existe
+         risco de OOMKilled por limite nela: numa disputa de CPU o Pod é <strong>estrangulado</strong>, não morto. Já <strong>Nginx e cron não declaram
+         nada</strong> — são <em>BestEffort</em> e serão os primeiros despejados se o nó ficar sem memória. Essa distinção é uma pergunta pronta:
+         "qual a QoS dos seus Pods?" → <em>API Burstable; Nginx e cron BestEffort.</em></p>
+    </div>
+
+    <p>Se a pergunta for "como impedir que um namespace consuma o nó inteiro?", a resposta não é QoS: é <strong><code>ResourceQuota</code></strong> (teto agregado do namespace, por exemplo 2 CPU e 4Gi) mais <strong><code>LimitRange</code></strong> (defaults e limites por Pod/container). O QoS é a <em>consequência</em> do que cada Pod declarou; a quota é o <em>controle</em> sobre o conjunto.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="volumes">28. Volumes e persistência: por que o log do cron morre</h2>
+
+    <p>Todo container tem uma <strong>camada gravável</strong> (<em>writable layer</em>) em cima da imagem, implementada com
+      <em>copy-on-write</em>. Ela pertence ao container, não ao Pod nem ao nó. Quando o container é <strong>recriado</strong> — restart,
+      OOMKilled, nova imagem —, essa camada é descartada e o processo começa de novo a partir da imagem. É por isso que o
+      <code>cron.txt</code> do projeto não sobrevive a um restart.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tipo</th><th>Vive quanto</th><th>Serve para</th><th>Limite</th></tr></thead>
+        <tbody>
+          <tr><td><code>emptyDir</code></td><td>enquanto o <strong>Pod</strong> existir</td><td>rascunho, cache, troca de arquivos entre containers do mesmo Pod</td><td>morre com o Pod; não compartilha entre réplicas</td></tr>
+          <tr><td><code>hostPath</code></td><td>enquanto o nó existir</td><td>acessar algo do nó (logs, sockets, <code>/proc</code>)</td><td>quebra isolamento; não portável entre nós</td></tr>
+          <tr><td><code>PersistentVolumeClaim</code></td><td>independente do Pod</td><td>dados que precisam sobreviver à recriação</td><td>depende de <em>StorageClass</em> e do modo de acesso</td></tr>
+          <tr><td><code>ConfigMap</code> / <code>Secret</code></td><td>independente do Pod</td><td>configuração e credenciais, via env ou arquivo</td><td><code>Secret</code> é base64, não criptografia por si só</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Os <strong>modos de acesso</strong> de um PVC importam para o seu caso: <code>ReadWriteOnce</code> (RWO) é montado por um nó,
+      <code>ReadOnlyMany</code> (ROX) por vários nós só para leitura, <code>ReadWriteMany</code> (RWX) por vários nós para escrita. Duas réplicas do
+      Nginx em nós diferentes só compartilhariam o mesmo arquivo com RWX — e o driver precisa suportar isso (NFS, CephFS, EFS).
+      <code>emptyDir</code> <strong>nunca</strong> resolve o compartilhamento entre réplicas: cada Pod recebe o seu.</p>
+
+    <div class="callout warn">
+      <div class="ct">Aplicado ao projeto — e a correção certa</div>
+      <p>O Deployment do Nginx tem 2 réplicas e <strong>nenhum volume</strong>. Cada Pod escreve no seu próprio <code>cron.txt</code>; o Service
+         entrega a requisição a um deles, então o usuário pode ver logs diferentes a cada <em>refresh</em>. Para persistir contra restart do
+         container, um <code>emptyDir</code> bastaria; para as duas réplicas verem o mesmo arquivo, seria preciso um PVC <code>ReadWriteMany</code>
+         (ou um único Pod). Não é falha de disponibilidade: é falha de <strong>consistência</strong> — e admitir isso vale ponto.</p>
+    </div>
+
+    <p>O container de cron isolado tem o mesmo problema em <code>/var/log/cron-task.log</code>, com um agravante: como o <code>crond</code>
+      escreve em arquivo, e não no <code>stdout</code>, o comando <code>kubectl logs</code> não mostra a tarefa. Para ver o resultado é preciso
+      <code>kubectl exec ... -- cat /var/log/cron-task.log</code> — e o arquivo some se o container reiniciar. Em produção, o padrão é
+      escrever no <code>stdout</code>/<code>stderr</code> e deixar o runtime coletar, ou montar um volume com um agente de log.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="seguranca-pod">29. Segurança de Pod: root, capabilities e PSS</h2>
+
+    <p>"Rodar como root no container" não é o mesmo que "ser root no host" — mas chega perto. Por padrão, o Docker e o containerd
+      <strong>não</strong> usam <em>user namespaces</em>: o UID 0 do container é o UID 0 do nó Linux (no Docker Desktop, da VM que roda o
+      daemon, não do Windows). O que separa os dois é um conjunto de <strong>capabilities</strong>, que fatia os poderes do root. O Docker
+      entrega um conjunto padrão que inclui <code>CAP_KILL</code>, <code>CAP_NET_RAW</code>, <code>CAP_CHOWN</code> e outros;
+      <code>CAP_SYS_ADMIN</code> e <code>CAP_SYS_PTRACE</code> ficam de fora.</p>
+
+    <p>Para enviar um sinal a um processo, o kernel exige que o emissor tenha o mesmo UID do alvo <strong>ou</strong> <code>CAP_KILL</code>.
+      É exatamente isso que a API faz: roda como root, tem <code>CAP_KILL</code> e, com <code>hostPID: true</code>, enxerga os PIDs do nó.
+      Logo, <code>DELETE /processes/1</code> pode tentar matar o processo init do nó, e <code>DELETE</code> no PID do kubelet ou do etcd
+      também — se o alvo permitir. Não é teoria: é a consequência direta de compartilhar o namespace de PID com privilégio.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Campo de <code>securityContext</code></th><th>O que faz</th><th>Efeito no projeto</th></tr></thead>
+        <tbody>
+          <tr><td><code>runAsNonRoot: true</code></td><td>recusa iniciar como UID 0</td><td>não quebra o <code>kill</code> por si só se <code>CAP_KILL</code> for mantido; sem a capability, só mata processos do próprio UID — aí a allowlist vira obrigatória</td></tr>
+          <tr><td><code>runAsUser</code> / <code>runAsGroup</code></td><td>fixa o UID/GID</td><td>reduz o poder, mas precisa de <code>CAP_KILL</code> ou de ser dono do processo</td></tr>
+          <tr><td><code>allowPrivilegeEscalation: false</code></td><td>bloqueia setuid e ganho de privilégio</td><td>recomendado; não impede o que já é root</td></tr>
+          <tr><td><code>readOnlyRootFilesystem: true</code></td><td>impede escrita na camada do container</td><td>o <code>cron.txt</code> precisaria de volume; a API não escreve em disco</td></tr>
+          <tr><td><code>capabilities.drop: ["ALL"]</code></td><td>remove todas as capabilities</td><td>teria que reabilitar só <code>KILL</code>; é o mínimo necessário</td></tr>
+          <tr><td><code>seccompProfile: RuntimeDefault</code></td><td>filtra syscalls perigosas</td><td>recomendado; não conflita com o projeto</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>O <strong>Pod Security Standards</strong> (PSS) tem três níveis: <code>privileged</code> (quase tudo), <code>baseline</code> (bloqueia
+      <code>hostPID</code>, <code>hostNetwork</code>, <code>hostIPC</code>, <code>privileged</code>, <code>hostPath</code>) e <code>restricted</code>
+      (exige non-root, capabilities mínimas, seccomp). O projeto usa <code>hostPID: true</code>, então <strong>não passa nem no baseline</strong>.
+      A saída honesta não é "desativar a segurança": é isolar esse Deployment em um namespace com label de PSS <code>privileged</code>,
+      documentar o risco, restringir quem pode aplicar e não expor a API publicamente.</p>
+
+    <div class="callout danger">
+      <div class="ct">O erro que mais tira ponto: confundir RBAC com permissão de processo</div>
+      <p><strong>RBAC</strong> controla o que um usuário ou <em>ServiceAccount</em> pode fazer <strong>no kube-apiserver</strong> (criar Pods, ler
+         Secrets). Ele não intercepta um <code>kill(2)</code> que a API faz direto no kernel. Quem impede a API de matar processos do nó é
+         <strong>UID + capabilities + isolamento de PID</strong>, não RBAC. Se você responder "RBAC resolve", a banca derruba a resposta em
+         uma pergunta. O RBAC entra na outra ponta: impedir que alguém aplique um Pod com <code>hostPID</code>, ou limitar quem fala com a API.</p>
+    </div>
+
+    <p>Mitigações coerentes para o projeto: trocar <code>NodePort</code> por <code>ClusterIP</code> + <code>kubectl port-forward</code>
+      (a API deixa de ficar exposta no nó), exigir token ou mTLS, aplicar uma <strong>allowlist de PIDs</strong> (recusar 1, o PID do kubelet,
+      do etcd e do próprio uvicorn), negar comandos perigosos em <code>/processes/start</code>, registrar auditoria de quem chamou cada
+      <code>DELETE</code> e usar <code>NetworkPolicy</code> para permitir só o namespace de confiança. Nenhuma delas estava no escopo do edital —
+      mas saber nomeá-las mostra que você entende o risco que criou.</p>
+
+    <p><strong><code>NetworkPolicy</code></strong> é um firewall L3/L4 por Pod: sem nenhuma política, todo Pod fala com todo Pod; com uma política
+            de <em>deny</em> e outra de <em>allow</em>, só o tráfego declarado passa. O detalhe que derruba resposta pronta: a política só é aplicada se o
+            <strong>CNI suportar</strong> (Calico e Cilium suportam; alguns plugins simples apenas ignoram o objeto). Já o <strong><code>PodDisruptionBudget</code></strong>
+            não protege contra crash: ele limita <em>evictions voluntárias</em>, como o <code>kubectl drain</code> de manutenção. Um PDB com
+            <code>minAvailable: 1</code> impede que as duas réplicas da API saiam ao mesmo tempo — mas não impede que o nó inteiro caia.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="controladores">30. Deployment, StatefulSet, DaemonSet, Job e CronJob</h2>
+
+    <p>O Kubernetes tem um controlador para cada formato de carga. Escolher o errado é uma das perguntas conceituais mais fáceis de
+      fazer e mais difíceis de responder sem estudo.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Controlador</th><th>Garante</th><th>Identidade e storage</th><th>Uso típico</th></tr></thead>
+        <tbody>
+          <tr><td><code>Deployment</code></td><td>N réplicas <strong>intercambiáveis</strong>; rollout e rollback</td><td>Pod sem nome estável, sem disco próprio</td><td>API, front-end, Nginx — o caso do projeto</td></tr>
+          <tr><td><code>StatefulSet</code></td><td>N réplicas <strong>com identidade</strong> (<code>pod-0</code>, <code>pod-1</code>) e ordem</td><td>nome estável + PVC por réplica + headless Service</td><td>banco, fila, cluster com quórum</td></tr>
+          <tr><td><code>DaemonSet</code></td><td><strong>um Pod por nó</strong> (ou por nó selecionado)</td><td>normalmente acesso ao nó</td><td>kube-proxy, CNI, agente de log/monitoração</td></tr>
+          <tr><td><code>Job</code></td><td>execução até <strong>concluir</strong> com sucesso</td><td>efêmera</td><td>migração, processamento em lote</td></tr>
+          <tr><td><code>CronJob</code></td><td>cria Jobs em um <strong>horário</strong> (formato cron)</td><td>efêmera por execução</td><td>backup, relatório, limpeza periódica</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Por que não DaemonSet na API?</strong> DaemonSet faria sentido se cada nó precisasse de um agente local vendo o <code>/proc</code>
+      daquele nó. Mas o Service já distribui requisições entre réplicas, e o cluster tem um nó só: seria complexidade sem ganho. Além disso,
+      com <code>hostPID</code>, qualquer réplica vê o mesmo nó — não há "API de cada nó" para justificar o controlador.</p>
+
+    <p><strong>Por que não StatefulSet?</strong> A API não tem estado local nem identidade: qualquer réplica atende qualquer requisição, e o
+      <code>cron.txt</code> do Nginx é justamente o que <em>não</em> deveria ser identidade. StatefulSet seria a escolha se cada réplica precisasse
+      de um volume próprio e de um nome estável (por exemplo, um banco).</p>
+
+    <p><strong>E o cron: Deployment ou CronJob?</strong> O projeto usa um <code>Deployment</code> com <code>replicas: 1</code> rodando
+      <code>busybox crond</code> em foreground. Isso atende ao edital porque o objetivo é demonstrar um <strong>daemon de agendamento dentro de um
+      container</strong>, com o processo vivo e observável. Um <code>CronJob</code> do Kubernetes seria a solução de produção para a tarefa, mas
+      ele cria um <strong>Pod novo a cada execução</strong> — não haveria daemon para mostrar, e o "container com cron" viraria um detalhe do
+      controlador, não do projeto. Se perguntarem "por que não CronJob?", essa é a resposta: escopo didático + diferença entre agendador
+      dentro do container e agendador do cluster.</p>
+
+    <div class="callout tip">
+      <div class="ct">Se você migrasse para CronJob</div>
+      <p>O <code>CronJob</code> teria <code>schedule: "* * * * *"</code>, <code>concurrencyPolicy: Forbid</code> (não sobrepor execuções),
+         <code>successfulJobsHistoryLimit</code> e <code>failedJobsHistoryLimit</code> para não acumular Pods, <code>backoffLimit</code> para
+         retentativas e <code>startingDeadlineSeconds</code> para não rodar atrasado depois de o control plane voltar. O log sairia no
+         <code>stdout</code> do Pod e seria visto com <code>kubectl logs job/...</code>. É a evolução natural do <code>cron-deployment</code>.</p>
+    </div>
+
+    <div class="footer">
+      <span>Base de estudos local · A3 · Tema 1</span>
+      <span><a href="arquitetura.html">Próximo: Arquitetura →</a></span>
+    </div>
+  </div>
+</div>
+
+<script src="assets/search-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

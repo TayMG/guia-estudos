@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("a3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Teoria · Base de Estudos A3 — Tema 2</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">A3</div>
+    <div class="brand-text"><strong>Base de Estudos</strong><span>Tema 2 · Fila + Leis</span></div>
+  </div>
+  <div class="study-switch" aria-label="Trocar de estudo">
+    <a href="../Euclerio/index.html">Euclerio</a>
+    <a href="../Sergio/index.html" class="active">Sergio</a>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
+    <div class="search-results"></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Comece aqui</div>
+    <a href="index.html"><span class="n">00</span> Início</a>
+    <div class="nav-label">Fundamentos</div>
+    <a href="teoria.html"><span class="n">01</span> Teoria</a>
+    <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
+    <div class="nav-label">O trabalho</div>
+    <a href="pratica.html"><span class="n">03</span> Prática</a>
+    <a href="codigo.html"><span class="n">04</span> Código</a>
+    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <div class="nav-label">Treino</div>
+    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">07</span> Quiz</a>
+    <a href="plano.html"><span class="n">08</span> Plano</a>
+    <a href="banca.html"><span class="n">09</span> Banca</a>
+  </nav>
+  <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" data-menu aria-label="Abrir menu">☰</button>
+    <span class="topbar-title">01 · Fundamentos</span>
+  </div>
+
+  <div class="content">
+    <div class="eyebrow">01 · Fundamentos</div>
+    <h1>Teoria: da fila do banco ao <code>popleft()</code></h1>
+    <p class="lead">Esta página constrói o raciocínio em camadas: primeiro o problema (quem atender), depois a estrutura
+      (três filas), depois o algoritmo (2:1), depois a lei e, por fim, o código e o banco. Cada seção existe porque a
+      anterior não resolve tudo sozinha.</p>
+
+    <div class="callout">
+      <div class="ct">A frase que resume o projeto</div>
+      <p><strong>Uma fila por nível legal, FIFO dentro de cada uma; 80+ sempre primeiro; quando não há 80+, duas chamadas
+        da fila padrão para cada uma da convencional.</strong> O ciclo 2:1 é o que impede a fila comum de morrer de fome.
+        O banco guarda o estado; o algoritmo decide a ordem; o Streamlit deveria ser a tela — mas essa última parte ficou
+        na especificação.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="fila">1. Fila, FIFO e prioridade: o problema real</h2>
+    <p>Uma fila é uma sequência de itens em que a saída acontece em uma extremidade e a entrada na outra. Quando a regra é
+      <strong>First In, First Out</strong> (FIFO), o primeiro que chegou é o primeiro que sai. É o que o senso comum espera
+      de uma fila de banco: quem chegou antes não pode ser ultrapassado indefinidamente.</p>
+    <p>Só que o banco não pode ser uma fila única. A lei manda dar atendimento prioritário a certos grupos. Se o banco
+      simplesmente colocasse todo mundo na mesma fila, uma pessoa com 80 anos poderia esperar atrás de 200 clientes comuns.
+      Se, no outro extremo, o banco criasse uma fila separada e só chamasse priority forever, a fila comum nunca andaria.
+      O problema é <strong>combinar prioridade com progresso</strong>.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Conceito</th><th>Definição</th><th>No projeto</th></tr></thead>
+        <tbody>
+          <tr><td><strong>FIFO</strong></td><td>primeiro que entra é o primeiro que sai</td><td>ordem de <code>data_chegada</code> dentro de cada nível</td></tr>
+          <tr><td><strong>Prioridade</strong></td><td>alguns itens saem antes, independentemente da chegada</td><td><code>NivelPrioridade</code> 0 &lt; 1 &lt; 2</td></tr>
+          <tr><td><strong>Fila multinível</strong></td><td>várias filas FIFO, uma por classe, com regra de escolha entre elas</td><td>três <code>deque</code>s</td></tr>
+          <tr><td><strong>Starvation</strong></td><td>um item fica esperando para sempre porque sempre há itens “mais importantes”</td><td>risco da fila convencional</td></tr>
+          <tr><td><strong>Anti-starvation</strong></td><td>mecanismo que garante uma cota de atendimento à fila menos prioritária</td><td>ciclo 2:1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>A palavra “prioridade” não significa “atendimento imediato” em toda e qualquer situação. Na lei, o termo aparece
+      como <em>atendimento prioritário</em>: um tratamento diferenciado, que pode ser uma fila separada, um guichê
+      exclusivo ou o atendimento imediatamente após o que estiver em curso. O projeto traduz isso em ordem de chamada.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="starvation">2. Starvation e aging: o problema que o ciclo resolve</h2>
+    <p><strong>Starvation</strong> (inanição) é quando um processo ou cliente nunca recebe o recurso porque sempre existe
+      alguém com prioridade maior. Em sistemas operacionais, o exemplo clássico é uma fila de baixa prioridade que nunca
+      é escalada porque chegam processos de alta prioridade sem parar.</p>
+    <p>No banco, o cenário é: a fila padrão tem 300 pessoas; a convencional tem 1. Se o algoritmo sempre escolher a padrão
+      enquanto ela não esvaziar, o cliente convencional espera até o fim do dia — ou para sempre, se a demanda não parar.
+      O ciclo <strong>2:1</strong> força a chamada de um convencional a cada duas padrões, desde que ambos existam.</p>
+
+    <p>Existe outra solução clássica: <strong>aging</strong> (envelhecimento). A prioridade de um item aumenta conforme o
+      tempo de espera. É o que um bom sistema operacional faz para não deixar nada morrer de fome. O projeto <strong>não</strong>
+      usa aging por tempo; usa cota por contagem. Isso é suficiente para o exercício, mas não garante um limite máximo de
+      espera em segundos. Se a banca perguntar “e se o convencional chegar às 9h e a fila padrão nunca parar?”, a resposta
+      honesta é: “com 2:1 ele é chamado, no máximo, após duas padrões; o tempo real depende da duração de cada atendimento;
+      para garantia por tempo eu precisaria de aging ou de um SLA”.</p>
+
+    <div class="callout warn">
+      <div class="ct">Starvation do 80+? </div>
+      <p>O ciclo 2:1 protege a convencional <em>contra a padrão</em>. Ele não protege ninguém contra a fila de 80+, que é
+        absoluta. Se chegarem 80+ sem parar, as outras duas filas esperam. Isso é uma escolha de projeto — e um ponto que a
+        banca pode explorar. Em um sistema real, seria preciso definir uma política para isso (por exemplo, limite de
+        atendimentos consecutivos ou uma janela de prioridade).</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="multinivel">3. Por que três filas e não uma heap?</h2>
+    <p>Há duas formas clássicas de implementar prioridade:</p>
+    <ul>
+      <li><strong>Heap / fila de prioridade:</strong> uma única estrutura ordenada por uma chave. Inserção e remoção em
+        O(log n). Se a chave for <code>(nivel, data_chegada)</code>, o menor nível sai primeiro e, dentro dele, o mais antigo.</li>
+      <li><strong>Filas multinível:</strong> uma fila FIFO por nível; a escolha de qual fila atender é feita por uma regra
+        externa. Inserção e remoção são O(1); a “inteligência” fica no escalonador.</li>
+    </ul>
+    <p>O projeto escolheu filas multinível porque o requisito não é só “respeitar a prioridade”, é <strong>garantir uma
+      proporção</strong> entre padrão e convencional. Uma heap pura não sabe o que é “duas padrões para cada convencional”;
+      ela só sabe qual é o próximo menor. Você poderia simular a cota com contadores e uma heap, mas o código ficaria mais
+      confuso. Com três deques, a regra fica explícita: cada fila é uma linha; o contador diz de qual linha puxar.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Critério</th><th>Heap única</th><th>Três deques</th></tr></thead>
+        <tbody>
+          <tr><td>Inserção</td><td>O(log n)</td><td>O(1) no <code>append</code></td></tr>
+          <tr><td>Próximo</td><td>O(log n) no <code>heappop</code></td><td>O(1) no <code>popleft</code></td></tr>
+          <tr><td>FIFO dentro do nível</td><td>precisa de desempate por timestamp/sequência</td><td>natural</td></tr>
+          <tr><td>Cota 2:1</td><td>precisa de lógica externa</td><td>é a própria lógica</td></tr>
+          <tr><td>Inspeção do estado</td><td>menos legível</td><td>três listas visíveis</td></tr>
+          <tr><td>Risco</td><td>chave composta errada inverte a ordem</td><td>mais estruturas para sincronizar</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="deque">4. <code>collections.deque</code>: a estrutura escolhida</h2>
+    <p>Um <code>deque</code> (<em>double-ended queue</em>) é uma fila de duas pontas. Em CPython, ele é implementado como uma
+      lista duplamente encadeada de <strong>blocos</strong> de ponteiros — não como uma lista contígua que precisa deslocar
+      todos os elementos. Por isso <code>append()</code> e <code>popleft()</code> são O(1): o custo não cresce com o tamanho
+      da fila.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Operação</th><th>Complexidade</th><th>Uso no projeto</th></tr></thead>
+        <tbody>
+          <tr><td><code>append(x)</code></td><td>O(1)</td><td>entrada de cliente no fim da fila</td></tr>
+          <tr><td><code>popleft()</code></td><td>O(1)</td><td>chamada do primeiro da fila</td></tr>
+          <tr><td><code>appendleft(x)</code></td><td>O(1)</td><td>rollback se a persistência falhar</td></tr>
+          <tr><td><code>len(d)</code></td><td>O(1)</td><td>tamanho das filas</td></tr>
+          <tr><td>acesso ao meio <code>d[i]</code></td><td>O(n)</td><td>não é usado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Se você usasse uma <code>list</code> comum, <code>pop(0)</code> seria O(n), porque todos os elementos precisariam
+      andar uma posição. Com 500 clientes isso é irrelevante; com 1 milhão, é a diferença entre um sistema que responde e
+      um que trava. O PDF fala em “lista duplamente encadeada com blocos de memória”; a descrição correta é essa: deque é
+      uma lista duplamente encadeada de blocos, não uma lista de elementos individuais com ponteiros para o anterior e o
+      próximo.</p>
+
+    <div class="callout tip">
+      <div class="ct">Detalhe de entrevista</div>
+      <p><code>deque</code> não é thread-safe para operações compostas. <code>append</code> e <code>popleft</code> isolados
+        são atômicos sob o GIL, mas “verificar se está vazio e retirar” não é uma operação atômica. Com dois caixas chamando
+        ao mesmo tempo, você precisa de <code>Lock</code>, transação ou uma fila no banco.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="round-robin">5. Weighted round-robin, quantum e a intuição do 2:1</h2>
+    <p><strong>Round-robin</strong> é revezamento: cada fila recebe uma vez, em turnos. <strong>Weighted round-robin</strong>
+      é revezamento com peso: uma fila recebe mais turnos que a outra. No projeto, o peso é 2 para a padrão e 1 para a
+      convencional. O “quantum” é a quantidade de chamadas antes de trocar de fila.</p>
+    <p>O ciclo funciona assim quando as duas filas têm gente:</p>
+    <ol>
+      <li>Etapa 0 (padrão): chama P1; contador = 1.</li>
+      <li>Etapa 0 (padrão): chama P2; contador = 2; atinge o limite, avança para etapa 1 e zera.</li>
+      <li>Etapa 1 (convencional): chama C1; contador = 1; atinge o limite, avança para etapa 0 e zera.</li>
+      <li>Repete: P3, P4, C2, P5, P6, C3…</li>
+    </ol>
+
+    <div class="diagram">
+      <div class="diagram-title">Ciclo 2:1 com as duas filas cheias</div>
+      <div class="flow">
+        <div class="node acc"><strong>P1</strong><small>padrão · contador 1/2</small></div>
+        <div class="node acc"><strong>P2</strong><small>padrão · 2/2 → troca</small></div>
+        <div class="node acc2"><strong>C1</strong><small>convencional · 1/1 → troca</small></div>
+        <div class="node acc"><strong>P3</strong><small>padrão · 1/2</small></div>
+        <div class="node acc"><strong>P4</strong><small>padrão · 2/2 → troca</small></div>
+        <div class="node acc2"><strong>C2</strong><small>convencional · 1/1</small></div>
+      </div>
+    </div>
+
+    <p>O nome “anti-starvation” é um pouco enganoso: a função não impede toda e qualquer inanição; ela garante que a
+      convencional tenha uma cota. A fila de 80+ continua sendo estritamente prioritária. Em sistemas operacionais, o
+      mesmo padrão aparece em escalonadores com múltiplas filas e <em>feedback</em>; a diferença é que lá o quantum costuma
+      ser de tempo de CPU, não de número de chamadas.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="lei-10048">6. Lei 10.048/2000: a base legal do atendimento em bancos</h2>
+    <p>A Lei 10.048/2000 é a norma central do projeto. Ela não fala só de banco: fala de atendimento prioritário em
+      repartições públicas, concessionárias de serviço público e instituições financeiras. O artigo 2º, parágrafo único,
+      é a frase que você precisa saber de cor:</p>
+
+    <div class="callout">
+      <div class="ct">Texto-chave</div>
+      <p>“É assegurada, em todas as instituições financeiras, a prioridade de atendimento às pessoas mencionadas no art. 1º.”</p>
+    </div>
+
+    <p>O art. 1º, na redação atual (Lei 14.626/2023), lista: pessoas com deficiência, pessoas com transtorno do espectro
+      autista, pessoas idosas com 60 anos ou mais, gestantes, lactantes, pessoas com criança de colo, obesos, pessoas com
+      mobilidade reduzida e doadores de sangue. Os doadores têm uma regra especial: são atendidos <strong>depois</strong>
+      de todos os demais prioritários e precisam de comprovante válido por 120 dias (art. 1º, §2º).</p>
+
+    <p>O art. 2º caput fala em “serviços individualizados que assegurem tratamento diferenciado e atendimento imediato”.
+      O parágrafo único estende a prioridade a todas as instituições financeiras. O art. 6º, III, prevê que o
+      descumprimento por instituição financeira sujeita o responsável às penalidades do art. 44 da Lei 4.595/1964.</p>
+
+    <p>O projeto usa a lei para justificar a fila de prioridade padrão. O que ele <strong>não</strong> faz: verificar
+      documentação, distinguir subgrupos dentro da prioridade padrão, tratar doadores de sangue, garantir atendimento
+      individualizado ou separar guichês. Ele só ordena a chamada.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="lei-10741">7. Estatuto do Idoso e Lei 13.466/2017: o 80+</h2>
+    <p>A Lei 10.741/2003 (Estatuto do Idoso, hoje Estatuto da Pessoa Idosa) define idoso como pessoa com 60 anos ou mais
+      e estabelece, no art. 3º, §1º, I, o atendimento preferencial imediato e individualizado. A Lei 13.466/2017 acrescentou
+      o §2º:</p>
+
+    <div class="callout">
+      <div class="ct">Texto-chave</div>
+      <p>“Dentre os idosos, é assegurada prioridade especial aos maiores de oitenta anos, atendendo-se suas necessidades
+        sempre preferencialmente em relação aos demais idosos.”</p>
+    </div>
+
+    <p>Perceba a expressão <strong>“dentre os idosos”</strong>. A lei cria uma preferência dos 80+ sobre os idosos de 60 a
+      79, não uma categoria acima de gestantes, PCDs ou autistas. O projeto, porém, transforma os 80+ em
+      <code>SUPER_PRIORIDADE = 0</code> e os atende antes de todo mundo, sempre. Isso é uma decisão de modelagem: mais
+      protetiva em relação ao idoso de 80+, mas não é a leitura literal do dispositivo. Se a banca cobrar, a resposta
+      correta é separar as duas coisas.</p>
+
+    <p>Há ainda uma consequência prática: se você atende 80+ de forma absoluta, a fila de 80+ pode starvar as demais.
+      Em um banco real, a política precisaria lidar com isso — por exemplo, limitar quantos 80+ consecutivos são chamados
+      ou garantir que, após N chamadas, uma padrão seja atendida. O código não faz isso.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="lei-12764">8. Lei 12.764/2012: TEA como pessoa com deficiência</h2>
+    <p>A Lei 12.764/2012 institui a Política Nacional de Proteção dos Direitos da Pessoa com Transtorno do Espectro Autista.
+      O ponto que interessa ao projeto está no art. 1º, §2º: a pessoa com TEA é considerada pessoa com deficiência
+      <strong>para todos os efeitos legais</strong>. O art. 3º-A, incluído pela Lei 13.977/2020, cria a Ciptea e fala
+      expressamente em prioridade no atendimento e no acesso a serviços públicos e privados, em especial nas áreas de
+      saúde, educação e assistência social.</p>
+
+    <p>No código, a pessoa com TEA entra na prioridade padrão (nível 1), com o motivo
+      <code>"Pessoa com Transtorno do Espectro Autista - TEA (Lei 12.764/2012)"</code>. A inclusão é coerente com a lei,
+      mas o projeto não pede a Ciptea nem verifica documentação. Ele confia no motivo informado. Em produção, isso seria
+      um ponto de fraude e de proteção de dados.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="lei-13146">9. Lei 13.146/2015 (LBI): PCD, obesidade e a alteração na 10.048</h2>
+    <p>A Lei Brasileira de Inclusão define pessoa com deficiência como aquela que tem impedimento de longo prazo de
+      natureza física, mental, intelectual ou sensorial, que, em interação com barreiras, pode obstruir a participação
+      plena na sociedade. A lei também alterou a Lei 10.048/2000 para incluir os <strong>obesos</strong> no rol de
+      atendimento prioritário (redação de 2015).</p>
+
+    <p>O projeto lista “Pessoa com obesidade (Lei 10.048/2000)” como motivo de prioridade padrão. A lei inclui os
+      obesos no rol, mas não define um critério operacional de comprovação; o projeto também não. Na prática, o banco
+      precisa decidir como reconhecer a condição (laudo, autodeclaração ou avaliação), e a LBI acrescenta a discussão
+      sobre impedimento de longo prazo e barreiras. É uma simplificação acadêmica, não um protocolo jurídico.</p>
+
+    <p>A mesma LBI é a base para tratar acessibilidade física, atendimento preferencial e adaptações. O projeto só modela
+      a ordem da fila; não trata rampa, assento, comunicação acessível ou tempo de atendimento.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="lei-14626">10. Lei 14.626/2023: o que mudou e o que o projeto não cobre</h2>
+    <p>A Lei 14.626/2023 deu nova redação ao art. 1º da Lei 10.048 e incluiu expressamente pessoas com transtorno do
+      espectro autista, pessoas com mobilidade reduzida e doadores de sangue. Também permitiu atendimento prioritário por
+      postos, caixas, guichês, linhas ou atendentes específicos e, quando não houver estrutura separada, determinou
+      atendimento imediatamente após a conclusão do atendimento em andamento, antes de quaisquer outras pessoas.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Grupo</th><th>Está no projeto?</th><th>Observação</th></tr></thead>
+        <tbody>
+          <tr><td>Pessoa com deficiência</td><td>sim (padrão)</td><td>sem validação documental</td></tr>
+          <tr><td>TEA</td><td>sim (padrão)</td><td>base na 12.764 e na 10.048 atual</td></tr>
+          <tr><td>Idoso 60–79</td><td>sim (padrão)</td><td>Faker gera 60–79</td></tr>
+          <tr><td>Gestante, lactante, criança de colo</td><td>sim (padrão)</td><td>Faker gera idades plausíveis</td></tr>
+          <tr><td>Obeso</td><td>sim (padrão)</td><td>critério operacional não definido</td></tr>
+          <tr><td>Mobilidade reduzida</td><td><strong>não</strong></td><td>incluído pela 14.626/2023</td></tr>
+          <tr><td>Doador de sangue</td><td><strong>não</strong></td><td>prioridade após os demais, comprovante 120 dias</td></tr>
+          <tr><td>Acompanhante / atendente pessoal</td><td><strong>não</strong></td><td>art. 1º, §1º, atendido junto e acessoriamente</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Se a banca perguntar “seu sistema cumpre a lei hoje?”, a resposta honesta é: “o núcleo de prioridade sim, mas o rol
+      está incompleto em relação à redação de 2023; eu precisaria acrescentar mobilidade reduzida e doadores, com a regra
+      de que o doador é o último dos prioritários”.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="hierarquia">11. A hierarquia do código × a hierarquia da lei</h2>
+    <p>O código tem três níveis. A lei tem um conjunto de grupos prioritários e uma preferência especial dentro do grupo
+      dos idosos. A tradução não é automática:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Pergunta</th><th>Resposta curta</th><th>Resposta de banca</th></tr></thead>
+        <tbody>
+          <tr><td>80+ é uma categoria autônoma?</td><td>No código, sim (<code>0</code>).</td><td>Na lei, é prioridade especial <em>entre os idosos</em>. O código escolheu tratá-la como absoluta.</td></tr>
+          <tr><td>Todos os prioritários são iguais?</td><td>No código, os do nível 1 são iguais entre si.</td><td>A lei não cria subordem entre PCD, gestante, idoso etc.; o desempate é operacional.</td></tr>
+          <tr><td>Doador de sangue é prioridade?</td><td>Não está no código.</td><td>Sim, desde 2023, mas depois de todos os demais e com comprovante.</td></tr>
+          <tr><td>O banco pode ter guichê exclusivo?</td><td>O código não modela guichê.</td><td>Sim; a lei permite postos, caixas, guichês ou linhas específicas.</td></tr>
+          <tr><td>Existe tempo máximo federal de espera?</td><td>Não no projeto.</td><td>Não há regra federal geral; municípios e estados podem ter leis próprias. O projeto não controla tempo.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <div class="ct">Como defender a escolha</div>
+      <p>“Modelamos 80+ como prioridade absoluta para garantir a preferência especial do Estatuto. Reconheço que a lei diz
+        ‘dentre os idosos’; em produção, eu validaria a política com o jurídico e trabalharia com uma fila de prioridade
+        especial, não necessariamente acima de todos os grupos.” Essa resposta mostra domínio, não insegurança.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="dataclass">12. <code>Cliente</code>: dataclass imutável</h2>
+    <p>O modelo de domínio está em <code>modelos.py</code>:</p>
+
+<pre><code>@dataclass(frozen=True)
+class Cliente:
+    id: str
+    nome: str
+    nivel_prioridade: NivelPrioridade
+    motivo: str
+    data_chegada: datetime
+    status: StatusCliente = StatusCliente.AGUARDANDO</code></pre>
+
+    <p><code>@dataclass</code> gera <code>__init__</code>, <code>__repr__</code> e <code>__eq__</code> a partir dos campos.
+      <code>frozen=True</code> impede atribuição depois da criação: <code>cliente.nome = "x"</code> levanta
+      <code>FrozenInstanceError</code>. Isso protege o contrato entre camadas: o objeto que sai do extrator não é alterado
+      por acidente pelo gerenciador.</p>
+
+    <p>O método <code>criar()</code> é uma fábrica simples que gera <code>uuid4()</code> e <code>datetime.now()</code>.
+      Duas consequências: (1) o timestamp é <em>naive</em> (sem timezone), enquanto o banco usa <code>TIMESTAMPTZ</code>;
+      (2) o <code>id</code> é gerado localmente, mas o banco também tem um UUID default — os dois podem divergir. O modelo
+      não tem campo <code>cpf</code>, embora o extrator e o gerador usem CPF. Isso será importante no bug do
+      <code>id</code> (seção 24).</p>
+
+    <!-- ============================================================ -->
+    <h2 id="enum">13. <code>NivelPrioridade</code>: IntEnum e números mágicos</h2>
+    <p>O projeto usa <code>IntEnum</code> para dar nome aos níveis:</p>
+
+<pre><code>class NivelPrioridade(IntEnum):
+    SUPER_PRIORIDADE = 0
+    PRIORIDADE_PADRAO = 1
+    CONVENCIONAL = 2</code></pre>
+
+    <p><code>IntEnum</code> é um enum cujos membros são inteiros. Isso permite comparar, somar e serializar como número —
+      útil porque o Supabase armazena <code>nivel_prioridade</code> como <code>INT</code>. O lado ruim é que a ordem
+      numérica é o inverso da prioridade: <strong>0 é o mais prioritário</strong>, 2 é o menos. Se alguém ordenar uma lista
+      “do maior para o menor” achando que o maior número é o mais importante, a fila inteira inverte.</p>
+
+    <p>O código evita números mágicos na maior parte do tempo, mas ainda os usa em comparações:
+      <code>nivel == 0</code>, <code>indice not in (0, 1, 2)</code>. O ideal seria comparar sempre com o enum e centralizar
+      a conversão. Também falta um método explícito de <em>rank</em> (por exemplo, <code>prioridade_rank</code>) para
+      deixar claro que menor = mais prioritário.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="status">14. <code>StatusCliente</code> e a transição que ninguém faz</h2>
+    <p>O Python define apenas dois status:</p>
+<pre><code>class StatusCliente(Enum):
+    AGUARDANDO = "aguardando"
+    ATENDIDO = "atendido"</code></pre>
+    <p>O banco define quatro: <code>aguardando</code>, <code>em_atendimento</code>, <code>atendido</code>,
+      <code>cancelado</code>. Já existe um desalinhamento de contrato. Pior: o <code>GerenciadorFilas</code> não altera
+      o status de ninguém. O docstring diz explicitamente que transições são responsabilidade da camada de persistência
+      (Frente 1), mas essa camada não existe no repositório.</p>
+
+    <p>Então, quando a API chama um cliente, o objeto devolvido continua com <code>status=AGUARDANDO</code>. O teste
+      <code>test_gerenciador_nao_altera_status</code> confirma isso. O sistema não marca o cliente como atendido, não grava
+      em <code>atendimentos</code> e não muda para <code>em_atendimento</code>. Em uma demo real, você chamaria o mesmo
+      cliente de novo se recarregasse a fila do banco. É uma das maiores lacunas do projeto.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="gerenciador">15. <code>GerenciadorFilas</code>: o que ele guarda</h2>
+    <p>A classe tem três <code>deque</code>s e dois contadores:</p>
+
+<pre><code>self._fila_super = deque()
+self._fila_padrao = deque()
+self._fila_convencional = deque()
+self._etapa = 0          # 0 = padrão, 1 = convencional
+self._contador = 0       # quantos já foram chamados na etapa
+self._limites = (2, 1)   # cota por etapa
+self._filas_ciclo = (self._fila_padrao, self._fila_convencional)</code></pre>
+
+    <p>O construtor aceita um <code>ExtratorFila</code> (para testes) e um <code>repositorio</code> opcional. Se
+      <code>auto_carregar=True</code>, chama <code>carregar_fila()</code>, que consulta o Supabase. Nos testes, passa-se um
+      extrator falso para não depender de rede.</p>
+
+    <table>
+      <thead><tr><th>Método</th><th>O que faz</th><th>Risco</th></tr></thead>
+      <tbody>
+        <tr><td><code>carregar_fila()</code></td><td>limpa as filas, filtra <code>aguardando</code>, ordena por <code>data_chegada</code> e distribui</td><td>erro de rede não é tratado; prioridade inválida vira convencional silenciosamente</td></tr>
+        <tr><td><code>sincronizar_estado()</code></td><td>repovoa a partir do repositório ou do extrator</td><td>com repositório, não reordena por data; assume que veio ordenado</td></tr>
+        <tr><td><code>adicionar_cliente()</code></td><td>insere no repositório e no deque</td><td>se o repositório falhar depois do append? a ordem das operações importa</td></tr>
+        <tr><td><code>chamar_proximo()</code></td><td>chama o algoritmo e faz rollback se a persistência falhar</td><td>não atualiza status; não grava atendimento</td></tr>
+      </tbody>
+    </table>
+
+    <p>Há dois detalhes de implementação que valem ouro na banca. Primeiro: o rollback de <code>chamar_proximo()</code>
+      guarda <code>etapa</code> e <code>contador</code> anteriores e, se <code>registrar_chamada()</code> levantar exceção,
+      devolve o cliente com <code>appendleft()</code> e restaura os contadores. Isso é uma preocupação correta com
+      consistência. Segundo: <code>_tem_alguem()</code> existe mas não é usado; o algoritmo faz a checagem diretamente.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="algoritmo">16. <code>aplicar_starvation()</code> linha a linha</h2>
+    <p>Esta é a função mais importante do projeto, em <code>Alexandre.py</code>:</p>
+
+<pre><code>def aplicar_starvation(fila_super, fila_padrao, fila_convencional,
+                       etapa, contador, limites=(2, 1)):
+    if not (fila_super or fila_padrao or fila_convencional):
+        return None, None, 0, 0
+
+    if fila_super:
+        cliente = fila_super.popleft()
+        return cliente, fila_super, etapa, contador
+
+    filas_ciclo = (fila_padrao, fila_convencional)
+    for _ in range(2):
+        fila = filas_ciclo[etapa]
+        limite = limites[etapa]
+        if contador &gt;= limite or not fila:
+            etapa = (etapa + 1) % 2
+            contador = 0
+            continue
+
+        cliente = fila.popleft()
+        contador += 1
+        if contador &gt;= limite or not fila:
+            etapa = (etapa + 1) % 2
+            contador = 0
+        return cliente, fila, etapa, contador
+
+    return None, None, etapa, contador</code></pre>
+
+    <p>Vamos por partes:</p>
+    <ol>
+      <li><strong>Fila totalmente vazia:</strong> devolve <code>None</code> e zera etapa/contador. O reset é razoável: sem
+        ninguém, o ciclo não tem estado útil.</li>
+      <li><strong>80+:</strong> se houver qualquer super, ele sai imediatamente. A função devolve a etapa e o contador
+        <em>sem alteração</em>. É isso que garante que um 80+ no meio do ciclo não reinicie a contagem de padrão/convencional.</li>
+      <li><strong>Ciclo:</strong> olha a fila da etapa atual. Se o contador já atingiu o limite ou a fila está vazia, avança
+        a etapa e zera, e tenta a outra. O <code>for _ in range(2)</code> limita a duas tentativas — suficiente porque só
+        há duas etapas.</li>
+      <li><strong>Chamada:</strong> remove o primeiro, incrementa o contador. Se atingiu o limite <em>ou</em> a fila ficou
+        vazia, avança e zera. Observe: se a fila esvaziou antes do limite, o ciclo não “desperdiça” chamadas; ele já passa
+        para a outra.</li>
+      <li><strong>Fallback:</strong> se as duas etapas falharem, devolve <code>None</code>. Isso só acontece em estados
+        estranhos (por exemplo, ambas as filas vazias, mas a checagem inicial já cobriu).</li>
+    </ol>
+
+    <div class="callout warn">
+      <div class="ct">O nome engana</div>
+      <p>A função se chama <code>aplicar_starvation</code>, mas ela <em>combate</em> a starvation. O nome correto seria
+        <code>escalonar</code> ou <code>aplicar_anti_starvation</code>. Em uma apresentação, diga “a função implementa a
+        política anti-inanição” e não “aplica starvation”, para não entregar uma ambiguidade de graça.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="trace">17. Traço de 6 chamadas: o que a banca vai pedir</h2>
+    <p>Considere: 2 super (S1, S2), 3 padrão (P1, P2, P3) e 2 convencionais (C1, C2), todos na ordem de chegada. O resultado
+      é:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Fila chamada</th><th>Etapa antes</th><th>Contador antes</th><th>Etapa depois</th><th>Contador depois</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>S1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><td>2</td><td>S2</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><td>3</td><td>P1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+          <tr><td>4</td><td>P2</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+          <tr><td>5</td><td>C1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><td>6</td><td>P3</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>O teste <code>test_fifo_super_e_intercalacao_21</code> usa exatamente essa expectativa: <code>["S1", "S2", "P1", "P2", "C1"]</code>
+      para as cinco primeiras. O teste <code>test_regra_alexandre_com_dados_extrator</code> usa 2S/3P/2C e espera
+      <code>["S0", "S1", "P0", "P1", "C0", "P2"]</code>. Decore esse segundo exemplo: ele prova que você entendeu a
+      alternância e a retomada.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="fila-vazia">18. Filas vazias: o ciclo não desperdiça chamadas</h2>
+    <p>Suponha que só haja convencionais. A etapa começa em 0 (padrão), a fila padrão está vazia. O laço vê
+      <code>not fila</code>, avança para 1, zera e tenta de novo. A etapa 1 tem gente, então chama o convencional. Depois
+      da chamada, como o limite é 1, avança para 0 e zera. Na próxima, repete o salto. Resultado: todos os convencionais
+      saem em ordem, sem chamadas vazias.</p>
+    <p>O teste <code>test_ciclo_encurta_quando_prioritarias_vazias</code> confirma: 1 super + 5 convencionais produz
+      <code>S1</code> e depois só convencionais. O teste <code>test_fila_convencional_vazia_nao_quebra</code> confirma o
+      outro lado: 4 super + 4 padrão, oito chamadas, e a nona devolve <code>None</code>.</p>
+
+    <p>Há um detalhe sutil: quando a fila padrão tem apenas 1 pessoa, o contador chega a 1 e a fila fica vazia; o código
+      avança a etapa e zera. Isso não é um bug; é a forma de evitar que o ciclo fique preso em uma etapa sem gente.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="super">19. 80+ no meio do ciclo: o contador não reinicia</h2>
+    <p>Este é o teste mais elegante do projeto. Sequência: P0 (padrão), chega S0 (80+), depois P1 e C0. O esperado é
+      <code>P0, S0, P1, C0</code>. Se o 80+ resetasse o ciclo, o resultado seria <code>P0, S0, P1, P2...</code> e a
+      convencional seria adiada. O código preserva <code>etapa</code> e <code>contador</code> ao atender super, então o
+      ciclo retoma exatamente de onde parou.</p>
+
+    <p>Isso é justo? Depende do ponto de vista. Para o convencional, sim: a chegada de um 80+ não zera o crédito que ele
+      já tinha. Para o 80+, irrelevante: ele é atendido na hora. Para o sistema, é uma decisão de consistência. A banca
+      pode perguntar “por que não resetar?”. A resposta é: “porque resetar puniria a fila comum duas vezes — uma pela
+      interrupção e outra pela perda do progresso”.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="3-2-1">20. 3:2:1 × 2:1: a contradição central</h2>
+    <p>O PDF, o README e o arquivo <code>Documentação/tarefas</code> falam em <strong>3 super, 2 padrão e 1 normal</strong>.
+      O código não faz isso. Ele usa <code>_limites = (2, 1)</code> e trata 80+ como prioridade absoluta, sem cota. A
+      documentação está desatualizada em relação à implementação.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Fonte</th><th>O que diz</th><th>O que o código faz</th></tr></thead>
+        <tbody>
+          <tr><td><code>README.md</code></td><td>“Anti-Starvation 3:2:1”</td><td>2:1 entre padrão e convencional</td></tr>
+          <tr><td><code>Documentação/tarefas</code></td><td>“3 superprioridades, 2 prioridades padrão e 1 normal”</td><td>80+ absoluto, depois 2:1</td></tr>
+          <tr><td>PDF (seção 4)</td><td>quantum 3:2:1, contadores <code>count_super</code> e <code>count_padrao</code></td><td>não há <code>count_super</code>; super não consome cota</td></tr>
+          <tr><td><code>gerenciador_filas.py</code></td><td>docstring: “ciclo anti-inanição 2:1”</td><td>2:1</td></tr>
+          <tr><td><code>testes_frente2.py</code></td><td>espera P,P,C (2:1)</td><td>2:1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Qual é a consequência de um 3:2:1 real? Em um ciclo de 6 chamadas, você chamaria 3 super, 2 padrão e 1 convencional.
+      Isso faria sentido se “super” fosse só mais uma fila com peso. Mas o projeto escolheu dar aos 80+ prioridade
+      <strong>absoluta</strong>, o que é incompatível com uma cota de 3: se houver 4 super, o quarto não espera o próximo
+      ciclo. Você não pode ter as duas coisas ao mesmo tempo. A implementação resolveu a favor da prioridade absoluta e
+      reduziu o ciclo a 2:1.</p>
+
+    <div class="callout danger">
+      <div class="ct">Resposta pronta para a banca</div>
+      <p>“A documentação fala em 3:2:1, mas o código implementa 80+ absoluto e ciclo 2:1. A suíte de testes confirma 2:1.
+        Eu considero a documentação desatualizada; se o requisito fosse 3:2:1 literal, eu teria que remover a prioridade
+        absoluta e criar um contador para super, o que mudaria o comportamento.”</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="complexidade">21. Complexidade e custo real</h2>
+    <p>Com <code>deque</code>, cada chamada é O(1); carregar a fila é O(n log n) por causa do <code>sort_values</code> do
+      pandas; a memória é O(n). O algoritmo em si não percorre a fila inteira: ele só olha a cabeça de duas filas.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Operação</th><th>Custo</th><th>Por quê</th></tr></thead>
+        <tbody>
+          <tr><td>Inserir cliente</td><td>O(1)</td><td><code>deque.append</code></td></tr>
+          <tr><td>Chamar próximo</td><td>O(1)</td><td><code>popleft</code> na cabeça</td></tr>
+          <tr><td>Carregar do Supabase</td><td>O(n log n)</td><td>sort por <code>data_chegada</code></td></tr>
+          <tr><td>Memória</td><td>O(n)</td><td>três filas com os clientes</td></tr>
+          <tr><td>Consulta SQL do próximo</td><td>O(log n) com índice</td><td>índice parcial em (nível, data)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>O gargalo real não é o algoritmo: é a rede. Toda chamada que recarrega do Supabase faz uma requisição HTTP e
+      converte JSON em DataFrame. Para 500 clientes, isso é rápido; para milhares, você paginaria e manteria a fila em
+      memória, sincronizando apenas as mudanças.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="supabase">22. Supabase e PostgreSQL: por que não um banco local?</h2>
+    <p>Supabase é uma plataforma que oferece PostgreSQL gerenciado, API REST automática (PostgREST), autenticação, storage
+      e outras ferramentas. O projeto usa dois recursos: o banco e a API REST. Não usa autenticação de usuário, Edge
+      Functions nem Realtime.</p>
+    <p>A vantagem é não precisar escrever um backend: o SDK <code>supabase-py</code> fala com a API REST e o PostgREST
+      traduz para SQL. A desvantagem é que o banco fica na nuvem: sem internet, o sistema não carrega. Para um trabalho
+      acadêmico, isso é aceitável; para uma demo na banca, é um risco. Tenha um plano B (um DataFrame local ou um dump).</p>
+
+    <table>
+      <thead><tr><th>Camada</th><th>Tecnologia</th><th>Papel</th></tr></thead>
+      <tbody>
+        <tr><td>Banco</td><td>PostgreSQL (Supabase)</td><td>tabelas, enum, índice, RLS</td></tr>
+        <tr><td>API</td><td>PostgREST</td><td>transforma requisições REST em SQL</td></tr>
+        <tr><td>Cliente Python</td><td><code>supabase-py</code></td><td>inserção de clientes</td></tr>
+        <tr><td>Leitura</td><td><code>pandas.read_json</code></td><td>GET direto na URL REST</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2 id="postgrest">23. PostgREST, REST e RLS: o caminho de uma requisição</h2>
+    <p>Quando o código faz <code>GET {SUPABASE_URL}/rest/v1/clientes_fila?apikey=...</code>, o PostgREST monta um
+      <code>SELECT</code> em <code>clientes_fila</code>, aplica as políticas de Row Level Security e devolve JSON. O
+      <code>apikey</code> identifica o projeto; a chave <code>publishable</code> é pública por design, mas só deve permitir
+      o que as políticas permitirem.</p>
+
+    <p>Aqui está o problema: as políticas do projeto são <code>USING (true)</code> para todas as operações. Isso significa
+      que qualquer portador da chave pública pode ler, inserir, atualizar e apagar clientes. RLS está “ligado”, mas sem
+      restringir nada. Em produção, você precisaria de autenticação, políticas por papel (atendente, gerente, caixa),
+      <code>auth.uid()</code> e separação entre leitura pública e escrita autenticada.</p>
+
+    <div class="callout danger">
+      <div class="ct">Nunca coloque a chave real no site</div>
+      <p>O README do repositório contém uma URL e uma chave que parecem reais. Este site não as reproduz. Se você for
+        apresentar, use placeholders no slide e mantenha o <code>.env</code> fora do Git. O <code>.gitignore</code> do
+        projeto já prevê isso, mas a chave que vazou no README continua no histórico.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="pandas">24. <code>ExtratorFila</code>, pandas e o bug do <code>id</code></h2>
+    <p>O extrator monta a URL e lê o JSON:</p>
+<pre><code>self.df = pd.read_json(self.url)
+self.df = self.df.drop(columns=["id", "id_motivo"], errors="ignore")
+return self.df</code></pre>
+    <p>Ele remove <code>id</code> e <code>id_motivo</code>. Depois, o gerenciador tenta montar o cliente com
+      <code>row.get("id") or row.get("cpf") or uuid4()</code>. Como <code>id</code> foi removido, o identificador vira o
+      CPF. Isso tem três efeitos: (1) o campo <code>id</code> do <code>Cliente</code> deixa de ser o UUID do banco; (2) o
+      CPF passa a ser usado como chave, mas o modelo não tem campo <code>cpf</code>; (3) se o CPF for nulo, cai no UUID
+      aleatório, que não existe no banco.</p>
+
+    <p>Por que o extrator remove o <code>id</code>? Provavelmente para evitar conflito com o índice do DataFrame ou porque
+      a versão inicial não usava o UUID. É um resquício. A correção seria manter o <code>id</code> e remover apenas
+      <code>id_motivo</code>, ou mapear explicitamente <code>id</code> para o modelo.</p>
+
+    <p>Outro ponto: <code>pd.read_json(url)</code> faz uma requisição sem timeout explícito, sem tratamento de erro e sem
+      paginação. Se o Supabase devolver um erro JSON, o pandas pode interpretar como DataFrame vazio ou levantar exceção.
+      Em produção, use <code>requests</code> com timeout e valide o status.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="faker">25. Faker, random e a distribuição 15/35/50</h2>
+    <p>O gerador escolhe a categoria com <code>random.choices([0, 1, 2], weights=[0.15, 0.35, 0.50], k=1)</code>. Em
+      média, 15% dos clientes são 80+, 35% são prioridade padrão e 50% são convencionais. Isso cria uma fila realista:
+      a convencional é maioria, a padrão é uma minoria relevante e a super é rara.</p>
+
+    <p>O Faker entra depois: gera nome, CPF e data de nascimento compatível com a categoria. Para 80+, usa
+      <code>minimum_age=80, maximum_age=105</code>. Para os motivos padrão, cada um tem uma faixa de idade (gestante 18–45,
+      idoso 60–79, etc.). Para convencional, 18–59. O CPF gerado é sintético e tem dígito verificador válido — mas não é
+      um CPF real; não use para nada além de teste.</p>
+
+    <p>Limitações: <code>random</code> não é criptograficamente seguro, mas aqui não precisa ser. O gerador não insere
+      <code>data_chegada</code>; o banco preenche com <code>now()</code>. Se você inserir 500 em lote, todos podem ter
+      timestamps muito próximos; a ordem FIFO dentro do lote pode depender da ordem de inserção. Para um teste de fila,
+      isso é aceitável, mas não é uma simulação de chegadas ao longo do dia.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="dotenv">26. <code>.env</code>, <code>python-dotenv</code> e configuração</h2>
+    <p>O projeto carrega <code>SUPABASE_URL</code> e <code>SUPABASE_KEY</code> do ambiente com <code>load_dotenv()</code>.
+      O <code>.env.example</code> mostra as chaves vazias; o README mostra um exemplo preenchido (que não deve ser usado).
+      O <code>.gitignore</code> ignora <code>.env</code>.</p>
+
+    <p>Boas práticas: nunca commitar o <code>.env</code>; usar chaves diferentes para desenvolvimento e produção; rotacionar
+      a chave que apareceu no README; e nunca expor a <code>service_role</code> no cliente. A chave <code>publishable</code>
+      é pública, mas as políticas de RLS precisam ser restritivas.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="streamlit">27. Streamlit: o que é e o que o projeto faz com ele</h2>
+    <p>Streamlit é um framework Python para construir interfaces de dados. Você escreve um script; cada interação faz o
+      Streamlit reexecutar o script de cima a baixo. É ótimo para protótipos e dashboards, e é o que o PDF promete: um
+      painel com a senha atual e um botão “Chamar Próximo”.</p>
+
+    <p>O que existe no repositório é <code>streamlit.py</code>, um script que conecta ao Supabase, mostra “Conectado com
+      sucesso” e dois <code>st.metric</code>: quantidade de categorias e clientes na fila. Não há botão, não há chamada do
+      gerenciador, não há session_state, não há TV de banco. A interface completa é especificação, não implementação.</p>
+
+    <p>Há ainda um problema de nome: o arquivo se chama <code>streamlit.py</code>, igual ao pacote <code>streamlit</code>.
+      Quando o script roda com o diretório no <code>sys.path</code>, o <code>import streamlit</code> pode encontrar o
+      próprio arquivo e falhar com <code>AttributeError</code>. O README manda rodar <code>streamlit run app.py</code>, mas
+      não existe <code>app.py</code>. A correção óbvia seria renomear para <code>app.py</code> e rodar
+      <code>streamlit run app.py</code>.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="session-state">28. <code>st.session_state</code>: por que ele seria obrigatório</h2>
+    <p>Como o Streamlit reexecuta o script a cada clique, variáveis locais são recriadas. Se você criasse
+      <code>GerenciadorFilas()</code> no topo do script, cada clique perderia os contadores e o estado das filas. A solução
+      é guardar o gerenciador em <code>st.session_state</code>, que persiste entre reruns da mesma sessão.</p>
+
+<pre><code>if "gerenciador" not in st.session_state:
+    st.session_state.gerenciador = GerenciadorFilas(auto_carregar=True)
+
+gerenciador = st.session_state.gerenciador</code></pre>
+
+    <p>O PDF descreve isso corretamente na seção 12, mas o código não implementa. Se a banca pedir “mostre o botão”,
+      você não tem o que mostrar. A resposta honesta é: “o núcleo está pronto; a camada de UI ficou como trabalho futuro”.
+      Se quiser salvar a apresentação, implemente um protótipo mínimo antes: um botão que chama <code>chamar_proximo()</code>
+      e exibe o nome, com o gerenciador no <code>session_state</code>.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="poo">29. POO, SOLID, Repository e Factory: o que é projeto e o que é código</h2>
+    <p>O PDF descreve uma arquitetura orientada a objetos com SRP, DIP, Repository, Factory e DDD. O código realiza parte
+      disso: <code>Cliente</code> é uma dataclass, <code>NivelPrioridade</code> é um enum, <code>ExtratorFila</code> é uma
+      classe separada e o gerenciador aceita injeção de dependência. Mas não há uma implementação concreta de repositório,
+      nem uma fábrica de clientes, nem uma camada de serviço que atualize status.</p>
+
+    <table>
+      <thead><tr><th>Padrão</th><th>PDF</th><th>Código</th></tr></thead>
+      <tbody>
+        <tr><td>Repository</td><td>classe que encapsula Supabase</td><td>apenas um <code>Protocol</code> e um atributo opcional; nenhuma classe concreta</td></tr>
+        <tr><td>Factory</td><td>fábrica estocástica de clientes</td><td><code>gerar_cliente()</code> é uma função, não uma classe</td></tr>
+        <tr><td>SRP</td><td>separar domínio, persistência e UI</td><td>parcial: domínio e extração separados; UI e persistência incompletas</td></tr>
+        <tr><td>DIP</td><td>gerenciador depende de abstração</td><td>parcial: aceita <code>repositorio</code> e <code>extrator</code>, mas o padrão é concreto</td></tr>
+        <tr><td>DDD</td><td>entidades e value objects</td><td>só <code>Cliente</code>; não há aggregates, serviços de domínio ou repositório</td></tr>
+      </tbody>
+    </table>
+
+    <p>Isso não é necessariamente um defeito: o escopo é acadêmico e o núcleo funciona. Mas você não deve afirmar que o
+      projeto “implementa Repository” se não há repositório. Diga “foi desenhado com Repository; a implementação ficou
+      pendente”.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="testes">30. Testes: o que os 15 casos provam</h2>
+    <p>A suíte usa <code>unittest</code> e um <code>ExtratorFalso</code> que devolve um DataFrame em memória. Isso permite
+      testar a lógica sem rede. Os grupos são:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Grupo</th><th>O que verifica</th><th>Por que importa</th></tr></thead>
+        <tbody>
+          <tr><td>Prioridade absoluta + 2:1</td><td>4S/3P/3C → S,S,S,S,P,P,C</td><td>prova a precedência e a cota</td></tr>
+          <tr><td>Super no meio do ciclo</td><td>P0, S0, P1, C0</td><td>prova que o contador não reseta</td></tr>
+          <tr><td>FIFO</td><td>convencionais saem na ordem de chegada</td><td>prova que a prioridade não quebra a fila interna</td></tr>
+          <tr><td>Filas vazias</td><td>ciclo encurta; todas vazias → <code>None</code></td><td>prova robustez</td></tr>
+          <tr><td>Anti-inanição</td><td>100P + 1C → P,P,C</td><td>prova a cota sob pico</td></tr>
+          <tr><td>Status</td><td>gerenciador não altera status</td><td>prova o limite de responsabilidade</td></tr>
+          <tr><td>Integração</td><td>extrator falso, filtro, ordenação, sincronização</td><td>prova o encaixe das camadas</td></tr>
+          <tr><td>Supabase real</td><td>opcional, pulado sem env</td><td>prova que a integração existe, mas não é determinística</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>O que não há: teste de concorrência, de idempotência, de transação, de UI, de 3:2:1, de doador de sangue, de
+      prioridade inválida, de data inválida, de CPF nulo, de timeout. Também não há medição de cobertura. Se a banca
+      perguntar “qual é a cobertura?”, a resposta honesta é “não foi medida; os testes cobrem o núcleo do algoritmo”.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="gitflow">31. Git Flow e organização do time</h2>
+    <p>O PDF descreve um Git Flow simplificado: <code>main</code> estável, <code>develop</code> de integração e
+      <code>feature/</code> para tarefas. O repositório real tem apenas <code>main</code> (o clone raso mostra
+      <code>origin/main</code>); não há evidência de branches <code>develop</code> ou PRs. O arquivo
+      <code>Documentação/tarefas</code> divide o trabalho em cinco frentes: banco, starvation, front-end, lista de
+      prioridade e testes/integração.</p>
+
+    <p>Para a banca, o importante é saber explicar a divisão e o fluxo, não fingir que o histórico prova o processo. Se
+      perguntarem “cadê as branches?”, responda: “o repositório foi entregue com a versão final na main; o fluxo descrito
+      no documento era o processo planejado”.</p>
+
+    <!-- ============================================================ -->
+    <h2 id="limitacoes">32. Limitações, riscos e o que eu faria diferente</h2>
+    <p>Um projeto perfeito para a banca não é o que não tem falhas; é o que sabe apontá-las. Estas são as principais:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Limitação</th><th>Efeito</th><th>Correção</th></tr></thead>
+        <tbody>
+          <tr><td>80+ absoluto</td><td>pode starvar padrão/convencional</td><td>política de limite ou aging</td></tr>
+          <tr><td>Sem aging por tempo</td><td>não garante espera máxima</td><td>prioridade dinâmica por tempo de espera</td></tr>
+          <tr><td>Sem atualização de status</td><td>cliente pode ser chamado de novo</td><td>transação que marca <code>em_atendimento</code> e grava <code>atendimentos</code></td></tr>
+          <tr><td>Sem concorrência</td><td>dois caixas podem chamar o mesmo cliente</td><td><code>Lock</code> ou <code>SELECT ... FOR UPDATE SKIP LOCKED</code></td></tr>
+          <tr><td>RLS <code>true</code></td><td>qualquer um escreve</td><td>políticas por papel e autenticação</td></tr>
+          <tr><td>CPF e motivo sensível</td><td>risco LGPD</td><td>minimização, criptografia, controle de acesso e retenção</td></tr>
+          <tr><td><code>streamlit.py</code></td><td>nome sombreia o pacote</td><td>renomear para <code>app.py</code></td></tr>
+          <tr><td>Documentação 3:2:1</td><td>contradição com o código</td><td>atualizar README/PDF ou implementar 3:2:1</td></tr>
+          <tr><td>Sem UI completa</td><td>não há demo de botão</td><td>protótipo mínimo com <code>session_state</code></td></tr>
+          <tr><td>Sem prazo/SLA</td><td>não mede tempo de espera</td><td>registrar timestamps e calcular métricas</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout ok">
+      <div class="ct">A resposta que ganha ponto</div>
+      <p>“O núcleo resolve o problema proposto: prioridade legal, FIFO e anti-inanição 2:1, com testes. O que falta é a
+        camada de aplicação — UI, transação de status e segurança. Eu sei exatamente onde cada uma entra e o que mudaria
+        no comportamento.”</p>
+    </div>
+
+  </div>
+</div>
+
+<script src="assets/search-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+/* Índice de busca do site. Cada entrada: t = título, u = url#âncora, k = palavras-chave, p = página. */
+window.SEARCH_INDEX = [
+  /* ---------- Início ---------- */
+  { t: "Mapa do projeto em 30 segundos", u: "index.html#mapa", k: "resumo visao geral tres daemons api nginx cron", p: "Início" },
+  { t: "Cada recurso usado: containers, Kubernetes, API", u: "index.html#recursos", k: "recursos usados containers kubernetes api python fastapi psutil docker nginx cron hpa hostpid yaml", p: "Início" },
+  { t: "Checklist do edital (Tema 1)", u: "index.html#edital", k: "edital requisitos conformidade checklist pontos", p: "Início" },
+  { t: "Cobertura: edital, arquivos e conceitos", u: "index.html#cobertura", k: "cobertura edital requisitos arquivos mapa completo sem falta", p: "Início" },
+  { t: "Números que você precisa saber de cor", u: "index.html#numeros", k: "9 segundos 2 a 10 replicas 204 cpu 83 processos 30080 30081", p: "Início" },
+  { t: "Se você só tiver 1 hora antes da banca", u: "index.html#1hora", k: "revisao rapida ultima hora emergencia", p: "Início" },
+
+  /* ---------- Teoria ---------- */
+  { t: "Processo, PID e o ciclo de vida", u: "teoria.html#processo", k: "processo pid ppid fork exec estados r s d z t /proc", p: "Teoria" },
+  { t: "Zumbi e órfão", u: "teoria.html#zumbi", k: "zumbi zombie orfao wait reap chld", p: "Teoria" },
+  { t: "Sinais: SIGTERM, SIGKILL, SIGHUP", u: "teoria.html#sinais", k: "sinal sigterm 15 sigkill 9 sighup sigint sigchld terminate kill", p: "Teoria" },
+  { t: "O que é um daemon", u: "teoria.html#daemon", k: "daemon servico background systemd nginx crond pid 1", p: "Teoria" },
+  { t: "Namespaces do Linux", u: "teoria.html#namespaces", k: "namespace pid net mnt uts ipc user cgroup time isolamento", p: "Teoria" },
+  { t: "cgroups e limites de recursos", u: "teoria.html#cgroups", k: "cgroup cpu.max memory.max limite contabilidade cgroup v2", p: "Teoria" },
+  { t: "Container vs máquina virtual", u: "teoria.html#container-vm", k: "container vm hypervisor kernel compartilhado comparacao", p: "Teoria" },
+  { t: "Docker: imagem, camada e container", u: "teoria.html#docker", k: "docker imagem camada overlay2 dockerfile registry containerd runc", p: "Teoria" },
+  { t: "Dockerfile: cada instrução", u: "teoria.html#dockerfile", k: "from workdir copy run expose cmd entrypoint dockerfile", p: "Teoria" },
+  { t: "Por que o Kubernetes existe", u: "teoria.html#porque-k8s", k: "orquestracao kubernetes porque docker swarm escalonamento", p: "Teoria" },
+  { t: "Arquitetura do Kubernetes", u: "teoria.html#k8s-arquitetura", k: "control plane apiserver etcd scheduler controller-manager kubelet kube-proxy", p: "Teoria" },
+  { t: "Pod: a menor unidade", u: "teoria.html#pod", k: "pod pause container efemero ciclo de vida pending running", p: "Teoria" },
+  { t: "Deployment e ReplicaSet", u: "teoria.html#deployment", k: "deployment replicaset rollout revision desired state", p: "Teoria" },
+  { t: "Service e os tipos ClusterIP NodePort", u: "teoria.html#service", k: "service clusterip nodeport loadbalancer selector label kube-proxy", p: "Teoria" },
+  { t: "Namespace do Kubernetes (não confunda com o do Linux)", u: "teoria.html#namespace-k8s", k: "namespace daemon-lab organizacao logica escopo", p: "Teoria" },
+  { t: "Labels e selectors", u: "teoria.html#labels", k: "label selector matchLabels app process-api", p: "Teoria" },
+  { t: "HPA: como o escalonamento automático decide", u: "teoria.html#hpa", k: "hpa autoscaler metricas cpu desiredReplicas estabilizacao", p: "Teoria" },
+  { t: "Self-healing em dois níveis", u: "teoria.html#selfhealing", k: "self-healing reconciliacao replicaset kubelet restartpolicy", p: "Teoria" },
+  { t: "Escalonamento horizontal e vertical", u: "teoria.html#scaling", k: "scaling hpa vpa cluster autoscaler horizontal vertical", p: "Teoria" },
+  { t: "Rede no Kubernetes e o túnel do Minikube", u: "teoria.html#rede", k: "rede cni nodeport minikube service tunel iptables ipvs", p: "Teoria" },
+  { t: "HTTP e REST", u: "teoria.html#rest", k: "http rest get post delete verbos idempotencia status code json", p: "Teoria" },
+  { t: "FastAPI, ASGI e uvicorn", u: "teoria.html#fastapi", k: "fastapi asgi uvicorn pydantic openapi swagger docs decorator", p: "Teoria" },
+  { t: "psutil: como a API enxerga processos", u: "teoria.html#psutil", k: "psutil process_iter cpu_percent memory_percent terminate kill /proc", p: "Teoria" },
+  { t: "hostPID: o que muda no namespace de PID", u: "teoria.html#hostpid", k: "hostpid namespace pid compartilhado seguranca pss", p: "Teoria" },
+  { t: "Probes: liveness, readiness e startup", u: "teoria.html#probes", k: "probe liveness readiness startup health check endpoints", p: "Teoria" },
+  { t: "Escalonamento do SO x escalonamento do Kubernetes", u: "teoria.html#escalonamento-so", k: "escalonador so cfs quantum preempcao context switch kube-scheduler hpa", p: "Teoria" },
+  { t: "QoS, OOMKilled e pressao de memoria", u: "teoria.html#qos", k: "qos guaranteed burstable besteffort oomkilled despejo memoria", p: "Teoria" },
+  { t: "Volumes e persistencia: writable layer, emptyDir, PVC", u: "teoria.html#volumes", k: "volume writable layer persistencia emptyDir hostpath pvc configmap secret readwriteonce readwritemany cron.txt", p: "Teoria" },
+  { t: "Seguranca de Pod: root, capabilities e PSS", u: "teoria.html#seguranca-pod", k: "seguranca root uid capabilities cap_kill securitycontext pss baseline restricted rbac networkpolicy", p: "Teoria" },
+  { t: "Deployment, StatefulSet, DaemonSet, Job e CronJob", u: "teoria.html#controladores", k: "deployment statefulset daemonset job cronjob controlador identidade storage", p: "Teoria" },
+
+  /* ---------- Arquitetura ---------- */
+  { t: "Diagrama lógico e físico", u: "arquitetura.html#diagrama", k: "diagrama arquitetura logica fisica windows wsl minikube", p: "Arquitetura" },
+  { t: "Fluxo de uma requisição, passo a passo", u: "arquitetura.html#fluxo", k: "fluxo requisicao curl nodeport service pod uvicorn psutil", p: "Arquitetura" },
+  { t: "Decisões de projeto e por quê", u: "arquitetura.html#decisoes", k: "decisao trade-off por que 2 replicas nodeport hpa 50", p: "Arquitetura" },
+  { t: "Limitações conscientes", u: "arquitetura.html#limitacoes", k: "limitacoes volume probes auth ingress trabalhos futuros", p: "Arquitetura" },
+  { t: "Números medidos", u: "arquitetura.html#numeros", k: "metricas 9s 204 10 replicas 83 processos", p: "Arquitetura" },
+
+  /* ---------- Prática ---------- */
+  { t: "Pré-requisitos e ambiente", u: "pratica.html#pre", k: "wsl2 ubuntu docker desktop minikube kubectl instalar", p: "Prática" },
+  { t: "Ordem de criação: API, containers e Kubernetes", u: "pratica.html#ordem", k: "ordem criacao passo a passo api imagem container cluster yaml acesso", p: "Prática" },
+  { t: "Criar e rodar a API local (venv + uvicorn)", u: "pratica.html#local", k: "local criar api venv pip uvicorn reload curl testes", p: "Prática" },
+  { t: "Build das três imagens", u: "pratica.html#build", k: "docker build process-api nginx-cron cron-daemon tag", p: "Prática" },
+  { t: "Testar as imagens no Docker local", u: "pratica.html#docker-local", k: "docker run portas 8000 8080 exec cat cron.txt cron-task.log plano b", p: "Prática" },
+  { t: "Carregar imagens no Minikube", u: "pratica.html#load", k: "minikube image load imagepullpolicy never", p: "Prática" },
+  { t: "Aplicar os YAMLs na ordem certa", u: "pratica.html#apply", k: "kubectl apply namespace ordem deployment service hpa", p: "Prática" },
+  { t: "Acessar a API e o Nginx", u: "pratica.html#acesso", k: "minikube service nodeport curl docs swagger 30080 30081", p: "Prática" },
+  { t: "Demonstrar self-healing", u: "pratica.html#selfhealing", k: "kubectl delete pod watch recriacao 9 segundos", p: "Prática" },
+  { t: "Demonstrar scaling com HPA", u: "pratica.html#scaling", k: "metrics-server hpa carga curl while replicas", p: "Prática" },
+  { t: "Limpeza do ambiente", u: "pratica.html#limpeza", k: "delete namespace minikube delete", p: "Prática" },
+  { t: "Erros comuns e como resolver", u: "pratica.html#troubleshooting", k: "errimagenevepull pending crashloopbackoff hpa unknown", p: "Prática" },
+  { t: "Diagnostico: comandos e perguntas", u: "pratica.html#diagnostico", k: "diagnostico describe logs events endpoints rollout top rs explain", p: "Prática" },
+
+  /* ---------- Código ---------- */
+  { t: "Mapa de todos os arquivos do repositorio", u: "codigo.html#mapa-arquivos", k: "mapa arquivos repositorio cobertura completo main dockerfile yaml docs", p: "Código" },
+  { t: "api/main.py linha a linha", u: "codigo.html#mainpy", k: "main.py fastapi psutil subprocess rota", p: "Código" },
+  { t: "requirements.txt e versoes fixas", u: "codigo.html#requirements", k: "requirements fastapi uvicorn psutil versao pin reproducibilidade pip", p: "Código" },
+  { t: "Ciclo de vida de um processo criado pela API", u: "codigo.html#ciclo-processo", k: "popen fork exec wait zumbi reaping stdout start_new_session shlex", p: "Código" },
+  { t: "Seguranca da API: auth, allowlist, hostPID", u: "codigo.html#seguranca-api", k: "seguranca api autenticacao allowlist pid nodeport root cap_kill auditoria", p: "Código" },
+  { t: "Tabela de endpoints da API", u: "codigo.html#endpoints", k: "endpoints processes pid start delete force", p: "Código" },
+  { t: "Dockerfile da API", u: "codigo.html#dockerfile-api", k: "dockerfile api python slim uvicorn", p: "Código" },
+  { t: "Dockerfile do Nginx + Cron", u: "codigo.html#dockerfile-nginx", k: "dockerfile nginx alpine busybox crond entrypoint crontab", p: "Código" },
+  { t: "Dockerfile do Cron separado", u: "codigo.html#dockerfile-cron", k: "dockerfile cron alpine busybox crond f", p: "Código" },
+  { t: "A página HTML do Nginx", u: "codigo.html#html", k: "index.html iframe cron.txt site", p: "Código" },
+  { t: "YAML: namespace", u: "codigo.html#yaml-namespace", k: "yaml namespace daemon-lab", p: "Código" },
+  { t: "YAML: api-deployment", u: "codigo.html#yaml-api-deploy", k: "yaml deployment replicas hostpid requests limits cpu", p: "Código" },
+  { t: "YAML: api-service", u: "codigo.html#yaml-api-svc", k: "yaml service nodeport 30080", p: "Código" },
+  { t: "YAML: nginx-deployment", u: "codigo.html#yaml-nginx-deploy", k: "yaml nginx deployment 80", p: "Código" },
+  { t: "YAML: nginx-service", u: "codigo.html#yaml-nginx-svc", k: "yaml nginx service nodeport 30081", p: "Código" },
+  { t: "YAML: cron-deployment", u: "codigo.html#yaml-cron", k: "yaml cron deployment 1 replica", p: "Código" },
+  { t: "YAML: hpa", u: "codigo.html#yaml-hpa", k: "yaml hpa autoscaling v2 min max averageutilization", p: "Código" },
+  { t: "O que falta nos YAMLs: probes, securityContext, volume", u: "codigo.html#yaml-faltando", k: "falta yaml probe securitycontext resources volume pdb networkpolicy strategy termination", p: "Código" },
+
+  /* ---------- Evidências ---------- */
+  { t: "Evidências da Tarefa 1 (API)", u: "evidencias.html#t1", k: "prints api curl swagger docker ps", p: "Evidências" },
+  { t: "Evidências da Tarefa 2 (Nginx e Cron)", u: "evidencias.html#t2", k: "prints nginx cron imagens log site", p: "Evidências" },
+  { t: "Evidências da Tarefa 3 (Kubernetes)", u: "evidencias.html#t3", k: "prints pods hostpid self-healing hpa nginx k8s", p: "Evidências" },
+
+  /* ---------- Perguntas ---------- */
+  { t: "As 10 perguntas que ele vai fazer", u: "perguntas.html#top10", k: "perguntas provaveis banca apresentacao", p: "Perguntas" },
+  { t: "Perguntas de API e processos", u: "perguntas.html#api", k: "perguntas api psutil pid sinais fastapi", p: "Perguntas" },
+  { t: "Perguntas de Docker", u: "perguntas.html#docker", k: "perguntas docker imagem camada dockerfile", p: "Perguntas" },
+  { t: "Perguntas de Kubernetes", u: "perguntas.html#k8s", k: "perguntas kubernetes pod deployment service etcd", p: "Perguntas" },
+  { t: "Perguntas de HPA e escalonamento", u: "perguntas.html#hpa", k: "perguntas hpa metricas estabilizacao", p: "Perguntas" },
+  { t: "Perguntas de segurança", u: "perguntas.html#seguranca", k: "perguntas seguranca hostpid nodeport rbac networkpolicy", p: "Perguntas" },
+  { t: "Perguntas-pega (as difíceis)", u: "perguntas.html#pegas", k: "pegadinhas delete deployment kill container daemonset statefulset", p: "Perguntas" },
+  { t: "Extras: probes, QoS, escalonadores", u: "perguntas.html#extras", k: "extras probes liveness readiness qos oomkilled escalonador", p: "Perguntas" },
+  { t: "Como responder “não sei”", u: "perguntas.html#naosei", k: "nao sei honestidade postura banca", p: "Perguntas" },
+
+  /* ---------- Quiz ---------- */
+  { t: "Quiz de fixação", u: "quiz.html#quiz", k: "quiz teste perguntas multipla escolha treinar", p: "Quiz" },
+
+  /* ---------- Plano ---------- */
+  { t: "Plano de estudo de 21 dias", u: "plano.html#plano", k: "cronograma estudo dias semana", p: "Plano" },
+  { t: "Roteiro da apresentação de 20 minutos", u: "plano.html#roteiro", k: "roteiro apresentacao tempo slides 20 min", p: "Plano" },
+  { t: "Checklist do dia da apresentação", u: "plano.html#dia", k: "checklist dia banca ensaio maquina", p: "Plano" },
+  { t: "Frases de emergência", u: "plano.html#frases", k: "frases prontas emergencia resposta", p: "Plano" },
+  { t: "Entregáveis e prazos (o que vale nota)", u: "plano.html#entregaveis", k: "entrega prazo 25 novembro email artigo slides anexo llm prompt readme nota", p: "Plano" },
+  { t: "Referências para citar", u: "plano.html#referencias", k: "referencias fontes kubernetes docker psutil tanenbaum silberschatz", p: "Plano" },
+
+  /* ---------- Banca difícil ---------- */
+  { t: "Banca difícil: perguntas de mecanismo e número", u: "banca.html#numeros", k: "banca dificil hpa degraus behavior 204 formula 2 4 8 9 10 request sensibilidade", p: "Banca" },
+  { t: "Contrafactuais: e se...?", u: "banca.html#contrafactual", k: "contrafactual e se hostpid false shareprocessnamespace node morrer metrics-server cair apply hpa", p: "Banca" },
+  { t: "Diagnóstico ao vivo: sintoma, causa e comando", u: "banca.html#diagnostico", k: "diagnostico pending crashloop imagepull 0/1 endpoints terminating", p: "Banca" },
+  { t: "Cálculos que ele pode pedir na lousa", u: "banca.html#calculos", k: "calculo milicore hpa ceil desired nodeport 2768 99 9", p: "Banca" },
+  { t: "Defenda cada escolha em uma frase", u: "banca.html#defesa", k: "defesa decisao tradeoff hostpid nodeport imagepull replicas hpa", p: "Banca" },
+  { t: "Quando ele sai do escopo", u: "banca.html#fora", k: "fora escopo helm testes ci cd segredos observabilidade compose systemd", p: "Banca" },
+  { t: "E se isso fosse produção?", u: "banca.html#producao", k: "producao registry non-root pss networkpolicy probes pdb observabilidade gitops", p: "Banca" },
+  { t: "Simulado de 10 minutos (12 perguntas)", u: "banca.html#simulado", k: "simulado treino 12 perguntas pontuacao banca oral", p: "Banca" }
+];

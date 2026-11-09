@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("a3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Plano · Base de Estudos A3 — Tema 2</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">A3</div>
+    <div class="brand-text"><strong>Base de Estudos</strong><span>Tema 2 · Fila + Leis</span></div>
+  </div>
+  <div class="study-switch" aria-label="Trocar de estudo">
+    <a href="../Euclerio/index.html">Euclerio</a>
+    <a href="../Sergio/index.html" class="active">Sergio</a>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
+    <div class="search-results"></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Comece aqui</div>
+    <a href="index.html"><span class="n">00</span> Início</a>
+    <div class="nav-label">Fundamentos</div>
+    <a href="teoria.html"><span class="n">01</span> Teoria</a>
+    <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
+    <div class="nav-label">O trabalho</div>
+    <a href="pratica.html"><span class="n">03</span> Prática</a>
+    <a href="codigo.html"><span class="n">04</span> Código</a>
+    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <div class="nav-label">Treino</div>
+    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">07</span> Quiz</a>
+    <a href="plano.html"><span class="n">08</span> Plano</a>
+    <a href="banca.html"><span class="n">09</span> Banca</a>
+  </nav>
+  <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" data-menu aria-label="Abrir menu">☰</button>
+    <span class="topbar-title">08 · Cronograma</span>
+  </div>
+
+  <div class="content">
+    <div class="eyebrow">08 · Cronograma</div>
+    <h1>Plano: 14 dias, 15 minutos e uma demo honesta</h1>
+    <p class="lead">Este plano assume que você já tem o repositório e precisa dominar o conteúdo, não reescrevê-lo. Se tiver\n      menos tempo, use a versão de 3 dias no fim. O objetivo é chegar na banca capaz de explicar, demonstrar e assumir\n      limitações sem gaguejar.</p>
+
+    <div class="callout tip">
+      <div class="ct">Meta mensurável</div>
+      <p>Ao fim do plano, você deve conseguir: (1) desenhar o ciclo 2:1 de memória; (2) traçar 6 chamadas em 60 segundos;\n        (3) citar três leis e o artigo dos bancos; (4) apontar cinco limitações com correção; (5) rodar o núcleo e os\n        testes sem consultar o README.</p>
+    </div>
+
+    <h2 id="cronograma">1. Cronograma de 14 dias</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Dia</th><th>Foco</th><th>O que você produz</th><th>Tempo</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Leis e problema</td><td>uma página com 10.048, 10.741/13.466, 12.764, 13.146, 14.626</td><td>2 h</td></tr>
+          <tr><td>2</td><td>Fila, FIFO, multinível, starvation</td><td>desenho das três filas + definição de cada conceito</td><td>2 h</td></tr>
+          <tr><td>3</td><td><code>modelos.py</code></td><td>explicação de <code>Cliente</code>, enums e status</td><td>1 h 30</td></tr>
+          <tr><td>4</td><td><code>aplicar_starvation</code></td><td>traço de 6 chamadas no papel</td><td>2 h</td></tr>
+          <tr><td>5</td><td>Testes</td><td>tabela dos 15 testes e o que cada um prova</td><td>2 h</td></tr>
+          <tr><td>6</td><td>SQL e Supabase</td><td>desenho das 4 tabelas + índice + RLS</td><td>2 h</td></tr>
+          <tr><td>7</td><td>Prática</td><td>ambiente, schema, 500 clientes, testes rodando</td><td>3 h</td></tr>
+          <tr><td>8</td><td>Extrator e gerador</td><td>explicação do fluxo JSON → DataFrame → deque</td><td>1 h 30</td></tr>
+          <tr><td>9</td><td>UI e stack</td><td>o que o Streamlit faz, o que deveria fazer, session_state</td><td>1 h 30</td></tr>
+          <tr><td>10</td><td>Arquitetura e limitações</td><td>diagrama de camadas + tabela “implementado × prometido”</td><td>2 h</td></tr>
+          <tr><td>11</td><td>Banca difícil</td><td>respostas para 20 perguntas sem consultar</td><td>2 h</td></tr>
+          <tr><td>12</td><td>Simulado</td><td>apresentação cronometrada + perguntas de um colega</td><td>1 h 30</td></tr>
+          <tr><td>13</td><td>Slides e demo</td><td>roteiro de 15 min + plano B offline</td><td>2 h</td></tr>
+          <tr><td>14</td><td>Revisão final</td><td>checklist do dia + frases de emergência</td><td>1 h</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Se você tem <strong>3 dias</strong>: dia 1 = leis + algoritmo + traço; dia 2 = código + SQL + testes; dia 3 = banca +\n      simulado + demo. Se tem <strong>1 dia</strong>: use a página <a href="index.html#1hora">“Se só tiver 1 hora”</a> e o\n      roteiro abaixo.</p>
+
+    <h2 id="roteiro">2. Roteiro de 15 minutos</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tempo</th><th>Bloco</th><th>O que dizer</th><th>O que mostrar</th></tr></thead>
+        <tbody>
+          <tr><td>0:00–1:00</td><td>Abertura</td><td>“Quem já desistiu de uma fila de banco? O problema não é só esperar; é esperar sem saber se a lei está sendo cumprida.”</td><td>título</td></tr>
+          <tr><td>1:00–3:30</td><td>Problema e lei</td><td>três níveis; 10.048; 13.466; 12.764; a diferença “dentre os idosos”</td><td>tabela dos níveis</td></tr>
+          <tr><td>3:30–5:30</td><td>Arquitetura</td><td>Faker → Supabase → pandas → gerenciador → algoritmo; UI é o próximo passo</td><td>diagrama de camadas</td></tr>
+          <tr><td>5:30–9:00</td><td>Algoritmo</td><td>80+ absoluto; ciclo 2:1; fila vazia; super no meio; traço de 6</td><td>código + tabela do traço</td></tr>
+          <tr><td>9:00–11:00</td><td>Prova</td><td>15 testes; 100P + 1C; P0, S0, P1, C0; por que o status não muda</td><td>testes</td></tr>
+          <tr><td>11:00–12:30</td><td>Dados e SQL</td><td>4 tabelas, índice parcial, RLS aberta, LGPD</td><td>SQL</td></tr>
+          <tr><td>12:30–13:30</td><td>Limitações</td><td>UI, status, atendimentos, concorrência, 3:2:1</td><td>tabela de lacunas</td></tr>
+          <tr><td>13:30–15:00</td><td>Conclusão</td><td>“núcleo pronto e testado; aplicação é o próximo passo”</td><td>perguntas</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="ct">Não tente mostrar tudo</div>
+      <p>15 minutos passam rápido. Se você tentar explicar cada arquivo, não sobra tempo para a parte mais forte: o traço e\n        a defesa das limitações. Escolha três provas: o ciclo 2:1, o 80+ no meio e a tabela de lacunas.</p>
+    </div>
+
+    <h2 id="slides">3. Estrutura de slides</h2>
+    <ol>
+      <li><strong>Capa</strong> — título, integrantes, disciplina, data.</li>
+      <li><strong>O problema</strong> — fila única vs prioridade; o risco de starvation.</li>
+      <li><strong>Base legal</strong> — tabela de 3 níveis + notas de interpretação.</li>
+      <li><strong>Arquitetura</strong> — diagrama de camadas; destaque no que existe.</li>
+      <li><strong>Estruturas</strong> — três deques; FIFO; complexidade.</li>
+      <li><strong>Algoritmo</strong> — pseudocódigo ou código de 12 linhas.</li>
+      <li><strong>Traço</strong> — tabela de 6 chamadas com etapa/contador.</li>
+      <li><strong>Testes</strong> — três casos: 2:1, super no meio, 100P+1C.</li>
+      <li><strong>Banco</strong> — 4 tabelas, índice, RLS.</li>
+      <li><strong>O que falta</strong> — UI, status, atendimentos, concorrência, LGPD.</li>
+      <li><strong>Próximos passos</strong> — transação, session_state, aging, segurança.</li>
+      <li><strong>Encerramento</strong> — frase final + perguntas.</li>
+    </ol>
+
+    <h2 id="entregaveis">4. Entregáveis e checklist</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Entregável</th><th>Pronto?</th><th>Onde está</th></tr></thead>
+        <tbody>
+          <tr><td>Slides (12–15)</td><td>☐</td><td>local, não no repositório</td></tr>
+          <tr><td>Roteiro de 15 min</td><td>☐</td><td>esta página</td></tr>
+          <tr><td>Traço de 6 chamadas</td><td>☐</td><td><a href="teoria.html#trace">Teoria §17</a></td></tr>
+          <tr><td>Demo do núcleo</td><td>☐</td><td><a href="pratica.html#offline">Prática §10</a></td></tr>
+          <tr><td>Plano B offline</td><td>☐</td><td>DataFrame em memória</td></tr>
+          <tr><td>Respostas de banca</td><td>☐</td><td><a href="banca.html">Banca</a></td></tr>
+          <tr><td>Quiz 90%+</td><td>☐</td><td><a href="quiz.html">Quiz</a></td></tr>
+          <tr><td>Checklist do dia</td><td>☐</td><td><a href="#dia">abaixo</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="dia">5. Checklist do dia</h2>
+    <div class="card">
+      <div class="check"><input type="checkbox" id="d1" data-study="dia-repo"><label for="d1">Clone/cópia do repositório aberta e legível; nenhuma alteração planejada.</label></div>
+      <div class="check"><input type="checkbox" id="d2" data-study="dia-env"><label for="d2">Ambiente Python funcionando; <code>pandas</code> instalado além do requirements.</label></div>
+      <div class="check"><input type="checkbox" id="d3" data-study="dia-offline"><label for="d3">Plano B offline testado (DataFrame em memória).</label></div>
+      <div class="check"><input type="checkbox" id="d4" data-study="dia-testes"><label for="d4">Testes rodados; você sabe o que é skip e por quê.</label></div>
+      <div class="check"><input type="checkbox" id="d5" data-study="dia-traco"><label for="d5">Traço de 6 chamadas escrito à mão, sem consultar.</label></div>
+      <div class="check"><input type="checkbox" id="d6" data-study="dia-leis"><label for="d6">Três leis e o artigo dos bancos decorados.</label></div>
+      <div class="check"><input type="checkbox" id="d7" data-study="dia-3-2-1"><label for="d7">Resposta pronta para 3:2:1 × 2:1.</label></div>
+      <div class="check"><input type="checkbox" id="d8" data-study="dia-80"><label for="d8">Resposta pronta para “80+ é absoluto na lei?”.</label></div>
+      <div class="check"><input type="checkbox" id="d9" data-study="dia-ui"><label for="d9">Resposta pronta para “cadê a interface?”.</label></div>
+      <div class="check"><input type="checkbox" id="d10" data-study="dia-rls"><label for="d10">Resposta pronta para RLS/LGPD.</label></div>
+      <div class="check"><input type="checkbox" id="d11" data-study="dia-slides"><label for="d11">Slides em PDF e em pen drive/backup.</label></div>
+      <div class="check"><input type="checkbox" id="d12" data-study="dia-agua"><label for="d12">Água, cronômetro e uma folha com o traço.</label></div>
+    </div>
+
+    <h2 id="frases">6. Frases de emergência</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Situação</th><th>Não diga</th><th>Diga</th></tr></thead>
+        <tbody>
+          <tr><td>Não sabe a resposta</td><td>“Acho que…”</td><td>“Não tenho isso decorado; o dado está em <code>X</code>, e eu sei como chegar lá.”</td></tr>
+          <tr><td>Pergunta sobre UI</td><td>“Está pronta”</td><td>“O núcleo está pronto; a UI ficou como trabalho futuro.”</td></tr>
+          <tr><td>Pergunta sobre 3:2:1</td><td>“O PDF está certo”</td><td>“O código e os testes fazem 2:1; a documentação está desatualizada.”</td></tr>
+          <tr><td>Pergunta sobre 80+</td><td>“A lei manda absoluto”</td><td>“A lei fala ‘dentre os idosos’; o código escolheu uma proteção mais ampla.”</td></tr>
+          <tr><td>Pergunta sobre status</td><td>“Atualiza sim”</td><td>“Não atualiza; o teste confirma. A transação é o próximo passo.”</td></tr>
+          <tr><td>Pergunta sobre segurança</td><td>“Está seguro”</td><td>“RLS está aberta e a chave aparece no README; em produção eu corrigiria.”</td></tr>
+          <tr><td>Pergunta que você não entendeu</td><td>Responder outra coisa</td><td>“Pode reformular? Quero responder exatamente o que você perguntou.”</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="referencias">7. Referências para estudar</h2>
+    <ul>
+      <li><strong>Lei 10.048/2000</strong> — atendimento prioritário; art. 2º, parágrafo único (instituições financeiras).</li>
+      <li><strong>Lei 10.741/2003</strong> — Estatuto da Pessoa Idosa; art. 3º, §2º, com a redação da Lei 13.466/2017.</li>
+      <li><strong>Lei 12.764/2012</strong> — Política Nacional de Proteção dos Direitos da Pessoa com TEA.</li>
+      <li><strong>Lei 13.146/2015</strong> — Lei Brasileira de Inclusão; definição de PCD e alterações na 10.048.</li>
+      <li><strong>Lei 14.364/2022</strong> — acompanhantes e atendentes pessoais das pessoas com prioridade.</li>
+      <li><strong>Lei 14.626/2023</strong> — atualiza o rol da 10.048 (TEA, mobilidade reduzida, doadores).</li>
+      <li><strong>Decreto 5.296/2004</strong> — regulamenta prioridade e acessibilidade.</li>
+      <li><strong>LGPD (Lei 13.709/2018)</strong> — dados pessoais e dados sensíveis.</li>
+      <li><strong>Documentação Python</strong> — <code>collections.deque</code>, <code>dataclasses</code>, <code>enum</code>.</li>
+      <li><strong>Documentação Supabase</strong> — PostgREST, RLS, <code>supabase-py</code>.</li>
+      <li><strong>Documentação Streamlit</strong> — <code>session_state</code>, <code>cache_resource</code>, rerun.</li>
+    </ul>
+
+    <p>Links oficiais (para abrir quando houver internet):<br>
+      <code>planalto.gov.br/ccivil_03/leis/l10048.htm</code><br>
+      <code>planalto.gov.br/ccivil_03/leis/2003/l10.741.htm</code><br>
+      <code>planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12764.htm</code><br>
+      <code>planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13466.htm</code></p>
+
+    <h2 id="ensaio">8. Ensaio: perguntas para um colega fazer</h2>
+    <ol>
+      <li>Por que não uma fila única?</li>
+      <li>Qual é a diferença entre priority queue e multilevel queue?</li>
+      <li>Desenhe o ciclo 2:1.</li>
+      <li>O que acontece se a fila padrão encher?</li>
+      <li>O que acontece se um 80+ chegar no meio?</li>
+      <li>Por que o contador não reseta?</li>
+      <li>O ciclo é 3:2:1? Prove.</li>
+      <li>O que é starvation? O projeto resolve totalmente?</li>
+      <li>Qual é a complexidade de <code>popleft</code>?</li>
+      <li>Por que deque e não heap?</li>
+      <li>O que é <code>frozen=True</code>?</li>
+      <li>Por que <code>IntEnum</code>?</li>
+      <li>O status é atualizado?</li>
+      <li>Qual é o bug do id?</li>
+      <li>O que é RLS? Está segura?</li>
+      <li>O que falta para produção?</li>
+      <li>Qual é a maior fragilidade?</li>
+      <li>O que você faria com mais uma semana?</li>
+    </ol>
+
+    <div class="callout ok">
+      <div class="ct">Frase de encerramento</div>
+      <p>“O núcleo está pronto e testado; a camada de aplicação é o próximo passo — e eu sei exatamente onde ela entra.”</p>
+    </div>
+
+  </div>
+</div>
+
+<script src="assets/search-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

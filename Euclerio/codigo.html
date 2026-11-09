@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("a3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Código · Base de Estudos A3 — Tema 1</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">A3</div>
+    <div class="brand-text"><strong>Base de Estudos</strong><span>Tema 1 · Kubernetes + API</span></div>
+  </div>
+  <div class="study-switch" aria-label="Trocar de estudo">
+    <a href="../Euclerio/index.html" class="active">Euclerio</a>
+    <a href="../Sergio/index.html">Sergio</a>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
+    <div class="search-results"></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Comece aqui</div>
+    <a href="index.html"><span class="n">00</span> Início</a>
+    <div class="nav-label">Fundamentos</div>
+    <a href="teoria.html"><span class="n">01</span> Teoria</a>
+    <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
+    <div class="nav-label">O trabalho</div>
+    <a href="pratica.html"><span class="n">03</span> Prática</a>
+    <a href="codigo.html"><span class="n">04</span> Código</a>
+    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <div class="nav-label">Treino</div>
+    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">07</span> Quiz</a>
+    <a href="plano.html"><span class="n">08</span> Plano</a>
+    <a href="banca.html"><span class="n">09</span> Banca</a>
+  </nav>
+  <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" data-menu aria-label="Abrir menu">☰</button>
+    <span class="topbar-title">Código</span>
+  </div>
+
+  <div class="content">
+    <div class="eyebrow">04 · Implementação</div>
+    <h1>Código: cada arquivo, cada linha, cada campo</h1>
+    <p class="lead">Aqui está tudo o que vocês escreveram, com a explicação do porquê. Se você entende esta página,
+      nenhuma pergunta sobre "o que faz essa linha?" te derruba.</p>
+
+    <h2 id="mapa-arquivos">Mapa: nenhum arquivo do repositório fica de fora</h2>
+    <p>Esta é a cobertura completa do que existe no projeto. Se um arquivo não estivesse aqui, seria um ponto cego — não está.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Arquivo no repositório</th><th>Papel</th><th>Onde está explicado</th></tr></thead>
+        <tbody>
+          <tr><td><code>api/main.py</code></td><td>as quatro rotas da API</td><td>seção 1 + ciclo de vida e segurança</td></tr>
+          <tr><td><code>api/requirements.txt</code></td><td>versões fixas de FastAPI, uvicorn e psutil</td><td>seção 1.1</td></tr>
+          <tr><td><code>api/Dockerfile</code></td><td>imagem <code>process-api:latest</code></td><td>seção 3</td></tr>
+          <tr><td><code>nginx/Dockerfile</code></td><td>imagem <code>nginx-cron:latest</code> (nginx + crond)</td><td>seção 4</td></tr>
+          <tr><td><code>nginx/html/index.html</code></td><td>página que exibe o <code>cron.txt</code></td><td>seção 6</td></tr>
+          <tr><td><code>cron/Dockerfile</code></td><td>imagem <code>cron-daemon:latest</code></td><td>seção 5</td></tr>
+          <tr><td><code>k8s/namespace.yaml</code></td><td>namespace <code>daemon-lab</code></td><td>seção 7</td></tr>
+          <tr><td><code>k8s/api-deployment.yaml</code></td><td>2 réplicas, <code>hostPID</code>, recursos</td><td>seção 8</td></tr>
+          <tr><td><code>k8s/api-service.yaml</code></td><td>NodePort 30080</td><td>seção 9</td></tr>
+          <tr><td><code>k8s/nginx-deployment.yaml</code></td><td>2 réplicas do Nginx</td><td>seção 10</td></tr>
+          <tr><td><code>k8s/nginx-service.yaml</code></td><td>NodePort 30081</td><td>seção 11</td></tr>
+          <tr><td><code>k8s/cron-deployment.yaml</code></td><td>1 réplica do cron isolado</td><td>seção 12</td></tr>
+          <tr><td><code>k8s/hpa.yaml</code></td><td>2→10 réplicas por CPU a 50%</td><td>seção 13</td></tr>
+          <tr><td><code>docs/interfaces.md</code></td><td>contrato do grupo: nomes de imagem, portas, labels, namespace e rotas</td><td><a href="codigo.html#endpoints">Código §2</a> · <a href="arquitetura.html#decisoes">Arquitetura</a></td></tr>
+          <tr><td><code>docs/tarefas.md</code></td><td>divisão das quatro tarefas e responsáveis</td><td><a href="plano.html#entregaveis">Plano §Entregáveis</a></td></tr>
+          <tr><td><code>docs/guia-integracao.md</code></td><td>ordem de integração das partes e testes de fumaça</td><td><a href="pratica.html#apply">Prática §4</a></td></tr>
+          <tr><td><code>docs/guia-tarefa-1..4.md</code></td><td>roteiro de execução de cada etapa</td><td><a href="pratica.html">Prática</a> e <a href="plano.html">Plano</a></td></tr>
+          <tr><td><code>docs/evidencias/</code></td><td>prints, <code>descricao-prints.md</code> e <code>resultados.md</code> que provam cada tarefa</td><td><a href="evidencias.html">Evidências</a></td></tr>
+          <tr><td><code>docs/Edital.pdf</code></td><td>requisitos, prazos, pontuação e anexos obrigatórios</td><td><a href="plano.html#entregaveis">Entregáveis</a></td></tr>
+          <tr><td><code>README.md</code>, <code>docs/artigo.md</code>, <code>docs/slides.pdf</code>, roteiro</td><td>entregáveis da Tarefa 4 (ainda pendentes no repositório)</td><td><a href="plano.html#entregaveis">Plano §Entregáveis</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="mainpy">1. <code>api/main.py</code> — a API</h2>
+
+<pre><code><span class="k">from</span> fastapi <span class="k">import</span> FastAPI, HTTPException
+<span class="k">import</span> psutil
+<span class="k">import</span> subprocess
+
+app = <span class="f">FastAPI</span>(title=<span class="s">"Process Manager API"</span>)
+
+<span class="c"># ---------- LISTAR ----------</span>
+<span class="k">@app.get</span>(<span class="s">"/processes"</span>)
+<span class="k">def</span> <span class="f">list_processes</span>():
+    <span class="s">"""Lista todos os processos em execução"""</span>
+    processes = []
+    <span class="k">for</span> proc <span class="k">in</span> psutil.<span class="f">process_iter</span>([<span class="s">'pid'</span>, <span class="s">'name'</span>, <span class="s">'username'</span>, <span class="s">'status'</span>]):
+        <span class="k">try</span>:
+            processes.<span class="f">append</span>(proc.info)
+        <span class="k">except</span> (psutil.NoSuchProcess, psutil.AccessDenied):
+            <span class="k">pass</span>
+    <span class="k">return</span> {<span class="s">"total"</span>: <span class="f">len</span>(processes), <span class="s">"processes"</span>: processes}
+
+<span class="c"># ---------- INSPECIONAR ----------</span>
+<span class="k">@app.get</span>(<span class="s">"/processes/{pid}"</span>)
+<span class="k">def</span> <span class="f">inspect_process</span>(pid: <span class="k">int</span>):
+    <span class="s">"""Inspeciona um processo específico pelo PID"""</span>
+    <span class="k">try</span>:
+        proc = psutil.<span class="f">Process</span>(pid)
+        <span class="k">return</span> {
+            <span class="s">"pid"</span>: proc.pid,
+            <span class="s">"name"</span>: proc.<span class="f">name</span>(),
+            <span class="s">"status"</span>: proc.<span class="f">status</span>(),
+            <span class="s">"cpu_percent"</span>: proc.<span class="f">cpu_percent</span>(),
+            <span class="s">"memory_percent"</span>: proc.<span class="f">memory_percent</span>(),
+            <span class="s">"cmdline"</span>: proc.<span class="f">cmdline</span>(),
+            <span class="s">"username"</span>: proc.<span class="f">username</span>()
+        }
+    <span class="k">except</span> psutil.NoSuchProcess:
+        <span class="k">raise</span> <span class="f">HTTPException</span>(status_code=<span class="n">404</span>, detail=<span class="s">f"Processo {pid} não encontrado"</span>)
+    <span class="k">except</span> psutil.AccessDenied:
+        <span class="k">raise</span> <span class="f">HTTPException</span>(status_code=<span class="n">403</span>, detail=<span class="s">"Acesso negado ao processo"</span>)
+
+<span class="c"># ---------- INICIAR ----------</span>
+<span class="k">@app.post</span>(<span class="s">"/processes/start"</span>)
+<span class="k">def</span> <span class="f">start_process</span>(command: <span class="k">str</span>):
+    <span class="s">"""Inicia um novo processo"""</span>
+    <span class="k">try</span>:
+        proc = subprocess.<span class="f">Popen</span>(command.<span class="f">split</span>())
+        <span class="k">return</span> {<span class="s">"pid"</span>: proc.pid, <span class="s">"status"</span>: <span class="s">"iniciado"</span>, <span class="s">"command"</span>: command}
+    <span class="k">except</span> Exception <span class="k">as</span> e:
+        <span class="k">raise</span> <span class="f">HTTPException</span>(status_code=<span class="n">500</span>, detail=<span class="f">str</span>(e))
+
+<span class="c"># ---------- ENCERRAR ----------</span>
+<span class="k">@app.delete</span>(<span class="s">"/processes/{pid}"</span>)
+<span class="k">def</span> <span class="f">terminate_process</span>(pid: <span class="k">int</span>, force: <span class="k">bool</span> = <span class="k">False</span>):
+    <span class="s">"""Encerra um processo pelo PID"""</span>
+    <span class="k">try</span>:
+        proc = psutil.<span class="f">Process</span>(pid)
+        <span class="k">if</span> force:
+            proc.<span class="f">kill</span>()
+        <span class="k">else</span>:
+            proc.<span class="f">terminate</span>()
+        <span class="k">return</span> {<span class="s">"pid"</span>: pid, <span class="s">"status"</span>: <span class="s">"encerrado"</span>, <span class="s">"force"</span>: force}
+    <span class="k">except</span> psutil.NoSuchProcess:
+        <span class="k">raise</span> <span class="f">HTTPException</span>(status_code=<span class="n">404</span>, detail=<span class="s">f"Processo {pid} não encontrado"</span>)
+    <span class="k">except</span> psutil.AccessDenied:
+        <span class="k">raise</span> <span class="f">HTTPException</span>(status_code=<span class="n">403</span>, detail=<span class="s">"Acesso negado"</span>)</code></pre>
+
+    <h3>Decisões dentro do código</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Linha / escolha</th><th>Por que está assim</th></tr></thead>
+        <tbody>
+          <tr><td><code>process_iter(['pid','name',...])</code></td><td>passar os campos evita coletar tudo de todos os processos — é otimização, não estilo</td></tr>
+          <tr><td><code>try/except</code> dentro do <code>for</code></td><td>protege contra processo que morre durante a coleta — na prática o <code>process_iter</code> já ignora esses casos, então é defesa em profundidade</td></tr>
+          <tr><td><code>pid: int</code></td><td>o FastAPI valida e converte; <code>/processes/abc</code> devolve 422 automaticamente</td></tr>
+          <tr><td><code>HTTPException 404/403</code></td><td>traduz a exceção do psutil para semântica HTTP correta</td></tr>
+          <tr><td><code>subprocess.Popen(command.split())</code></td><td>não bloqueia a requisição e devolve PID; <strong>sem <code>shell=True</code></strong>, logo sem injeção de shell</td></tr>
+          <tr><td><code>force: bool = False</code></td><td>query param opcional → <code>?force=true</code> escolhe SIGKILL</td></tr>
+          <tr><td>Sem <code>start_new_session</code></td><td>não é necessário em container (sem terminal); é a evolução natural, não um defeito</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="ct">Três detalhes que podem virar pergunta</div>
+      <p><strong>1. <code>command.split()</code> não entende aspas:</strong> <code>sh -c "sleep 60"</code> vira quatro argumentos com as aspas
+         literais. O correto seria <code>shlex.split(command)</code>.</p>
+      <p><strong>2. <code>cpu_percent()</code> sem intervalo devolve <code>0.0</code></strong> na primeira chamada, porque precisa de duas amostras
+         de tempo de CPU.</p>
+      <p><strong>3. O <code>try/except</code> da listagem está em volta do <code>append</code></strong>, que não levanta exceção. O <code>process_iter</code>
+         com <code>attrs</code> já descarta internamente processos que morrem no meio. Funciona, mas é redundante — e é uma ótima resposta
+         para "o que você melhoraria?": mover a proteção para o ponto certo ou removê-la.</p>
+      <p>Nenhum dos três afeta o que o edital pede. Saber apontá-los mostra leitura crítica do próprio código.</p>
+    </div>
+
+    <h3 id="requirements">1.1 <code>api/requirements.txt</code> — por que as versões são fixas</h3>
+<pre><code>fastapi==0.104.1
+uvicorn==0.24.0
+psutil==5.9.6</code></pre>
+
+    <p>O <code>==</code> não é detalhe de estilo: é <strong>reprodutibilidade</strong>. Sem ele, um <code>pip install</code> feito meses depois
+      poderia trazer uma versão nova com mudança de comportamento, e o build passaria a gerar uma imagem diferente a partir do mesmo código.
+      A banca pode perguntar "por que não usar a última versão?" — a resposta é que o projeto precisa ser reproduzível na máquina de qualquer
+      integrante e no dia da apresentação, não que a versão seja a mais nova.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Pacote</th><th>Versão</th><th>Para que serve</th><th>O que aconteceria sem ele</th></tr></thead>
+        <tbody>
+          <tr><td><code>fastapi</code></td><td>0.104.1</td><td>rotas, validação por type hints e OpenAPI/Swagger</td><td>a API não sobe</td></tr>
+          <tr><td><code>uvicorn</code></td><td>0.24.0</td><td>servidor ASGI que escuta a porta 8000</td><td>não há quem receba a conexão HTTP</td></tr>
+          <tr><td><code>psutil</code></td><td>5.9.6</td><td>leitura de <code>/proc</code> e envio de sinais</td><td>as rotas de processos não funcionam</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>O <code>--no-cache-dir</code> no Dockerfile é complementar: ele evita guardar o cache do pip dentro da imagem final. E a ordem
+      <code>COPY requirements.txt</code> → <code>RUN pip install</code> → <code>COPY main.py</code> faz o cache de camadas funcionar: mudar o código
+      não reinstala as dependências.</p>
+
+    <h3 id="ciclo-processo">1.2 O ciclo de vida de um processo criado pela API</h3>
+
+    <p>Quando alguém chama <code>POST /processes/start?command=sleep%2060</code>, o FastAPI executa <code>subprocess.Popen(["sleep", "60"])</code>.
+      O que acontece no kernel, em ordem:</p>
+
+    <ol>
+      <li>O Python faz <code>fork()</code>: nasce um processo filho com o mesmo espaço de endereçamento, mas cópia separada.</li>
+      <li>O filho faz <code>execve()</code> e passa a executar <code>/usr/bin/sleep</code> — agora é outro programa, com o mesmo PID.</li>
+      <li>O pai (uvicorn) <strong>não espera</strong>: <code>Popen</code> retorna imediatamente com <code>proc.pid</code>. É por isso que a rota responde
+          em milissegundos, mesmo que o comando dure uma hora.</li>
+      <li>Quando o filho termina, ele vira <strong>zumbi</strong> até alguém ler o código de saída com <code>wait()</code>/<code>waitpid()</code>.</li>
+    </ol>
+
+    <p>Aqui entra a nuance que quase ninguém sabe: o módulo <code>subprocess</code> do Python faz uma <strong>colheita preguiçosa</strong>. A cada novo
+      <code>Popen</code>, ele chama <code>_cleanup()</code> e faz <code>poll()</code> nos processos ativos; no <code>__del__</code> do objeto ele também
+      verifica. Então os zumbis deste projeto <strong>não se acumulam sem limite</strong> — mas também não são colhidos no instante em que morrem.
+      Se o processo demora a terminar e nenhum outro <code>Popen</code> acontece, ele pode ficar zumbi por um tempo. A resposta madura é:
+      <em>"funciona para o escopo, mas o correto seria um <code>wait()</code> explícito em uma thread ou um reaper, porque a API não pode depender
+      de um efeito colateral do módulo."</em></p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Detalhe do <code>Popen</code></th><th>Consequência real</th><th>Como explicar</th></tr></thead>
+        <tbody>
+          <tr><td>Sem <code>stdout=PIPE</code></td><td>a saída do filho vai para o <code>stdout</code> do uvicorn e aparece em <code>kubectl logs</code></td><td>"herda os descritores do pai; não capturei porque a API só devolve o PID"</td></tr>
+          <tr><td>Sem <code>wait()</code></td><td>a rota não confirma que o comando terminou; só que foi criado</td><td>"o contrato é iniciar e devolver o PID, não executar sincronamente"</td></tr>
+          <tr><td>Sem <code>start_new_session=True</code></td><td>o filho fica no mesmo grupo de processos do uvicorn</td><td>"em container não há terminal; se o grupo receber SIGTERM, o filho também recebe"</td></tr>
+          <tr><td><code>command.split()</code></td><td>não respeita aspas nem espaços escapados</td><td>"o correto seria <code>shlex.split()</code>; sem <code>shell=True</code> não há injeção por <code>;</code> ou <code>|</code>, mas ainda dá para chamar <code>sh -c</code> — por isso a allowlist é necessária"</td></tr>
+          <tr><td>Parâmetro <code>command: str</code></td><td>vira <em>query param</em>, não JSON body</td><td>"<code>POST /processes/start?command=...</code>; para body seria preciso um modelo Pydantic"</td></tr>
+          <tr><td>Comando inexistente</td><td><code>FileNotFoundError</code> → <code>HTTPException 500</code></td><td>"o 500 é genérico; o ideal seria 400/422 com a causa"</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="seguranca-api">1.3 A parte que a banca vai apertar: segurança da API</h3>
+
+    <p>A API foi feita para demonstrar controle de processos, não para produção. O código não tem autenticação, não valida o comando e aceita
+      qualquer PID no <code>DELETE</code>. Com <code>hostPID: true</code>, isso significa que qualquer pessoa que alcance o NodePort 30080 pode
+      listar os processos do nó e tentar encerrar <strong>qualquer</strong> um — inclusive o kubelet, o etcd ou o próprio uvicorn.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Risco</th><th>Por que existe no código</th><th>Mitigação</th></tr></thead>
+        <tbody>
+          <tr><td>Sem autenticação</td><td>nenhum <em>dependency</em> de token/mTLS</td><td>token Bearer, mTLS ou OAuth2; <code>ClusterIP</code> + <code>port-forward</code></td></tr>
+          <tr><td><code>DELETE</code> em qualquer PID</td><td><code>psutil.Process(pid)</code> não tem allowlist</td><td>recusar PID 1, PIDs do control plane e do próprio processo; lista de alvos permitidos</td></tr>
+          <tr><td><code>POST</code> com comando arbitrário</td><td><code>Popen(command.split())</code> executa o que vier — inclusive <code>sh -c</code></td><td>allowlist de binários e argumentos; sem <code>shell=True</code> (já está correto, mas não basta sozinho)</td></tr>
+          <tr><td>NodePort exposto</td><td><code>type: NodePort</code> abre a porta no nó</td><td><code>ClusterIP</code> + <code>kubectl port-forward</code> ou Ingress com auth</td></tr>
+          <tr><td>Root + <code>CAP_KILL</code></td><td>imagem não define <code>securityContext</code></td><td><code>runAsNonRoot</code> + capability mínima, ou isolamento em namespace privilegiado documentado</td></tr>
+          <tr><td>Sem auditoria</td><td>a API não registra quem chamou</td><td>log estruturado com identidade, IP e comando; <em>audit policy</em> no cluster</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout danger">
+      <div class="ct">A resposta que ganha ponto</div>
+      <p>"O escopo pedia listar, inspecionar, iniciar e encerrar processos, e foi isso que implementamos. Para produção, a API não poderia
+         ficar com <code>NodePort</code> e sem autenticação: eu trocaria por <code>ClusterIP</code> + <code>port-forward</code>, exigiria token,
+         colocaria uma allowlist de PIDs e comandos, rodaria com o mínimo de capabilities e registraria auditoria. O <code>hostPID</code> continuaria
+         sendo o risco central — ele é necessário para ver o <code>/proc</code> do nó, mas exige isolamento e controle de quem pode aplicar o
+         Deployment."</p>
+    </div>
+
+    <h2 id="endpoints">2. A API em uma tabela</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Método</th><th>Rota</th><th>Parâmetro</th><th>O que faz</th><th>Requisito do edital</th></tr></thead>
+        <tbody>
+          <tr><td><code>GET</code></td><td><code>/processes</code></td><td>—</td><td>lista todos os processos com pid, nome, dono e estado</td><td>listar processos</td></tr>
+          <tr><td><code>GET</code></td><td><code>/processes/{pid}</code></td><td><code>pid: int</code></td><td>detalha um processo (cpu, memória, cmdline)</td><td>inspecionar por PID</td></tr>
+          <tr><td><code>POST</code></td><td><code>/processes/start</code></td><td><code>command: str</code></td><td>executa um comando e devolve o PID</td><td>iniciar processo</td></tr>
+          <tr><td><code>DELETE</code></td><td><code>/processes/{pid}</code></td><td><code>pid</code>, <code>force</code></td><td>SIGTERM ou SIGKILL</td><td>encerrar processo</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Além das quatro rotas do edital, o FastAPI gera automaticamente <code>/docs</code> (Swagger UI) e <code>/openapi.json</code> (o contrato).
+      Isso não é enfeite: é a documentação da API que a banca pode abrir no navegador, e é uma vantagem concreta sobre escrever Flask na mão.
+      Os códigos de resposta também são semânticos: <code>200</code> sucesso, <code>404</code> PID inexistente, <code>403</code> permissão negada,
+      <code>422</code> tipo inválido (ex.: <code>/processes/abc</code>) e <code>500</code> falha ao iniciar o comando.</p>
+
+    <h2 id="dockerfile-api">3. <code>api/Dockerfile</code></h2>
+<pre><code><span class="k">FROM</span> python:3.11-slim
+<span class="k">WORKDIR</span> /app
+<span class="k">COPY</span> requirements.txt .
+<span class="k">RUN</span> pip install --no-cache-dir -r requirements.txt
+<span class="k">COPY</span> main.py .
+<span class="k">EXPOSE</span> 8000
+<span class="k">CMD</span> ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]</code></pre>
+
+    <ul>
+      <li><strong><code>python:3.11-slim</code></strong> — imagem oficial enxuta (~120 MB contra ~1 GB da completa). Não tem compilador, mas não precisamos.</li>
+      <li><strong>Ordem <code>requirements</code> antes de <code>main.py</code></strong> — o cache de camadas só invalida o <code>pip install</code> se as dependências mudarem.</li>
+      <li><strong><code>--no-cache-dir</code></strong> — não guarda o cache do pip na imagem; economiza espaço.</li>
+      <li><strong><code>--host 0.0.0.0</code></strong> — sem isso o uvicorn escuta só em <code>127.0.0.1</code> <em>dentro</em> do container, e o Service nunca alcança. É o erro clássico de "funciona local, não funciona no Pod".</li>
+      <li><strong><code>CMD</code> em forma de lista (exec form)</strong> — o processo vira PID 1 direto, sem shell no meio, e recebe sinais corretamente.</li>
+    </ul>
+
+    <h2 id="dockerfile-nginx">4. <code>nginx/Dockerfile</code> — dois daemons em um container</h2>
+<pre><code><span class="k">FROM</span> nginx:alpine
+
+<span class="k">RUN</span> echo '#!/bin/sh' &gt; /entrypoint.sh &amp;&amp; \
+    echo 'busybox crond -b -l 8 -c /etc/crontabs' &gt;&gt; /entrypoint.sh &amp;&amp; \
+    echo 'nginx -g "daemon off;"' &gt;&gt; /entrypoint.sh &amp;&amp; \
+    chmod +x /entrypoint.sh
+
+<span class="k">RUN</span> echo "* * * * * date &gt;&gt; /usr/share/nginx/html/cron.txt" &gt; /etc/crontabs/root
+
+<span class="k">COPY</span> html /usr/share/nginx/html
+
+<span class="k">CMD</span> ["/entrypoint.sh"]</code></pre>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Parte</th><th>O que faz</th></tr></thead>
+        <tbody>
+          <tr><td><code>nginx:alpine</code></td><td>base com nginx e busybox (que inclui o <code>crond</code>)</td></tr>
+          <tr><td><code>echo '...' &gt; /entrypoint.sh</code></td><td>gera um script de inicialização de 2 linhas durante o build</td></tr>
+          <tr><td><code>crond -b -l 8</code></td><td><code>-b</code> = background (roda junto com o nginx), <code>-l 8</code> = nível de log</td></tr>
+          <tr><td><code>nginx -g "daemon off;"</code></td><td>mantém o nginx em foreground para o container não morrer</td></tr>
+          <tr><td><code>/etc/crontabs/root</code></td><td>o crontab do busybox; <code>* * * * *</code> = a cada minuto</td></tr>
+          <tr><td><code>date &gt;&gt; .../cron.txt</code></td><td>acrescenta a data ao arquivo que o site mostra no iframe</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <div class="ct">Por que dois daemons no mesmo container?</div>
+      <p>Porque a página do Nginx precisa mostrar o log gerado pelo cron no mesmo filesystem. Como o arquivo está no mesmo sistema de arquivos,
+         os dois processos ficam juntos. O <strong>terceiro container</strong> (<code>cron-daemon</code>) existe justamente para provar o
+         agendador isolado. Se perguntarem "não é antipadrão?", a resposta honesta é: <em>é, para produção — o correto seria um
+         sidecar ou um volume compartilhado; aqui foi uma escolha de demonstração.</em></p>
+    </div>
+
+    <h2 id="dockerfile-cron">5. <code>cron/Dockerfile</code></h2>
+<pre><code><span class="k">FROM</span> alpine:latest
+
+<span class="k">RUN</span> echo "* * * * * date &gt;&gt; /var/log/cron-task.log" &gt; /etc/crontabs/root
+
+<span class="k">CMD</span> ["busybox", "crond", "-f", "-l", "8", "-c", "/etc/crontabs"]</code></pre>
+
+    <p>Diferença essencial em relação ao anterior: <code>crond -f</code> (foreground). Aqui o cron é o <strong>único</strong> processo,
+      então ele precisa ficar em primeiro plano — se fosse <code>-b</code>, o container terminaria imediatamente.</p>
+
+    <h2 id="html">6. <code>nginx/html/index.html</code></h2>
+    <p>Trecho essencial (o arquivo real também tem <code>&lt;style&gt;</code> com o CSS embutido da página):</p>
+<pre><code>&lt;h1&gt;Projeto A3 - Tema 1&lt;/h1&gt;
+&lt;h2&gt;Nginx + Cron Daemon&lt;/h2&gt;
+&lt;p&gt;Status: &lt;strong&gt;Servidor Nginx rodando!&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Log do Cron em tempo real (atualiza a cada minuto):&lt;/p&gt;
+
+&lt;iframe src="cron.txt" title="Log do Cron"&gt;&lt;/iframe&gt;</code></pre>
+
+    <p>O <code>iframe</code> aponta para <code>cron.txt</code>, que está no mesmo diretório servido pelo Nginx. A cada minuto o crond
+      acrescenta uma linha ao arquivo. É a prova visual de que <strong>dois daemons estão funcionando dentro do mesmo container</strong>.</p>
+
+    <div class="callout warn">
+      <div class="ct">“Atualiza em tempo real” é meia verdade</div>
+      <p>O <strong>arquivo</strong> é atualizado a cada minuto, mas o <code>iframe</code> carrega o <code>cron.txt</code> <strong>uma vez</strong> e
+         não fica consultando o servidor. Para ver a linha nova, é preciso recarregar a página (ou adicionar
+         <code>&lt;meta http-equiv="refresh" content="60"&gt;</code>, ou um <code>fetch</code> periódico com JavaScript). O print mostra
+         várias linhas porque a página foi recarregada depois de alguns minutos — não porque o iframe se atualiza sozinho. Se a banca
+         perguntar “isso é tempo real mesmo?”, a resposta honesta é essa, e a melhoria é trivial.</p>
+    </div>
+
+    <h2 id="yaml-namespace">7. <code>k8s/namespace.yaml</code></h2>
+<pre><code>apiVersion: v1
+kind: Namespace
+metadata:
+  name: daemon-lab</code></pre>
+    <p>Cria o namespace lógico. Aplicado primeiro porque todos os outros o referenciam.</p>
+
+    <h2 id="yaml-api-deploy">8. <code>k8s/api-deployment.yaml</code></h2>
+<pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+  namespace: daemon-lab
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: process-api
+  template:
+    metadata:
+      labels:
+        app: process-api
+    spec:
+      hostPID: true
+      containers:
+      - name: api
+        image: process-api:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            cpu: "100m"
+          limits:
+            cpu: "500m"</code></pre>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Campo</th><th>Valor</th><th>Por que</th></tr></thead>
+        <tbody>
+          <tr><td><code>replicas</code></td><td>2</td><td>permitir self-healing sem tirar o serviço do ar</td></tr>
+          <tr><td><code>selector.matchLabels</code></td><td><code>app: process-api</code></td><td>o ReplicaSet só gerencia Pods com esse label</td></tr>
+          <tr><td><code>template.metadata.labels</code></td><td><code>app: process-api</code></td><td>tem que ser <strong>igual</strong> ao selector e ao do Service</td></tr>
+          <tr><td><code>hostPID</code></td><td><code>true</code></td><td>a API precisa ver os processos do nó</td></tr>
+          <tr><td><code>imagePullPolicy</code></td><td><code>Never</code></td><td>a imagem foi carregada localmente, não existe em registry</td></tr>
+          <tr><td><code>requests.cpu</code></td><td><code>100m</code></td><td>base do cálculo percentual do HPA</td></tr>
+          <tr><td><code>limits.cpu</code></td><td><code>500m</code></td><td>teto para um Pod não consumir o nó inteiro</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><code>100m</code> significa 0,1 CPU (100 milicores) — 10% de um núcleo. Como só há limite de CPU, o Pod da API é classe QoS
+      <strong>Burstable</strong>. Os Deployments do Nginx e do cron <strong>não declaram <code>resources</code></strong>, então seus Pods são
+      <strong>BestEffort</strong> — detalhe que a banca pode cobrar e que quase todo grupo esquece.</p>
+
+    <div class="callout warn">
+      <div class="ct">O que dispara um novo ReplicaSet (e o que não dispara)</div>
+      <p>Alterar <code>replicas</code> <strong>não</strong> cria ReplicaSet novo: o mesmo RS é escalado. O que cria um RS novo é mudar o
+         <strong>Pod template</strong> — imagem, variável de ambiente, recurso, label do template. Aí o Deployment faz rolling update e mantém
+         o RS antigo para rollback. E há uma armadilha específica deste projeto: como a tag é sempre <code>:latest</code> e a política é
+         <code>Never</code>, rebuildar a imagem <strong>não muda o template</strong> e não dispara rollout; o Pod continua rodando a imagem antiga.
+         Para atualizar de fato, use uma tag nova ou <code>kubectl rollout restart deployment/api-deployment -n daemon-lab</code>, que injeta
+         uma anotação no template e força a recriação.</p>
+    </div>
+
+    <p>O <code>selector</code> é <strong>imutável</strong> depois que o Deployment existe: mudar <code>app: process-api</code> para outro valor
+      faz o <code>apply</code> falhar com “field is immutable”. A saída é criar outro Deployment e apagar o antigo — motivo pelo qual o label
+      foi definido em contrato antes de escrever o YAML.</p>
+
+    <h2 id="yaml-api-svc">9. <code>k8s/api-service.yaml</code></h2>
+<pre><code>apiVersion: v1
+kind: Service
+metadata:
+  name: api-service
+  namespace: daemon-lab
+spec:
+  type: NodePort
+  selector:
+    app: process-api
+  ports:
+  - port: 8000
+    targetPort: 8000
+    nodePort: 30080</code></pre>
+
+    <p><code>port</code> é a porta do Service; <code>targetPort</code> é a porta do container; <code>nodePort</code> é a porta aberta no nó.
+      Os três podem ser diferentes — aqui são iguais por simplicidade (exceto o nodePort).</p>
+
+    <h2 id="yaml-nginx-deploy">10. <code>k8s/nginx-deployment.yaml</code></h2>
+<pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: daemon-lab
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx-cron:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80</code></pre>
+
+    <h2 id="yaml-nginx-svc">11. <code>k8s/nginx-service.yaml</code></h2>
+<pre><code>apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: daemon-lab
+spec:
+  type: NodePort
+  selector:
+    app: nginx
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30081</code></pre>
+
+    <p>Foi adicionado depois, para que o site do Nginx também fosse acessível <em>de dentro do cluster</em> — antes, ele só tinha
+      sido demonstrado via Docker. Com 2 réplicas, cada Pod tem seu próprio <code>cron.txt</code>, então o log pode variar a cada
+      requisição, dependendo de qual Pod o Service escolher.</p>
+
+    <h2 id="yaml-cron">12. <code>k8s/cron-deployment.yaml</code></h2>
+<pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cron-deployment
+  namespace: daemon-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cron
+  template:
+    metadata:
+      labels:
+        app: cron
+    spec:
+      containers:
+      - name: cron
+        image: cron-daemon:latest
+        imagePullPolicy: Never</code></pre>
+
+    <p>Sem <code>ports</code>: o cron não escuta nada, só executa. E <code>replicas: 1</code> porque duas instâncias executariam a mesma
+      tarefa agendada em duplicidade.</p>
+
+    <h2 id="yaml-hpa">13. <code>k8s/hpa.yaml</code></h2>
+<pre><code>apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-hpa
+  namespace: daemon-lab
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-deployment
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50</code></pre>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Campo</th><th>Por que esse valor</th></tr></thead>
+        <tbody>
+          <tr><td><code>scaleTargetRef</code></td><td>aponta para o Deployment da API (não para o ReplicaSet: o Deployment é o objeto estável)</td></tr>
+          <tr><td><code>minReplicas: 2</code></td><td>nunca fica abaixo de 2 — o serviço continua disponível</td></tr>
+          <tr><td><code>maxReplicas: 10</code></td><td>teto para não esgotar o nó de 1 máquina</td></tr>
+          <tr><td><code>averageUtilization: 50</code></td><td>média de 50% do request (50m) por Pod; abaixo disso, reduz</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <div class="ct">A pergunta que sempre vem</div>
+      <p>"Por que 50% e não 80%?" — Porque 50% dá margem para o pico antes de o Pod saturar; com 80%, o Pod já estaria quase
+         no limite quando o HPA decidisse agir. E porque o alvo é percentual do <em>request</em>, não do <em>limit</em>.</p>
+    </div>
+
+    <h2 id="yaml-faltando">14. O que os YAMLs <em>não</em> têm — e o que você responderia</h2>
+
+    <p>Estes arquivos atendem ao edital, mas não estão prontos para produção. Saber exatamente o que falta — e o efeito de cada ausência —
+      é o que separa "funciona na demo" de "entendi Kubernetes". A tabela abaixo é a sua resposta para "o que você melhoraria?".</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Ausente</th><th>Consequência hoje</th><th>Como ficaria</th></tr></thead>
+        <tbody>
+          <tr><td><code>readinessProbe</code></td><td>o Service manda tráfego para um Pod que acabou de subir e ainda não responde</td><td>rota <code>/health</code> + <code>httpGet</code>; sem readiness, o endpoint entra nos <em>endpoints</em> assim que o container inicia</td></tr>
+          <tr><td><code>livenessProbe</code></td><td>uvicorn travado só é reiniciado se o processo morrer; se ele trava sem morrer, o Pod fica "vivo" e inútil</td><td><code>httpGet /health</code> com <code>failureThreshold</code>; o kubelet reinicia o container</td></tr>
+          <tr><td><code>securityContext</code></td><td>roda como root com as capabilities padrão, incluindo <code>CAP_KILL</code></td><td><code>runAsNonRoot</code>, <code>allowPrivilegeEscalation: false</code>, <code>drop: [ALL]</code> e só <code>KILL</code> se necessário</td></tr>
+          <tr><td><code>resources</code> no Nginx e no cron</td><td>QoS <code>BestEffort</code>: primeiros candidatos a despejo sob pressão</td><td><code>requests</code>/<code>limits</code> modestos (ex.: 50m/100m e 32Mi/64Mi)</td></tr>
+          <tr><td>Volume</td><td><code>cron.txt</code> e <code>cron-task.log</code> morrem no restart; réplicas divergem</td><td><code>emptyDir</code> para restart; PVC <code>ReadWriteMany</code> para compartilhar entre réplicas</td></tr>
+          <tr><td><code>PodDisruptionBudget</code></td><td>um drain do nó pode derrubar as duas réplicas da API ao mesmo tempo</td><td><code>minAvailable: 1</code> com selector <code>app: process-api</code></td></tr>
+          <tr><td><code>NetworkPolicy</code></td><td>qualquer Pod do cluster alcança a API e o Nginx</td><td>permitir só o namespace/ingress de confiança na porta 8000</td></tr>
+          <tr><td><code>strategy</code> explícita</td><td>usa o padrão <code>RollingUpdate</code> 25%/25%; funciona, mas não foi decidido</td><td>declarar <code>maxSurge</code>/<code>maxUnavailable</code> conforme o risco aceito</td></tr>
+          <tr><td><code>terminationGracePeriodSeconds</code></td><td>padrão de 30 s; o uvicorn já trata SIGTERM e faz <em>shutdown</em> gracioso, mas o campo não foi escolhido</td><td>valor coerente com o tempo máximo de resposta; se houver tarefa em background, um <em>handler</em> de shutdown para drená-la</td></tr>
+          <tr><td><code>replicas</code> × HPA</td><td>reaplicar o Deployment volta para 2 e briga com o HPA, que reescala</td><td>remover <code>replicas</code> do manifesto gerido ou usar GitOps que preserve o campo</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Exemplo de readiness/liveness que faria sentido — <strong>desde que exista a rota</strong> <code>/health</code> (não basta declarar a probe;
+      apontar para <code>/processes</code> seria caro, porque ela itera 83 processos a cada verificação):</p>
+
+<pre><code>readinessProbe:
+  httpGet:
+    path: /health
+    port: 8000
+  initialDelaySeconds: 3
+  periodSeconds: 5
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 8000
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 3</code></pre>
+
+    <p>E o volume do Nginx tem uma armadilha que quase ninguém percebe: montar um <code>emptyDir</code> em <code>/usr/share/nginx/html</code>
+      <strong>esconde o <code>index.html</code> que veio na imagem</strong>, porque o volume sobrepõe o diretório. A correção é usar um
+      <code>initContainer</code> que copie o HTML para o volume, ou montar o volume em um subdiretório e ajustar o <code>root</code> do Nginx
+      para servir dali. Se você disser "só montar um emptyDir ali", a banca pode pedir para você abrir a página — e ela vai dar 404.</p>
+
+    <div class="callout warn">
+      <div class="ct">A resposta de 30 segundos para "o que falta?"</div>
+      <p>"Faltam probes, <code>securityContext</code>, recursos no Nginx e no cron, volume para os logs, PDB e NetworkPolicy. Nenhum era
+         exigido pelo edital, mas eu sei o efeito de cada um: sem readiness o Service manda tráfego cedo; sem liveness um uvicorn travado
+         não reinicia; sem recursos o Nginx é BestEffort; sem volume o log morre; sem PDB um drain derruba as duas réplicas; sem NetworkPolicy
+         todo Pod alcança a API."</p>
+    </div>
+
+    <div class="footer">
+      <span>Base de estudos local · A3 · Tema 1</span>
+      <span><a href="evidencias.html">Próximo: Evidências →</a></span>
+    </div>
+  </div>
+</div>
+
+<script src="assets/search-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

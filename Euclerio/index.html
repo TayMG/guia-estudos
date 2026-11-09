@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("a3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Início · Base de Estudos A3 — Tema 1</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">A3</div>
+    <div class="brand-text"><strong>Base de Estudos</strong><span>Tema 1 · Kubernetes + API</span></div>
+  </div>
+  <div class="study-switch" aria-label="Trocar de estudo">
+    <a href="../Euclerio/index.html" class="active">Euclerio</a>
+    <a href="../Sergio/index.html">Sergio</a>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
+    <div class="search-results"></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Comece aqui</div>
+    <a href="index.html"><span class="n">00</span> Início</a>
+    <div class="nav-label">Fundamentos</div>
+    <a href="teoria.html"><span class="n">01</span> Teoria</a>
+    <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
+    <div class="nav-label">O trabalho</div>
+    <a href="pratica.html"><span class="n">03</span> Prática</a>
+    <a href="codigo.html"><span class="n">04</span> Código</a>
+    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <div class="nav-label">Treino</div>
+    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">07</span> Quiz</a>
+    <a href="plano.html"><span class="n">08</span> Plano</a>
+    <a href="banca.html"><span class="n">09</span> Banca</a>
+  </nav>
+  <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" data-menu aria-label="Abrir menu">☰</button>
+    <span class="topbar-title">Base de Estudos · A3 Tema 1</span>
+  </div>
+
+  <div class="content">
+    <div class="hero">
+      <div class="eyebrow">Organização de Computadores e Sistemas Operacionais</div>
+      <h1>Orquestração de daemons com Kubernetes<br>e API de gerenciamento de processos</h1>
+      <p>Tudo o que você precisa saber para defender este trabalho: a teoria por trás de cada peça,
+         o porquê de cada decisão, o código linha a linha, as evidências e as perguntas que a banca vai fazer.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="ct">Como usar este site</div>
+      <p>Leia <a href="teoria.html">Teoria</a> e <a href="arquitetura.html">Arquitetura</a> para entender o <em>porquê</em>.
+         Leia <a href="codigo.html">Código</a> e <a href="pratica.html">Prática</a> para saber o <em>como</em>.
+         Depois treine em <a href="perguntas.html">Perguntas</a> e <a href="quiz.html">Quiz</a> até acertar sem pensar.
+         Use <a href="plano.html">Plano</a> para o cronograma e o roteiro dos 20 minutos.
+         A busca no topo da barra lateral aceita <span class="kbd">/</span> como atalho.</p>
+    </div>
+
+    <div class="callout warn">
+      <div class="ct">Se o básico já está sólido</div>
+      <p>A banca deste professor costuma ir além de “o que é container”. Vá para <a href="banca.html"><strong>Banca difícil</strong></a>:
+         lá estão as perguntas de mecanismo, número e contrafactual — por que o HPA subiu em degraus, o que muda sem <code>hostPID</code>,
+         quem é o PID 1 do Nginx, o que acontece se o crond morrer e como responder quando ele sair do escopo.</p>
+    </div>
+
+    <h2 id="mapa">O projeto em 30 segundos</h2>
+    <p class="lead">Três daemons diferentes, cada um em sua imagem, todos orquestrados por Kubernetes, com uma API em Python
+      que enxerga e controla os processos do sistema operacional.</p>
+
+    <div class="diagram">
+      <div class="diagram-title">Visão geral</div>
+      <div class="flow">
+        <div class="node acc2"><strong>Nginx + Cron</strong><small>nginx:alpine + busybox crond<br>serve a página e escreve <code>cron.txt</code> a cada minuto</small></div>
+        <div class="node acc"><strong>Process Manager API</strong><small>Python 3.11 + FastAPI + psutil<br>lista, inspeciona, inicia e encerra processos</small></div>
+        <div class="node acc2"><strong>Cron separado</strong><small>alpine + busybox crond<br>agendador isolado, escreve em <code>cron-task.log</code></small></div>
+      </div>
+      <div class="arrow" style="text-align:center;padding:10px 0">↓ orquestrados por ↓</div>
+      <div class="flow">
+        <div class="node"><strong>Deployment nginx</strong><small>2 réplicas</small></div>
+        <div class="node"><strong>Deployment api</strong><small>2 réplicas + HPA 2→10</small></div>
+        <div class="node"><strong>Deployment cron</strong><small>1 réplica</small></div>
+      </div>
+      <div class="arrow" style="text-align:center;padding:10px 0">↓ expostos por ↓</div>
+      <div class="flow">
+        <div class="node"><strong>nginx-service</strong><small>NodePort 30081</small></div>
+        <div class="node"><strong>api-service</strong><small>NodePort 30080</small></div>
+        <div class="node"><strong>namespace daemon-lab</strong><small>tudo isolado aqui</small></div>
+      </div>
+    </div>
+
+    <p>O que o trabalho demonstra, em uma frase: <strong>containers isolam processos; o Kubernetes mantém o estado desejado
+      (recriando o que cai e escalando o que enche); e a API prova que, ao compartilhar o namespace de PID do nó
+      (<code>hostPID: true</code>), um processo dentro de um container pode observar e controlar os processos do sistema operacional.</strong></p>
+
+    <h2 id="recursos">Cada recurso usado — o que é, por que está aqui e onde estudar</h2>
+    <p>Nenhum recurso é “citado de passagem”: cada um tem definição, papel no projeto, o código ou YAML correspondente e o
+      comando para reproduzir. Esta tabela é o índice dessa cobertura.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Recurso</th><th>Papel no projeto</th><th>Onde está explicado</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Python 3.11</strong></td><td>linguagem e runtime da API</td><td><a href="codigo.html#requirements">Código §1.1</a> · <a href="pratica.html#pre">Prática §1</a></td></tr>
+          <tr><td><strong>FastAPI</strong></td><td>framework das quatro rotas, validação e Swagger</td><td><a href="teoria.html#fastapi">Teoria §22</a> · <a href="codigo.html#mainpy">Código §1</a></td></tr>
+          <tr><td><strong>Uvicorn</strong></td><td>servidor ASGI que escuta a porta 8000</td><td><a href="teoria.html#fastapi">Teoria §22</a> · <a href="codigo.html#dockerfile-api">Código §3</a></td></tr>
+          <tr><td><strong>psutil</strong></td><td>lê processos e envia sinais; sem ele a API não enxerga o SO</td><td><a href="teoria.html#psutil">Teoria §23</a> · <a href="codigo.html#mainpy">Código §1</a></td></tr>
+          <tr><td><strong>Docker / containerd / runc</strong></td><td>construir, armazenar e executar as imagens</td><td><a href="teoria.html#docker">Teoria §8</a> · <a href="pratica.html#build">Prática §2</a></td></tr>
+          <tr><td><strong>Imagens e Dockerfiles</strong></td><td><code>process-api</code>, <code>nginx-cron</code> e <code>cron-daemon</code></td><td><a href="codigo.html#dockerfile-api">Código §3–5</a> · <a href="pratica.html#build">Prática §2</a></td></tr>
+          <tr><td><strong>Nginx</strong></td><td>serve a página e prova o daemon de rede</td><td><a href="codigo.html#dockerfile-nginx">Código §4</a> · <a href="codigo.html#html">Código §6</a></td></tr>
+          <tr><td><strong>BusyBox cron</strong></td><td>agendador dentro do Nginx e isolado; escreve os logs</td><td><a href="teoria.html#daemon">Teoria §4</a> · <a href="codigo.html#dockerfile-cron">Código §5</a></td></tr>
+          <tr><td><strong>Namespaces e cgroups</strong></td><td>isolamento e limite de CPU/memória</td><td><a href="teoria.html#namespaces">Teoria §5</a> · <a href="teoria.html#cgroups">Teoria §6</a></td></tr>
+          <tr><td><strong>Kubernetes / Minikube</strong></td><td>orquestra os três Deployments no cluster local</td><td><a href="teoria.html#porque-k8s">Teoria §10–11</a> · <a href="pratica.html#pre">Prática §1</a></td></tr>
+          <tr><td><strong>kubectl</strong></td><td>aplicar, inspecionar, escalar e diagnosticar</td><td><a href="pratica.html#apply">Prática §4</a> · <a href="pratica.html#diagnostico">Prática §10</a></td></tr>
+          <tr><td><strong>Pod, Deployment e ReplicaSet</strong></td><td>unidade de execução, rollout e self-healing</td><td><a href="teoria.html#pod">Teoria §12–13</a> · <a href="teoria.html#selfhealing">Teoria §18</a></td></tr>
+          <tr><td><strong>Service, NodePort e kube-proxy</strong></td><td>expor a API e o Nginx e balancear requisições</td><td><a href="teoria.html#service">Teoria §14</a> · <a href="teoria.html#rede">Teoria §20</a></td></tr>
+          <tr><td><strong>HPA e metrics-server</strong></td><td>escalar a API de 2 até 10 por CPU</td><td><a href="teoria.html#hpa">Teoria §17</a> · <a href="pratica.html#scaling">Prática §7</a></td></tr>
+          <tr><td><strong>hostPID</strong></td><td>dar à API visão dos processos do nó</td><td><a href="teoria.html#hostpid">Teoria §24</a> · <a href="codigo.html#yaml-api-deploy">Código §8</a></td></tr>
+          <tr><td><strong>YAML declarativo</strong></td><td>namespace, 3 Deployments, 2 Services e HPA</td><td><a href="codigo.html#mapa-arquivos">Código §7–13</a></td></tr>
+          <tr><td><strong>curl e Swagger</strong></td><td>provar as rotas e a documentação</td><td><a href="pratica.html#local">Prática §1.1</a> · <a href="pratica.html#acesso">Prática §5</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>As páginas</h2>
+    <div class="grid two">
+      <a class="card-link" href="teoria.html">
+        <span class="n">01 · FUNDAMENTOS</span>
+        <h3>Teoria</h3>
+        <p>Processo, PID, sinais, daemon, namespaces, cgroups, container vs VM, Docker, arquitetura do Kubernetes, Pod, Deployment, Service, HPA, FastAPI, psutil, hostPID, volumes, segurança de Pod e os outros controladores. Cada conceito explicado do zero.</p>
+      </a>
+      <a class="card-link" href="arquitetura.html">
+        <span class="n">02 · DESENHO</span>
+        <h3>Arquitetura</h3>
+        <p>Diagrama lógico e físico, o caminho completo de uma requisição, a tabela de decisões com o porquê de cada escolha e as limitações que você deve assumir antes que a banca aponte.</p>
+      </a>
+      <a class="card-link" href="pratica.html">
+        <span class="n">03 · EXECUÇÃO</span>
+        <h3>Prática</h3>
+        <p>Build das três imagens, carga no Minikube, apply na ordem certa, acesso, self-healing, scaling e limpeza — com a explicação de cada comando e uma tabela de erros comuns.</p>
+      </a>
+      <a class="card-link" href="codigo.html">
+        <span class="n">04 · IMPLEMENTAÇÃO</span>
+        <h3>Código</h3>
+        <p><code>api/main.py</code> linha a linha, os três Dockerfiles, a página do Nginx e os sete YAMLs com cada campo explicado. É aqui que você aprende a responder "por que esse campo existe".</p>
+      </a>
+      <a class="card-link" href="evidencias.html">
+        <span class="n">05 · PROVAS</span>
+        <h3>Evidências</h3>
+        <p>Os 21 prints, o que cada um comprova e qual pergunta ele responde. Útil para ensaiar a narrativa da demonstração e para saber qual print mostrar em cada momento.</p>
+      </a>
+      <a class="card-link" href="perguntas.html">
+        <span class="n">06 · TREINO</span>
+        <h3>Perguntas</h3>
+        <p>66 perguntas com resposta curta (30 segundos) e aprofundamento: as 10 previsíveis, as técnicas, as pegadinhas e as que você não vai saber — com o jeito certo de responder.</p>
+      </a>
+      <a class="card-link" href="quiz.html">
+        <span class="n">07 · FIXAÇÃO</span>
+        <h3>Quiz</h3>
+        <p>38 questões de múltipla escolha com correção imediata e explicação. Repita até fazer 38/38 sem hesitar.</p>
+      </a>
+      <a class="card-link" href="plano.html">
+        <span class="n">08 · CRONOGRAMA</span>
+        <h3>Plano</h3>
+        <p>Cronograma de 21 dias, roteiro da apresentação de 20 minutos com divisão de tempo, checklist do dia e frases de emergência.</p>
+      </a>
+      <a class="card-link" href="banca.html">
+        <span class="n">09 · BANCA DIFÍCIL</span>
+        <h3>Perguntas complexas</h3>
+        <p>Mecanismo, números e contrafactuais: por que o HPA foi 2→4→8→9→10, o que muda sem <code>hostPID</code>, quem é o PID 1 do Nginx e o que responder quando ele sair do escopo.</p>
+      </a>
+    </div>
+
+    <h2 id="edital">Checklist de domínio (edital + avançado)</h2>
+    <p>Marque conforme você conseguir explicar cada item <strong>sem consultar</strong>. O progresso fica salvo no seu navegador e cobre
+      tanto o que o edital exige quanto o que a banca costuma puxar depois.</p>
+
+    <div class="card">
+      <div class="progress-head">
+        <strong>Progresso</strong>
+        <span class="muted small" data-progress-label>0 de 0 (0%)</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill"></div></div>
+
+      <div class="check"><input type="checkbox" id="s1" data-study="requisito-3-containers"><label for="s1">Explicar por que são <strong>três containers com daemons distintos</strong> e qual é o papel de cada um.</label></div>
+      <div class="check"><input type="checkbox" id="s2" data-study="api-4-operacoes"><label for="s2">Descrever as <strong>quatro operações da API</strong> e o que cada verbo HTTP faz.</label></div>
+      <div class="check"><input type="checkbox" id="s3" data-study="deploy"><label for="s3">Explicar o <strong>deploy</strong>: quantos Pods sobem e por que essas quantidades.</label></div>
+      <div class="check"><input type="checkbox" id="s4" data-study="selfhealing"><label for="s4">Explicar <strong>self-healing</strong> nos dois níveis (container e Pod) e dizer quem recria o quê.</label></div>
+      <div class="check"><input type="checkbox" id="s5" data-study="scaling"><label for="s5">Explicar <strong>scaling</strong>: como o HPA calcula, qual métrica usa e o que ele exige do Deployment.</label></div>
+      <div class="check"><input type="checkbox" id="s6" data-study="yaml"><label for="s6">Justificar <strong>cada campo</strong> dos YAMLs (replicas, selector, hostPID, requests, nodePort, averageUtilization).</label></div>
+      <div class="check"><input type="checkbox" id="s7" data-study="hostpid"><label for="s7">Explicar <strong>hostPID</strong>: o que muda no namespace de PID e como o print prova isso.</label></div>
+      <div class="check"><input type="checkbox" id="s8" data-study="container-vm"><label for="s8">Diferenciar <strong>container de VM</strong> e dizer o que o container compartilha com o host.</label></div>
+      <div class="check"><input type="checkbox" id="s9" data-study="docker"><label for="s9">Explicar <strong>imagem, camada e container</strong> e por que existe <code>imagePullPolicy: Never</code>.</label></div>
+      <div class="check"><input type="checkbox" id="s10" data-study="k8s-arquitetura"><label for="s10">Nomear os componentes do <strong>control plane</strong> e do <strong>nó</strong> e a função de cada um.</label></div>
+      <div class="check"><input type="checkbox" id="s11" data-study="psutil"><label for="s11">Explicar como o <strong>psutil</strong> lê processos e a diferença entre SIGTERM e SIGKILL.</label></div>
+      <div class="check"><input type="checkbox" id="s12" data-study="limitacoes"><label for="s12">Admitir as <strong>limitações</strong> (sem volume, sem auth, sem probes) antes que a banca pergunte.</label></div>
+      <div class="check"><input type="checkbox" id="s13" data-study="seguranca"><label for="s13">Responder sobre <strong>segurança em produção</strong> sem citar RBAC como proteção da API HTTP.</label></div>
+      <div class="check"><input type="checkbox" id="s14" data-study="demo"><label for="s14">Executar a <strong>demo completa</strong> de memória, numa máquina limpa, em menos de 10 minutos.</label></div>
+
+      <h3 style="margin:22px 0 4px">Domínio avançado — o que ele cobra depois do básico</h3>
+      <p class="muted small" style="margin-bottom:10px">Estes não estão no edital, mas estão nas páginas. Marque só quando conseguir explicar sem olhar.</p>
+
+      <div class="check"><input type="checkbox" id="a1" data-study="volumes"><label for="a1">Explicar <strong>writable layer, emptyDir e PVC</strong> e por que o <code>cron.txt</code> morre no restart.</label></div>
+      <div class="check"><input type="checkbox" id="a2" data-study="qos"><label for="a2">Dizer a <strong>QoS</strong> de cada Pod (API Burstable; Nginx e cron BestEffort) e o que acontece sob pressão.</label></div>
+      <div class="check"><input type="checkbox" id="a3" data-study="probes"><label for="a3">Diferenciar <strong>liveness, readiness e startupProbe</strong> e dizer o que falta nos YAMLs.</label></div>
+      <div class="check"><input type="checkbox" id="a4" data-study="pss"><label for="a4">Explicar <strong>root, capabilities e PSS</strong> e por que <code>hostPID</code> não passa no baseline.</label></div>
+      <div class="check"><input type="checkbox" id="a5" data-study="rbac-kill"><label for="a5">Explicar por que <strong>RBAC não impede</strong> a API de matar um processo do nó.</label></div>
+      <div class="check"><input type="checkbox" id="a6" data-study="controladores"><label for="a6">Justificar <strong>Deployment × StatefulSet × DaemonSet × CronJob</strong> para cada carga.</label></div>
+      <div class="check"><input type="checkbox" id="a7" data-study="service-rede"><label for="a7">Narrar <strong>Service, kube-proxy, endpoints, CNI e CoreDNS</strong> sem dizer que o Service “escolhe” Pod.</label></div>
+      <div class="check"><input type="checkbox" id="a8" data-study="hpa-formula"><label for="a8">Calcular o HPA na lousa e explicar por que ele subiu em <strong>degraus</strong>.</label></div>
+      <div class="check"><input type="checkbox" id="a9" data-study="popen-ciclo"><label for="a9">Explicar <strong>fork/exec, Popen, wait e zumbi</strong> no ciclo de vida de um processo iniciado pela API.</label></div>
+      <div class="check"><input type="checkbox" id="a10" data-study="yaml-falta"><label for="a10">Listar o que <strong>falta nos YAMLs</strong> (probes, securityContext, volume, PDB, NetworkPolicy) e o efeito de cada ausência.</label></div>
+    </div>
+
+    <h2 id="cobertura">Cobertura: cada exigência do edital, cada arquivo, cada conceito</h2>
+    <p>Se você conseguir apontar onde cada item abaixo está explicado, não existe buraco no estudo. Cada exigência do edital — e cada
+      peça da apresentação — tem página, print e resposta pronta.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Exigência do edital</th><th>Como o projeto cumpre</th><th>Onde estudar</th></tr></thead>
+        <tbody>
+          <tr><td>Mínimo de 3 containers com daemons diferentes</td><td>API (uvicorn), Nginx (nginx) e cron (crond); o container do Nginx roda nginx + crond</td><td><a href="teoria.html#daemon">Teoria §4</a> · <a href="codigo.html#dockerfile-nginx">Código §4</a></td></tr>
+          <tr><td>API lista, inspeciona, inicia e encerra processos</td><td>quatro rotas FastAPI, códigos 200/403/404/422/500</td><td><a href="codigo.html#mainpy">Código §1</a> · <a href="codigo.html#endpoints">Código §2</a></td></tr>
+          <tr><td>Deploy orquestrado pelo Kubernetes</td><td>3 Deployments, 5 Pods, namespace <code>daemon-lab</code></td><td><a href="arquitetura.html">Arquitetura</a> · <a href="pratica.html#apply">Prática §4</a></td></tr>
+          <tr><td>Demonstrar self-healing</td><td>Pod apagado e recriado em 9 s pelo ReplicaSet</td><td><a href="arquitetura.html">Arquitetura</a> · <a href="evidencias.html">Evidências</a> · <a href="pratica.html#selfhealing">Prática §6</a></td></tr>
+          <tr><td>Demonstrar scaling</td><td>HPA 2→4→8→9→10 por CPU a 50% e volta a 2</td><td><a href="teoria.html#hpa">Teoria §17</a> · <a href="pratica.html#scaling">Prática §7</a> · <a href="banca.html#numeros">Banca §1</a></td></tr>
+          <tr><td>Entregar YAMLs versionados</td><td>7 arquivos: namespace, 3 Deployments, 2 Services, HPA</td><td><a href="codigo.html#yaml-namespace">Código §7–13</a></td></tr>
+          <tr><td>Arquitetura lógica e física + artigo/slides</td><td>diagramas, tabela de decisões, roteiro de 20 min e anexos</td><td><a href="arquitetura.html">Arquitetura</a> · <a href="plano.html#entregaveis">Plano §Entregáveis</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Além do edital, o site cobre o que a banca costuma puxar e o projeto não exigia: <a href="teoria.html#volumes">volumes e persistência</a>,
+      <a href="teoria.html#seguranca-pod">root, capabilities e PSS</a>, <a href="teoria.html#controladores">DaemonSet, StatefulSet, Job e CronJob</a>,
+      <a href="teoria.html#probes">probes</a>, <a href="teoria.html#qos">QoS e OOMKilled</a> e <a href="codigo.html#yaml-faltando">o que falta nos YAMLs</a>.
+      Se ele perguntar algo que não está em nenhuma página, a resposta está no método da <a href="banca.html#fora">Banca §6</a>: assumir o limite,
+      explicar o conceito mais próximo e dizer como resolveria.</p>
+
+    <h2 id="numeros">Números que você precisa saber de cor</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Número</th><th>O que é</th><th>Onde aparece</th></tr></thead>
+        <tbody>
+          <tr><td><strong>3 / 4</strong></td><td>3 imagens e 3 containers; 4 processos daemon (uvicorn, nginx, crond no Nginx e crond isolado)</td><td>todo o projeto</td></tr>
+          <tr><td><strong>5</strong></td><td>Pods no deploy base: 2 api + 2 nginx + 1 cron</td><td><code>5pods.png</code></td></tr>
+          <tr><td><strong>9 s</strong></td><td>tempo de recriação do Pod no self-healing</td><td><code>RecriacaoPod.png</code></td></tr>
+          <tr><td><strong>2 → 10</strong></td><td>réplicas da API sob carga (min 2, max 10)</td><td><code>hpa.png</code></td></tr>
+          <tr><td><strong>204%</strong></td><td>utilização de CPU em relação ao request de 100m</td><td><code>hpa.png</code></td></tr>
+          <tr><td><strong>50%</strong></td><td>alvo de utilização configurado no HPA</td><td><code>hpa.yaml</code></td></tr>
+          <tr><td><strong>30080 / 30081</strong></td><td>nodePorts da API e do Nginx</td><td><code>api-service</code>, <code>nginx-service</code></td></tr>
+          <tr><td><strong>83</strong></td><td>processos vistos pela API dentro do cluster</td><td><code>hostPID_kubernete.png</code></td></tr>
+          <tr><td><strong>~5 min</strong></td><td>janela de estabilização antes do scale-down</td><td>comportamento padrão do HPA</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="1hora">Se você só tiver 1 hora antes da banca</h2>
+    <ol>
+      <li><strong>15 min</strong> — <a href="perguntas.html#top10">As 10 perguntas previsíveis</a>, lendo só as respostas curtas em voz alta.</li>
+      <li><strong>10 min</strong> — <a href="arquitetura.html#decisoes">Tabela de decisões</a>: saber justificar cada escolha é o que separa "copiei um tutorial" de "entendi o projeto".</li>
+      <li><strong>10 min</strong> — <a href="arquitetura.html#limitacoes">Limitações</a>: assumir antes de ser apontado.</li>
+      <li><strong>10 min</strong> — <a href="perguntas.html#seguranca">Segurança</a>: a resposta do <code>hostPID</code> precisa estar correta.</li>
+      <li><strong>10 min</strong> — <a href="quiz.html">Quiz</a>: refazer as questões que você errar.</li>
+      <li><strong>5 min</strong> — <a href="plano.html#frases">Frases de emergência</a> e <a href="plano.html#dia">checklist do dia</a>.</li>
+    </ol>
+
+    <div class="footer">
+      <span>Base de estudos local · A3 · Tema 1</span>
+      <span>Feito a partir do repositório <span class="mono">TayMG/A3-Euclerio</span></span>
+    </div>
+  </div>
+</div>
+
+<script src="assets/search-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

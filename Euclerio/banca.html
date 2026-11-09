@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("a3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Banca difícil · Base de Estudos A3 — Tema 1</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">A3</div>
+    <div class="brand-text"><strong>Base de Estudos</strong><span>Tema 1 · Kubernetes + API</span></div>
+  </div>
+  <div class="study-switch" aria-label="Trocar de estudo">
+    <a href="../Euclerio/index.html" class="active">Euclerio</a>
+    <a href="../Sergio/index.html">Sergio</a>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
+    <div class="search-results"></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Comece aqui</div>
+    <a href="index.html"><span class="n">00</span> Início</a>
+    <div class="nav-label">Fundamentos</div>
+    <a href="teoria.html"><span class="n">01</span> Teoria</a>
+    <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
+    <div class="nav-label">O trabalho</div>
+    <a href="pratica.html"><span class="n">03</span> Prática</a>
+    <a href="codigo.html"><span class="n">04</span> Código</a>
+    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <div class="nav-label">Treino</div>
+    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">07</span> Quiz</a>
+    <a href="plano.html"><span class="n">08</span> Plano</a>
+    <a href="banca.html"><span class="n">09</span> Banca</a>
+  </nav>
+  <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" data-menu aria-label="Abrir menu">☰</button>
+    <span class="topbar-title">Banca difícil</span>
+  </div>
+
+  <div class="content">
+    <div class="eyebrow">09 · Treino avançado</div>
+    <h1 id="banca">Banca difícil: perguntas que não são “o que é X”</h1>
+    <p class="lead">Esta página assume que ele já sabe que você sabe o básico. Aqui estão as perguntas de <strong>mecanismo</strong>,
+      <strong>número</strong>, <strong>contrafactual</strong> e <strong>trade-off</strong> — as que separam “estudei” de “entendi”.</p>
+
+    <div class="callout">
+      <div class="ct">Como usar</div>
+      <p>Cada pergunta tem <strong>resposta de 30 segundos</strong> (o que você diz primeiro), <strong>fundo</strong> (o que você diz se ele
+         pedir “explique melhor”) e, quando importa, <strong>o que não dizer</strong>. Treine em voz alta: ler não cria memória de fala.</p>
+    </div>
+
+    <h2 id="numeros">1. As perguntas de número e mecanismo</h2>
+
+    <details>
+      <summary>Por que o HPA foi de 2 para 4, 8, 9 e 10 — em vez de ir direto para 9?</summary>
+      <div class="body">
+        <p class="ans"><strong>30 s:</strong> “Porque o HPA tem duas limitações somadas: a fórmula diz <em>quantas réplicas deveriam existir</em>,
+          mas a política padrão de scale-up só permite subir no máximo 4 Pods ou 100% a cada 15 segundos. Com 2 Pods a 204% do request,
+          o alvo era 9, mas a política deixou ir para 4; depois 8; depois 9; e o teto de 10 réplicas fechou o crescimento.”</p>
+        <p><strong>Fundo:</strong> a conta é <code>desired = ceil(réplicas × uso / alvo)</code>. Com 2 Pods a 204% e alvo de 50%:
+          <code>ceil(2 × 204/50) = ceil(8,16) = 9</code>. O <em>behavior</em> padrão do <code>autoscaling/v2</code> tem
+          <code>scaleUp</code> com políticas de 4 Pods/15 s e 100%/15 s, <code>selectPolicy: Max</code> — ou seja, o maior acréscimo
+          permitido. 2→4 (o +4 vence o +2), 4→8 (+4 vence +4), 8→9 (o desejado é 9) e 9→10 porque, com 9 réplicas, a média caiu para
+          123%: <code>ceil(9 × 123/50) = 23</code>, mas <code>maxReplicas: 10</code> corta em 10.</p>
+        <p><strong>Se ele insistir:</strong> “É um controlador proporcional com atraso de métrica. Ele não calcula uma vez: a cada ciclo
+          relê a média, e a média muda porque o número de réplicas mudou. Por isso a sequência em degraus, não um salto.”</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Se o <code>requests.cpu</code> fosse 500m em vez de 100m, o HPA teria escalado?</summary>
+      <div class="body">
+        <p class="ans"><strong>30 s:</strong> “Não. O mesmo consumo de ~204m seria 40,8% de um request de 500m — abaixo do alvo de 50%.
+          O HPA não olha o limite, olha a razão entre uso e request. Foi o request pequeno que tornou o sistema sensível.”</p>
+        <p><strong>Fundo:</strong> a porcentagem do HPA é sempre <code>uso médio ÷ requests</code>. Com 100m, 204m = 204%; com 500m,
+          204m = 40,8%. Isso mostra que <strong>o request é uma escolha de projeto que define a sensibilidade do autoscaler</strong> —
+          e também o oposto: request pequeno demais faz o HPA reagir a ruído e permite overcommit; grande demais esconde carga real.</p>
+        <p><strong>O que não dizer:</strong> “O HPA escala quando passa do limite.” O limite é do cgroup e não entra na conta do HPA.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Com duas réplicas de Nginx, qual <code>cron.txt</code> o usuário vê?</summary>
+      <div class="body">
+        <p class="ans"><strong>30 s:</strong> “Depende de qual Pod o Service escolheu. Cada Pod tem seu próprio sistema de arquivos e seu
+          próprio crond escrevendo no próprio <code>cron.txt</code>. Não há volume compartilhado, então os dois arquivos divergem — e o
+          navegador pode mostrar um log diferente a cada conexão.”</p>
+        <p><strong>Fundo:</strong> o <code>cron.txt</code> nasce no <em>writable layer</em> de cada container. O Service faz balanceamento
+          por conexão, não por conteúdo. Isso é uma <strong>falha de consistência</strong>, não de disponibilidade: o serviço está no ar,
+          mas o dado não é único. Soluções: volume compartilhado com <code>ReadWriteMany</code> (PVC), uma réplica só, ou externalizar o log
+          (banco/objeto) e servir o mesmo conteúdo.</p>
+        <p><strong>Se ele perguntar “por que vocês não viram isso?”:</strong> “Vimos: é uma limitação de estado por réplica. O edital pedia
+          duas réplicas e o foco era orquestração; a correção seria um volume compartilhado ou uma réplica.”</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>O crond morre dentro do container do Nginx. O que acontece e como você descobre?</summary>
+      <div class="body">
+        <p class="ans"><strong>30 s:</strong> “Nada visível: o Nginx continua servindo a página, o Pod continua <code>1/1 Running</code>,
+          mas o <code>cron.txt</code> para de crescer. É uma falha silenciosa, porque não há liveness probe nem supervisão do crond.
+          Eu descobriria comparando o timestamp do arquivo com o horário atual ou com <code>pgrep crond</code>.”</p>
+        <p><strong>Fundo:</strong> o script de entrada inicia o crond em background (<code>-b</code>) e deixa o Nginx em foreground. Se o
+          crond sai, ninguém o reinicia: o Nginx é o processo que o runtime supervisiona, não o crond. Um <code>livenessProbe</code> com
+          <code>exec: pgrep crond</code> reiniciaria o container; um sidecar de supervisão (s6, tini não supervisiona) ou um CronJob
+          externo seriam alternativas.</p>
+        <p><strong>O que não dizer:</strong> “O Kubernetes reinicia o processo.” Ele reinicia o <strong>container</strong>, e só se a
+          liveness falhar ou o processo principal morrer.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>O log do cron sobrevive a um restart do container? E à recriação do Pod?</summary>
+      <div class="body">
+        <p class="ans"><strong>30 s:</strong> “Não sobrevive a nenhum dos dois, do jeito que está. O arquivo está no writable layer do
+          container. Restart de container cria um container novo a partir da imagem; recriação de Pod descarta o sandbox inteiro. Só um
+          volume — <code>emptyDir</code> para restart de container, PVC para recriação de Pod — preservaria.”</p>
+        <p><strong>Fundo:</strong> <code>emptyDir</code> tem vida do Pod: sobrevive ao restart do container, morre com o Pod.
+          <code>hostPath</code>/PVC têm vida própria. O projeto não declara volume nenhum, então o log é efêmero por definição — o que
+          também significa que os prints só existem porque foram capturados antes da recriação.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Vocês chamam o Nginx de daemon, mas usam <code>daemon off;</code>. Ele é daemon ou não?</summary>
+      <div class="body">
+        <p class="ans"><strong>30 s:</strong> “Depende do sentido. No sentido de <em>serviço de longa duração</em>, sim. No sentido de
+          <em>daemonização Unix</em> — desanexar do terminal, dar fork, virar sessão — não: nós desligamos isso de propósito, porque o
+          container precisa de um processo em foreground como PID 1 para o runtime supervisionar.”</p>
+        <p><strong>Fundo:</strong> daemonizar dentro de container é um antipadrão: o processo pai retorna, o PID 1 sai, o runtime considera
+          o container terminado e mata o resto. Por isso <code>nginx -g "daemon off;"</code>, <code>crond -f</code> no container de cron
+          e <code>uvicorn</code> em foreground. O “daemon” do edital é o serviço contínuo, não o <code>fork()</code>/<code>setsid()</code>.</p>
+        <p><strong>Se ele quiser o detalhe:</strong> “Daemon Unix clássico faz <code>fork</code>, <code>setsid</code>, <code>chdir("/")</code>,
+          fecha descritores e escreve PID file. Nada disso é necessário ou desejável em container.”</p>
+      </div>
+    </details>
+
+    <h2 id="contrafactual">2. Contrafactuais: “e se…?”</h2>
+    <p>A banca gosta de mudar uma peça e ver se o modelo mental se mantém. Responda sempre em três partes: <strong>o que muda</strong>,
+      <strong>o que permanece</strong>, <strong>como você provaria</strong>.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>E se…</th><th>O que acontece</th></tr></thead>
+        <tbody>
+          <tr><td><code>hostPID: false</code></td><td>A API vê só o próprio namespace de PID: o uvicorn e os filhos que ela criar (sem <code>shareProcessNamespace</code>, nem os outros containers do Pod aparecem). O <code>/processes</code> cai de 83 para ~2–4 processos. O resto do projeto funciona igual — só a “visão do SO” desaparece.</td></tr>
+          <tr><td>dois containers no mesmo Pod</td><td>Compartilham rede (mesmo IP, mesmas portas): não podem ambos ouvir 8000. PID namespace é separado, a menos que <code>shareProcessNamespace: true</code> — que compartilha só entre os containers do Pod, não com o nó.</td></tr>
+          <tr><td><code>imagePullPolicy: IfNotPresent</code> com <code>:latest</code></td><td>Funcionaria porque a imagem está no nó, mas o padrão para <code>:latest</code> é <code>Always</code>. Forçar <code>IfNotPresent</code> com tag mutável usa a cópia local mesmo que o registry tenha outra — reproduzibilidade quebrada.</td></tr>
+          <tr><td>o nó morrer</td><td>O nó vira <code>NotReady</code> (~40 s); os Pods são evictados após ~5 min. O Deployment recria <em>se houver outro nó com recursos</em>. No Minikube de um nó, ficam <code>Pending</code>: não há para onde ir.</td></tr>
+          <tr><td>o metrics-server cair</td><td>O HPA fica com <code>ScalingActive=False</code> e não escala; os Pods continuam rodando; <code>kubectl top</code> falha. Autoscaling depende de métrica, não de intenção.</td></tr>
+          <tr><td>apagar o Deployment</td><td>Cascata: ReplicaSet e Pods vão junto. O Service continua existindo, mas sem endpoints — requisições falham. Não há self-healing porque o controlador dono foi removido.</td></tr>
+          <tr><td>apagar um Pod</td><td>O ReplicaSet percebe a diferença e cria outro. Foi o teste de 9 s. O Service atualiza os endpoints e o tráfego continua no Pod restante.</td></tr>
+          <tr><td><code>kubectl scale --replicas=5</code> com HPA ativo</td><td>O HPA recalcula no próximo ciclo e sobrescreve o campo. Os dois escrevem em <code>spec.replicas</code>; o HPA ganha enquanto estiver ativo.</td></tr>
+          <tr><td>reaply do Deployment com HPA em 10</td><td>O manifesto traz <code>replicas: 2</code> e o apply reduz para 2; o HPA volta a subir se a métrica continuar alta. É o conflito clássico entre GitOps e autoscaling.</td></tr>
+          <tr><td><code>limits.cpu: 100m</code> (igual ao request)</td><td>O container é estrangulado ao atingir 100m. A API fica lenta, timeouts aparecem, mas nada é morto: CPU é compressível. O HPA veria ~100% do request.</td></tr>
+          <tr><td>não declarar <code>requests.cpu</code></td><td>HPA mostra <code>&lt;unknown&gt;</code> (não há denominador), o scheduler não reserva CPU e o Pod vira <code>BestEffort</code> se também não houver memória.</td></tr>
+          <tr><td>matar o PID 1 de um container <em>sem</em> <code>hostPID</code> (Nginx/cron)</td><td>O container termina e o kubelet o reinicia conforme <code>restartPolicy: Always</code>. É restart de container, não recriação de Pod: nome e IP permanecem. No Pod da API não existe “PID 1 do container”: com <code>hostPID</code>, o PID 1 visível é o do nó.</td></tr>
+          <tr><td>matar o PID 1 do nó (systemd)</td><td>O nó cai. No Minikube, cai o cluster inteiro. Com <code>hostPID</code> + root + <code>CAP_KILL</code>, a API tem poder para <em>tentar</em> — é o risco que justifica a mitigação. O kernel protege o init de alguns sinais, então nem todo <code>kill</code> funciona; o problema é a tentativa e o que ela expõe.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="diagnostico">3. Diagnóstico ao vivo: sintoma → causa → comando</h2>
+    <p>Se ele inventar um cenário (“e se o Pod ficar assim?”), use este roteiro. A ordem importa: <strong>descreva, olhe evento, olhe log,
+      só então mexa</strong>.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Sintoma</th><th>Primeira hipótese</th><th>Comando</th><th>Correção</th></tr></thead>
+        <tbody>
+          <tr><td><code>Pending</code></td><td>sem nó que caiba (CPU/memória), taint ou PVC</td><td><code>kubectl describe pod</code></td><td>ajustar requests, tolerations ou afinidade</td></tr>
+          <tr><td><code>ContainerCreating</code> eterno</td><td>sandbox/CNI, volume ou pull</td><td><code>describe</code> (events)</td><td>resolver a causa do evento</td></tr>
+          <tr><td><code>ErrImageNeverPull</code></td><td>imagem não está no nó</td><td><code>minikube image ls</code></td><td><code>minikube image load</code></td></tr>
+          <tr><td><code>ImagePullBackOff</code></td><td>tag errada, auth ou rede</td><td><code>describe</code></td><td>corrigir referência/credencial</td></tr>
+          <tr><td><code>CrashLoopBackOff</code></td><td>app sai com erro</td><td><code>logs --previous</code></td><td>corrigir comando/config</td></tr>
+          <tr><td><code>0/1 Running</code></td><td>readiness falhando</td><td><code>describe</code> / <code>exec</code></td><td>corrigir probe ou app</td></tr>
+          <tr><td>HPA <code>&lt;unknown&gt;</code></td><td>sem requests ou sem métrica</td><td><code>kubectl top pods</code>, <code>describe hpa</code></td><td>declarar requests / metrics-server</td></tr>
+          <tr><td>Service não responde</td><td>selector não casa ou endpoints vazios</td><td><code>kubectl get endpoints</code></td><td>corrigir labels/portas</td></tr>
+          <tr><td>NodePort inacessível no Windows</td><td>rede do driver Docker</td><td><code>minikube service --url</code></td><td>usar o túnel</td></tr>
+          <tr><td><code>cron.txt</code> parado</td><td>crond morto (falha silenciosa)</td><td><code>exec -- pgrep crond</code></td><td>reiniciar + liveness</td></tr>
+          <tr><td><code>Terminating</code> preso</td><td>finalizer ou volume</td><td><code>describe</code></td><td>remover finalizer com critério</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="calculos">4. Cálculos que ele pode pedir na lousa</h2>
+    <p>Se ele pedir “faça a conta”, faça em voz alta e devagar. O objetivo não é o número: é mostrar que você sabe <em>de onde ele vem</em>.</p>
+
+    <details>
+      <summary>Quanto valem 100m e 500m em cores? E 10 Pods a 100m?</summary>
+      <div class="body">
+        <p class="ans"><strong>30 s:</strong> “100m é 0,1 core; 500m é 0,5 core. Dez Pods com request de 100m reservam 1 core inteiro.”</p>
+        <p><strong>Fundo:</strong> <code>m</code> é milicore: 1000m = 1 vCPU. O request é o que o scheduler reserva; o limit é o teto do cgroup.
+          Com 2 vCPUs no nó e requests de 100m, cabem no máximo 20 Pods <em>só pela CPU</em> — menos, porque kubelet, CoreDNS e control plane
+          também consomem.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Calcule o número desejado de réplicas: 2 Pods, 204% de uso, alvo 50%.</summary>
+      <div class="body">
+        <p class="ans"><strong>30 s:</strong> “<code>ceil(2 × 204 / 50) = ceil(8,16) = 9</code>. O HPA queria 9.”</p>
+        <p><strong>Fundo:</strong> a fórmula é <code>desired = ceil(currentReplicas × currentMetric / desiredMetric)</code>. O <code>ceil</code>
+          existe porque não há meia réplica. Se o resultado for maior que <code>maxReplicas</code>, vale o máximo; se menor que o mínimo, vale
+          o mínimo. Aqui, 9 é menor que 10, então o teto não agiu nesse passo.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>E quando a média caiu para 123% com 9 réplicas?</summary>
+      <div class="body">
+        <p class="ans"><strong>30 s:</strong> “<code>ceil(9 × 123 / 50) = ceil(22,14) = 23</code>. O HPA queria 23, mas o
+          <code>maxReplicas: 10</code> cortou em 10. Foi o teto que parou o crescimento, não a demanda.”</p>
+        <p><strong>Fundo:</strong> o número cair de 204% para 123% não é o HPA “errando”: é realimentação. Mais réplicas dividindo a mesma
+          carga reduzem a média por Pod. O controlador relê a média a cada ciclo e recalcula; por isso a sequência é dinâmica.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Se o request fosse 500m, qual seria a porcentagem e o que o HPA faria?</summary>
+      <div class="body">
+        <p class="ans"><strong>30 s:</strong> “204m ÷ 500m = 40,8%, abaixo do alvo de 50%. O HPA calcularia
+          <code>ceil(2 × 40,8/50) = ceil(1,63) = 2</code> e não escalaria.”</p>
+        <p><strong>Fundo:</strong> o mesmo consumo absoluto vira porcentagens diferentes conforme o request. É por isso que “o HPA não
+          escalou” pode ser um problema de <strong>request mal dimensionado</strong>, não de carga.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Cabe 23 Pods num nó de 2 vCPUs com request de 100m?</summary>
+      <div class="body">
+        <p class="ans"><strong>30 s:</strong> “Pela CPU, 2 ÷ 0,1 = 20 Pods no máximo — e menos na prática, porque os Pods de sistema também
+          reservam. Então parte dos 23 ficaria <code>Pending</code>. Sem cluster autoscaler, não há para onde ir.”</p>
+        <p><strong>Fundo:</strong> o scheduler olha <code>requests</code>, não uso. O nó pode estar ocioso e ainda assim recusar o Pod se a
+          soma dos requests passar do allocatable. No Minikube de um nó, o <code>maxReplicas: 10</code> é também uma proteção contra
+          <code>Pending</code> em massa.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>A 204% do request, quanto do limite de 500m foi usado? Houve throttling?</summary>
+      <div class="body">
+        <p class="ans"><strong>30 s:</strong> “204% de 100m = 204m. Isso é 40,8% do limite de 500m, então não houve throttling.
+          Throttling só começa quando o consumo encosta no limite.”</p>
+        <p><strong>Fundo:</strong> request e limit são referências diferentes. 204% é grande em relação ao request e pequeno em relação ao
+          limite. Se o limite fosse 200m, aí sim o cgroup estrangularia — e o sintoma seria latência, não morte do Pod.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Quantas portas NodePort existem? Por que 30080 e 30081 são válidas?</summary>
+      <div class="body">
+        <p class="ans"><strong>30 s:</strong> “A faixa padrão é 30000–32767, inclusive: 2.768 portas. 30080 e 30081 estão dentro.”</p>
+        <p><strong>Fundo:</strong> a faixa é configurável no <code>kube-apiserver</code> (<code>--service-node-port-range</code>). Fora dela, o
+          objeto é rejeitado na validação. As duas portas são fixas para a demo ser reproduzível; em produção, o ideal é não depender de
+          NodePort, e sim de um LoadBalancer/Ingress.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Os 9 segundos de recriação foram uma indisponibilidade?</summary>
+      <div class="body">
+        <p class="ans"><strong>30 s:</strong> “Não. Havia duas réplicas: uma continuou atendendo enquanto a outra era recriada. Os 9 s medem
+          o tempo de restaurar a <em>redundância</em>, não uma janela de queda. Se as duas caíssem juntas, aí haveria indisponibilidade.”</p>
+        <p><strong>Fundo:</strong> disponibilidade de N+1 é diferente de tempo de recuperação. Com 2 réplicas, a falha de uma não zera o
+          serviço, mas reduz a margem. Se o professor perguntar “e se cair o nó?”, a resposta é: as duas réplicas estão no mesmo nó no
+          Minikube, então não há N+1 real contra falha de nó.</p>
+      </div>
+    </details>
+
+    <h2 id="defesa">5. Defenda cada escolha em uma frase</h2>
+    <p>Para cada decisão, saiba: <strong>por que escolheu</strong>, <strong>o que perdeu</strong> e <strong>o que faria diferente</strong>.
+      Nunca defenda como se fosse perfeito; defenda como decisão consciente.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Decisão</th><th>Por que</th><th>O que perde</th><th>Se ele criticar, responda</th></tr></thead>
+        <tbody>
+          <tr><td><code>hostPID: true</code></td><td>é o jeito canônico de ver os processos do nó via <code>/proc</code>; alternativas são <code>hostPath</code> em <code>/proc</code> ou <code>nsenter</code> privilegiado</td><td>viola PSS baseline; dá visibilidade e poder sobre o nó</td><td>“Foi requisito para demonstrar a visão do SO. Em produção, eu usaria um agente dedicado, non-root, read-only e com allowlist.”</td></tr>
+          <tr><td>NodePort 30080/30081</td><td>simples de demonstrar e reproduzir</td><td>exposição na rede; porta fixa; sem TLS</td><td>“Em produção, ClusterIP + Ingress com TLS e autenticação; NodePort só para o laboratório.”</td></tr>
+          <tr><td><code>imagePullPolicy: Never</code></td><td>as imagens são carregadas no nó, sem registry</td><td>quebra se o cluster for recriado ou mudar de máquina</td><td>“O risco é conhecido: exige <code>minikube image load</code>. Com registry, usaria tag imutável ou digest e <code>IfNotPresent</code>.”</td></tr>
+          <tr><td>2 réplicas na API e no Nginx</td><td>demonstra redundância e balanceamento</td><td>estado por réplica no Nginx; custo</td><td>“No Nginx, o log por réplica diverge. Corrigiria com volume compartilhado ou uma réplica.”</td></tr>
+          <tr><td>1 réplica no cron</td><td>é um singleton: duplicar duplicaria a tarefa</td><td>sem HA; durante rollout pode haver dois</td><td>“Com <code>strategy: Recreate</code> ou <code>maxSurge: 0</code> eu evito dois crons simultâneos.”</td></tr>
+          <tr><td>HPA 50%, 2–10</td><td>mostra a fórmula com folga e limita o custo</td><td>teto artificial; reação lenta</td><td>“50% é conservador para latência; 70–80% seria mais econômico. O teto de 10 evita <code>Pending</code> no nó único.”</td></tr>
+          <tr><td>FastAPI + psutil</td><td>Python é o stack da disciplina; psutil é direto e legível</td><td>não é cgroup-aware; varredura O(n)</td><td>“Para produção, eu leria <code>/sys/fs/cgroup</code> ou usaria um agente em Go/eBPF.”</td></tr>
+          <tr><td>Namespace <code>daemon-lab</code></td><td>isola, facilita limpeza e RBAC</td><td>mais um nível para esquecer</td><td>“Namespace não isola rede nem segurança sozinho; é organização e escopo de políticas.”</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="fora">6. Quando ele sai do escopo</h2>
+    <p>Não invente. A resposta que ganha ponto é: <strong>“não fizemos” + “por que” + “o que eu faria”</strong>. Em três frases, você mostra
+      que conhece a lacuna e sabe o caminho.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Pergunta fora do escopo</th><th>Resposta honesta + próximo passo</th></tr></thead>
+        <tbody>
+          <tr><td>“Por que não usaram Helm?”</td><td>“Não precisávamos: são sete manifestos estáticos. Helm entraria para templating, versionamento e múltiplos ambientes; Kustomize resolveria overlays sem template.”</td></tr>
+          <tr><td>“Cadê os testes automatizados?”</td><td>“Não há. Eu começaria com <code>pytest</code> + <code>TestClient</code> para as quatro rotas e testes de contrato dos YAMLs com <code>kubeconform</code>.”</td></tr>
+          <tr><td>“Cadê o CI/CD?”</td><td>“Não há pipeline. O mínimo seria build + scan + push com tag imutável, e deploy via GitOps com ArgoCD ou Flux.”</td></tr>
+          <tr><td>“Como tratam segredos?”</td><td>“O projeto não tem segredos. Se tivesse, <code>Secret</code> sozinho não basta (é base64); usaria External Secrets/Vault e encryption at rest no etcd.”</td></tr>
+          <tr><td>“Cadê a observabilidade?”</td><td>“Temos logs e prints, não monitoração. O próximo passo é Prometheus + Grafana, logs em stdout e tracing com OpenTelemetry.”</td></tr>
+          <tr><td>“Por que não usaram Docker Compose?”</td><td>“Compose orquestra um host só, sem reconciliação, self-healing nem HPA. Para o Tema 1, o Kubernetes é o objeto de estudo.”</td></tr>
+          <tr><td>“E Service Mesh / Istio?”</td><td>“Não usamos. O Istio resolve mTLS, retry, timeout, canary e telemetria L7 com sidecars — útil quando há muitos serviços e requisitos de tráfego. Para dois Services e um HPA, o custo operacional não se paga; eu começaria por NetworkPolicy, probes e observabilidade antes de um mesh.”</td></tr>
+          <tr><td>“Por que não systemd?”</td><td>“Container não usa init: um processo por container, em foreground, e o runtime supervisiona. systemd exigiria privilégios e quebraria o modelo.”</td></tr>
+          <tr><td>“Qual é a originalidade?”</td><td>“Integrar a visão de processos do SO (hostPID + psutil) com orquestração declarativa, demonstrando self-healing e scaling com números medidos.”</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="ct">A frase que nunca falha</div>
+      <p>“Isso não está implementado. O motivo foi <em>X</em>; se eu fosse fazer, começaria por <em>Y</em>, porque <em>Z</em>.” —
+        Ela funciona para qualquer lacuna e não soa como desculpa.</p>
+    </div>
+
+    <h2 id="producao">7. “E se isso fosse produção?”</h2>
+    <p>Essa é a pergunta que mais rende ponto porque mostra maturidade. Tenha a lista na cabeça; não precisa citar tudo, cite três ou quatro
+      com justificativa.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Mudança</th><th>Por quê</th></tr></thead>
+        <tbody>
+          <tr><td>Registry + tag imutável/digest</td><td>elimina dependência de imagem local e o risco de <code>ErrImageNeverPull</code></td></tr>
+          <tr><td>Non-root, <code>drop: [ALL]</code>, seccomp, AppArmor</td><td>reduz o poder de um comprometimento; <code>CAP_KILL</code> deixa de existir</td></tr>
+          <tr><td>PSS <code>restricted</code> + NetworkPolicy default-deny</td><td>impede <code>hostPID</code> e limita movimento lateral</td></tr>
+          <tr><td>Autenticação + rate limit + TLS</td><td>a API atual aceita qualquer <code>DELETE</code> de qualquer origem</td></tr>
+          <tr><td>Probes (liveness/readiness/startup)</td><td>detecta falha silenciosa e evita tráfego para Pod não pronto</td></tr>
+          <tr><td>Memória com request/limit</td><td>evita <code>BestEffort</code> e imprevisibilidade sob pressão</td></tr>
+          <tr><td>PDB + 3 réplicas + topology spread</td><td>sobrevive a drain e a falha de nó; hoje as duas réplicas podem estar no mesmo nó</td></tr>
+          <tr><td>Observabilidade</td><td>hoje você sabe que funcionou porque tirou print; em produção precisa de métrica, log e alerta</td></tr>
+          <tr><td>PVC ou backend externo para o log</td><td>estado por réplica hoje gera conteúdo divergente</td></tr>
+          <tr><td>GitOps + policy as code</td><td>evita drift e impede manifesto que viole as regras</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout ok">
+      <div class="ct">Fechamento de 20 segundos</div>
+      <p>“O projeto é um laboratório: prova o mecanismo com números, mas assume riscos de propósito — <code>hostPID</code>, root, NodePort
+        sem auth e estado efêmero. Eu sei exatamente o que mudaria para produção e por quê.”</p>
+    </div>
+
+    <h2 id="simulado">8. Simulado de 10 minutos (12 perguntas)</h2>
+    <p>Feche tudo. Responda em voz alta, uma por uma, em no máximo 40 segundos. Só depois abra a resposta. Se travar em três ou mais,
+      volte à seção correspondente — não releia a página inteira.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Pergunta</th><th>A resposta precisa conter</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Por que o HPA subiu em degraus e não direto para 9?</td><td>fórmula + política de 4 Pods/100% por 15 s + realimentação + teto de 10</td></tr>
+          <tr><td>2</td><td>Se o request fosse 500m, teria escalado?</td><td>204m = 40,8% &lt; 50% → não; request define sensibilidade</td></tr>
+          <tr><td>3</td><td>Com duas réplicas de Nginx, qual log o usuário vê?</td><td>o da réplica escolhida; arquivos divergem sem volume</td></tr>
+          <tr><td>4</td><td>Quem é o PID 1 do container do Nginx?</td><td>o script de entrada, não o Nginx; correção seria <code>exec nginx</code></td></tr>
+          <tr><td>5</td><td>O crond morre. O que acontece e como você descobre?</td><td>falha silenciosa; log para; <code>pgrep crond</code>; liveness</td></tr>
+          <tr><td>6</td><td>O log sobrevive a restart de container? E à recriação do Pod?</td><td>não e não; writable layer; <code>emptyDir</code> × PVC</td></tr>
+          <tr><td>7</td><td>O que muda no <code>/processes</code> sem <code>hostPID</code>?</td><td>vê só o próprio namespace; 83 → ~2–4 processos</td></tr>
+          <tr><td>8</td><td>Por que o RBAC não impede a API de matar processos do nó?</td><td>RBAC é do API server; matar é syscall + <code>CAP_KILL</code> + UID 0</td></tr>
+          <tr><td>9</td><td>O <code>memory_percent</code> do psutil é a memória do container?</td><td>não: lê <code>/proc/meminfo</code> do host; não é cgroup-aware</td></tr>
+          <tr><td>10</td><td>A carga do teste prova que a API precisava de 10 réplicas?</td><td>não: estresse sintético; HPA reage à métrica, não à necessidade real</td></tr>
+          <tr><td>11</td><td>O que acontece ao reaplicar o Deployment com o HPA em 10?</td><td>volta para <code>replicas: 2</code>; o HPA reescala; conflito declarativo</td></tr>
+          <tr><td>12</td><td>E se o nó morrer?</td><td><code>NotReady</code> ~40 s; evicção ~5 min; sem outro nó, <code>Pending</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <div class="ct">Como pontuar</div>
+      <p>Dê <strong>1 ponto</strong> por mecanismo correto, <strong>1</strong> por número ou consequência e <strong>1</strong> por alternativa/limitação.
+         Total: 36. <strong>30+</strong> significa que você aguenta a banca; abaixo de 24, volte a esta página amanhã — não no mesmo dia.</p>
+    </div>
+
+    <div class="footer">
+      <span>Base de estudos local · A3 · Tema 1</span>
+      <span><a href="perguntas.html">Voltar às perguntas →</a></span>
+    </div>
+  </div>
+</div>
+
+<script src="assets/search-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

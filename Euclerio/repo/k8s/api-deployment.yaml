@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+  namespace: daemon-lab
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: process-api
+  template:
+    metadata:
+      labels:
+        app: process-api
+    spec:
+      hostPID: true
+      containers:
+      - name: api
+        image: process-api:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            cpu: "100m"
+          limits:
+            cpu: "500m"

@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("a3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Código · Base de Estudos A3 — Tema 2</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">A3</div>
+    <div class="brand-text"><strong>Base de Estudos</strong><span>Tema 2 · Fila + Leis</span></div>
+  </div>
+  <div class="study-switch" aria-label="Trocar de estudo">
+    <a href="../Euclerio/index.html">Euclerio</a>
+    <a href="../Sergio/index.html" class="active">Sergio</a>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
+    <div class="search-results"></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Comece aqui</div>
+    <a href="index.html"><span class="n">00</span> Início</a>
+    <div class="nav-label">Fundamentos</div>
+    <a href="teoria.html"><span class="n">01</span> Teoria</a>
+    <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
+    <div class="nav-label">O trabalho</div>
+    <a href="pratica.html"><span class="n">03</span> Prática</a>
+    <a href="codigo.html"><span class="n">04</span> Código</a>
+    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <div class="nav-label">Treino</div>
+    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">07</span> Quiz</a>
+    <a href="plano.html"><span class="n">08</span> Plano</a>
+    <a href="banca.html"><span class="n">09</span> Banca</a>
+  </nav>
+  <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" data-menu aria-label="Abrir menu">☰</button>
+    <span class="topbar-title">04 · Implementação</span>
+  </div>
+
+  <div class="content">
+    <div class="eyebrow">04 · Implementação</div>
+    <h1>Código: o que está no repositório, linha a linha</h1>
+    <p class="lead">Esta página é o mapa de leitura. Ela mostra cada arquivo, o trecho que importa, o que ele faz e onde\n      estão os defeitos. Use os blocos como referência; não decore o código inteiro, decore as decisões.</p>
+
+    <div class="callout warn">
+      <div class="ct">Aviso de honestidade</div>
+      <p>Os trechos abaixo foram transcritos do repositório <code>Cauapm/A3---Sergio</code> (clone local, sem alterações).\n        O código é o que é: um núcleo funcional com documentação otimista. Quando houver divergência entre o comentário e o\n        comportamento, a verdade é o comportamento — e os testes.</p>
+    </div>
+
+    <h2 id="mapa-arquivos">1. Mapa dos arquivos</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Arquivo</th><th>Linhas</th><th>Papel</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td><code>modelos.py</code></td><td>51</td><td>entidades, enums, fábrica de cliente</td><td><span class="tag ok">completo</span></td></tr>
+          <tr><td><code>Alexandre.py</code></td><td>278</td><td><code>aplicar_starvation</code> + uma cópia inteira do gerenciador</td><td><span class="tag warn">duplicado</span></td></tr>
+          <tr><td><code>gerenciador_filas.py</code></td><td>261</td><td>gerenciador usado pelos testes e pelo app</td><td><span class="tag ok">funcional</span></td></tr>
+          <tr><td><code>extracao.py</code></td><td>30</td><td>GET no Supabase + DataFrame</td><td><span class="tag warn">frágil</span></td></tr>
+          <tr><td><code>gerar_clientes.py</code></td><td>92</td><td>Faker + random + inserção</td><td><span class="tag ok">funcional</span></td></tr>
+          <tr><td><code>streamlit.py</code></td><td>50</td><td>teste de conexão e métricas</td><td><span class="tag danger">UI mínima</span></td></tr>
+          <tr><td><code>testes_frente2.py</code></td><td>265</td><td>15 testes unittest</td><td><span class="tag ok">núcleo coberto</span></td></tr>
+          <tr><td><code>supabase/setup_supabase.sql</code></td><td>98</td><td>schema, índices, RLS, seed</td><td><span class="tag ok">completo</span></td></tr>
+          <tr><td><code>supabase/migrations/...</code></td><td>64</td><td>migração inicial (sem <code>IF NOT EXISTS</code>)</td><td><span class="tag warn">duplicada</span></td></tr>
+          <tr><td><code>supabase/seed.sql</code></td><td>17</td><td>3 níveis + 9 motivos</td><td><span class="tag ok">completo</span></td></tr>
+          <tr><td><code>README.md</code></td><td>42</td><td>instruções e promessa 3:2:1</td><td><span class="tag danger">desatualizado</span></td></tr>
+          <tr><td><code>Documentação/tarefas</code></td><td>35</td><td>divisão das frentes</td><td><span class="tag warn">3:2:1</span></td></tr>
+          <tr><td><code>Documentação/A3 - sergio.pdf</code></td><td>—</td><td>especificação arquitetural</td><td><span class="tag warn">aspiracional</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>O núcleo que realmente roda é pequeno: <code>modelos.py</code> + <code>Alexandre.py</code> (só a função) +\n      <code>gerenciador_filas.py</code>. O resto é infraestrutura ou documentação. Se você tiver pouco tempo, estude esses\n      três e os testes.</p>
+
+    <h2 id="modelos">2. <code>modelos.py</code>: o contrato</h2>
+<pre><code>from dataclasses import dataclass
+from datetime import datetime
+from enum import Enum, IntEnum
+from uuid import uuid4
+
+
+class NivelPrioridade(IntEnum):
+    """Níveis de prioridade legal. IntEnum porque:
+      1) O schema do Supabase armazena nivel_prioridade como Int;
+      2) A hierarquia é ordinal (permite comparação direta).
+
+    Base legal:
+      - SUPER_PRIORIDADE:  Lei 13.466/2017 (80+ anos)
+      - PRIORIDADE_PADRAO: Lei 10.048/2000 e Lei 12.764/2012
+      - CONVENCIONAL:      sem previsão legal
+    """
+    SUPER_PRIORIDADE = 0
+    PRIORIDADE_PADRAO = 1
+    CONVENCIONAL = 2
+</code></pre>
+
+    <p><strong>O que esta parte faz no total:</strong> define os três níveis legais como números 0, 1 e 2 e associa cada um à lei correspondente.</p>
+
+    <details open><summary>Bloco 2.1 — imports + NivelPrioridade (linha por linha)</summary><div class="body"><ul>
+      <li><code>from dataclasses import dataclass</code> — importa a ferramenta que cria classes de dados.</li>
+      <li><code>from datetime import datetime</code> — importa data/hora para registro de chegada.</li>
+      <li><code>from enum import Enum, IntEnum</code> — importa enum comum e enum numérico.</li>
+      <li><code>from uuid import uuid4</code> — importa gerador de id único.</li>
+      <li><code>class NivelPrioridade(IntEnum)</code> — cria enum numérico; permite comparar e salvar como número.</li>
+      <li><code>SUPER_PRIORIDADE = 0</code>, <code>PRIORIDADE_PADRAO = 1</code>, <code>CONVENCIONAL = 2</code> — ordem numérica de prioridade; menor número é mais prioritário.</li>
+    </ul></div></details>
+
+    <pre><code>
+class StatusCliente(Enum):
+    """Status fortemente tipado. Valores casam com a coluna status
+    do Supabase. O GerenciadorFilas NÃO altera este campo — apenas
+    o carrega e devolve. Transições de status são responsabilidade
+    da camada de persistência (Frente 1)."""
+    AGUARDANDO = "aguardando"
+    ATENDIDO = "atendido"
+</code></pre>
+
+    <p><strong>O que esta parte faz no total:</strong> cria um enum de texto com apenas dois status possíveis, usados para indicar se o cliente ainda aguarda ou já foi atendido.</p>
+
+    <details open><summary>Bloco 2.2 — StatusCliente (linha por linha)</summary><div class="body"><ul>
+      <li><code>class StatusCliente(Enum)</code> — cria enum normal, baseado em texto.</li>
+      <li>Docstring — explica que o gerenciador só carrega e devolve status; não transiciona.</li>
+      <li><code>AGUARDANDO = "aguardando"</code> — status inicial, igual ao padrão do banco.</li>
+      <li><code>ATENDIDO = "atendido"</code> — status final, também igual ao banco.</li>
+    </ul></div></details>
+
+    <pre><code>
+@dataclass(frozen=True)
+class Cliente:
+    """Entidade imutável (frozen=True) que representa um cliente
+    na fila do banco. Contrato de dados entre todas as camadas."""
+    id: str
+    nome: str
+    nivel_prioridade: NivelPrioridade
+    motivo: str
+    data_chegada: datetime
+    status: StatusCliente = StatusCliente.AGUARDANDO
+
+    @classmethod
+    def criar(cls, nome: str, nivel: NivelPrioridade, motivo: str) -> "Cliente":
+        """Fábrica simples que gera id e timestamp automaticamente."""
+        return cls(
+            id=str(uuid4()),
+            nome=nome,
+            nivel_prioridade=nivel,
+            motivo=motivo,
+            data_chegada=datetime.now(),
+        )</code></pre>
+
+    <p><strong>O que esta parte faz no total:</strong> define o modelo Cliente imutável e sua fábrica, que gera id e timestamp automaticamente.</p>
+
+    <details open><summary>Bloco 2.3 — Cliente (linha por linha)</summary><div class="body"><ul>
+      <li><code>@dataclass(frozen=True)</code> — cria a entidade de dados e a deixa imutável.</li>
+      <li><code>class Cliente:</code> — entidade principal do sistema.</li>
+      <li><code>id: str</code>, <code>nome: str</code>, etc. — campos do cliente. <code>status</code> tem padrão <code>AGUARDANDO</code>.</li>
+      <li><code>@classmethod criar(...)</code> — fábrica que cria cliente gerando id e hora.</li>
+      <li><code>return cls(...)</code> — monta e devolve o novo Cliente.</li>
+    </ul></div></details>
+
+    <details open><summary>Modelos — leitura linha por linha</summary><div class="body"><ul>
+      <li><code>from dataclasses import dataclass</code> — importa a ferramenta que cria a classe de dados automaticamente.</li>
+      <li><code>from datetime import datetime</code> — importa data e hora para registrar a chegada do cliente.</li>
+      <li><code>from enum import Enum, IntEnum</code> — importa enum comum e enum numérico.</li>
+      <li><code>from uuid import uuid4</code> — importa o gerador de identificador único.</li>
+      <li><code>class NivelPrioridade(IntEnum)</code> — cria os níveis de prioridade como números, permitindo comparação e salvar no banco.</li>
+      <li><code>SUPER_PRIORIDADE = 0</code>, <code>PRIORIDADE_PADRAO = 1</code>, <code>CONVENCIONAL = 2</code> — números internos; quanto menor, maior a prioridade. O comentário indica a lei de cada um.</li>
+      <li><code>class StatusCliente(Enum)</code> — cria apenas dois status possíveis: aguardando e atendido. Não inclui “em atendimento” nem “cancelado”.</li>
+      <li><code>AGUARDANDO = "aguardando"</code>, <code>ATENDIDO = "atendido"</code> — valores em texto, iguais aos da coluna status do Supabase.</li>
+      <li><code>@dataclass(frozen=True)</code> — cria a entidade de dados e a deixa imutável: depois de criado, um cliente não muda.</li>
+      <li><code>class Cliente</code> — entidade principal do sistema.</li>
+      <li><code>id: str</code>, <code>nome: str</code> e demais campos — dados do cliente. <code>status</code> tem valor padrão <code>AGUARDANDO</code>.</li>
+      <li><code>@classmethod criar(...)</code> — fábrica que cria um cliente gerando id e hora automaticamente.</li>
+      <li><code>return cls(...)</code> — monta e devolve o novo objeto Cliente.</li>
+    </ul></div></details>
+
+    <p><strong>O que este bloco faz no total:</strong> define os três níveis legais, os dois status possíveis e a entidade Cliente imutável. É o contrato entre as camadas; se ele mudar, o resto do sistema muda junto.</p>
+
+    <p><strong>Leitura de banca:</strong> o modelo é imutável e bem tipado, mas não tem <code>cpf</code> nem\n      <code>data_nascimento</code>. O status é um enum de dois valores, enquanto o banco tem quatro. O\n      <code>datetime.now()</code> é naive; o banco usa <code>TIMESTAMPTZ</code>. E a fábrica <code>criar()</code> gera um\n      <code>uuid4</code> que pode não ser o UUID do banco — o banco também tem <code>DEFAULT gen_random_uuid()</code>.</p>
+
+    <h2 id="algoritmo-codigo">3. <code>aplicar_starvation()</code>: o coração</h2>
+<pre><code>def aplicar_starvation(
+    fila_super: deque,
+    fila_padrao: deque,
+    fila_convencional: deque,
+    etapa: int,
+    contador: int,
+    limites: tuple = (2, 1),
+):
+    if not (fila_super or fila_padrao or fila_convencional):
+        return None, None, 0, 0
+
+    if fila_super:
+        cliente = fila_super.popleft()
+        return cliente, fila_super, etapa, contador
+</code></pre>
+
+    <p><strong>O que esta parte faz no total:</strong> trata a prioridade absoluta dos 80+: se houver algum, atende imediatamente sem alterar o ciclo.</p>
+
+    <details open><summary>Bloco 3.1 — prioridade absoluta dos 80+</summary><div class="body"><ul>
+      <li><code>if fila_super:</code> — se houver 80+, usa esse caminho.</li>
+      <li><code>cliente = fila_super.popleft()</code> — remove o primeiro 80+ da fila.</li>
+      <li><code>return cliente, fila_super, etapa, contador</code> — devolve imediatamente sem alterar etapa/contador.</li>
+    </ul></div></details>
+
+    <pre><code>
+    filas_ciclo = (fila_padrao, fila_convencional)
+    for _ in range(2):
+        fila = filas_ciclo[etapa]
+        limite = limites[etapa]
+        if contador &gt;= limite or not fila:
+            etapa = (etapa + 1) % 2
+            contador = 0
+            continue
+
+        cliente = fila.popleft()
+        contador += 1
+        if contador &gt;= limite or not fila:
+            etapa = (etapa + 1) % 2
+            contador = 0
+        return cliente, fila, etapa, contador
+
+    return None, None, etapa, contador
+</code></pre>
+
+    <p><strong>O que esta parte faz no total:</strong> faz o ciclo 2 padrão para 1 convencional, pulando filas vazias sem quebrar.</p>
+
+    <details open><summary>Bloco 3.2 — ciclo padrão e convencional (linha por linha)</summary><div class="body"><ul>
+      <li><code>filas_ciclo = ...</code> — define ordem das filas do ciclo.</li>
+      <li><code>for _ in range(2):</code> — tenta até duas filas.</li>
+      <li><code>fila = filas_ciclo[etapa]</code> — pega a fila da etapa atual.</li>
+      <li><code>limite = limites[etapa]</code> — cota da etapa atual.</li>
+      <li><code>if contador >= limite or not fila:</code> — avança se acabou a cota ou fila vazia.</li>
+      <li><code>etapa = (etapa + 1) % 2; contador = 0</code> — troca para a outra fila.</li>
+      <li><code>cliente = fila.popleft()</code> — chama o próximo da fila.</li>
+      <li><code>contador += 1</code> — conta essa chamada.</li>
+      <li><code>if contador >= limite or not fila:</code> — avança ao fim da cota ou se a fila acabar.</li>
+      <li><code>return cliente, ...</code> — devolve o cliente chamado.</li>
+      <li><code>return None, None, ...</code> — se não houver ninguém.</li>
+    </ul></div></details>
+
+    <details open><summary>aplicar_starvation() — leitura linha por linha</summary><div class="body"><ul>
+      <li><code>def aplicar_starvation(...)</code> — recebe as três filas e o estado do ciclo.</li>
+      <li><code>if not (fila_super or fila_padrao or fila_convencional)</code> — se todas estiverem vazias, retorna vazio e zera os contadores.</li>
+      <li><code>if fila_super:</code> — se existe 80+, ele tem prioridade absoluta.</li>
+      <li><code>cliente = fila_super.popleft()</code> — remove o primeiro 80+.</li>
+      <li><code>return cliente, fila, etapa, contador</code> — devolve o 80+ sem alterar o ciclo.</li>
+      <li><code>filas_ciclo = (fila_padrao, fila_convencional)</code> — prepara o ciclo entre padrão e convencional.</li>
+      <li><code>for _ in range(2):</code> — permite tentar padrão e convencional.</li>
+      <li><code>fila = filas_ciclo[etapa]</code> — pega a fila da etapa atual.</li>
+      <li><code>limite = limites[etapa]</code> — pega a cota da etapa.</li>
+      <li><code>if contador >= limite or not fila:</code> — se cota cheia ou fila vazia, avança etapa e zera.</li>
+      <li><code>etapa = (etapa + 1) % 2; contador = 0</code> — troca para a outra fila.</li>
+      <li><code>cliente = fila.popleft()</code> — remove o próximo cliente.</li>
+      <li><code>contador += 1</code> — conta a chamada.</li>
+      <li><code>if contador >= limite or not fila:</code> — se cota cheia ou fila acabou, avança e zera.</li>
+      <li><code>return cliente, ...</code> — devolve o cliente e o novo estado.</li>
+      <li><code>return None, None, etapa, contador</code> — se ninguém puder ser chamado.</li>
+    </ul></div></details>
+
+    <p><strong>O que este bloco faz no total:</strong> atende 80+ imediatamente; para os demais, faz 2 padrão e 1 convencional, tratando fila vazia sem quebrar.</p>
+
+    <table>
+      <thead><tr><th>Entrada><th>Comportamento</th><th>Prova</th></tr></thead>
+      <tbody>
+        <tr><td>todas vazias</td><td>retorna <code>None</code> e zera etapa/contador</td><td><code>test_todas_vazias_retorna_none</code></td></tr>
+        <tr><td>super não vazia</td><td>remove super e devolve etapa/contador intactos</td><td><code>test_super_nao_altera_contador...</code></td></tr>
+        <tr><td>etapa 0, contador 0</td><td>chama padrão; contador 1</td><td>traço P1</td></tr>
+        <tr><td>etapa 0, contador 1</td><td>chama padrão; contador 2 → troca</td><td>traço P2</td></tr>
+        <tr><td>etapa 1, contador 0</td><td>chama convencional; contador 1 → troca</td><td>traço C1</td></tr>
+        <tr><td>fila da etapa vazia</td><td>avança sem consumir chamada</td><td><code>test_ciclo_encurta...</code></td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="gerenciador">4. <code>GerenciadorFilas</code>: estado e rollback</h2>
+<pre><code>class GerenciadorFilas:
+    def __init__(self, extrator=None, auto_carregar=False, repositorio=None):
+        self._fila_super = deque()
+        self._fila_padrao = deque()
+        self._fila_convencional = deque()
+
+        self._etapa = 0
+        self._contador = 0
+        self._limites = (2, 1)
+        self._filas_ciclo = (self._fila_padrao, self._fila_convencional)
+
+        self._extrator = extrator if extrator is not None else ExtratorFila()
+        self._repositorio = repositorio
+
+        if repositorio is not None:
+            auto_carregar = False
+        if auto_carregar:
+            self.carregar_fila()</code></pre>
+
+    <details open><summary>GerenciadorFilas __init__ — leitura linha por linha</summary><div class="body"><ul>
+      <li><code>def __init__(self, extrator=None, auto_carregar=False, repositorio=None)</code> — cria o gerenciador com extrator opcional, carga automática opcional e repositório opcional.</li>
+      <li><code>self._fila_super = deque()</code> — fila da prioridade super (80+).</li>
+      <li><code>self._fila_padrao = deque()</code> — fila padrão.</li>
+      <li><code>self._fila_convencional = deque()</code> — fila convencional.</li>
+      <li><code>self._etapa = 0</code> — começa no ciclo de padrão.</li>
+      <li><code>self._contador = 0</code> — ainda não atendeu ninguém nesta etapa.</li>
+      <li><code>self._limites = (2, 1)</code> — cota real do código: 2 padrão para 1 convencional.</li>
+      <li><code>self._filas_ciclo = (self._fila_padrao, self._fila_convencional)</code> — liga o ciclo aos deques reais.</li>
+      <li><code>self._extrator = extrator if extrator is not None else ExtratorFila()</code> — usa o extrator informado ou cria um novo.</li>
+      <li><code>self._repositorio = repositorio</code> — repositório opcional de persistência.</li>
+      <li><code>if repositorio is not None:</code> — se há repositório, não carrega automaticamente.</li>
+      <li><code>auto_carregar = False</code> — evita carregar sem a fonte certa.</li>
+      <li><code>if auto_carregar: self.carregar_fila()</code> — carrega os clientes apenas se foi pedido.</li>
+    </ul></div></details>
+
+    <p><strong>O que este bloco faz no total:</strong> prepara as três filas e o estado do ciclo, sem tocar no banco, exceto se auto_carregar for verdadeiro.</p>
+
+    <p>O trecho de chamada é o que mais rende pergunta:</p>
+<pre><code>def chamar_proximo(self):
+    etapa_anterior = self._etapa
+    contador_anterior = self._contador
+
+    cliente, fila, nova_etapa, novo_contador = aplicar_starvation(
+        self._fila_super,
+        self._fila_padrao,
+        self._fila_convencional,
+        self._etapa,
+        self._contador,
+        self._limites,
+    )
+    self._etapa = nova_etapa
+    self._contador = novo_contador
+
+    if cliente is None:
+        return None
+
+    if self._repositorio is not None and hasattr(self._repositorio, "registrar_chamada"):
+        try:
+            self._repositorio.registrar_chamada(cliente.id)
+        except Exception:
+            self._etapa = etapa_anterior
+            self._contador = contador_anterior
+            fila.appendleft(cliente)
+            raise
+
+    return cliente</code></pre>
+
+    <details open><summary>chamar_proximo() — leitura linha por linha</summary><div class="body"><ul>
+      <li><code>etapa_anterior = self._etapa</code> — guarda a etapa antes da chamada, para rollback.</li>
+      <li><code>contador_anterior = self._contador</code> — guarda o contador antes da chamada.</li>
+      <li><code>cliente, fila, nova_etapa, novo_contador = aplicar_starvation(...)</code> — calcula quem será chamado.</li>
+      <li><code>self._etapa = nova_etapa</code> — atualiza a etapa após a chamada.</li>
+      <li><code>self._contador = novo_contador</code> — atualiza o contador.</li>
+      <li><code>if cliente is None: return None</code> — se não houver fila, não há chamada.</li>
+      <li><code>if self._repositorio is not None and hasattr(...)</code> — tenta registrar a chamada no repositório.</li>
+      <li><code>self._repositorio.registrar_chamada(cliente.id)</code> — tenta gravar no banco.</li>
+      <li><code>except Exception: ...</code> — se falhar, restaura etapa, contador e devolve o cliente à fila.</li>
+      <li><code>raise</code> — repropaga o erro para cima.</li>
+      <li><code>return cliente</code> — devolve o cliente chamado se tudo deu certo.</li>
+    </ul></div></details>
+
+    <p><strong>O que este bloco faz no total:</strong> chama o cliente correto, salva seus contadores e tenta persistir a chamada. Se a persistência falhar, desfaz o estado para não perder a senha.</p>
+
+    <p><strong>O que está bom:</strong> o rollback restaura etapa/contador e devolve o cliente à cabeça da fila se a\n      persistência falhar. Isso evita perder uma chamada. <strong>O que falta:</strong> não há transação com o banco, não\n      há atualização de status, não há gravação em <code>atendimentos</code>, e o cliente retornado continua\n      <code>AGUARDANDO</code>.</p>
+
+    <p>Outro detalhe: <code>sincronizar_estado()</code> com repositório não ordena por <code>data_chegada</code>; ele confia\n      na ordem de <code>listar_aguardando()</code>. Se o repositório devolver fora de ordem, o FIFO quebra. E\n      <code>estado_contadores()</code> usa o literal <code>2</code> para “padrão concluído”, em vez de\n      <code>self._limites[0]</code>; se a cota mudar, o painel mente.</p>
+
+    <h2 id="extracao">5. <code>extracao.py</code>: a ponte com o Supabase</h2>
+<pre><code>class ExtratorFila:
+    def __init__(self):
+        self.supabase_url = os.getenv("SUPABASE_URL")
+        self.supabase_key = os.getenv("SUPABASE_KEY")
+        self.url = self.gerar_url()
+        self.df = None
+
+    def gerar_url(self) -> str:
+        return f"{self.supabase_url}/rest/v1/clientes_fila?apikey={self.supabase_key}"
+</code></pre>
+
+    <p><strong>O que esta parte faz no total:</strong> lê as credenciais do ambiente e monta a URL usada para buscar os clientes.</p>
+
+    <details open><summary>Bloco 5.1 — inicialização e URL (linha por linha)</summary><div class="body"><ul>
+      <li><code>class ExtratorFila:</code> — classe que busca dados no Supabase.</li>
+      <li><code>def __init__(self):</code> — inicializa a classe.</li>
+      <li><code>self.supabase_url = os.getenv("SUPABASE_URL")</code> — lê a URL do ambiente.</li>
+      <li><code>self.supabase_key = os.getenv("SUPABASE_KEY")</code> — lê a chave do ambiente.</li>
+      <li><code>self.url = self.gerar_url()</code> — monta a URL de busca.</li>
+      <li><code>self.df = None</code> — começa sem dados.</li>
+      <li><code>def gerar_url(self)</code> — monta a URL REST do Supabase.</li>
+    </ul></div></details>
+
+    <pre><code>
+    def converter_pandas(self) -> pd.DataFrame:
+        self.df = pd.read_json(self.url)
+        self.df = self.df.drop(columns=["id", "id_motivo"], errors="ignore")
+        return self.df</code></pre>
+
+    <details open><summary>ExtratorFila — leitura linha por linha</summary><div class="body"><ul>
+      <li><code>class ExtratorFila:</code> — classe que busca dados no Supabase.</li>
+      <li><code>def __init__(self):</code> — inicializa a classe.</li>
+      <li><code>self.supabase_url = os.getenv("SUPABASE_URL")</code> — lê a URL do Supabase do ambiente.</li>
+      <li><code>self.supabase_key = os.getenv("SUPABASE_KEY")</code> — lê a chave do ambiente.</li>
+      <li><code>self.url = self.gerar_url()</code> — monta a URL de busca.</li>
+      <li><code>self.df = None</code> — começa sem DataFrame.</li>
+      <li><code>def gerar_url(self)</code> — monta a URL REST do Supabase com a API key.</li>
+      <li><code>def converter_pandas(self)</code> — carrega os dados em pandas.</li>
+      <li><code>self.df = pd.read_json(self.url)</code> — lê o JSON diretamente da URL.</li>
+      <li><code>self.df = self.df.drop(columns=["id", "id_motivo"], errors="ignore")</code> — remove as colunas id e id_motivo.</li>
+      <li><code>return self.df</code> — devolve o DataFrame.</li>
+    </ul></div></details>
+
+    <p><strong>O que este bloco faz no total:</strong> conecta ao Supabase e converte a resposta em tabela pandas, removendo colunas usadas no banco mas não no código.</p>
+
+    <p>O bug do <code>id</code> nasce aqui: ao remover a coluna <code>id</code>, o gerenciador passa a usar\n      <code>row.get("id") or row.get("cpf") or uuid4()</code>. Como <code>id</code> não existe, o CPF vira o identificador.\n      Além disso, <code>pd.read_json</code> não tem timeout, não valida status HTTP e não pagina. Para 500 clientes, o\n      Supabase devolve tudo de uma vez; para milhares, você precisa de <code>Range</code> ou de um endpoint paginado.</p>
+
+    <h2 id="gerador">6. <code>gerar_clientes.py</code>: dados sintéticos</h2>
+<pre><code>categoria = random.choices([0, 1, 2], weights=[0.15, 0.35, 0.50], k=1)[0]
+nome = fake.name()
+cpf = fake.cpf()
+
+if categoria == 0:
+    data_nascimento = fake.date_of_birth(minimum_age=80, maximum_age=105)
+    motivo = "Idoso 80+ anos (Lei 13.466/2017)"
+elif categoria == 1:
+    motivo_escolhido, min_age, max_age = random.choice(MOTIVOS_PADRAO)
+    data_nascimento = fake.date_of_birth(minimum_age=min_age, maximum_age=max_age)
+    motivo = motivo_escolhido
+else:
+    data_nascimento = fake.date_of_birth(minimum_age=18, maximum_age=59)
+    motivo = "Atendimento Convencional"</code></pre>
+
+    <details open><summary>gerar_clientes() — leitura linha por linha</summary><div class="body"><ul>
+      <li><code>categoria = random.choices([0, 1, 2], weights=[...])</code> — escolhe 80+, padrão ou convencional com 15/35/50%.</li>
+      <li><code>nome = fake.name()</code> — gera nome brasileiro fictício.</li>
+      <li><code>cpf = fake.cpf()</code> — gera CPF fictício.</li>
+      <li><code>if categoria == 0:</code> e idosos 80 a 105 — gera cliente 80+ e motivo da Lei 13.466.</li>
+      <li><code>elif categoria == 1:</code> — pega um motivo padrão da lista e idade correspondente.</li>
+      <li><code>else:</code> — gera cliente convencional de 18 a 59 anos.</li>
+    </ul></div></details>
+
+    <p><strong>O que este bloco faz no total:</strong> cria clientes sintéticos com prioridade, nome, CPF, idade e motivo, seguindo a distribuição definida no projeto.</p>
+
+    <p>O dicionário devolvido tem <code>nome</code>, <code>cpf</code>, <code>data_nascimento</code>,\n      <code>nivel_prioridade</code>, <code>motivo</code> e <code>status</code>. Não tem <code>data_chegada</code>; o banco\n      preenche. A inserção é em lotes de 25 com <code>client.table("clientes_fila").insert(lote).execute()</code>. Se um\n      lote falhar, a exceção interrompe o loop e os lotes anteriores ficam gravados — não há rollback global.</p>
+
+    <p>O CPF do Faker é sintético e válido, mas o banco não tem <code>UNIQUE</code> em <code>cpf</code>. Rodar o gerador duas\n      vezes pode criar duplicatas. Para uma demo, tudo bem; para produção, é um problema de identidade e LGPD.</p>
+
+    <h2 id="streamlit">7. <code>streamlit.py</code>: o que ele realmente faz</h2>
+<pre><code>st.set_page_config(page_title="Fila Bancária", layout="wide")
+st.title("🏦 Sistema de Gerenciamento de Fila Bancária")
+
+supabase = get_supabase()
+st.success("✅ Conectado com sucesso ao Supabase.")
+
+try:
+    res_tipos = supabase.table("tipo_prioridade").select("*").execute()
+    res_fila = supabase.table("clientes_fila").select("id", count="exact").execute()
+    total_fila = len(res_fila.data) if res_fila.data else 0
+
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Categorias Configuradas", len(res_tipos.data))
+    with col2:
+        st.metric("Clientes Atuais na Fila", total_fila)
+except Exception as e:
+    st.info(f"Aguardando sincronização do schema no Supabase: {e}")</code></pre>
+
+    <details open><summary>streamlit.py — leitura linha por linha</summary><div class="body"><ul>
+      <li><code>st.set_page_config(...)</code> — configura título e layout da página.</li>
+      <li><code>st.title(...)</code> — mostra o título na tela.</li>
+      <li><code>supabase = get_supabase()</code> — tenta conectar ao Supabase.</li>
+      <li><code>st.success(...)</code> — avisa que a conexão funcionou.</li>
+      <li><code>res_tipos = supabase.table(...).select("*").execute()</code> — busca categorias.</li>
+      <li><code>res_fila = ... count="exact"</code> — busca clientes da fila.</li>
+      <li><code>total_fila = len(res_fila.data)...</code> — conta quantos clientes estão na fila.</li>
+      <li><code>st.columns(2)</code>, <code>st.metric(...)</code> — mostra duas métricas na tela.</li>
+      <li><code>except Exception as e:</code> — mostra aviso se algo falhar.</li>
+    </ul></div></details>
+
+    <p><strong>O que este bloco faz no total:</strong> é apenas um teste de conexão que exibe duas métricas; não implementa a fila de atendimento nem o gerenciador.</p>
+
+    <p>Não há <code>GerenciadorFilas</code>, não há <code>session_state</code>, não há botão, não há painel de senha.\n      É um <em>health check</em> com dois números. A interface prometida no PDF e nas tarefas não foi implementada. O\n      README manda rodar <code>app.py</code>, que não existe; o arquivo é <code>streamlit.py</code>, cujo nome pode sombrear\n      o pacote.</p>
+
+    <h2 id="sql">8. SQL: quatro tabelas e uma RLS aberta</h2>
+<pre><code>CREATE TYPE status_senha AS ENUM (
+    'aguardando',
+    'em_atendimento',
+    'atendido',
+    'cancelado'
+);
+
+CREATE TABLE IF NOT EXISTS tipo_prioridade (
+    id_prioridade INT PRIMARY KEY,
+    nome VARCHAR(30) NOT NULL UNIQUE,
+    descricao VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS motivo_prioridade (
+    id_motivo SERIAL PRIMARY KEY,
+    id_prioridade INT NOT NULL REFERENCES tipo_prioridade(id_prioridade),
+    descricao VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS clientes_fila (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    nome VARCHAR(120) NOT NULL,
+    cpf VARCHAR(14),
+    data_nascimento DATE,
+    nivel_prioridade INT NOT NULL REFERENCES tipo_prioridade(id_prioridade),
+    motivo VARCHAR(255),
+    id_motivo INT REFERENCES motivo_prioridade(id_motivo),
+    status status_senha NOT NULL DEFAULT 'aguardando',
+    data_chegada TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+</code></pre>
+
+    <p><strong>O que esta parte faz no total:</strong> cria as tabelas principais de prioridades, motivos e clientes, com validações e valores padrão.</p>
+
+    <details open><summary>Bloco 8.1 — tabelas principais (linha por linha)</summary><div class="body"><ul>
+      <li><code>CREATE TYPE status_senha ...</code> — define os status possíveis.</li>
+      <li><code>CREATE TABLE tipo_prioridade</code> — tabela de níveis de prioridade.</li>
+      <li><code>CREATE TABLE motivo_prioridade</code> — tabela de motivos ligados ao nível.</li>
+      <li><code>CREATE TABLE clientes_fila</code> — tabela principal de clientes na fila.</li>
+      <li><code>id UUID ... gen_random_uuid()</code> — id automático.</li>
+      <li><code>nivel_prioridade ... REFERENCES</code> — força nível válido.</li>
+      <li><code>status ... DEFAULT 'aguardando'</code> — status inicial da senha.</li>
+      <li><code>data_chegada TIMESTAMPTZ ... now()</code> — quando o cliente entrou.</li>
+    </ul></div></details>
+
+    <pre><code>
+CREATE INDEX IF NOT EXISTS idx_proximo_fila
+    ON clientes_fila(nivel_prioridade, data_chegada)
+    WHERE status = 'aguardando';
+
+</code></pre>
+
+    <p><strong>O que esta parte faz no total:</strong> cria um índice parcial para buscar rapidamente a próxima senha aguardando, ordenada por prioridade e chegada.</p>
+
+    <details open><summary>Bloco 8.2 — índice parcial (linha por linha)</summary><div class="body"><ul>
+      <li><code>CREATE INDEX idx_proximo_fila</code> — cria índice.</li>
+      <li><code>ON clientes_fila(nivel_prioridade, data_chegada)</code> — ordena por prioridade e chegada.</li>
+      <li><code>WHERE status = 'aguardando'</code> — inclui só senhas não atendidas.</li>
+    </ul></div></details>
+
+    <pre><code>
+CREATE TABLE IF NOT EXISTS atendimentos (
+    id_chamada UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    cliente_id UUID NOT NULL REFERENCES clientes_fila(id) ON DELETE CASCADE,
+    guiche INT NOT NULL CHECK (guiche > 0),
+    data_chamada TIMESTAMPTZ NOT NULL DEFAULT now(),
+    data_finalizado TIMESTAMPTZ
+);</code></pre>
+
+    <details open><summary>Schema SQL — leitura linha por linha</summary><div class="body"><ul>
+      <li><code>CREATE TYPE status_senha AS ENUM (...)</code> — cria lista de status possíveis no banco.</li>
+      <li><code>CREATE TABLE tipo_prioridade</code> — tabela com IDs e descrições de prioridade.</li>
+      <li><code>CREATE TABLE motivo_prioridade</code> — tabela de motivos, ligados à prioridade.</li>
+      <li><code>CREATE TABLE clientes_fila</code> — tabela principal com cliente, status e data de chegada.</li>
+      <li><code>id UUID PRIMARY KEY DEFAULT gen_random_uuid()</code> — identificador automático.</li>
+      <li><code>nivel_prioridade INT NOT NULL REFERENCES tipo_prioridade</code> — força nível válido.</li>
+      <li><code>status status_senha NOT NULL DEFAULT 'aguardando'</code> — status inicial da senha.</li>
+      <li><code>data_chegada TIMESTAMPTZ NOT NULL DEFAULT now()</code> — hora de chegada com fuso.</li>
+      <li><code>CREATE INDEX idx_proximo_fila ... WHERE status = 'aguardando'</code> — índice para buscar a próxima senha aguardando.</li>
+      <li><code>CREATE TABLE atendimentos</code> — tabela de histórico de atendimentos.</li>
+    </ul></div></details>
+
+    <p><strong>O que este bloco faz no total:</strong> cria a estrutura do banco: prioridades, motivos, clientes, índice parcial e histórico de atendimento.</p>
+
+    <details open><summary>Bloco 8.3 — tabela de atendimentos (linha por linha)</summary><div class="body"><ul>
+      <li><code>CREATE TABLE atendimentos</code> — cria histórico de chamadas.</li>
+      <li><code>id_chamada UUID ... gen_random_uuid()</code> — id da chamada.</li>
+      <li><code>cliente_id UUID ... REFERENCES clientes_fila</code> — liga a um cliente.</li>
+      <li><code>guiche INT ... CHECK (guiche > 0)</code> — número do guichê válido.</li>
+      <li><code>data_chamada TIMESTAMPTZ ... now()</code> — hora da chamada.</li>
+      <li><code>data_finalizado TIMESTAMPTZ</code> — hora do fim, pode ser nulo.</li>
+    </ul></div></details>
+
+    <p><strong>O que esta parte faz no total:</strong> cria o histórico de atendimentos, ligado ao cliente e com guichê e datas.</p>
+
+    <p>O índice parcial é uma boa decisão: ele cobre a consulta “próximo aguardando, ordenado por nível e chegada”.\n      Mas o app não usa essa consulta: ele carrega todos os clientes e ordena no pandas. O índice serve para uma consulta\n      que o código ainda não faz.</p>
+
+    <p>As políticas são o ponto mais grave:</p>
+<pre><code>ALTER TABLE clientes_fila ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Permitir todas operacoes em clientes_fila"
+    ON clientes_fila FOR ALL USING (true) WITH CHECK (true);</code></pre>
+
+    <details open><summary>RLS aberta — leitura linha por linha</summary><div class="body"><ul>
+      <li><code>ALTER TABLE clientes_fila ENABLE ROW LEVEL SECURITY</code> — ativa segurança por linha.</li>
+      <li><code>CREATE POLICY ... FOR ALL USING (true) WITH CHECK (true)</code> — libera qualquer operação para qualquer um.</li>
+    </ul></div></details>
+
+    <p><strong>O que este bloco faz no total:</strong> cria uma política permissiva que permite leitura e escrita de qualquer pessoa com a chave pública.</p>
+
+    <p>Isso permite <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code> e <code>DELETE</code> para qualquer portador\n      da chave pública. Em um banco real, seria necessário separar leitura e escrita, usar autenticação e definir\n      políticas por papel. O README contém uma chave que parece real; não a reproduza.</p>
+
+    <h2 id="testes">9. Os 15 testes, em detalhe</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Teste</th><th>O que entra</th><th>O que espera</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><code>test_prioridade_absoluta_80_mais_e_ciclo_21</code></td><td>4S, 3P, 3C</td><td>S,S,S,S,P,P,C</td></tr>
+          <tr><td>2</td><td><code>test_super_nao_altera_contador_do_ciclo_21</code></td><td>P0, S0, P1, C0</td><td>P0, S0, P1, C0</td></tr>
+          <tr><td>3</td><td><code>test_fifo_convencional</code></td><td>A,B,C,D,E</td><td>A,B,C,D,E</td></tr>
+          <tr><td>4</td><td><code>test_fifo_super_e_intercalacao_21</code></td><td>2S, 3P, 2C</td><td>S1,S2,P1,P2,C1</td></tr>
+          <tr><td>5</td><td><code>test_ciclo_encurta_quando_prioritarias_vazias</code></td><td>1S, 5C</td><td>S + 5C</td></tr>
+          <tr><td>6</td><td><code>test_fila_convencional_vazia_nao_quebra</code></td><td>4S, 4P</td><td>8 chamadas, depois <code>None</code></td></tr>
+          <tr><td>7</td><td><code>test_todas_vazias_retorna_none</code></td><td>nada</td><td><code>None</code></td></tr>
+          <tr><td>8</td><td><code>test_anti_inanicao_sob_pico_de_padrao</code></td><td>100P, 1C</td><td>P,P,C</td></tr>
+          <tr><td>9</td><td><code>test_gerenciador_nao_altera_status</code></td><td>1C</td><td>status <code>AGUARDANDO</code></td></tr>
+          <tr><td>10</td><td><code>test_carregamento_com_extrator_falso</code></td><td>1S,1P,1C</td><td>tamanhos 1/1/1</td></tr>
+          <tr><td>11</td><td><code>test_filtro_status_aguardando</code></td><td>3 status</td><td>só 1 carregado</td></tr>
+          <tr><td>12</td><td><code>test_ordenacao_fifo_por_data_chegada</code></td><td>3C fora de ordem</td><td>ordem cronológica</td></tr>
+          <tr><td>13</td><td><code>test_regra_alexandre_com_dados_extrator</code></td><td>2S,3P,2C</td><td>S0,S1,P0,P1,C0,P2</td></tr>
+          <tr><td>14</td><td><code>test_sincronizar_estado_recarrega_dados</code></td><td>extrator falso</td><td>recarrega</td></tr>
+          <tr><td>15</td><td><code>test_extracao_real_supabase</code></td><td>env real</td><td>skip se não houver env</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>O teste 15 é o único que toca a rede, e ele se auto-pula se faltar credencial. Isso é bom para CI sem segredo, mas\n      significa que a integração real não é obrigatória. Os testes 10–14 usam <code>ExtratorFalso</code>, um DataFrame em\n      memória com a mesma forma do extrator. É um fake, não um mock; testa o encaixe, não o SQL.</p>
+
+    <h2 id="bugs">10. Os bugs e as inconsistências que valem a banca</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Problema</th><th>Onde</th><th>Efeito</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Documentação 3:2:1 × código 2:1</td><td>README, PDF, tarefas</td><td>resposta errada se você repetir o PDF</td></tr>
+          <tr><td>2</td><td>80+ absoluto × “dentre os idosos”</td><td><code>Alexandre.py</code> / lei</td><td>interpretação além da literalidade</td></tr>
+          <tr><td>3</td><td><code>id</code> removido no extrator</td><td><code>extracao.py</code></td><td>CPF vira id; modelo não tem CPF</td></tr>
+          <tr><td>4</td><td>Status nunca muda</td><td><code>chamar_proximo()</code></td><td>cliente pode ser chamado de novo</td></tr>
+          <tr><td>5</td><td>Sem gravação em <code>atendimentos</code></td><td>gerenciador</td><td>não há histórico real</td></tr>
+          <tr><td>6</td><td>RLS <code>true</code></td><td>SQL</td><td>qualquer um lê/escreve</td></tr>
+          <tr><td>7</td><td><code>streamlit.py</code> sombreia pacote</td><td>nome do arquivo</td><td><code>import streamlit</code> pode falhar</td></tr>
+          <tr><td>8</td><td>README manda <code>app.py</code></td><td>README</td><td>comando não funciona</td></tr>
+          <tr><td>9</td><td><code>requirements</code> sem <code>pandas</code></td><td>requirements</td><td>falha em ambiente limpo</td></tr>
+          <tr><td>10</td><td>Duas classes <code>GerenciadorFilas</code></td><td><code>Alexandre.py</code></td><td>manutenção duplicada</td></tr>
+          <tr><td>11</td><td><code>__main__</code> duplicado</td><td><code>gerenciador_filas.py</code></td><td>roda duas vezes</td></tr>
+          <tr><td>12</td><td><code>estado_contadores</code> hardcoded 2</td><td>gerenciador</td><td>painel erra se a cota mudar</td></tr>
+          <tr><td>13</td><td>Sem timezone</td><td><code>datetime.now()</code></td><td>comparação com <code>TIMESTAMPTZ</code> ambígua</td></tr>
+          <tr><td>14</td><td>Sem timeout/paginação</td><td><code>pd.read_json</code></td><td>travamento ou dados truncados</td></tr>
+          <tr><td>15</td><td>Prioridade inválida vira convencional</td><td><code>except</code> silencioso</td><td>erro de dado escondido</td></tr>
+          <tr><td>16</td><td>Sem <code>UNIQUE</code> em CPF</td><td>SQL</td><td>duplicatas e fraude</td></tr>
+          <tr><td>17</td><td>Sem lock/transação</td><td>chamada</td><td>dois caixas chamam o mesmo</td></tr>
+          <tr><td>18</td><td>Sem aging por tempo</td><td>algoritmo</td><td>não garante SLA</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout danger">
+      <div class="ct">A tríade que derruba candidato</div>
+      <p>Se você disser “o status é atualizado”, “a interface está pronta” ou “o ciclo é 3:2:1”, a banca encontra a\n        contradição em segundos. Diga o contrário: “o status não é atualizado; a UI é mínima; o ciclo real é 2:1”.</p>
+    </div>
+
+    <h2 id="linha-a-linha">11. Como estudar o código em 40 minutos</h2>
+    <ol>
+      <li><strong>5 min</strong> — leia <code>modelos.py</code> inteiro. Decore os três níveis e o <code>frozen=True</code>.</li>
+      <li><strong>10 min</strong> — leia <code>aplicar_starvation</code> e faça o traço de 6 chamadas no papel.</li>
+      <li><strong>5 min</strong> — leia <code>chamar_proximo()</code> e explique o rollback.</li>
+      <li><strong>5 min</strong> — leia <code>carregar_fila()</code> e diga o que acontece com status inválido e data inválida.</li>
+      <li><strong>5 min</strong> — leia os testes 1, 2 e 4. Eles são a especificação executável.</li>
+      <li><strong>5 min</strong> — leia o SQL e aponte o índice parcial e a RLS aberta.</li>
+      <li><strong>5 min</strong> — leia <code>streamlit.py</code> e explique por que ele não é o painel prometido.</li>
+    </ol>
+
+  </div>
+</div>
+
+<script src="assets/search-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

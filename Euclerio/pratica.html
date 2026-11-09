@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("a3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Prática · Base de Estudos A3 — Tema 1</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">A3</div>
+    <div class="brand-text"><strong>Base de Estudos</strong><span>Tema 1 · Kubernetes + API</span></div>
+  </div>
+  <div class="study-switch" aria-label="Trocar de estudo">
+    <a href="../Euclerio/index.html" class="active">Euclerio</a>
+    <a href="../Sergio/index.html">Sergio</a>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
+    <div class="search-results"></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Comece aqui</div>
+    <a href="index.html"><span class="n">00</span> Início</a>
+    <div class="nav-label">Fundamentos</div>
+    <a href="teoria.html"><span class="n">01</span> Teoria</a>
+    <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
+    <div class="nav-label">O trabalho</div>
+    <a href="pratica.html"><span class="n">03</span> Prática</a>
+    <a href="codigo.html"><span class="n">04</span> Código</a>
+    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <div class="nav-label">Treino</div>
+    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">07</span> Quiz</a>
+    <a href="plano.html"><span class="n">08</span> Plano</a>
+    <a href="banca.html"><span class="n">09</span> Banca</a>
+  </nav>
+  <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" data-menu aria-label="Abrir menu">☰</button>
+    <span class="topbar-title">Prática</span>
+  </div>
+
+  <div class="content">
+    <div class="eyebrow">03 · Execução</div>
+    <h1>Prática: reproduzindo o ambiente do zero</h1>
+    <p class="lead">Esta é a sequência que você precisa saber executar de memória. Cada comando vem com a razão de existir —
+      porque na banca você não vai só digitar, vai explicar.</p>
+
+    <h2 id="ordem">A ordem de criação — cada recurso, do zero</h2>
+    <p>O projeto não “aparece pronto”: ele é construído em camadas. Esta é a ordem real, e cada etapa tem página própria.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>O que você cria</th><th>Artefato</th><th>Onde está o passo a passo</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>O código da API</td><td><code>api/main.py</code> + <code>api/requirements.txt</code></td><td><a href="codigo.html#mainpy">Código §1</a> · <a href="pratica.html#local">Prática §1.1</a></td></tr>
+          <tr><td>2</td><td>A imagem da API</td><td><code>api/Dockerfile</code> → <code>process-api:latest</code></td><td><a href="codigo.html#dockerfile-api">Código §3</a> · <a href="pratica.html#build">Prática §2</a></td></tr>
+          <tr><td>3</td><td>Os containers de Nginx e cron</td><td><code>nginx-cron:latest</code> e <code>cron-daemon:latest</code></td><td><a href="codigo.html#dockerfile-nginx">Código §4–5</a> · <a href="pratica.html#docker-local">Prática §2.1</a></td></tr>
+          <tr><td>4</td><td>O cluster Kubernetes</td><td>Minikube + kubectl + imagens carregadas</td><td><a href="pratica.html#pre">Prática §1–3</a> · <a href="teoria.html#porque-k8s">Teoria §10–11</a></td></tr>
+          <tr><td>5</td><td>Os objetos do Kubernetes</td><td>namespace, 3 Deployments, 2 Services e HPA</td><td><a href="codigo.html#mapa-arquivos">Código §7–13</a> · <a href="pratica.html#apply">Prática §4</a></td></tr>
+          <tr><td>6</td><td>O acesso externo</td><td>NodePort 30080/30081 + <code>minikube service</code></td><td><a href="teoria.html#service">Teoria §14</a> · <a href="pratica.html#acesso">Prática §5</a></td></tr>
+          <tr><td>7</td><td>As demonstrações</td><td>self-healing de 9 s e HPA de 2 a 10</td><td><a href="pratica.html#selfhealing">Prática §6–7</a> · <a href="arquitetura.html">Arquitetura</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="ct">Antes de tudo: onde rodar</div>
+      <p>Tudo roda dentro do <strong>WSL2 (Ubuntu)</strong>, não no PowerShell. O Docker Desktop precisa estar aberto e com a
+         integração WSL habilitada (a baleia verde). Se o Docker não estiver de pé, o <code>minikube start</code> falha na primeira linha.</p>
+    </div>
+
+    <h2 id="pre">1. Pré-requisitos</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Ferramenta</th><th>Para quê</th><th>Como verificar</th></tr></thead>
+        <tbody>
+          <tr><td>WSL2 + Ubuntu</td><td>ambiente Linux onde tudo roda</td><td><code>wsl -l -v</code></td></tr>
+          <tr><td>Docker Desktop</td><td>construir imagens e servir de driver do Minikube</td><td><code>docker ps</code></td></tr>
+          <tr><td>Minikube</td><td>cluster Kubernetes local</td><td><code>minikube version</code></td></tr>
+          <tr><td>kubectl</td><td>falar com o cluster</td><td><code>kubectl version --client</code></td></tr>
+          <tr><td>Git</td><td>clonar o repositório</td><td><code>git --version</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="local">1.1 Criar e rodar a API local antes de containerizar (opcional, mas recomendado)</h3>
+    <p>A criação da API são <strong>dois arquivos</strong>: <code>api/requirements.txt</code> (as três dependências com versão fixa) e
+      <code>api/main.py</code> (imports, <code>app = FastAPI(...)</code> e as quatro rotas). O código completo, linha a linha, está em
+      <a href="codigo.html#mainpy">Código §1</a>; aqui você só precisa da ordem: criar a pasta, instalar as dependências e subir o
+      uvicorn. Antes de culpar o Docker ou o Kubernetes, prove que a API funciona no Python puro — é o que os prints
+      <code>APIrodandoTerminal.png</code> e <code>testesCurl.png</code> mostram.</p>
+
+<pre><code>mkdir -p api &amp;&amp; cd api
+<span class="c"># crie requirements.txt e main.py (conteúdo em Código §1)</span>
+python3 -m venv .venv
+source .venv/bin/activate          <span class="c"># no Windows: .venv\Scripts\activate</span>
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000</code></pre>
+
+    <p>Em outro terminal:</p>
+<pre><code>curl http://127.0.0.1:8000/processes
+curl http://127.0.0.1:8000/processes/1
+curl -X POST "http://127.0.0.1:8000/processes/start?command=sleep%2060"
+curl -X DELETE "http://127.0.0.1:8000/processes/&lt;PID&gt;?force=true"</code></pre>
+
+    <p><code>--reload</code> é recurso de desenvolvimento: ele reinicia o processo quando o arquivo muda. <strong>Não</strong> vai para o
+      container — em produção o código é imutável dentro da imagem. E <code>127.0.0.1</code> só funciona na sua máquina; dentro do container
+      o uvicorn precisa de <code>--host 0.0.0.0</code>, como está no Dockerfile.</p>
+
+    <h2 id="build">2. Buildar as três imagens</h2>
+<pre><code><span class="c"># a partir da raiz do repositório</span>
+cd api    &amp;&amp; docker build -t process-api:latest .   &amp;&amp; cd ..
+cd nginx  &amp;&amp; docker build -t nginx-cron:latest .    &amp;&amp; cd ..
+cd cron   &amp;&amp; docker build -t cron-daemon:latest .   &amp;&amp; cd ..</code></pre>
+
+    <p>O que cada parte significa:</p>
+    <ul>
+      <li><code>-t process-api:latest</code> — nome e tag. O nome tem que ser <strong>idêntico</strong> ao do YAML, senão o Pod não encontra a imagem.</li>
+      <li><code>.</code> — o contexto de build (a pasta enviada ao daemon). O Dockerfile é procurado ali.</li>
+      <li><code>cd ..</code> no fim de cada linha — sem isso o segundo <code>build</code> rodaria na pasta errada.</li>
+    </ul>
+
+    <p>Verificação:</p>
+<pre><code>docker images | grep -E "process-api|nginx-cron|cron-daemon"</code></pre>
+
+    <div class="callout tip">
+      <div class="ct">Por que <code>:latest</code> e não uma versão</div>
+      <p>Porque os YAMLs usam <code>process-api:latest</code> e <code>imagePullPolicy: Never</code>. Se você trocar a tag na imagem e não no YAML,
+         o Pod fica em <code>ErrImageNeverPull</code>. Em produção usar <code>latest</code> é má prática justamente por isso — não há
+         rastreabilidade de versão.</p>
+    </div>
+
+    <h3 id="docker-local">2.1 Testar as três imagens no Docker (o “plano B” da demo)</h3>
+    <p>Se o cluster falhar na apresentação, os containers ainda funcionam sozinhos. Testar localmente também prova que o problema, se
+      aparecer, é de orquestração — não da imagem.</p>
+
+<pre><code>docker run -d --name api-teste    -p 8000:8000 process-api:latest
+docker run -d --name nginx-teste  -p 8080:80   nginx-cron:latest
+docker run -d --name cron-teste                 cron-daemon:latest
+
+docker ps
+
+curl http://127.0.0.1:8000/processes
+curl http://127.0.0.1:8080/
+
+<span class="c"># o log do cron do Nginx (o mesmo que o iframe mostra)</span>
+docker exec nginx-teste cat /usr/share/nginx/html/cron.txt
+
+<span class="c"># o log do cron isolado</span>
+docker exec cron-teste cat /var/log/cron-task.log
+
+<span class="c"># limpeza</span>
+docker rm -f api-teste nginx-teste cron-teste</code></pre>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Comando</th><th>O que ele ensina</th></tr></thead>
+        <tbody>
+          <tr><td><code>-p 8000:8000</code></td><td>porta do host : porta do container. Sem isso, o processo existe mas ninguém alcança</td></tr>
+          <tr><td><code>-p 8080:80</code></td><td>por que 8080? A porta 80 do Windows/WSL pode estar ocupada ou exigir privilégio; mapear para 8080 evita conflito</td></tr>
+          <tr><td><code>docker exec ... cat</code></td><td>o log é arquivo, não stdout; <code>docker logs</code> não mostra o conteúdo do <code>cron.txt</code></td></tr>
+          <tr><td><code>docker rm -f</code></td><td>remove e para; sem <code>-f</code>, um container rodando não é removido</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="load">3. Entregar as imagens ao cluster</h2>
+<pre><code>minikube start --driver=docker
+
+minikube image load process-api:latest
+minikube image load nginx-cron:latest
+minikube image load cron-daemon:latest</code></pre>
+
+    <p><strong>Por que isso é necessário:</strong> o Minikube com driver Docker é um container separado, com um containerd próprio.
+      A imagem que você construiu no WSL está no daemon do Docker Desktop, não dentro do nó. O <code>image load</code> copia a imagem
+      para dentro do nó.</p>
+
+    <p>Sem esse passo, o kubelet tenta puxar de um registry, não encontra, e — como o YAML diz <code>Never</code> — o Pod entra em
+      <code>ErrImageNeverPull</code>. É o erro número 1 de quem reproduz o projeto.</p>
+
+    <div class="callout tip">
+      <div class="ct">Alternativa: construir dentro do Minikube</div>
+      <p><code>eval $(minikube docker-env)</code> aponta o cliente Docker para o daemon interno do nó; a partir daí, <code>docker build</code>
+         já cria a imagem onde o kubelet vai procurá-la, e o <code>image load</code> deixa de ser necessário. O efeito dura só naquela
+         sessão do terminal — abrir outro terminal e buildar de novo volta a usar o Docker Desktop. Por isso o projeto padronizou o
+         <code>minikube image load</code>: é explícito e não depende de variável de ambiente.</p>
+    </div>
+
+    <h2 id="apply">4. Aplicar os YAMLs — a ordem importa</h2>
+<pre><code>cd k8s
+
+kubectl apply -f namespace.yaml        <span class="c"># 1º: todos os outros recursos referenciam este namespace</span>
+kubectl apply -f api-deployment.yaml
+kubectl apply -f api-service.yaml
+kubectl apply -f nginx-deployment.yaml
+kubectl apply -f nginx-service.yaml
+kubectl apply -f cron-deployment.yaml
+kubectl apply -f hpa.yaml</code></pre>
+
+    <p>O namespace vem primeiro porque os demais declaram <code>namespace: daemon-lab</code>. Se você aplicar um Deployment antes do
+      namespace existir, o comando falha com <code>namespaces "daemon-lab" not found</code>.</p>
+
+    <p>Depois, esperar os Pods:</p>
+<pre><code>kubectl get pods -n daemon-lab
+<span class="c"># aguarde todos em Running (ContainerCreating leva ~30 s)</span></code></pre>
+
+    <p>Ativar as métricas — <strong>só depois</strong> disso o HPA funciona:</p>
+<pre><code>minikube addons enable metrics-server
+kubectl apply -f hpa.yaml
+kubectl get hpa -n daemon-lab      <span class="c"># pode levar 1–2 min para sair de &lt;unknown&gt;</span></code></pre>
+
+    <h2 id="acesso">5. Acessar a API e o Nginx</h2>
+<pre><code><span class="c"># opção 1 — túnel (recomendada no Windows)</span>
+minikube service api-service -n daemon-lab
+minikube service nginx-service -n daemon-lab
+
+<span class="c"># opção 2 — IP do nó (funciona dentro do WSL)</span>
+curl http://$(minikube ip):30080/processes
+curl http://$(minikube ip):30081/
+
+<span class="c"># opção 3 — port-forward (sem expor NodePort)</span>
+kubectl port-forward svc/api-service 8000:8000 -n daemon-lab</code></pre>
+
+    <p>Com o túnel aberto, no navegador do Windows:</p>
+    <ul>
+      <li><code>http://127.0.0.1:&lt;porta&gt;/docs</code> — Swagger com os 4 endpoints</li>
+      <li><code>http://127.0.0.1:&lt;porta&gt;/processes</code> — a lista de processos (83 no print)</li>
+    </ul>
+
+    <div class="callout warn">
+      <div class="ct">Não feche o terminal do túnel</div>
+      <p>O <code>minikube service</code> fica em foreground mantendo o encaminhamento. Fechou o terminal, o site sai do ar — e o
+         erro aparece como <code>connection refused</code> no navegador, o que assusta sem motivo.</p>
+    </div>
+
+    <h2 id="selfhealing">6. Demonstrar self-healing</h2>
+<pre><code><span class="c"># 1. listar e copiar o nome de um Pod da API</span>
+kubectl get pods -n daemon-lab
+
+<span class="c"># 2. deletar</span>
+kubectl delete pod api-deployment-7487485766-2chk4 -n daemon-lab
+
+<span class="c"># 3. assistir a recriação</span>
+kubectl get pods -n daemon-lab -w</code></pre>
+
+    <p>O que narrar enquanto acontece:</p>
+    <ol>
+      <li>"Deletei um Pod. O Deployment continua com <code>replicas: 2</code>."</li>
+      <li>"O ReplicaSet controller percebe que só existe 1 Pod."</li>
+      <li>"Ele cria outro a partir do mesmo template — nome diferente, mesmo label."</li>
+      <li>"Em 9 segundos o novo está <code>Running</code>, e o Service já o inclui."</li>
+    </ol>
+
+    <div class="callout">
+      <div class="ct">Se perguntarem "e se eu matar o container em vez do Pod?"</div>
+      <p>Aí é o <strong>kubelet</strong> que age: ele reinicia o container no <em>mesmo</em> Pod, conforme <code>restartPolicy: Always</code>.
+         O nome do Pod não muda e a coluna <code>RESTARTS</code> aumenta. São dois mecanismos diferentes — saber separar isso é ponto garantido.</p>
+    </div>
+
+    <h2 id="scaling">7. Demonstrar scaling</h2>
+<pre><code><span class="c"># terminal 1 — gerar carga (vai travar, é normal)</span>
+while true; do curl -s http://127.0.0.1:&lt;PORTA&gt;/processes &gt; /dev/null; done
+
+<span class="c"># terminal 2 — observar o HPA</span>
+kubectl get hpa -n daemon-lab -w
+
+<span class="c"># terminal 3 — ver os Pods nascendo</span>
+kubectl get pods -n daemon-lab -w</code></pre>
+
+    <p>O que esperar: <code>TARGETS</code> sobe de <code>2%/50%</code> para <code>204%/50%</code> e <code>REPLICAS</code> vai de 2 a 10
+      (respeitando <code>maxReplicas</code>). Ao parar a carga (<span class="kbd">Ctrl</span>+<span class="kbd">C</span>), a CPU cai a 2%
+      e, após ~5 minutos, as réplicas voltam a 2.</p>
+
+    <div class="callout tip">
+      <div class="ct">Se o HPA não reagir</div>
+      <p>Cheque nesta ordem: (1) <code>kubectl get hpa</code> mostra <code>&lt;unknown&gt;</code>? → metrics-server não está pronto, espere 1–2 min;
+         (2) <code>TARGETS</code> mostra valor mas não escala? → veja se o Deployment tem <code>requests.cpu</code>;
+         (3) a carga está batendo no Pod certo? → confirme a porta do túnel.</p>
+    </div>
+
+    <h2 id="limpeza">8. Limpeza</h2>
+<pre><code><span class="c"># para a carga primeiro (Ctrl+C no terminal do while)</span>
+
+kubectl delete namespace daemon-lab   <span class="c"># apaga TODOS os recursos do projeto de uma vez</span>
+minikube stop                          <span class="c"># para o cluster, mantendo o estado</span>
+<span class="c"># minikube delete                      # apaga o cluster inteiro (irreversível)</span></code></pre>
+
+    <p>Apagar o namespace é o jeito elegante: como todos os objetos estão nele, um comando remove Deployments, Services, HPA e Pods.
+      É também a prova de que usar namespace foi uma boa decisão.</p>
+
+    <h2 id="troubleshooting">9. Erros comuns e o que fazer</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Sintoma</th><th>Causa</th><th>Solução</th></tr></thead>
+        <tbody>
+          <tr><td><code>ErrImageNeverPull</code></td><td>imagem não está no nó e o YAML diz <code>Never</code></td><td><code>minikube image load &lt;imagem&gt;</code></td></tr>
+          <tr><td><code>ImagePullBackOff</code></td><td>nome/tag errado; tentou baixar e falhou</td><td>conferir o nome exato da imagem no YAML</td></tr>
+          <tr><td><code>Pending</code></td><td>sem recursos no nó ou sem imagem</td><td><code>kubectl describe pod</code> mostra o evento</td></tr>
+          <tr><td><code>CrashLoopBackOff</code></td><td>o processo dentro do container morre</td><td><code>kubectl logs &lt;pod&gt; -n daemon-lab</code></td></tr>
+          <tr><td><code>namespaces "daemon-lab" not found</code></td><td>aplicou fora de ordem</td><td>aplicar <code>namespace.yaml</code> primeiro</td></tr>
+          <tr><td>HPA com <code>&lt;unknown&gt;</code></td><td>metrics-server ausente ou recém-ativado</td><td><code>minikube addons enable metrics-server</code> e esperar</td></tr>
+          <tr><td>HPA não escala mesmo com CPU alta</td><td>Deployment sem <code>requests.cpu</code></td><td>declarar <code>resources.requests.cpu</code></td></tr>
+          <tr><td>Mudei o código, rebuildar a imagem, e o Pod continua igual</td><td>a tag <code>:latest</code> não mudou o template; <code>imagePullPolicy: Never</code> não puxa nada novo</td><td><code>kubectl rollout restart deploy/api-deployment -n daemon-lab</code> (ou usar tag nova)</td></tr>
+          <tr><td><code>connection refused</code> no navegador</td><td>túnel fechado ou Service sem endpoints</td><td>reabrir <code>minikube service</code>; checar <code>kubectl get endpoints</code></td></tr>
+          <tr><td>Site do Nginx não abre</td><td>esqueceu o <code>nginx-service.yaml</code></td><td><code>kubectl apply -f nginx-service.yaml</code></td></tr>
+          <tr><td><code>minikube start</code> falha</td><td>Docker Desktop fechado</td><td>abrir o Docker e esperar a baleia ficar verde</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="diagnostico">10. Diagnóstico: os comandos que respondem cada pergunta</h2>
+    <p>Se algo der errado na demo, não importa o que você "acha": importa o que o cluster está dizendo. Estes são os comandos que você
+      precisa saber de cor, e a pergunta que cada um responde.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Comando</th><th>Pergunta que responde</th><th>O que olhar</th></tr></thead>
+        <tbody>
+          <tr><td><code>kubectl get pods -n daemon-lab -o wide</code></td><td>quais Pods existem, em que nó e com qual IP?</td><td><code>STATUS</code>, <code>READY</code>, <code>RESTARTS</code>, <code>NODE</code></td></tr>
+          <tr><td><code>kubectl describe pod &lt;pod&gt; -n daemon-lab</code></td><td>por que este Pod não sobe?</td><td><code>Events</code> no fim: <code>FailedScheduling</code>, <code>ErrImageNeverPull</code>, <code>Unhealthy</code></td></tr>
+          <tr><td><code>kubectl logs &lt;pod&gt; -n daemon-lab</code></td><td>o que o processo escreveu?</td><td>stack trace do uvicorn, erro do nginx; <code>-c &lt;container&gt;</code> se houver mais de um</td></tr>
+          <tr><td><code>kubectl get events -n daemon-lab --sort-by=.lastTimestamp</code></td><td>o que aconteceu nos últimos minutos?</td><td>ordem cronológica: agendamento, pull, probe, kill</td></tr>
+          <tr><td><code>kubectl get endpoints -n daemon-lab</code></td><td>o Service tem para onde mandar tráfego?</td><td>lista de IPs: vazia = selector errado ou Pod não Ready</td></tr>
+          <tr><td><code>kubectl rollout status deploy/api-deployment -n daemon-lab</code></td><td>o Deployment terminou de atualizar?</td><td>"successfully rolled out" vs. travado</td></tr>
+          <tr><td><code>kubectl top pod -n daemon-lab</code></td><td>quanto cada Pod consome agora?</td><td>CPU em milicores; é a mesma fonte que o HPA lê</td></tr>
+          <tr><td><code>kubectl get rs -n daemon-lab</code></td><td>quantos ReplicaSets existem e quantas réplicas cada um quer?</td><td><code>DESIRED</code> vs. <code>CURRENT</code></td></tr>
+          <tr><td><code>kubectl explain deploy.spec.template.spec.hostPID</code></td><td>o que esse campo faz, na documentação embutida?</td><td>descrição oficial, sem internet</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="ct">A frase que salva a demo</div>
+      <p>"O Pod está em <code>Pending</code>; antes de mexer, vou olhar os eventos com <code>kubectl describe</code> para saber se é
+         recurso, imagem ou agendamento." Isso mostra método. O que derruba é ficar reiniciando o cluster sem ler o evento.</p>
+    </div>
+
+    <p>Detalhe de idempotência: aplicar o <code>hpa.yaml</code> duas vezes (uma antes e outra depois do metrics-server) não cria duplicata —
+      <code>kubectl apply</code> reconcilia o mesmo objeto. O que não se deve fazer é reaplicar o Deployment da API com o HPA em 10:
+      o manifesto declara <code>replicas: 2</code> e o HPA reescala em seguida, gerando uma disputa declarativa.</p>
+
+    <div class="footer">
+      <span>Base de estudos local · A3 · Tema 1</span>
+      <span><a href="codigo.html">Próximo: Código →</a></span>
+    </div>
+  </div>
+</div>
+
+<script src="assets/search-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

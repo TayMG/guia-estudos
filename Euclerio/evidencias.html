@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("a3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Evidências · Base de Estudos A3 — Tema 1</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">A3</div>
+    <div class="brand-text"><strong>Base de Estudos</strong><span>Tema 1 · Kubernetes + API</span></div>
+  </div>
+  <div class="study-switch" aria-label="Trocar de estudo">
+    <a href="../Euclerio/index.html" class="active">Euclerio</a>
+    <a href="../Sergio/index.html">Sergio</a>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
+    <div class="search-results"></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Comece aqui</div>
+    <a href="index.html"><span class="n">00</span> Início</a>
+    <div class="nav-label">Fundamentos</div>
+    <a href="teoria.html"><span class="n">01</span> Teoria</a>
+    <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
+    <div class="nav-label">O trabalho</div>
+    <a href="pratica.html"><span class="n">03</span> Prática</a>
+    <a href="codigo.html"><span class="n">04</span> Código</a>
+    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <div class="nav-label">Treino</div>
+    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">07</span> Quiz</a>
+    <a href="plano.html"><span class="n">08</span> Plano</a>
+    <a href="banca.html"><span class="n">09</span> Banca</a>
+  </nav>
+  <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" data-menu aria-label="Abrir menu">☰</button>
+    <span class="topbar-title">Evidências</span>
+  </div>
+
+  <div class="content">
+    <div class="eyebrow">05 · Provas</div>
+    <h1>Evidências: o que cada print prova</h1>
+    <p class="lead">Cada imagem responde a uma exigência do edital. Saber qual mostrar em cada momento é tão importante quanto
+      saber o que ela significa — a apresentação fica muito mais forte quando o print aparece no instante certo.</p>
+
+    <div class="callout tip">
+      <div class="ct">Estratégia de demonstração</div>
+      <p>Não mostre os 21 prints. Mostre <strong>seis</strong>, nesta ordem: <code>5pods.png</code> (o ambiente existe),
+         <code>hostPID_kubernete.png</code> (a API vê o SO), <code>nginx-k8s.png</code> (os 3 daemons funcionam no cluster),
+         <code>RecriacaoPod.png</code> (self-healing), <code>hpa.png</code> (scaling) e <code>replicasVoltando2.png</code> (volta ao normal).
+         O resto fica como anexo no artigo.</p>
+    </div>
+
+    <div class="callout">
+      <div class="ct">Sobre os prints</div>
+      <p>Cada tarefa foi registrada pelo integrante responsável — por isso o hostname do terminal muda entre os prints
+         (<code>diogo@...</code> na Tarefa 1, <code>rickd@...</code> nas Tarefas 2 e 3). Os prints da Tarefa 3 formam o
+         <strong>ambiente de referência</strong> da demonstração: são todos do mesmo cluster, na mesma máquina.</p>
+    </div>
+
+    <h2 id="t1">Tarefa 1 — API FastAPI + psutil</h2>
+
+    <figure class="ev">
+      <img src="assets/evidencias/APIrodandoTerminal.png" alt="Uvicorn rodando no terminal">
+      <figcaption><strong>APIrodandoTerminal.png</strong> — Uvicorn com "Application startup complete". Prova que o código roda e que a API sobe na 8000.</figcaption>
+    </figure>
+    <div class="callout"><div class="ct">Pergunta provável</div><p>"Isso é local ou no cluster?" — Local. Serve para mostrar que o código funciona antes da containerização; a prova no cluster é o <code>ProcessManagerAPI.png</code>.</p></div>
+
+    <figure class="ev">
+      <img src="assets/evidencias/testesCurl.png" alt="Testes com curl">
+      <figcaption><strong>testesCurl.png</strong> — <code>curl /processes</code> (41 processos) e <code>curl /processes/1</code> (systemd). Prova que a API lê o SO via psutil e devolve JSON com os quatro campos.</figcaption>
+    </figure>
+    <div class="callout"><div class="ct">Pergunta provável</div><p>"Por que o PID 1 é o systemd?" — Porque este teste rodou <em>no WSL</em>, sem container. No Pod da API, com <code>hostPID: true</code>, o processo entra no namespace de PID do nó e o PID 1 visível continua sendo o systemd; sem <code>hostPID</code>, o uvicorn é que seria o PID 1 do container. São três cenários diferentes, e confundir os três é uma pegadinha clássica.</p></div>
+
+    <div class="callout warn">
+      <div class="ct">Pergunta provável (número que muda)</div>
+      <p>Um print mostra 41 processos e outro mostra 40. Não é erro: processos nascem e morrem o tempo todo, e cada chamada é uma
+         fotografia do instante. O que importa é a ordem de grandeza e o fato de aparecerem processos do SO.</p>
+    </div>
+
+    <figure class="ev">
+      <img src="assets/evidencias/paginaNavegador.png" alt="Swagger com os quatro endpoints">
+      <figcaption><strong>paginaNavegador.png</strong> — Swagger em <code>/docs</code> com GET /processes, GET /processes/{pid}, DELETE e POST /processes/start. Prova os quatro requisitos do edital de uma vez.</figcaption>
+    </figure>
+
+    <figure class="ev">
+      <img src="assets/evidencias/testeCurlNavegador.png" alt="Try it out do Swagger">
+      <figcaption><strong>testeCurlNavegador.png</strong> — "Try it out" devolvendo 200 OK com o JSON. Prova que a documentação é executável, não decorativa.</figcaption>
+    </figure>
+
+    <figure class="ev">
+      <img src="assets/evidencias/imagemDocker.png" alt="docker ps com a API">
+      <figcaption><strong>imagemDocker.png</strong> — <code>docker ps</code> com o container <code>api-teste</code> expondo a 8000. Prova a containerização da API.</figcaption>
+    </figure>
+
+    <h2 id="t2">Tarefa 2 — Nginx e Cron</h2>
+
+    <figure class="ev">
+      <img src="assets/evidencias/imagens-criadas.png" alt="docker images">
+      <figcaption><strong>imagens-criadas.png</strong> — <code>docker images</code> com <code>cron-daemon:latest</code> (13 MB) e <code>nginx-cron:latest</code> (93,6 MB). Prova que as imagens foram construídas com os nomes exatos que os YAMLs usam; a diferença de tamanho é o peso da base (alpine puro × nginx:alpine).</figcaption>
+    </figure>
+
+    <figure class="ev">
+      <img src="assets/evidencias/teste-conteinerNginx.png" alt="docker run do nginx-cron">
+      <figcaption><strong>teste-conteinerNginx.png</strong> — <code>docker run -d -p 8080:80 --name nginx-teste nginx-cron:latest</code>. Prova que a imagem é executável e que a porta 80 do container foi publicada como 8080 no host.</figcaption>
+    </figure>
+
+    <figure class="ev">
+      <img src="assets/evidencias/verificandoDockerNginx.png" alt="docker ps do nginx">
+      <figcaption><strong>verificandoDockerNginx.png</strong> — o container <code>nginx-teste</code> aparecendo no <code>docker ps</code> em <code>0.0.0.0:8080-&gt;80/tcp</code>. Prova que o daemon web sobe sozinho e permanece no ar.</figcaption>
+    </figure>
+
+    <figure class="ev">
+      <img src="assets/evidencias/cronNginxfuncionando.png" alt="cat no cron.txt">
+      <figcaption><strong>cronNginxfuncionando.png</strong> — <code>docker exec ... cat cron.txt</code> com duas linhas de horário (21:39 e 21:40). Prova que o <strong>crond dentro do container do Nginx</strong> executou duas vezes, com um minuto de diferença.</figcaption>
+    </figure>
+    <div class="callout"><div class="ct">Pergunta provável</div><p>"Como você sabe que o cron rodou e não que o arquivo já existia?" — Duas linhas com <strong>um minuto exato de diferença</strong> e o horário do teste. Um arquivo estático teria uma linha só.</p></div>
+
+    <figure class="ev">
+      <img src="assets/evidencias/sitedemonstracao.png" alt="Site do Nginx com o log do cron">
+      <figcaption><strong>sitedemostracao.png</strong> — a página servida com o iframe do log. Prova a integração Nginx + cron (dois daemons, um container) — mas <strong>via Docker</strong>, não no cluster.</figcaption>
+    </figure>
+
+    <figure class="ev">
+      <img src="assets/evidencias/TarefaAgendadaCron.png" alt="log do cron separado">
+      <figcaption><strong>TarefaAgendadaCron.png</strong> — <code>docker exec cron-teste cat /var/log/cron-task.log</code> com o horário de execução. Prova o terceiro daemon, isolado do Nginx e com seu próprio arquivo de log.</figcaption>
+    </figure>
+
+    <h2 id="t3">Tarefa 3 — Kubernetes</h2>
+
+    <figure class="ev">
+      <img src="assets/evidencias/5pods.png" alt="cinco pods running">
+      <figcaption><strong>5pods.png</strong> — 2 api + 2 nginx + 1 cron, todos <code>Running</code>, 0 restarts. Prova o deploy base e a existência dos três daemons distintos dentro do cluster.</figcaption>
+    </figure>
+    <div class="callout"><div class="ct">Pergunta provável</div><p>"Por que 5 Pods se o edital pede 3 containers?" — Porque são 3 <em>workloads</em> (3 imagens, 3 tipos de daemon); as réplicas são uma decisão de disponibilidade. O edital pede no mínimo 3 containers com daemons diferentes. Na contagem de processos, são <strong>4 daemons</strong>: uvicorn, nginx, o crond dentro do container do Nginx e o crond isolado — o crond aparece duas vezes de propósito.</p></div>
+
+    <figure class="ev">
+      <img src="assets/evidencias/ProcessManagerAPI-terminal.png" alt="minikube service api-service">
+      <figcaption><strong>ProcessManagerAPI-terminal.png</strong> — <code>minikube service api-service</code> mostrando <code>192.168.49.2:30080</code> e o túnel <code>127.0.0.1:38849</code>. Prova o Service NodePort funcionando e explica por que o navegador do Windows precisa do túnel.</figcaption>
+    </figure>
+
+    <figure class="ev">
+      <img src="assets/evidencias/ProcessManagerAPI.png" alt="Swagger acessado pelo cluster">
+      <figcaption><strong>ProcessManagerAPI.png</strong> — o mesmo Swagger, agora em <code>127.0.0.1:38849</code>, que é o túnel para o Pod. Prova que a API está rodando <strong>dentro do Kubernetes</strong>.</figcaption>
+    </figure>
+
+    <figure class="ev">
+      <img src="assets/evidencias/hostPID_kubernete.png" alt="curl listando processos do nó">
+      <figcaption><strong>hostPID_kubernete.png</strong> — <code>curl .../processes</code> retornando <strong>83 processos</strong>, incluindo <code>kube-apiserver</code>, <code>kube-scheduler</code>, <code>etcd</code>, <code>kubelet</code>, <code>kube-proxy</code>, <code>containerd-shim-runc-v2</code>, <code>pause</code> e até os processos dos outros containers (<code>nginx</code>, <code>crond</code>, <code>busybox</code>). É a prova central do <code>hostPID: true</code>.</figcaption>
+    </figure>
+    <div class="callout ok"><div class="ct">A pergunta que esse print responde</div><p>"Como você prova que a API vê o SO e não só o container?" — Porque aparecem processos que <strong>não poderiam existir dentro do container</strong>: o kubelet, o etcd e o kube-apiserver são do nó. Sem <code>hostPID</code>, a lista teria 3 ou 4 processos.</p></div>
+
+    <figure class="ev">
+      <img src="assets/evidencias/RecriacaoPod.png" alt="pod deletado e recriado">
+      <figcaption><strong>RecriacaoPod.png</strong> — <code>delete pod ...-2chk4</code> e, em seguida, <code>...-fbkvn</code> já <code>Running</code> com 9s de idade. Prova o self-healing de Pod.</figcaption>
+    </figure>
+    <div class="callout"><div class="ct">Pergunta provável</div><p>"Quem criou o Pod novo?" — O ReplicaSet controller, não o kubelet. O kubelet só executou o Pod que o control plane criou.</p></div>
+
+    <figure class="ev">
+      <img src="assets/evidencias/hpa.png" alt="HPA escalando de 2 a 10">
+      <figcaption><strong>hpa.png</strong> — <code>kubectl get hpa -w</code>: CPU de 2% a 204% contra alvo de 50%, réplicas 2 → 4 → 8 → 9 → 10. Prova o scaling automático e o respeito ao <code>maxReplicas</code>.</figcaption>
+    </figure>
+
+    <figure class="ev">
+      <img src="assets/evidencias/replicas.png" alt="muitos pods da API">
+      <figcaption><strong>replicas.png</strong> — dezenas de Pods da API em <code>Pending</code>/<code>ContainerCreating</code>/<code>Running</code>. Prova que o HPA realmente criou Pods, não só mudou um número.</figcaption>
+    </figure>
+    <div class="callout"><div class="ct">Pergunta provável</div><p>"Por que vários aparecem <code>Pending</code>?" — Porque o nó é único e os Pods competem por CPU; o scheduler coloca o que cabe e o resto espera. Num cluster multi-nó eles seriam distribuídos.</p></div>
+
+    <figure class="ev">
+      <img src="assets/evidencias/replicasVoltando2.png" alt="HPA de volta a 2 réplicas">
+      <figcaption><strong>replicasVoltando2.png</strong> — <code>REPLICAS 2</code>, <code>cpu: 2%/50%</code>, idade de 73 min. Prova o scale-down: sem carga, o HPA volta ao mínimo.</figcaption>
+    </figure>
+
+    <figure class="ev">
+      <img src="assets/evidencias/nginx-k8s-terminal.png" alt="minikube service nginx-service">
+      <figcaption><strong>nginx-k8s-terminal.png</strong> — <code>minikube service nginx-service</code> com <code>192.168.49.2:30081</code> e túnel <code>127.0.0.1:37355</code>. Prova o segundo Service NodePort.</figcaption>
+    </figure>
+
+    <figure class="ev">
+      <img src="assets/evidencias/nginx-k8s.png" alt="site do nginx dentro do kubernetes">
+      <figcaption><strong>nginx-k8s.png</strong> — a página em <code>127.0.0.1:37355</code> com o log do cron de 21:50 a 21:58. Prova o Nginx rodando como Pod, com o crond escrevendo a cada minuto.</figcaption>
+    </figure>
+    <div class="callout ok"><div class="ct">Por que este print importa</div><p>Antes dele, o Nginx só tinha sido demonstrado via Docker. Com ele, os <strong>três daemons</strong> ficam provados <em>dentro do cluster</em>: API (Swagger), Nginx (página) e cron (log com várias linhas acumuladas).</p></div>
+
+    <div class="callout warn">
+      <div class="ct">O que ainda não existe como print</div>
+      <p>Um <code>kubectl get svc -n daemon-lab</code> mostrando os dois Services lado a lado. O <code>nginx-k8s-terminal.png</code> cobre a
+         informação, mas se a banca pedir "mostre os serviços", tenha o comando pronto para rodar ao vivo em vez de procurar print.</p>
+    </div>
+
+    <div class="footer">
+      <span>Base de estudos local · A3 · Tema 1</span>
+      <span><a href="perguntas.html">Próximo: Perguntas →</a></span>
+    </div>
+  </div>
+</div>
+
+<script src="assets/search-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

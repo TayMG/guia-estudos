@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("a3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Plano · Base de Estudos A3 — Tema 1</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">A3</div>
+    <div class="brand-text"><strong>Base de Estudos</strong><span>Tema 1 · Kubernetes + API</span></div>
+  </div>
+  <div class="study-switch" aria-label="Trocar de estudo">
+    <a href="../Euclerio/index.html" class="active">Euclerio</a>
+    <a href="../Sergio/index.html">Sergio</a>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
+    <div class="search-results"></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Comece aqui</div>
+    <a href="index.html"><span class="n">00</span> Início</a>
+    <div class="nav-label">Fundamentos</div>
+    <a href="teoria.html"><span class="n">01</span> Teoria</a>
+    <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
+    <div class="nav-label">O trabalho</div>
+    <a href="pratica.html"><span class="n">03</span> Prática</a>
+    <a href="codigo.html"><span class="n">04</span> Código</a>
+    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <div class="nav-label">Treino</div>
+    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">07</span> Quiz</a>
+    <a href="plano.html"><span class="n">08</span> Plano</a>
+    <a href="banca.html"><span class="n">09</span> Banca</a>
+  </nav>
+  <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" data-menu aria-label="Abrir menu">☰</button>
+    <span class="topbar-title">Plano</span>
+  </div>
+
+  <div class="content">
+    <div class="eyebrow">08 · Cronograma e apresentação</div>
+    <h1>Plano: 21 dias, 20 minutos e o dia da banca</h1>
+    <p class="lead">Estudar sem cronograma vira releitura. Esta página dá a ordem, o tempo e o que falar em cada minuto.
+      Use o cronograma como trilha e o roteiro como ensaio.</p>
+
+    <h2 id="plano">Cronograma de 21 dias</h2>
+    <p>A lógica é: entender primeiro, praticar depois, memorizar por último. Cada dia tem no máximo 60–90 minutos.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Dia</th><th>Foco</th><th>O que fazer</th><th>Saída</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Panorama</td><td>Ler <a href="index.html">Início</a> inteiro e assistir a demo rodando</td><td>saber dizer o que o projeto faz em 1 frase</td></tr>
+          <tr><td>2</td><td>Processos</td><td><a href="teoria.html#processo">Teoria 1–3</a>: processo, PID, sinais</td><td>explicar SIGTERM vs SIGKILL sem consultar</td></tr>
+          <tr><td>3</td><td>Daemon</td><td><a href="teoria.html#daemon">Teoria 4</a> + por que <code>daemon off</code> em container</td><td>explicar por que o container morre se o PID 1 sai</td></tr>
+          <tr><td>4</td><td>Isolamento</td><td><a href="teoria.html#namespaces">Namespaces</a> e <a href="teoria.html#cgroups">cgroups</a></td><td>diferenciar namespace de cgroup</td></tr>
+          <tr><td>5</td><td>Container vs VM</td><td><a href="teoria.html#container-vm">Teoria 7</a> + revisar <a href="perguntas.html#top10">top10</a> (1–2)</td><td>resposta de 20 segundos afiada</td></tr>
+          <tr><td>6</td><td>Docker</td><td><a href="teoria.html#docker">Imagem, camada, Dockerfile</a></td><td>explicar por que a ordem do Dockerfile importa</td></tr>
+          <tr><td>7</td><td>Revisão da semana</td><td><a href="quiz.html">Quiz</a> completo (sem consultar)</td><td>anotar tudo que errou</td></tr>
+          <tr><td>8</td><td>Kubernetes</td><td><a href="teoria.html#k8s-arquitetura">Arquitetura do K8s</a>: control plane e nó</td><td>nomear 4 componentes do control plane</td></tr>
+          <tr><td>9</td><td>Objetos</td><td><a href="teoria.html#pod">Pod</a>, <a href="teoria.html#deployment">Deployment</a>, <a href="teoria.html#service">Service</a></td><td>explicar a hierarquia Deployment → RS → Pod</td></tr>
+          <tr><td>10</td><td>HPA</td><td><a href="teoria.html#hpa">Teoria 17</a> + <a href="teoria.html#selfhealing">self-healing</a></td><td>fazer a conta <code>ceil(2×204/50)=9</code> na lousa</td></tr>
+          <tr><td>11</td><td>hostPID</td><td><a href="teoria.html#hostpid">Teoria 24</a> + <a href="perguntas.html#seguranca">Segurança</a></td><td>saber a resposta correta (sem RBAC)</td></tr>
+          <tr><td>12</td><td>Código</td><td><a href="codigo.html#mainpy">main.py</a> linha a linha</td><td>explicar cada uma das 4 rotas</td></tr>
+          <tr><td>13</td><td>YAMLs</td><td><a href="codigo.html#yaml-api-deploy">Deployment</a>, <a href="codigo.html#yaml-api-svc">Service</a>, <a href="codigo.html#yaml-hpa">HPA</a></td><td>justificar cada campo</td></tr>
+          <tr><td>14</td><td>Revisão</td><td><a href="quiz.html">Quiz</a> + <a href="perguntas.html#api">API</a> e <a href="perguntas.html#docker">Docker</a></td><td>zero dúvida em imagem/camada/container</td></tr>
+          <tr><td>15</td><td>Prática</td><td><a href="pratica.html">Refazer o deploy do zero</a> numa máquina limpa</td><td>ambiente de pé sem consultar</td></tr>
+          <tr><td>16</td><td>Prática 2</td><td>Self-healing e scaling ao vivo, cronometrado</td><td>demo em menos de 10 min</td></tr>
+          <tr><td>17</td><td>Evidências</td><td><a href="evidencias.html">Ler cada print</a> e dizer o que prova</td><td>escolher os 6 prints da apresentação</td></tr>
+          <tr><td>18</td><td>Perguntas</td><td><a href="perguntas.html#pegas">Perguntas-pega</a> em voz alta</td><td>responder sem gaguejar</td></tr>
+          <tr><td>19</td><td>Ensaio</td><td>Rodar o <a href="#roteiro">roteiro de 20 min</a> completo, cronometrado</td><td>saber onde está estourando o tempo</td></tr>
+          <tr><td>20</td><td>Ensaio 2</td><td>Repetir com alguém fazendo perguntas no meio</td><td>aguentar interrupção sem perder o fio</td></tr>
+          <tr><td>21</td><td>Descanso ativo</td><td>Só <a href="#dia">checklist do dia</a> e <a href="#frases">frases de emergência</a></td><td>chegar descansado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <div class="ct">Se o prazo for menor</div>
+      <p>Com <strong>7 dias</strong>: junte os dias 2–6 em dois dias (teoria essencial), faça o dia 15–16 em um dia (prática), o dia 17–18
+         em um dia (evidências e perguntas) e reserve os dois últimos para ensaio. Com <strong>2 dias</strong>: use a trilha de 1 hora
+         da <a href="index.html#1hora">página inicial</a> e ensaie o roteiro uma vez.</p>
+    </div>
+
+    <h2 id="roteiro">Roteiro da apresentação (20 minutos)</h2>
+    <p>Estrutura pensada para responder ao edital na ordem em que ele pede — e para deixar as demonstrações no meio, quando a
+      atenção está alta.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tempo</th><th>Bloco</th><th>O que dizer / fazer</th></tr></thead>
+        <tbody>
+          <tr><td>0:00–1:30</td><td>Abertura</td><td>"Vamos apresentar a orquestração de três daemons com Kubernetes e uma API que gerencia processos do sistema operacional. O problema: processos em contêineres são isolados; queremos demonstrar isolamento, orquestração e, ao mesmo tempo, visibilidade controlada do SO."</td></tr>
+          <tr><td>1:30–4:00</td><td>Fundamentação</td><td>Processo, daemon, namespace, cgroup, container vs VM. Uma frase por conceito, sem slides densos. Terminar em: "por isso o container é leve, e por isso ele precisa de um orquestrador".</td></tr>
+          <tr><td>4:00–6:30</td><td>Arquitetura</td><td>Mostrar o diagrama: 3 imagens → 3 Deployments → 5 Pods → 2 Services. Explicar por que 2 réplicas na API e no Nginx e 1 no cron.</td></tr>
+          <tr><td>6:30–9:00</td><td>A API</td><td>Abrir o Swagger. Mostrar os 4 endpoints. Explicar psutil e o <code>hostPID</code>. <strong>Mostrar <code>hostPID_kubernete.png</code></strong> e apontar kubelet/etcd na lista.</td></tr>
+          <tr><td>9:00–11:00</td><td>Os três daemons no cluster</td><td><code>5pods.png</code> + <code>nginx-k8s.png</code>. Enfatizar: API, Nginx e cron rodando <em>como Pods</em>, cada um com sua imagem.</td></tr>
+          <tr><td>11:00–13:30</td><td>Self-healing (ao vivo)</td><td>Deletar um Pod da API e narrar os 4 passos enquanto acontece. Se o cluster não estiver disponível, usar <code>RecriacaoPod.png</code>.</td></tr>
+          <tr><td>13:30–16:00</td><td>Scaling (ao vivo)</td><td>Gerar carga, mostrar <code>kubectl get hpa -w</code> e a conta <code>ceil(2×204/50)=9</code>. Explicar o máximo de 10 e a janela de 5 min.</td></tr>
+          <tr><td>16:00–17:30</td><td>Decisões</td><td>Percorrer a tabela de decisões em 4 itens: NodePort, imagePullPolicy, 1 réplica no cron, namespace.</td></tr>
+          <tr><td>17:30–19:00</td><td>Limitações e trabalhos futuros</td><td>Sem volume, sem auth, sem probes, hostPID viola PSS baseline. Dizer o que faria diferente. <strong>Assumir antes de ser perguntado.</strong></td></tr>
+          <tr><td>19:00–20:00</td><td>Fechamento</td><td>"Concluímos que containers isolam processos, mas com <code>hostPID</code> e orquestração é possível observá-los e controlá-los de forma declarativa. O self-healing e o HPA mostram o loop de reconciliação na prática."</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="ct">Regra de ouro do tempo</div>
+      <p>Se estiver atrasado, corte o bloco de <strong>decisões</strong> e o de <strong>fundamentação</strong> — nunca o de
+         self-healing/scaling. Demonstração vale mais que slide. E deixe 1 minuto de folga: apresentação que estoura o tempo
+         perde ponto mesmo boa.</p>
+    </div>
+
+    <h2>Estrutura de slides (se pedirem)</h2>
+    <ol>
+      <li><strong>Capa</strong> — título, integrantes, disciplina.</li>
+      <li><strong>Problema e objetivo</strong> — o que o Tema 1 pede.</li>
+      <li><strong>Fundamentação</strong> — 1 slide com 6 conceitos (processo, daemon, namespace, cgroup, container, orquestração).</li>
+      <li><strong>Arquitetura lógica</strong> — o diagrama dos 3 Deployments e 2 Services.</li>
+      <li><strong>Arquitetura física</strong> — Windows → WSL2 → Minikube → namespace.</li>
+      <li><strong>API</strong> — Swagger + as 4 rotas.</li>
+      <li><strong>hostPID</strong> — o print dos 83 processos, com destaque em kubelet/etcd.</li>
+      <li><strong>Self-healing</strong> — antes/depois do Pod, com o tempo de 9 s.</li>
+      <li><strong>HPA</strong> — o gráfico de réplicas e a conta.</li>
+      <li><strong>Decisões</strong> — 4 linhas da tabela.</li>
+      <li><strong>Limitações e futuros</strong> — assumir.</li>
+      <li><strong>Conclusão</strong> — a frase de fechamento.</li>
+    </ol>
+
+    <h2 id="entregaveis">Entregáveis e prazos (o que vale nota)</h2>
+    <p>O edital divide os 30 pontos em três partes. Saber isso muda a prioridade: uma demo perfeita não compensa artigo ausente.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Componente</th><th>Pontos</th><th>O que é avaliado</th></tr></thead>
+        <tbody>
+          <tr><td>Apresentação</td><td>0–10</td><td>slides presenciais, no máximo 20 minutos</td></tr>
+          <tr><td>Documentação</td><td>0–10</td><td>roteiro da implementação + artigo com nomes e matrículas</td></tr>
+          <tr><td>Implementação</td><td>0–10</td><td>protótipo funcionando, demonstrado na sala</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout danger">
+      <div class="ct">Prazo e envio</div>
+      <p><strong>25 de novembro de 2026</strong>, por e-mail para <strong>euclerio.filho@ulife.com.br</strong>.<br>
+         Assunto: <code>Projeto A3 — Tema 1 — [Nome do grupo]</code>.<br>
+         Anexos obrigatórios: artigo (PDF/DOCX), slides em PDF, roteiro de instalação e configuração, <strong>prompt e nome do modelo
+         de LLM usado</strong> e arquivos de configuração (YAMLs e Dockerfiles) ou link do repositório.</p>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Checklist de entrega</h3>
+      <div class="check"><input type="checkbox" id="e1"><label for="e1"><code>README.md</code> completo na raiz (hoje está apenas <code># A3</code>).</label></div>
+      <div class="check"><input type="checkbox" id="e2"><label for="e2"><code>docs/artigo.md</code> com Introdução, Embasamento, Projeto, Resultados, Conclusão e Anexos.</label></div>
+      <div class="check"><input type="checkbox" id="e3"><label for="e3">Artigo exportado em PDF/DOCX, com <strong>nome e matrícula</strong> de todos os integrantes.</label></div>
+      <div class="check"><input type="checkbox" id="e4"><label for="e4"><code>docs/slides.pdf</code> com os 12 slides.</label></div>
+      <div class="check"><input type="checkbox" id="e5"><label for="e5">Roteiro de instalação e configuração (pode partir da página <a href="pratica.html">Prática</a>).</label></div>
+      <div class="check"><input type="checkbox" id="e6"><label for="e6">Anexo com <strong>prompt e nome do modelo de LLM</strong> utilizados.</label></div>
+      <div class="check"><input type="checkbox" id="e7"><label for="e7">YAMLs e Dockerfiles anexados (ou link do repositório).</label></div>
+      <div class="check"><input type="checkbox" id="e8"><label for="e8">E-mail enviado com todos os anexos e confirmação de recebimento.</label></div>
+    </div>
+
+    <div class="callout tip">
+      <div class="ct">Como escrever o artigo rápido</div>
+      <p>As páginas <a href="teoria.html">Teoria</a> e <a href="arquitetura.html">Arquitetura</a> já estão na estrutura que o edital pede
+         (embasamento, projeto, decisões). As <a href="evidencias.html">Evidências</a> são a seção Resultados. Falta só reescrever em tom
+         dissertativo, colar os prints e acrescentar introdução e conclusão. Não comece do zero.</p>
+    </div>
+
+    <h2 id="dia">Checklist do dia da apresentação</h2>
+
+    <div class="card">
+      <h3 style="margin-top:0">Na noite anterior</h3>
+      <div class="check"><input type="checkbox" id="d1"><label for="d1">Cluster testado do zero: <code>minikube start</code>, <code>image load</code>, <code>apply</code>, tudo <code>Running</code>.</label></div>
+      <div class="check"><input type="checkbox" id="d2"><label for="d2">Três imagens construídas e presentes no nó (<code>minikube image ls</code>).</label></div>
+      <div class="check"><input type="checkbox" id="d3"><label for="d3">Prints salvos <strong>offline</strong> numa pasta local (não dependa de internet).</label></div>
+      <div class="check"><input type="checkbox" id="d4"><label for="d4">Roteiro ensaiado uma vez com cronômetro.</label></div>
+      <div class="check"><input type="checkbox" id="d5"><label for="d5">Bateria do notebook carregada e carregador na mochila.</label></div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">30 minutos antes</h3>
+      <div class="check"><input type="checkbox" id="d6"><label for="d6">Docker Desktop aberto e verde.</label></div>
+      <div class="check"><input type="checkbox" id="d7"><label for="d7"><code>minikube start</code> executado e <code>kubectl get pods -n daemon-lab</code> com 5 Pods <code>Running</code>.</label></div>
+      <div class="check"><input type="checkbox" id="d8"><label for="d8"><code>minikube addons enable metrics-server</code> e <code>kubectl get hpa</code> sem <code>&lt;unknown&gt;</code>.</label></div>
+      <div class="check"><input type="checkbox" id="d9"><label for="d9">Túnel aberto num terminal: <code>minikube service api-service -n daemon-lab</code>.</label></div>
+      <div class="check"><input type="checkbox" id="d10"><label for="d10">Swagger aberto no navegador e <code>/processes</code> respondendo.</label></div>
+      <div class="check"><input type="checkbox" id="d11"><label for="d11">Segundo terminal aberto com <code>kubectl get pods -n daemon-lab -w</code>.</label></div>
+      <div class="check"><input type="checkbox" id="d12"><label for="d12">Terceiro terminal com <code>kubectl get hpa -n daemon-lab -w</code>.</label></div>
+      <div class="check"><input type="checkbox" id="d13"><label for="d13">Plano B: prints abertos em outra janela, caso o cluster falhe.</label></div>
+    </div>
+
+    <div class="callout danger">
+      <div class="ct">O risco número 1 da demo</div>
+      <p><code>imagePullPolicy: Never</code> exige que as imagens estejam no nó. Se o cluster for recriado (<code>minikube delete</code>) ou se a demo
+         rodar em outra máquina, é preciso refazer o <code>minikube image load</code> das três imagens. Sem isso, os Pods ficam em
+         <code>ErrImageNeverPull</code> e não há como recuperar ao vivo em menos de dois minutos. <strong>Teste isso antes.</strong></p>
+    </div>
+
+    <h2 id="frases">Frases de emergência</h2>
+    <p>Para quando travar, esquecer ou o ambiente cair. Diga com calma — o conteúdo importa mais que a fluência.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Situação</th><th>Frase</th></tr></thead>
+        <tbody>
+          <tr><td>Esqueceu um conceito</td><td>"Deixa eu contextualizar antes de responder: esse conceito se relaciona com <em>X</em>, que é o que o projeto usa para <em>Y</em>."</td></tr>
+          <tr><td>O cluster não sobe</td><td>"O ambiente local não subiu agora; eu tenho as evidências de todas as etapas registradas e posso mostrar o comportamento esperado."</td></tr>
+          <tr><td>O HPA não reage</td><td>"O metrics-server leva de 1 a 2 minutos para entregar as primeiras métricas; enquanto isso, mostro o print da execução anterior."</td></tr>
+          <tr><td>Não sabe a resposta</td><td>"Isso eu não sei de cabeça. Eu investigaria com <em>comando</em>, porque <em>razão</em>."</td></tr>
+          <tr><td>Pergunta com premissa errada</td><td>"Acho que essa premissa não se aplica aqui, porque <em>fato</em>. Mas se for o caso de <em>outra situação</em>, aí sim <em>resposta</em>."</td></tr>
+          <tr><td>Perguntaram algo fora do escopo</td><td>"Não implementamos isso; estava fora do escopo do edital. Se fosse fazer, começaria por <em>passo</em>."</td></tr>
+          <tr><td>Silêncio constrangedor</td><td>"Posso complementar com um ponto que considero importante: <em>limitação ou decisão de projeto</em>."</td></tr>
+          <tr><td>Ele insiste numa crítica</td><td>"Concordo, é uma limitação real. O motivo da escolha foi <em>razão</em>, e a evolução seria <em>solução</em>."</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout ok">
+      <div class="ct">A última coisa</div>
+      <p>Você conhece este projeto melhor do que qualquer pessoa na sala. A banca vai testar se você entende o que fez —
+         não se decorou. Quando bater nervosismo, respire e responda a pergunta literal, em uma frase. Quase sempre é o suficiente.</p>
+    </div>
+
+    <h2 id="referencias">Referências para citar</h2>
+    <p>Se pedirem "de onde vocês tiraram isso?", tenha duas ou três na ponta da língua. Não precisa decorar URL — precisa saber
+      qual fonte sustenta qual afirmação.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Assunto</th><th>Fonte</th></tr></thead>
+        <tbody>
+          <tr><td>Namespaces e cgroups do Linux</td><td><code>man 7 namespaces</code> e <code>man 7 cgroups</code> — ou as páginas em man7.org</td></tr>
+          <tr><td>Kubernetes (conceitos, Pod, Deployment, Service)</td><td>Documentação oficial: kubernetes.io/docs</td></tr>
+          <tr><td>HPA e a fórmula de escalonamento</td><td>kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale</td></tr>
+          <tr><td>Pod Security Standards</td><td>kubernetes.io/docs/concepts/security/pod-security-standards</td></tr>
+          <tr><td>Docker (imagens, camadas, Dockerfile)</td><td>docs.docker.com</td></tr>
+          <tr><td>psutil</td><td>psutil.readthedocs.io</td></tr>
+          <tr><td>FastAPI</td><td>fastapi.tiangolo.com</td></tr>
+          <tr><td>Minikube</td><td>minikube.sigs.k8s.io/docs</td></tr>
+          <tr><td>Teoria de sistemas operacionais</td><td>Tanenbaum, <em>Sistemas Operacionais Modernos</em>; Silberschatz, <em>Fundamentos de Sistemas Operacionais</em></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">
+      <span>Base de estudos local · A3 · Tema 1</span>
+      <span><a href="index.html">Voltar ao início →</a></span>
+    </div>
+  </div>
+</div>
+
+<script src="assets/search-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

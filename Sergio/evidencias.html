@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("a3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Evidências · Base de Estudos A3 — Tema 2</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">A3</div>
+    <div class="brand-text"><strong>Base de Estudos</strong><span>Tema 2 · Fila + Leis</span></div>
+  </div>
+  <div class="study-switch" aria-label="Trocar de estudo">
+    <a href="../Euclerio/index.html">Euclerio</a>
+    <a href="../Sergio/index.html" class="active">Sergio</a>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
+    <div class="search-results"></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Comece aqui</div>
+    <a href="index.html"><span class="n">00</span> Início</a>
+    <div class="nav-label">Fundamentos</div>
+    <a href="teoria.html"><span class="n">01</span> Teoria</a>
+    <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
+    <div class="nav-label">O trabalho</div>
+    <a href="pratica.html"><span class="n">03</span> Prática</a>
+    <a href="codigo.html"><span class="n">04</span> Código</a>
+    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <div class="nav-label">Treino</div>
+    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">07</span> Quiz</a>
+    <a href="plano.html"><span class="n">08</span> Plano</a>
+    <a href="banca.html"><span class="n">09</span> Banca</a>
+  </nav>
+  <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" data-menu aria-label="Abrir menu">☰</button>
+    <span class="topbar-title">05 · Provas</span>
+  </div>
+
+  <div class="content">
+    <div class="eyebrow">05 · Provas</div>
+    <h1>Evidências: o que o repositório realmente prova</h1>
+    <p class="lead">Uma apresentação forte não é a que tem mais slides; é a que consegue apontar a linha exata que sustenta\n      cada afirmação. Esta página organiza as provas disponíveis — e as que não existem.</p>
+
+    <div class="callout warn">
+      <div class="ct">Sem screenshots inventados</div>
+      <p>O repositório não tem prints do painel, não tem deploy, não tem vídeo de demonstração. Este site não cria\n        “evidências” falsas. As provas abaixo são código, testes, SQL e o PDF. Se a banca pedir uma demo visual, a resposta\n        honesta é: “a UI não foi implementada; o núcleo e os testes estão prontos”.</p>
+    </div>
+
+    <h2 id="provas">1. O que cada arquivo prova</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Afirmação</th><th>Arquivo / linha</th><th>Tipo de prova</th><th>Força</th></tr></thead>
+        <tbody>
+          <tr><td>Existem três níveis 0/1/2</td><td><code>modelos.py</code>, <code>NivelPrioridade</code></td><td>código + SQL</td><td><span class="tag ok">forte</span></td></tr>
+          <tr><td>80+ tem prioridade absoluta</td><td><code>Alexandre.py</code>, <code>if fila_super</code></td><td>código + teste 1/2</td><td><span class="tag ok">forte</span></td></tr>
+          <tr><td>O ciclo é 2:1</td><td><code>_limites=(2,1)</code>; testes 1,4,8</td><td>código + testes</td><td><span class="tag ok">forte</span></td></tr>
+          <tr><td>FIFO dentro do nível</td><td><code>sort_values</code> + <code>deque</code>; teste 3/12</td><td>código + teste</td><td><span class="tag ok">forte</span></td></tr>
+          <tr><td>Super não reseta o ciclo</td><td><code>return cliente, fila_super, etapa, contador</code>; teste 2</td><td>código + teste</td><td><span class="tag ok">forte</span></td></tr>
+          <tr><td>Banco tem 4 tabelas</td><td><code>setup_supabase.sql</code></td><td>SQL</td><td><span class="tag ok">forte</span></td></tr>
+          <tr><td>Distribuição 15/35/50</td><td><code>gerar_clientes.py</code>, <code>weights</code></td><td>código</td><td><span class="tag ok">forte</span></td></tr>
+          <tr><td>UI completa</td><td><code>streamlit.py</code></td><td>não existe</td><td><span class="tag danger">frágil</span></td></tr>
+          <tr><td>Repository implementado</td><td>só <code>ProtocoloRepositorio</code></td><td>não existe</td><td><span class="tag danger">frágil</span></td></tr>
+          <tr><td>Status é atualizado</td><td><code>test_gerenciador_nao_altera_status</code></td><td>prova o contrário</td><td><span class="tag danger">inexistente</span></td></tr>
+          <tr><td>Ciclo 3:2:1</td><td>README/PDF</td><td>contradito pelo código</td><td><span class="tag danger">falsa</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="trace">2. A prova mais bonita: o traço dos testes</h2>
+    <p>O teste <code>test_regra_alexandre_com_dados_extrator</code> monta 2 super, 3 padrão e 2 convencionais e espera\n      exatamente:</p>
+
+    <table>
+      <thead><tr><th>#</th><th>Chamado</th><th>Nível</th><th>Etapa/contador depois</th><th>Por quê</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>S0</td><td>super</td><td>0 / 0</td><td>80+ absoluto; contador intacto</td></tr>
+        <tr><td>2</td><td>S1</td><td>super</td><td>0 / 0</td><td>ainda há super</td></tr>
+        <tr><td>3</td><td>P0</td><td>padrão</td><td>0 / 1</td><td>primeira padrão</td></tr>
+        <tr><td>4</td><td>P1</td><td>padrão</td><td>1 / 0</td><td>segunda padrão; cota 2 atingida</td></tr>
+        <tr><td>5</td><td>C0</td><td>convencional</td><td>0 / 0</td><td>uma convencional; cota 1 atingida</td></tr>
+        <tr><td>6</td><td>P2</td><td>padrão</td><td>0 / 1</td><td>volta ao início do ciclo</td></tr>
+      </tbody>
+    </table>
+
+    <p>O teste <code>test_fifo_super_e_intercalacao_21</code> prova o mesmo com outros nomes: 2S, 3P, 2C →\n      <code>S1, S2, P1, P2, C1</code>. E <code>test_super_nao_altera_contador_do_ciclo_21</code> prova o caso mais\n      sutil: P0, S0, P1, C0. Se você sabe reproduzir esses três, sabe o algoritmo.</p>
+
+    <div class="callout tip">
+      <div class="ct">Como usar isso na banca</div>
+      <p>Não leia o código inteiro. Abra o teste e diga: “a especificação executável está aqui; eu vou traçar o caso de\n        seis chamadas”. Em 40 segundos você mostra mais domínio do que lendo 200 linhas.</p>
+    </div>
+
+    <h2 id="pdf-codigo">3. PDF × código: o confronto honesto</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tema</th><th>PDF / documentação</th><th>Código entregue</th><th>Veredito</th></tr></thead>
+        <tbody>
+          <tr><td>Proporção</td><td>3 super : 2 padrão : 1 normal</td><td>80+ absoluto + 2:1</td><td><strong>divergente</strong></td></tr>
+          <tr><td>Front-end</td><td>painel “TV de banco” + botão “Chamar Próximo”</td><td>script que testa conexão e mostra 2 métricas</td><td><strong>não implementado</strong></td></tr>
+          <tr><td>Session state</td><td>gerenciador injetado no <code>st.session_state</code></td><td>não existe</td><td><strong>não implementado</strong></td></tr>
+          <tr><td>Repository</td><td>classe que encapsula Supabase</td><td>apenas <code>Protocol</code> e atributo opcional</td><td><strong>não implementado</strong></td></tr>
+          <tr><td>Factory</td><td>fábrica estocástica</td><td>função <code>gerar_cliente()</code></td><td><strong>parcial</strong></td></tr>
+          <tr><td>Status</td><td>atualizar para atendido ao chamar</td><td>não altera; teste confirma</td><td><strong>não implementado</strong></td></tr>
+          <tr><td>Atendimentos</td><td>gravar histórico por guichê</td><td>tabela existe; nada grava</td><td><strong>não implementado</strong></td></tr>
+          <tr><td>Dados</td><td>500 clientes para testar</td><td>gerador aceita 500, mas default 20</td><td><strong>possível, não automático</strong></td></tr>
+          <tr><td>Testes</td><td>“testador chato” e cenários de estresse</td><td>15 testes de núcleo</td><td><strong>parcial</strong></td></tr>
+          <tr><td>Deploy</td><td>“colocar no ar”</td><td>não há configuração de deploy</td><td><strong>não implementado</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>O PDF é uma <strong>especificação arquitetural</strong>, não um relatório do que foi feito. Ele descreve uma arquitetura\n      maior do que o código. Isso é comum em trabalho acadêmico, mas precisa ser dito. A banca pode perguntar “o que do\n      documento está no repositório?”; a tabela acima é a resposta.</p>
+
+    <h2 id="testes">4. Como gerar sua própria evidência</h2>
+    <p>Você não precisa acreditar neste site: rode os comandos. A suíte está pronta e usa um extrator falso, então não\n      depende de rede para os 14 primeiros testes.</p>
+
+<pre><code>python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+pip install pandas
+
+python -m unittest testes_frente2.py -v</code></pre>
+
+    <div class="term"><span class="d"># saída esperada (nomes podem variar na ordem):</span>
+<span class="g">test_anti_inanicao_sob_pico_de_padrao ... ok</span>
+<span class="g">test_ciclo_encurta_quando_prioritarias_vazias ... ok</span>
+<span class="g">test_fila_convencional_vazia_nao_quebra ... ok</span>
+<span class="g">test_fifo_convencional ... ok</span>
+<span class="g">test_fifo_super_e_intercalacao_21 ... ok</span>
+<span class="g">test_prioridade_absoluta_80_mais_e_ciclo_21 ... ok</span>
+<span class="g">test_regra_alexandre_com_dados_extrator ... ok</span>
+<span class="g">test_super_nao_altera_contador_do_ciclo_21 ... ok</span>
+<span class="y">test_extracao_real_supabase ... skipped (sem env)</span>
+...
+<span class="g">----------------------------------------------------------------------</span>
+<span class="g">Ran 15 tests</span>
+<span class="g">OK (skipped=1)</span></div>
+
+    <p>Esse bloco é uma <strong>saída esperada</strong>, não uma captura de tela. O número de testes é 15; o único que pode\n      ser pulado é o de integração real. Se você rodar com <code>.env</code> válido, ele tenta conectar; sem rede ou sem\n      credencial, ele é skip.</p>
+
+    <h2 id="falta">5. O que não há — e como dizer isso</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>O que a banca pode pedir</th><th>Existe?</th><th>Resposta honesta</th></tr></thead>
+        <tbody>
+          <tr><td>Print do painel</td><td>não</td><td>“a UI ficou como trabalho futuro; o arquivo atual só testa a conexão”</td></tr>
+          <tr><td>Vídeo do botão chamando</td><td>não</td><td>“não há botão; posso mostrar o núcleo e os testes”</td></tr>
+          <tr><td>Cliente marcado como atendido</td><td>não</td><td>“o gerenciador não altera status; essa era a Frente 4”</td></tr>
+          <tr><td>Histórico em <code>atendimentos</code></td><td>não</td><td>“a tabela existe, mas nenhuma chamada grava nela”</td></tr>
+          <tr><td>Teste de 500 clientes</td><td>parcial</td><td>“o gerador aceita 500; não há teste de carga automatizado”</td></tr>
+          <tr><td>Deploy público</td><td>não</td><td>“não foi publicado; a arquitetura é local + Supabase”</td></tr>
+          <tr><td>3:2:1</td><td>não</td><td>“a documentação fala 3:2:1, mas o código e os testes fazem 2:1”</td></tr>
+          <tr><td>Segurança de produção</td><td>não</td><td>“RLS está aberta e a chave aparece no README; em produção eu corrigiria”</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="como-gerar">6. Roteiro de demonstração em 3 minutos</h2>
+    <ol>
+      <li><strong>Abra <code>modelos.py</code></strong> e explique os três níveis e o <code>frozen=True</code>. 30 s.</li>
+      <li><strong>Abra <code>Alexandre.py</code></strong> e mostre o <code>if fila_super</code> e o <code>_limites=(2,1)</code>. 40 s.</li>
+      <li><strong>Abra o teste 2</strong> (super no meio do ciclo) e trace P0, S0, P1, C0. 50 s.</li>
+      <li><strong>Abra o teste 8</strong> (100P + 1C) e diga por que a convencional não morre de fome. 30 s.</li>
+      <li><strong>Abra o SQL</strong> e aponte o índice parcial e a RLS aberta. 30 s.</li>
+      <li><strong>Feche</strong> com a frase de limitações: “núcleo pronto; UI e transação pendentes”. 20 s.</li>
+    </ol>
+
+    <div class="callout ok">
+      <div class="ct">A evidência que mais convence</div>
+      <p>Não é um print bonito: é você apontar a linha do teste e dizer o que ela prova. A banca vê que você entendeu o\n        contrato, não só a tela.</p>
+    </div>
+
+  </div>
+</div>
+
+<script src="assets/search-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

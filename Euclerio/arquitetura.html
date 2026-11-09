@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("a3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Arquitetura · Base de Estudos A3 — Tema 1</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">A3</div>
+    <div class="brand-text"><strong>Base de Estudos</strong><span>Tema 1 · Kubernetes + API</span></div>
+  </div>
+  <div class="study-switch" aria-label="Trocar de estudo">
+    <a href="../Euclerio/index.html" class="active">Euclerio</a>
+    <a href="../Sergio/index.html">Sergio</a>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
+    <div class="search-results"></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Comece aqui</div>
+    <a href="index.html"><span class="n">00</span> Início</a>
+    <div class="nav-label">Fundamentos</div>
+    <a href="teoria.html"><span class="n">01</span> Teoria</a>
+    <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
+    <div class="nav-label">O trabalho</div>
+    <a href="pratica.html"><span class="n">03</span> Prática</a>
+    <a href="codigo.html"><span class="n">04</span> Código</a>
+    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <div class="nav-label">Treino</div>
+    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">07</span> Quiz</a>
+    <a href="plano.html"><span class="n">08</span> Plano</a>
+    <a href="banca.html"><span class="n">09</span> Banca</a>
+  </nav>
+  <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" data-menu aria-label="Abrir menu">☰</button>
+    <span class="topbar-title">Arquitetura</span>
+  </div>
+
+  <div class="content">
+    <div class="eyebrow">02 · Desenho do sistema</div>
+    <h1>Arquitetura: física, lógica e o porquê de cada escolha</h1>
+    <p class="lead">O edital pede "modelo da arquitetura lógica e física do sistema". Esta página dá as duas visões,
+      o caminho completo de uma requisição e a justificativa de cada decisão — inclusive as que você deve assumir como limitação.</p>
+
+    <h2 id="diagrama">Arquitetura física</h2>
+    <p>A visão física mostra <em>onde</em> cada coisa roda. O ponto que confunde: no Windows, o cluster inteiro vive dentro de um
+      container Docker, e o "nó" tem um IP que o Windows não alcança diretamente.</p>
+
+    <div class="diagram">
+      <div class="diagram-title">Físico — do notebook ao Pod</div>
+      <div class="flow">
+        <div class="node"><strong>Windows 11</strong><small>navegador, Docker Desktop</small></div>
+        <div class="arrow">→</div>
+        <div class="node"><strong>WSL2 · Ubuntu</strong><small>onde rodam minikube e kubectl</small></div>
+        <div class="arrow">→</div>
+        <div class="node"><strong>Minikube (driver docker)</strong><small>um container que é o "nó"<br>IP 192.168.49.2</small></div>
+        <div class="arrow">→</div>
+        <div class="node acc"><strong>namespace daemon-lab</strong><small>5 Pods + 2 Services + 1 HPA</small></div>
+      </div>
+      <div class="arrow" style="text-align:center;padding:12px 0">↑ túnel ↑</div>
+      <div class="flow">
+        <div class="node acc2"><strong>minikube service</strong><small>encaminha 127.0.0.1:porta → nó:30080/30081<br>é o que faz o navegador do Windows funcionar</small></div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="ct">Por que isso importa na banca</div>
+      <p>Se o professor perguntar "por que não acesso direto pelo IP do nó?", a resposta é: com o driver Docker o nó é um container
+         em uma rede interna do Docker, sem rota a partir do Windows. O <code>minikube service</code> cria o encaminhamento de porta.
+         Alternativa: <code>kubectl port-forward</code>, que faz o mesmo por outro caminho.</p>
+    </div>
+
+    <h2>Arquitetura lógica</h2>
+    <p>A visão lógica mostra <em>o que</em> existe e como se relaciona, independente da máquina.</p>
+
+    <div class="diagram">
+      <div class="diagram-title">Lógico — objetos do Kubernetes</div>
+      <div class="flow">
+        <div class="node acc"><strong>Deployment api-deployment</strong><small>replicas: 2 · hostPID: true<br>requests 100m / limits 500m</small></div>
+        <div class="node acc"><strong>Deployment nginx-deployment</strong><small>replicas: 2 · porta 80</small></div>
+        <div class="node acc"><strong>Deployment cron-deployment</strong><small>replicas: 1 · sem porta</small></div>
+      </div>
+      <div class="arrow" style="text-align:center;padding:8px 0">↓ gera ↓</div>
+      <div class="flow">
+        <div class="node"><strong>ReplicaSet</strong><small>2 Pods api</small></div>
+        <div class="node"><strong>ReplicaSet</strong><small>2 Pods nginx</small></div>
+        <div class="node"><strong>ReplicaSet</strong><small>1 Pod cron</small></div>
+      </div>
+      <div class="arrow" style="text-align:center;padding:8px 0">↓ exposto por ↓</div>
+      <div class="flow">
+        <div class="node acc2"><strong>api-service</strong><small>NodePort 30080 → 8000</small></div>
+        <div class="node acc2"><strong>nginx-service</strong><small>NodePort 30081 → 80</small></div>
+        <div class="node"><strong>api-hpa</strong><small>2 a 10 réplicas · CPU 50%</small></div>
+      </div>
+    </div>
+
+    <h2 id="fluxo">O caminho completo de uma requisição</h2>
+    <p>Saber narrar isso em sequência é uma das melhores formas de mostrar domínio. São oito passos:</p>
+
+    <div class="diagram">
+      <div class="flow">
+        <div class="node"><strong>1 · curl</strong><small><code>curl http://127.0.0.1:38849/processes</code></small></div>
+        <div class="arrow">→</div>
+        <div class="node"><strong>2 · túnel</strong><small>minikube encaminha para o nó:30080</small></div>
+        <div class="arrow">→</div>
+        <div class="node"><strong>3 · kube-proxy</strong><small>regra iptables da porta 30080</small></div>
+        <div class="arrow">→</div>
+        <div class="node acc"><strong>4 · Service</strong><small>escolhe um Pod com <code>app: process-api</code></small></div>
+      </div>
+      <div class="arrow" style="text-align:center;padding:8px 0">↓</div>
+      <div class="flow">
+        <div class="node"><strong>5 · Pod</strong><small>recebe na 8000 (targetPort)</small></div>
+        <div class="arrow">→</div>
+        <div class="node"><strong>6 · uvicorn</strong><small>roteia para <code>list_processes()</code></small></div>
+        <div class="arrow">→</div>
+        <div class="node"><strong>7 · psutil</strong><small>lê <code>/proc</code> — que é o do nó, por causa do hostPID</small></div>
+        <div class="arrow">→</div>
+        <div class="node acc2"><strong>8 · JSON</strong><small><code>{"total": 83, "processes": [...]}</code></small></div>
+      </div>
+    </div>
+
+    <p>Repare que o passo 7 é o coração do trabalho: <strong>sem <code>hostPID</code>, o <code>/proc</code> seria o do container e o total
+      seria 3 ou 4</strong> (uvicorn + filhos), não 83.</p>
+
+    <h2>O caminho do self-healing</h2>
+    <ol>
+      <li>Você executa <code>kubectl delete pod api-deployment-7487485766-2chk4</code>.</li>
+      <li>O apiserver marca o Pod para remoção e avisa o kubelet do nó.</li>
+      <li>O kubelet encerra o container (SIGTERM, depois SIGKILL após o grace period).</li>
+      <li>O <strong>ReplicaSet controller</strong>, no próximo ciclo, conta 1 Pod em vez de 2.</li>
+      <li>Ele cria um Pod novo a partir do mesmo template.</li>
+      <li>O scheduler escolhe o nó (o único, no Minikube), o kubelet puxa a imagem local e inicia.</li>
+      <li>O Pod novo entra em <code>Running</code> — <strong>9 segundos</strong> no print.</li>
+      <li>O Service passa a incluir o novo Pod nos endpoints quando ele fica <code>Ready</code> — e, como não há
+        <code>readinessProbe</code> declarada, isso acontece assim que o container inicia, não quando a aplicação está de fato pronta.</li>
+    </ol>
+
+    <h2>O caminho do scaling</h2>
+    <ol>
+      <li>Você gera carga: <code>while true; do curl .../processes; done</code>.</li>
+      <li>O <strong>cAdvisor</strong> mede o consumo do cgroup de cada Pod.</li>
+      <li>O <strong>metrics-server</strong> agrega e expõe via API de métricas.</li>
+      <li>O <strong>HPA controller</strong> lê a cada ~15 s e calcula <code>ceil(2 × 204/50) = 9</code>.</li>
+      <li>O HPA escreve <code>replicas: 9</code> no Deployment (respeitando o máximo de 10).</li>
+      <li>O Deployment atualiza o ReplicaSet, que cria os Pods novos.</li>
+      <li>Sem carga, a CPU cai a 2%; após a janela de estabilização de 300 s, o HPA volta para 2.</li>
+    </ol>
+
+    <h2 id="decisoes">Tabela de decisões (o que a banca vai cobrar)</h2>
+    <p>Cada linha é uma pergunta em potencial. A coluna "por quê" é a resposta que ganha ponto.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Decisão</th><th>Alternativa</th><th>Por que esta</th></tr></thead>
+        <tbody>
+          <tr><td>3 imagens separadas</td><td>1 imagem com tudo</td><td>o edital pede 3 containers com daemons distintos; separar também permite escalar e falhar de forma independente</td></tr>
+          <tr><td><code>hostPID: true</code></td><td>API sem hostPID (ou com <code>hostPath</code> em <code>/proc</code>, ou <code>nsenter</code> privilegiado)</td><td>é o jeito canônico e mais simples de ver os processos do nó; alternativas quebram mais isolamento ou exigem privilégio extra</td></tr>
+          <tr><td>2 réplicas na API</td><td>1 réplica</td><td>API stateless; 2 permitem demonstrar self-healing sem derrubar o serviço</td></tr>
+          <tr><td>2 réplicas no Nginx</td><td>1 réplica</td><td>mesma lógica; e o Service demonstra balanceamento entre Pods</td></tr>
+          <tr><td>1 réplica no cron</td><td>2+ réplicas</td><td>crond não tem leader election: duas réplicas executariam a tarefa em duplicidade</td></tr>
+          <tr><td>NodePort</td><td>ClusterIP, LoadBalancer, Ingress</td><td>acesso externo simples sem provedor de nuvem; LoadBalancer exigiria MetalLB</td></tr>
+          <tr><td><code>imagePullPolicy: Never</code></td><td><code>IfNotPresent</code></td><td>as imagens não existem em registry; foram carregadas com <code>minikube image load</code></td></tr>
+          <tr><td>namespace <code>daemon-lab</code></td><td><code>default</code></td><td>isola o projeto, evita colisão e permite limpeza com um comando</td></tr>
+          <tr><td>HPA por CPU, alvo 50%</td><td>HPA por memória ou métrica custom</td><td>CPU é a métrica padrão e a única disponível sem adaptador extra; 50% deixa margem antes do limite</td></tr>
+          <tr><td><code>requests 100m</code> + <code>limits 500m</code></td><td>sem recursos declarados</td><td>o HPA exige request; o limite evita que um Pod faminto derrube o nó. Só a API declara recursos (Burstable); Nginx e cron ficam BestEffort</td></tr>
+          <tr><td><code>Popen</code> sem shell</td><td><code>shell=True</code>, <code>os.system</code></td><td>evita injeção de comando; e <code>Popen</code> devolve PID sem bloquear a requisição</td></tr>
+          <tr><td>FastAPI</td><td>Flask, Django</td><td>validação por type hints e Swagger automático em <code>/docs</code> — que virou evidência do trabalho</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="limitacoes">Limitações conscientes</h2>
+    <p>Assumir antes de ser apontado é uma jogada forte: transforma uma fraqueza em demonstração de maturidade. Estas são as reais:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Limitação</th><th>Consequência</th><th>Como resolveria</th></tr></thead>
+        <tbody>
+          <tr><td>Sem volume persistente</td><td><code>cron.txt</code> e <code>cron-task.log</code> morrem no restart; cada réplica do Nginx tem seu próprio arquivo</td><td><code>emptyDir</code> para sobreviver a restart do container; PVC <code>ReadWriteMany</code> para compartilhar entre réplicas (um <code>emptyDir</code> nunca é compartilhado entre Pods)</td></tr>
+          <tr><td>Sem autenticação na API</td><td>qualquer um no NodePort pode listar e matar processos</td><td>token/mTLS + ClusterIP + port-forward</td></tr>
+          <tr><td>Sem <code>livenessProbe</code>/<code>readinessProbe</code></td><td>o Service manda tráfego para Pod que talvez não esteja pronto</td><td>criar <code>/health</code> e declarar as probes</td></tr>
+          <tr><td><code>hostPID: true</code></td><td>viola PSS baseline; risco de matar processo do nó</td><td>allowlist de PIDs, namespace privilegiado explícito, auditoria</td></tr>
+          <tr><td><code>imagePullPolicy: Never</code></td><td>só funciona com imagens pré-carregadas</td><td>publicar em registry e usar <code>IfNotPresent</code></td></tr>
+          <tr><td>Minikube de 1 nó</td><td>não demonstra tolerância a falha de nó</td><td>cluster multi-nó (kind, k3s, cloud)</td></tr>
+          <tr><td>Sem Ingress</td><td>acesso por porta alta, sem domínio nem TLS</td><td>Ingress + cert-manager</td></tr>
+          <tr><td>Cron sem coordenação</td><td>não escala horizontalmente</td><td><code>CronJob</code> do Kubernetes (que já resolve isso)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <div class="ct">Como dizer isso na apresentação</div>
+      <p>"O escopo do edital era orquestrar três daemons e demonstrar self-healing e scaling. Nós entregamos isso. O que ficou de
+         fora foi deliberado: persistência, autenticação e probes não eram exigidas e teriam aumentado o escopo sem mudar o que
+         precisávamos demonstrar. Estão listadas como trabalhos futuros."</p>
+    </div>
+
+    <h2 id="numeros">Números medidos (o que citar de memória)</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Métrica</th><th>Valor</th><th>Origem</th></tr></thead>
+        <tbody>
+          <tr><td>Pods no deploy base</td><td>5 (2 api, 2 nginx, 1 cron)</td><td><code>5pods.png</code></td></tr>
+          <tr><td>Tempo de recriação do Pod</td><td>9 s</td><td><code>RecriacaoPod.png</code></td></tr>
+          <tr><td>Réplicas sob carga</td><td>2 → 4 → 8 → 9 → 10</td><td><code>hpa.png</code></td></tr>
+          <tr><td>CPU durante o teste</td><td>204% do request</td><td><code>hpa.png</code></td></tr>
+          <tr><td>CPU em repouso</td><td>2%</td><td><code>replicasVoltando2.png</code></td></tr>
+          <tr><td>Processos vistos pela API</td><td>83</td><td><code>hostPID_kubernete.png</code></td></tr>
+          <tr><td>Tempo de scale-down</td><td>~5 min (janela padrão)</td><td><code>resultados.md</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="ct">Precisão que evita pergunta chata</div>
+      <p>O "~5 min" do scale-down é a <strong>janela de estabilização padrão do HPA</strong>, não um tempo que vocês mediram com cronômetro.
+         Se disser "medimos 5 minutos", alguém pode pedir o registro. Diga: "o HPA espera 5 minutos por padrão antes de reduzir,
+         e foi o que observamos".</p>
+    </div>
+
+    <div class="footer">
+      <span>Base de estudos local · A3 · Tema 1</span>
+      <span><a href="pratica.html">Próximo: Prática →</a></span>
+    </div>
+  </div>
+</div>
+
+<script src="assets/search-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

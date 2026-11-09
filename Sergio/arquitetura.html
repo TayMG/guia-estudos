@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("a3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Arquitetura · Base de Estudos A3 — Tema 2</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">A3</div>
+    <div class="brand-text"><strong>Base de Estudos</strong><span>Tema 2 · Fila + Leis</span></div>
+  </div>
+  <div class="study-switch" aria-label="Trocar de estudo">
+    <a href="../Euclerio/index.html">Euclerio</a>
+    <a href="../Sergio/index.html" class="active">Sergio</a>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
+    <div class="search-results"></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Comece aqui</div>
+    <a href="index.html"><span class="n">00</span> Início</a>
+    <div class="nav-label">Fundamentos</div>
+    <a href="teoria.html"><span class="n">01</span> Teoria</a>
+    <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
+    <div class="nav-label">O trabalho</div>
+    <a href="pratica.html"><span class="n">03</span> Prática</a>
+    <a href="codigo.html"><span class="n">04</span> Código</a>
+    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <div class="nav-label">Treino</div>
+    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">07</span> Quiz</a>
+    <a href="plano.html"><span class="n">08</span> Plano</a>
+    <a href="banca.html"><span class="n">09</span> Banca</a>
+  </nav>
+  <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" data-menu aria-label="Abrir menu">☰</button>
+    <span class="topbar-title">02 · Desenho</span>
+  </div>
+
+  <div class="content">
+    <div class="eyebrow">02 · Desenho</div>
+    <h1>Arquitetura: o caminho de uma chamada</h1>
+    <p class="lead">O projeto tem uma arquitetura simples — e uma distância grande entre o desenho do PDF e o que está
+      implementado. Esta página mostra as duas coisas: o fluxo que existe e o fluxo que foi prometido.</p>
+
+    <div class="callout warn">
+      <div class="ct">Leia antes de decorar</div>
+      <p>O bloco “Streamlit” do diagrama é a <strong>intenção</strong>. O arquivo real só testa a conexão. Não diga na banca
+        que o painel está pronto; diga que o núcleo está pronto e a interface é o próximo passo. Isso é mais forte do que
+        ser pego no flagra.</p>
+    </div>
+
+    <h2 id="diagrama">1. Arquitetura lógica em camadas</h2>
+    <div class="diagram">
+      <div class="diagram-title">Camadas do projeto</div>
+      <div class="flow">
+        <div class="node acc2"><strong>1. Apresentação</strong><small>Streamlit (especificado)<br>hoje: só teste de conexão</small></div>
+        <div class="node acc"><strong>2. Aplicação</strong><small>botão “Chamar Próximo”<br>session_state (não implementado)</small></div>
+        <div class="node acc"><strong>3. Domínio</strong><small><code>Cliente</code><br><code>NivelPrioridade</code><br><code>StatusCliente</code></small></div>
+      </div>
+      <div class="arrow" style="text-align:center;padding:10px 0">↓</div>
+      <div class="flow">
+        <div class="node"><strong>4. Regra de negócio</strong><small><code>GerenciadorFilas</code><br><code>aplicar_starvation</code></small></div>
+        <div class="node"><strong>5. Persistência</strong><small><code>ExtratorFila</code><br>Supabase / PostgreSQL</small></div>
+        <div class="node"><strong>6. Dados de teste</strong><small>Faker + random<br><code>gerar_clientes.py</code></small></div>
+      </div>
+    </div>
+
+    <p>A separação é boa no papel: o domínio não conhece o banco; o gerenciador não conhece o Streamlit; o
+      extrator isola a rede. Na prática, a camada 2 não existe, o repositório concreto não existe e o domínio tem
+      vazamentos (o <code>id</code> vira CPF, o status não muda). A arquitetura é uma <strong>direção</strong>, não uma
+      garantia.</p>
+
+    <h2 id="fluxo">2. O caminho real de uma chamada</h2>
+    <p>Quando alguém chama <code>chamar_proximo()</code>, a sequência é:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Passo</th><th>Quem</th><th>O que acontece</th><th>Efeito no banco</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><code>chamar_proximo()</code></td><td>salva <code>etapa</code> e <code>contador</code> para rollback</td><td>nenhum</td></tr>
+          <tr><td>2</td><td><code>aplicar_starvation()</code></td><td>verifica super; se houver, remove; senão, aplica o ciclo 2:1</td><td>nenhum</td></tr>
+          <tr><td>3</td><td><code>GerenciadorFilas</code></td><td>atualiza etapa/contador com o retorno</td><td>nenhum</td></tr>
+          <tr><td>4</td><td><code>repositorio.registrar_chamada()</code></td><td>só se um repositório foi injetado</td><td>esperado: atualizar status e inserir atendimento</td></tr>
+          <tr><td>5</td><td>retorno</td><td>devolve o <code>Cliente</code> com status <code>aguardando</code></td><td>normalmente nenhum</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Nos testes e no uso padrão, <code>repositorio=None</code>. Então o passo 4 não existe. O cliente sai da fila em
+      memória e o banco continua dizendo “aguardando”. Se você rodar <code>carregar_fila()</code> de novo, ele volta. Isso
+      é uma falha de consistência, não um detalhe cosmético.</p>
+
+    <div class="diagram">
+      <div class="diagram-title">Sequência: o que deveria acontecer em produção</div>
+      <div class="flow">
+        <div class="node"><strong>Caixa clica</strong><small>“Chamar Próximo”</small></div>
+        <div class="node"><strong>Serviço</strong><small>trava a fila / abre transação</small></div>
+        <div class="node"><strong>Escolhe</strong><small>aplica 80+ + 2:1</small></div>
+        <div class="node"><strong>Marca</strong><small>em_atendimento</small></div>
+        <div class="node"><strong>Grava</strong><small>atendimentos (guichê, hora)</small></div>
+        <div class="node"><strong>Commit</strong><small>devolve a senha</small></div>
+      </div>
+    </div>
+
+    <h2 id="decisoes">3. Decisões de arquitetura e o custo de cada uma</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Decisão</th><th>Por que foi tomada</th><th>Custo / risco</th><th>Alternativa</th></tr></thead>
+        <tbody>
+          <tr><td>Três filas <code>deque</code></td><td>FIFO natural e cota explícita</td><td>três estruturas para sincronizar</td><td>heap com chave composta</td></tr>
+          <tr><td>80+ absoluto</td><td>garantir a prioridade especial do Estatuto</td><td>pode starvar os demais</td><td>fila especial com limite de consecutivas</td></tr>
+          <tr><td>Ciclo 2:1</td><td>dar cota à convencional</td><td>não garante tempo máximo</td><td>aging por timestamp</td></tr>
+          <tr><td><code>IntEnum</code></td><td>evitar números mágicos e casar com INT do banco</td><td>0 = mais prioritário é contraintuitivo</td><td>rank explícito / value object</td></tr>
+          <tr><td><code>frozen dataclass</code></td><td>imutabilidade do contrato</td><td>mudar status exige novo objeto</td><td>entidade mutável com métodos de transição</td></tr>
+          <tr><td>pandas</td><td>converter JSON e ordenar rapidamente</td><td>dependência pesada; pouca validação</td><td>dataclasses + <code>requests</code></td></tr>
+          <tr><td>Supabase</td><td>banco e API sem backend próprio</td><td>dependência de rede e RLS mal configurada</td><td>Postgres local + FastAPI</td></tr>
+          <tr><td>Streamlit</td><td>protótipo rápido de dashboard</td><td>rerun e estado; UI não implementada</td><td>React/Next ou FastAPI + templates</td></tr>
+          <tr><td>Faker</td><td>dados realistas em volume</td><td>não simula chegadas ao longo do tempo</td><td>gerador com distribuição temporal</td></tr>
+          <tr><td>Testes com extrator falso</td><td>testar sem rede</td><td>não cobre SQL/RLS/concorrência</td><td>testcontainers / banco efêmero</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="implementado">4. O que está implementado, em uma tabela</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Componente</th><th>Arquivo</th><th>Estado</th><th>Prova</th></tr></thead>
+        <tbody>
+          <tr><td>Modelo de domínio</td><td><code>modelos.py</code></td><td><span class="tag ok">completo</span></td><td>dataclass, enums, fábrica</td></tr>
+          <tr><td>Algoritmo</td><td><code>Alexandre.py</code></td><td><span class="tag ok">completo e testado</span></td><td>casos 2:1 e 80+ na suíte de 15</td></tr>
+          <tr><td>Gerenciador</td><td><code>gerenciador_filas.py</code></td><td><span class="tag ok">completo</span></td><td>carga, chamada, rollback</td></tr>
+          <tr><td>Extração</td><td><code>extracao.py</code></td><td><span class="tag warn">funcional, frágil</span></td><td>sem timeout/erro/paginação</td></tr>
+          <tr><td>Banco</td><td><code>supabase/*.sql</code></td><td><span class="tag ok">completo</span></td><td>4 tabelas, seed, índice</td></tr>
+          <tr><td>Gerador</td><td><code>gerar_clientes.py</code></td><td><span class="tag ok">completo</span></td><td>15/35/50; inserção em lote</td></tr>
+          <tr><td>UI</td><td><code>streamlit.py</code></td><td><span class="tag danger">mínima</span></td><td>só conexão e métricas</td></tr>
+          <tr><td>Repository</td><td>—</td><td><span class="tag danger">não implementado</span></td><td>só <code>Protocol</code></td></tr>
+          <tr><td>Factory</td><td><code>gerar_clientes.py</code></td><td><span class="tag warn">função, não classe</span></td><td>sem interface de fábrica</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="limitacoes">5. Limitações que você deve assumir antes da banca</h2>
+    <ul>
+      <li><strong>Consistência:</strong> a fila em memória e o banco podem divergir; não há transação unindo “retirar da
+        fila” e “marcar como atendido”.</li>
+      <li><strong>Concorrência:</strong> dois caixas/processos podem chamar o mesmo cliente; não há lock distribuído nem
+        <code>SELECT ... FOR UPDATE SKIP LOCKED</code>.</li>
+      <li><strong>Persistência do ciclo:</strong> etapa e contador vivem na memória; um restart zera o ciclo. O PDF fala em
+        <code>session_state</code>, mas isso só resolveria o rerun do Streamlit, não o restart do processo.</li>
+      <li><strong>Segurança:</strong> RLS permissiva, chave no README, sem autenticação, CPF e motivo de saúde expostos.</li>
+      <li><strong>Justiça:</strong> não há aging por tempo; a cota é por chamada, não por minuto.</li>
+      <li><strong>Legal:</strong> o rol está desatualizado em relação à Lei 14.626/2023; 80+ absoluto é uma interpretação
+        de projeto.</li>
+      <li><strong>Interface:</strong> não existe o painel prometido; o arquivo <code>streamlit.py</code> tem nome que pode
+        sombrear o pacote.</li>
+      <li><strong>Testes:</strong> cobrem o núcleo, não a integração real, a UI ou a concorrência.</li>
+    </ul>
+
+    <h2 id="numeros">6. Números da arquitetura</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Grandeza</th><th>Valor</th><th>Significado</th></tr></thead>
+        <tbody>
+          <tr><td>Filas</td><td>3</td><td>super, padrão, convencional</td></tr>
+          <tr><td>Níveis</td><td>0, 1, 2</td><td>menor = mais prioritário</td></tr>
+          <tr><td>Cota</td><td>2:1</td><td>padrão : convencional</td></tr>
+          <tr><td>Distribuição de teste</td><td>15% / 35% / 50%</td><td>super / padrão / convencional</td></tr>
+          <tr><td>Tabelas</td><td>4</td><td>tipo, motivo, clientes, atendimentos</td></tr>
+          <tr><td>Testes</td><td>15</td><td>unittest + integração opcional</td></tr>
+          <tr><td>Classes de gerente</td><td>2</td><td>duplicadas em dois arquivos</td></tr>
+          <tr><td>Arquivos Python</td><td>7</td><td>modelos, gerente, algoritmo, extração, gerador, UI, testes</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="producao">7. Como seria em produção</h2>
+    <p>Se o projeto fosse para um banco de verdade, a arquitetura mínima seria:</p>
+    <ol>
+      <li><strong>API transacional</strong> (FastAPI) com endpoints para entrar na fila, chamar próximo e finalizar
+        atendimento.</li>
+      <li><strong>PostgreSQL</strong> com uma função ou transação que seleciona o próximo e atualiza o status de forma
+        atômica. O algoritmo pode ficar em Python, mas a seleção precisa de lock.</li>
+      <li><strong>Autenticação e autorização</strong> por papel: caixa, gerente, administrador; RLS com <code>auth.uid()</code>.</li>
+      <li><strong>Auditoria</strong>: quem chamou, quando, em qual guichê, qual cliente, qual resultado.</li>
+      <li><strong>Observabilidade</strong>: tempo de espera por nível, tamanho das filas, chamadas por hora, erros.</li>
+      <li><strong>Política de justiça</strong>: aging ou SLA; limite de consecutivas para 80+; tratamento de desistência.</li>
+      <li><strong>LGPD</strong>: minimização (não guardar motivo de saúde em texto livre), criptografia, retenção e
+        consentimento/base legal.</li>
+      <li><strong>Testes</strong>: unidade, integração com banco efêmero, concorrência e contrato da API.</li>
+    </ol>
+
+    <div class="callout tip">
+      <div class="ct">Frase para a banca</div>
+      <p>“A versão acadêmica separa o algoritmo da persistência e prova o núcleo com testes. A versão de produção
+        precisaria de transação, autenticação e uma política de justiça por tempo — não só por contagem.”</p>
+    </div>
+
+  </div>
+</div>
+
+<script src="assets/search-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
