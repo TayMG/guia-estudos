@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base de Estudos A3 · Tema 1 + Tema 2</title>
+  <link rel="stylesheet" href="Euclerio/assets/style.css">
+  <style>
+    body { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:40px 20px; }
+    .hub { max-width:760px; width:100%; }
+    .hub h1 { margin-bottom:8px; }
+    .hub p { color:var(--muted); }
+    .hub-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px; margin:30px 0; }
+    .hub-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:22px; box-shadow:var(--shadow); display:block; }
+    .hub-card:hover { border-color:var(--accent); }
+    .hub-card h2 { margin-top:0; }
+    .hub-card ul { margin:10px 0 0; color:var(--muted); font-size:14px; }
+    .hub-foot { color:var(--muted); font-size:13px; text-align:center; }
+  </style>
+</head>
+<body>
+  <div class="hub">
+    <div class="eyebrow">A3 · Estudos locais</div>
+    <h1>Escolha o estudo</h1>
+    <div class="hub-grid">
+      <a class="hub-card" href="Euclerio/index.html">
+        <h2>Euclerio · Tema 1</h2>
+        <p>Kubernetes, API de gerenciamento de processos, orquestração de serviços daemon.</p>
+        <ul><li>10 páginas de estudo</li><li>38 questões</li><li>21 prints</li></ul>
+      </a>
+      <a class="hub-card" href="Sergio/index.html">
+        <h2>Sergio · Tema 2</h2>
+        <p>Fila bancária com prioridades legais, algoritmo 2:1, leis, código, SQL, Streamlit e contradições.</p>
+        <ul><li>10 páginas de estudo</li><li>42 questões</li><li>Simulador interativo</li></ul>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
