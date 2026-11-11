@@ -171,7 +171,8 @@
     </div>
 
     <p>O nível 0 é o único que não passa pelo ciclo 2:1. Ele é uma <strong>interrupção absoluta</strong>: se há 80+ na
-      fila, ele sai na hora. Os níveis 1 e 2 alternam duas chamadas da padrão para cada uma da convencional, para que a
+      fila, ele sai na hora. Em outras palavras: o 80+ é <strong>sempre atendido antes de todos — prioridade máxima</strong>,
+      independentemente da ordem de chegada. Os níveis 1 e 2 alternam duas chamadas da padrão para cada uma da convencional, para que a
       fila comum não morra de fome.</p>
 
     <h2 id="conflito">6. O conflito que o algoritmo resolve</h2>
