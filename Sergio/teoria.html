@@ -244,6 +244,12 @@
     <p>Perceba a expressão <strong>“dentre os idosos”</strong>. No texto do Estatuto, a preferência é dos 80+ sobre os
       idosos de 60 a 79; não é, literalmente, uma categoria acima de gestantes, PCDs ou autistas.</p>
 
+    <p>A prioridade especial não estava no texto original do Estatuto: foi incluída pela <strong>Lei 13.466/2017</strong>,
+      sancionada em <strong>12/07/2017</strong> e publicada no DOU de <strong>13/07/2017</strong>, com vigência imediata.
+      A lei alterou três dispositivos: o art. 3º, §2º (prioridade especial no atendimento), o art. 15, §7º (saúde,
+      exceto emergência) e o art. 71, §5º (processos judiciais). É a base estatutária direta para o nível <code>0</code>;
+      o que ela não faz é colocar o 80+ acima de gestantes, PCDs ou autistas — esse passo vem do modelo do TSE.</p>
+
     <p>Para o desenho do nível <code>0</code>, o guia adota a norma do TSE, que explicita a precedência sobre todos no
       âmbito eleitoral. A <strong>Resolução TSE nº 23.759/2026, art. 14, §3º</strong> (antes, Resolução TSE nº 23.736/2024,
       art. 100, §3º) diz:</p>
@@ -262,9 +268,9 @@
       é: “o Estatuto fala ‘dentre os idosos’; a prioridade sobre todos segue o modelo da norma do TSE, adotado como escolha
       de projeto e documentado”.</p>
 
-    <p>Há um detalhe fino de idade: a norma fala em “mais de 80 anos” e o código trata <code>80+</code> como
-      <code>idade &gt;= 80</code>. Para o exercício, a aproximação é aceitável; em produção, o critério precisaria ser
-      alinhado com o jurídico e com o cadastro do cliente.</p>
+    <p>Há um detalhe fino de idade: a Lei 13.466/2017 e a norma do TSE falam em “maiores de oitenta anos”, enquanto o
+      código trata <code>80+</code> como <code>idade &gt;= 80</code>. Para o exercício, a aproximação é aceitável; em
+      produção, o critério precisaria ser alinhado com o jurídico e com o cadastro do cliente.</p>
 
     <p>Há ainda uma consequência prática: se você atende 80+ de forma absoluta, a fila de 80+ pode starvar as demais.
       Em um banco real, a política precisaria lidar com isso — por exemplo, limitar quantos 80+ consecutivos são chamados

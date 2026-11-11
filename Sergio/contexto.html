@@ -97,9 +97,36 @@
     <p>No ordenamento brasileiro, a base bancária está na <strong>Lei 10.048/2000</strong>: o art. 2º, parágrafo único,
       assegura a prioridade de atendimento em todas as instituições financeiras às pessoas do art. 1º. O
       <strong>Estatuto da Pessoa Idosa</strong> (Lei 10.741/2003) e a <strong>Lei 12.764/2012</strong> (TEA) completam o
-      quadro. O projeto usa essas normas para justificar os níveis 1 e 2.</p>
+      quadro. O projeto usa essas normas para justificar os níveis 1 e 2; a Lei 13.466/2017, na seção seguinte, entra
+      também na base do nível 0.</p>
 
-    <h2 id="tse">3. O 80+ na norma do TSE</h2>
+    <h2 id="lei-13466">3. A Lei 13.466/2017: o 80+ vira prioridade especial</h2>
+    <p>Até 2017, o Estatuto tratava todos os idosos (60+) como um grupo só. A <strong>Lei 13.466/2017</strong> criou,
+      dentro desse grupo, uma categoria mais protegida: a pessoa com mais de 80 anos. A lei foi sancionada em
+      <strong>12 de julho de 2017</strong>, publicada no Diário Oficial em <strong>13 de julho</strong> e entrou em vigor
+      na data da publicação.</p>
+
+    <div class="callout">
+      <div class="ct">Texto-chave da Lei 13.466/2017</div>
+      <p>“Dentre os idosos, é assegurada prioridade especial aos maiores de oitenta anos, atendendo-se suas necessidades
+        sempre preferencialmente em relação aos demais idosos.” — art. 3º, §2º, do Estatuto da Pessoa Idosa</p>
+    </div>
+
+    <p>A lei alterou três pontos do Estatuto: o <strong>art. 3º, §2º</strong> (prioridade especial no atendimento em
+      geral), o <strong>art. 15, §7º</strong> (atendimento de saúde, exceto emergência) e o <strong>art. 71, §5º</strong>
+      (processos judiciais). Como o art. 3º, §1º, I, alcança os prestadores privados de serviços à população, a
+      prioridade especial dialoga com a fila bancária — embora a base específica do banco continue sendo a Lei
+      10.048/2000.</p>
+
+    <div class="callout warn">
+      <div class="ct">O que a 13.466 diz — e o que ela não diz</div>
+      <p>Ela garante ao 80+ prioridade <strong>sobre os demais idosos</strong>. Não coloca, por si só, o 80+ acima de
+        gestantes, pessoas com deficiência ou autistas. A precedência sobre <em>todos</em> os grupos é o modelo que o
+        guia importa da norma do TSE, na seção seguinte. Na banca, não confunda as duas camadas: a 13.466 é a base
+        legal setorial; a norma do TSE é a referência de desenho.</p>
+    </div>
+
+    <h2 id="tse">4. O 80+ na norma do TSE</h2>
     <p>Para o nível mais alto, o guia adota como referência a norma do Tribunal Superior Eleitoral. A
       <strong>Resolução TSE nº 23.759/2026, art. 14, §3º</strong> (que consolida direitos do eleitorado; antes, a
       Resolução TSE nº 23.736/2024, art. 100, §3º) diz:</p>
@@ -125,11 +152,11 @@
         TSE, adotado como escolha de projeto e documentado”.</p>
     </div>
 
-    <p>Há ainda uma diferença fina de idade: a norma fala em “mais de 80 anos” e o código trata <code>80+</code> como
-      <code>idade &gt;= 80</code>. Para o exercício, a aproximação é aceitável; em produção, o critério precisaria ser
-      alinhado com o jurídico e com o cadastro do cliente.</p>
+    <p>Há ainda uma diferença fina de idade: a Lei 13.466/2017 e a norma do TSE falam em “maiores de oitenta anos”,
+      enquanto o código trata <code>80+</code> como <code>idade &gt;= 80</code>. Para o exercício, a aproximação é
+      aceitável; em produção, o critério precisaria ser alinhado com o jurídico e com o cadastro do cliente.</p>
 
-    <h2 id="modelo">4. Do contexto ao modelo de três filas</h2>
+    <h2 id="modelo">5. Do contexto ao modelo de três filas</h2>
     <p>A tradução do problema para o código é uma tabela de três níveis. Repare que o número menor é o mais prioritário:</p>
 
     <div class="table-wrap">
@@ -147,7 +174,7 @@
       fila, ele sai na hora. Os níveis 1 e 2 alternam duas chamadas da padrão para cada uma da convencional, para que a
       fila comum não morra de fome.</p>
 
-    <h2 id="conflito">5. O conflito que o algoritmo resolve</h2>
+    <h2 id="conflito">6. O conflito que o algoritmo resolve</h2>
     <p>O problema central é <strong>starvation</strong>: se a fila padrão nunca esvazia e o algoritmo sempre a escolhe, a
       convencional pode esperar para sempre. O ciclo 2:1 resolve a proporção entre padrão e convencional, mas não resolve
       tudo: se a fila de 80+ nunca esvaziar, as outras duas esperam. Essa é uma limitação real do projeto e um ponto que a
@@ -165,7 +192,7 @@
       </table>
     </div>
 
-    <h2 id="entrega">6. O que o projeto entrega</h2>
+    <h2 id="entrega">7. O que o projeto entrega</h2>
     <p>O contexto ajuda a entender por que o núcleo é a parte mais valiosa do repositório. A tabela abaixo é o resumo que
       você deve ter na cabeça antes de abrir o código:</p>
 
@@ -181,14 +208,15 @@
       </table>
     </div>
 
-    <h2 id="resumo">7. O contexto em 30 segundos</h2>
+    <h2 id="resumo">8. O contexto em 30 segundos</h2>
     <div class="callout ok">
       <div class="ct">Decore esta sequência</div>
       <p>“O projeto é uma fila bancária com prioridades legais. A lei manda atender primeiro grupos vulneráveis; o risco é
         a fila comum nunca andar. A solução tem três níveis: 80+ absoluto, prioridade padrão e convencional, com FIFO
-        dentro de cada um e ciclo 2:1 entre os dois últimos. Para o 80+, adotamos o modelo da norma do TSE: prioridade
-        sobre todos, independentemente da chegada. No banco, a base é a Lei 10.048/2000 com o Estatuto da Pessoa Idosa.
-        O núcleo está testado; a UI e a transação de status são o próximo passo.”</p>
+        dentro de cada um e ciclo 2:1 entre os dois últimos. A Lei 13.466/2017 criou a prioridade especial do 80+ dentre
+        os idosos; para a precedência sobre todos, adotamos o modelo da norma do TSE, independentemente da chegada. No
+        banco, a base é a Lei 10.048/2000 com o Estatuto da Pessoa Idosa. O núcleo está testado; a UI e a transação de
+        status são o próximo passo.”</p>
     </div>
 
     <p>Se quiser aprofundar, siga para <a href="teoria.html">Teoria</a> (conceitos e leis), <a href="arquitetura.html">Arquitetura</a>

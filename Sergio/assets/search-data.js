@@ -2,14 +2,15 @@
 window.SEARCH_INDEX = [
   /* Contexto */
   { t: "Contexto: por que este projeto existe", u: "contexto.html#cenario", k: "contexto cenario problema fila banco prioridade historia", p: "Contexto" },
-  { t: "Contexto jurídico e ético", u: "contexto.html#porque", k: "contexto juridico etico lei 10048 estatuto pessoa idosa 13466 12764 13146 14626 tse", p: "Contexto" },
+  { t: "Contexto jurídico e ético", u: "contexto.html#porque", k: "contexto juridico etico lei 10048 estatuto pessoa idosa 13466 2017 12764 13146 14626 tse", p: "Contexto" },
+  { t: "Lei 13.466/2017: o 80+ vira prioridade especial", u: "contexto.html#lei-13466", k: "lei 13466 2017 sanção 12 julho prioridade especial 80 idosos estatuto temer", p: "Contexto" },
   { t: "O modelo TSE para o 80+", u: "contexto.html#tse", k: "tse 23759 2026 23736 2024 artigo 14 artigo 100 80 anos preferencia ordem de chegada", p: "Contexto" },
   { t: "O conflito com a starvation", u: "contexto.html#conflito", k: "conflito starvation 80 absoluto ciclo 2 1 inanicao idoso", p: "Contexto" },
   { t: "Resumo de 30 segundos", u: "contexto.html#resumo", k: "resumo 30 segundos contexto defesa banca", p: "Contexto" },
 
   /* Início */
   { t: "O projeto em 30 segundos", u: "index.html#mapa", k: "resumo visao geral tres filas faker supabase pandas streamlit algoritmo", p: "Início" },
-  { t: "A lei em 60 segundos", u: "index.html#leis", k: "lei 10048 10741 13466 12764 13146 14626 tse 23759 2026 23736 2024 niveis super padrao convencional", p: "Início" },
+  { t: "A lei em 60 segundos", u: "index.html#leis", k: "lei 10048 10741 13466 2017 12764 13146 14626 tse 23759 2026 23736 2024 niveis super padrao convencional", p: "Início" },
   { t: "Contexto do projeto", u: "index.html#contexto", k: "contexto problema banco fila prioridade justica social", p: "Início" },
   { t: "Cada recurso usado", u: "index.html#recursos", k: "python deque intenum dataclass faker pandas supabase postgrest dotenv streamlit unittest gitflow", p: "Início" },
   { t: "O que existe de verdade × o que é promessa", u: "index.html#status", k: "implementado prometido status ui repository factory streamlit rls", p: "Início" },
@@ -25,7 +26,7 @@ window.SEARCH_INDEX = [
   { t: "collections.deque", u: "teoria.html#deque", k: "deque append popleft complexidade O(1) lista duplamente encadeada blocos", p: "Teoria" },
   { t: "Weighted round-robin e quantum", u: "teoria.html#round-robin", k: "round-robin weighted quantum ciclo 2:1 cota revezamento", p: "Teoria" },
   { t: "Lei 10.048/2000", u: "teoria.html#lei-10048", k: "lei 10048 instituicoes financeiras banco atendimento prioritario artigo 2", p: "Teoria" },
-  { t: "Estatuto do Idoso, Lei 13.466/2017 e modelo TSE", u: "teoria.html#lei-10741", k: "lei 10741 13466 idoso 80 prioridade especial dentre os idosos tse 23759 2026 23736 2024", p: "Teoria" },
+  { t: "Estatuto do Idoso, Lei 13.466/2017 e modelo TSE", u: "teoria.html#lei-10741", k: "lei 10741 13466 2017 sanção prioridade especial idoso 80 dentre os idosos tse 23759 2026 23736 2024", p: "Teoria" },
   { t: "Lei 12.764/2012 e TEA", u: "teoria.html#lei-12764", k: "lei 12764 tea autismo pessoa com deficiencia ciptea", p: "Teoria" },
   { t: "Lei 13.146/2015 (LBI)", u: "teoria.html#lei-13146", k: "lei 13146 lbi pcd obesidade deficiencia acessibilidade", p: "Teoria" },
   { t: "Lei 14.626/2023", u: "teoria.html#lei-14626", k: "lei 14626 14364 mobilidade reduzida doador de sangue 120 dias acompanhante atualizacao", p: "Teoria" },

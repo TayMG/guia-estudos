@@ -42,7 +42,7 @@ window.QUIZ_DATA = [
       "Válida apenas em hospitais"
     ],
     a: 0,
-    e: "A norma do TSE dá ao 80+ preferência sobre as demais pessoas, independentemente do momento de chegada. O Estatuto (Lei 13.466/2017) fala “dentre os idosos”; o projeto adota o modelo do TSE para o nível 0."
+    e: "A norma do TSE dá ao 80+ preferência sobre as demais pessoas, independentemente do momento de chegada. O Estatuto, com a Lei 13.466/2017 (sancionada em 12/07/2017), fala “dentre os idosos”; o projeto adota o modelo do TSE para o nível 0."
   },
   {
     q: "Qual dispositivo garante prioridade em instituições financeiras?",
