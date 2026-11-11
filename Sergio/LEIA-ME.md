@@ -26,16 +26,17 @@ Elas apontam para `../Euclerio/index.html` e `../Sergio/index.html`. O tema clar
 
 | Página | Para quê |
 |---|---|
-| `index.html` | visão geral em 30 segundos, lei em 60 segundos, recursos, o que está implementado × o que é promessa, checklist de domínio, números de cor e atalho de 1 hora |
+| `index.html` | visão geral em 30 segundos, contexto, lei em 60 segundos, recursos, o que está implementado × o que é promessa, checklist de domínio, números de cor e atalho de 1 hora |
+| `contexto.html` | por que o projeto existe, prioridade como igualdade, o modelo TSE para o 80+ e o conflito com a starvation |
 | `teoria.html` | 32 seções: fila, FIFO, multinível, deque, starvation, round-robin, cada lei, hierarquia, dataclass, IntEnum, status, gerenciador, algoritmo, traço, filas vazias, 80+, 3:2:1, complexidade, Supabase, PostgREST, pandas, Faker, `.env`, Streamlit, `session_state`, POO, testes, Git Flow e limitações |
 | `arquitetura.html` | camadas, caminho de uma chamada, decisões e trade-offs, o que existe, limitações, números e arquitetura de produção |
 | `pratica.html` | do zero: instalação, `.env`, schema, 500 clientes, testes, execução, simulador interativo do ciclo 2:1, Streamlit, plano B sem Supabase, erros comuns e limpeza |
 | `codigo.html` | mapa dos arquivos, `modelos.py`, `aplicar_starvation`, `GerenciadorFilas`, `extracao.py`, gerador, `streamlit.py`, SQL, os 15 testes, 18 bugs e roteiro de leitura |
 | `evidencias.html` | o que cada arquivo prova, o traço dos testes, PDF × código, como gerar sua própria evidência, o que não existe e demo de 3 minutos |
 | `perguntas.html` | 75 perguntas com resposta de 30 segundos e aprofundamento |
-| `quiz.html` | 42 questões de múltipla escolha com correção e explicação |
+| `quiz.html` | 43 questões de múltipla escolha com correção e explicação |
 | `plano.html` | cronograma de 14 dias, roteiro de 15 minutos, slides, entregáveis, checklist do dia, frases de emergência, referências e ensaio |
-| `banca.html` | 3:2:1 × 2:1, 80+ absoluto, starvation real, status, id/CPF, UI, SQL, LGPD, concorrência, pergunta matadora e defesa em 30 segundos |
+| `banca.html` | 3:2:1 × 2:1, 80+ absoluto e o modelo TSE, starvation real, status, id/CPF, UI, SQL, LGPD, concorrência, pergunta matadora e defesa em 30 segundos |
 
 ## Recursos
 
@@ -51,6 +52,7 @@ Elas apontam para `../Euclerio/index.html` e `../Sergio/index.html`. O tema clar
 ```
 Sergio/
 ├── index.html
+├── contexto.html
 ├── teoria.html
 ├── arquitetura.html
 ├── pratica.html

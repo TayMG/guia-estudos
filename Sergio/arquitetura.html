@@ -25,6 +25,7 @@
   <nav class="nav">
     <div class="nav-label">Comece aqui</div>
     <a href="index.html"><span class="n">00</span> Início</a>
+    <a href="contexto.html"><span class="n">◈</span> Contexto</a>
     <div class="nav-label">Fundamentos</div>
     <a href="teoria.html"><span class="n">01</span> Teoria</a>
     <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
@@ -119,7 +120,7 @@
         <thead><tr><th>Decisão</th><th>Por que foi tomada</th><th>Custo / risco</th><th>Alternativa</th></tr></thead>
         <tbody>
           <tr><td>Três filas <code>deque</code></td><td>FIFO natural e cota explícita</td><td>três estruturas para sincronizar</td><td>heap com chave composta</td></tr>
-          <tr><td>80+ absoluto</td><td>garantir a prioridade especial do Estatuto</td><td>pode starvar os demais</td><td>fila especial com limite de consecutivas</td></tr>
+          <tr><td>80+ absoluto</td><td>seguir o modelo da norma do TSE (preferência sobre todos)</td><td>pode starvar os demais</td><td>fila especial com limite de consecutivas</td></tr>
           <tr><td>Ciclo 2:1</td><td>dar cota à convencional</td><td>não garante tempo máximo</td><td>aging por timestamp</td></tr>
           <tr><td><code>IntEnum</code></td><td>evitar números mágicos e casar com INT do banco</td><td>0 = mais prioritário é contraintuitivo</td><td>rank explícito / value object</td></tr>
           <tr><td><code>frozen dataclass</code></td><td>imutabilidade do contrato</td><td>mudar status exige novo objeto</td><td>entidade mutável com métodos de transição</td></tr>
@@ -160,8 +161,12 @@
         <code>session_state</code>, mas isso só resolveria o rerun do Streamlit, não o restart do processo.</li>
       <li><strong>Segurança:</strong> RLS permissiva, chave no README, sem autenticação, CPF e motivo de saúde expostos.</li>
       <li><strong>Justiça:</strong> não há aging por tempo; a cota é por chamada, não por minuto.</li>
-      <li><strong>Legal:</strong> o rol está desatualizado em relação à Lei 14.626/2023; 80+ absoluto é uma interpretação
-        de projeto.</li>
+      <li><strong>Legal:</strong> o rol está desatualizado em relação à Lei 14.626/2023. O 80+ absoluto é uma
+        <em>decisão de projeto inspirada no modelo da Justiça Eleitoral</em>: a Resolução TSE nº 23.759/2026, art. 14,
+        §3º (antecessora: Res. TSE nº 23.736/2024, art. 100, §3º) garante ao eleitor com mais de 80 anos preferência
+        sobre os demais, independentemente do momento de chegada. A norma rege a votação, não o banco; a base
+        setorial continua sendo a Lei 10.048/2000 e o Estatuto da Pessoa Idosa. Ver
+        <a href="contexto.html">Contexto</a>.</li>
       <li><strong>Interface:</strong> não existe o painel prometido; o arquivo <code>streamlit.py</code> tem nome que pode
         sombrear o pacote.</li>
       <li><strong>Testes:</strong> cobrem o núcleo, não a integração real, a UI ou a concorrência.</li>

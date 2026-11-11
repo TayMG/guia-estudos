@@ -34,15 +34,15 @@ window.QUIZ_DATA = [
     e: "A função remove o super e devolve `etapa` e `contador` sem alteração. O teste P0, S0, P1, C0 prova que o ciclo retoma de onde parou."
   },
   {
-    q: "Segundo a Lei 13.466/2017, a prioridade dos 80+ é:",
+    q: "Segundo a Resolução TSE 23.759/2026, art. 14, §3º, a prioridade dos 80+ é:",
     opts: [
-      "Absoluta sobre todos os grupos, inclusive gestantes e PCDs",
-      "Especial dentre os idosos, em relação aos demais idosos",
+      "Absoluta sobre todos, independentemente da ordem de chegada",
+      "Especial apenas dentre os idosos, em relação aos demais idosos",
       "Igual à dos idosos de 60 a 79",
       "Válida apenas em hospitais"
     ],
-    a: 1,
-    e: "O texto fala “dentre os idosos”. O código trata 80+ como absoluto; é uma decisão de projeto, não a literalidade do dispositivo."
+    a: 0,
+    e: "A norma do TSE dá ao 80+ preferência sobre as demais pessoas, independentemente do momento de chegada. O Estatuto (Lei 13.466/2017) fala “dentre os idosos”; o projeto adota o modelo do TSE para o nível 0."
   },
   {
     q: "Qual dispositivo garante prioridade em instituições financeiras?",
@@ -421,5 +421,16 @@ window.QUIZ_DATA = [
     ],
     a: 1,
     e: "A resposta correta reconhece a divergência e aponta a prova: `_limites=(2,1)` e os testes. Repetir o PDF é entregar uma contradição."
+  },
+  {
+    q: "A norma do TSE que dá prioridade absoluta ao 80+ se aplica diretamente à fila bancária?",
+    opts: [
+      "Sim; ela revoga a Lei 10.048/2000 nos bancos",
+      "Não; ela rege a fila de votação, e o projeto a usa como referência para o nível 0",
+      "Sim, mas só para clientes com mais de 90 anos",
+      "Não; ela proíbe qualquer prioridade em bancos"
+    ],
+    a: 1,
+    e: "A Resolução TSE 23.759/2026 é norma eleitoral. No banco, a base é a Lei 10.048/2000, art. 2º, parágrafo único, com o Estatuto da Pessoa Idosa. O projeto adota o modelo do TSE como referência interpretativa e de desenho do 80+ absoluto."
   }
 ];

@@ -25,6 +25,7 @@
   <nav class="nav">
     <div class="nav-label">Comece aqui</div>
     <a href="index.html"><span class="n">00</span> Início</a>
+    <a href="contexto.html"><span class="n">◈</span> Contexto</a>
     <div class="nav-label">Fundamentos</div>
     <a href="teoria.html"><span class="n">01</span> Teoria</a>
     <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
@@ -50,11 +51,14 @@
   <div class="content">
     <div class="eyebrow">04 · Implementação</div>
     <h1>Código: o que está no repositório, linha a linha</h1>
-    <p class="lead">Esta página é o mapa de leitura. Ela mostra cada arquivo, o trecho que importa, o que ele faz e onde\n      estão os defeitos. Use os blocos como referência; não decore o código inteiro, decore as decisões.</p>
+    <p class="lead">Esta página é o mapa de leitura. Ela mostra cada arquivo, o trecho que importa, o que ele faz e onde
+      estão os defeitos. Use os blocos como referência; não decore o código inteiro, decore as decisões.</p>
 
     <div class="callout warn">
       <div class="ct">Aviso de honestidade</div>
-      <p>Os trechos abaixo foram transcritos do repositório <code>Cauapm/A3---Sergio</code> (clone local, sem alterações).\n        O código é o que é: um núcleo funcional com documentação otimista. Quando houver divergência entre o comentário e o\n        comportamento, a verdade é o comportamento — e os testes.</p>
+      <p>Os trechos abaixo foram transcritos do repositório <code>Cauapm/A3---Sergio</code> (clone local, sem alterações).
+        O código é o que é: um núcleo funcional com documentação otimista. Quando houver divergência entre o comentário e o
+        comportamento, a verdade é o comportamento — e os testes.</p>
     </div>
 
     <h2 id="mapa-arquivos">1. Mapa dos arquivos</h2>
@@ -79,7 +83,9 @@
       </table>
     </div>
 
-    <p>O núcleo que realmente roda é pequeno: <code>modelos.py</code> + <code>Alexandre.py</code> (só a função) +\n      <code>gerenciador_filas.py</code>. O resto é infraestrutura ou documentação. Se você tiver pouco tempo, estude esses\n      três e os testes.</p>
+    <p>O núcleo que realmente roda é pequeno: <code>modelos.py</code> + <code>Alexandre.py</code> (só a função) +
+      <code>gerenciador_filas.py</code>. O resto é infraestrutura ou documentação. Se você tiver pouco tempo, estude esses
+      três e os testes.</p>
 
     <h2 id="modelos">2. <code>modelos.py</code>: o contrato</h2>
 <pre><code>from dataclasses import dataclass
@@ -104,6 +110,15 @@ class NivelPrioridade(IntEnum):
 </code></pre>
 
     <p><strong>O que esta parte faz no total:</strong> define os três níveis legais como números 0, 1 e 2 e associa cada um à lei correspondente.</p>
+
+    <div class="callout">
+      <strong>Nota de leitura jurídica.</strong> O comentário do código cita a Lei 13.466/2017 como base do nível 80+.
+      O código foi mantido fiel ao repositório original, mas o <em>modelo de referência</em> adotado neste guia é a
+      Resolução TSE nº 23.759/2026, art. 14, §3º (antecessora: Res. TSE nº 23.736/2024, art. 100, §3º), que garante
+      ao eleitor com mais de 80 anos preferência sobre os demais, independentemente do momento de chegada. Na banca,
+      diga: “a base setorial é a Lei 10.048/2000 com o Estatuto da Pessoa Idosa; o 80+ absoluto segue o modelo da
+      Justiça Eleitoral, que não rege bancos, mas inspira a decisão de projeto”. Ver <a href="contexto.html">Contexto</a>.
+    </div>
 
     <details open><summary>Bloco 2.1 — imports + NivelPrioridade (linha por linha)</summary><div class="body"><ul>
       <li><code>from dataclasses import dataclass</code> — importa a ferramenta que cria classes de dados.</li>
@@ -184,7 +199,10 @@ class Cliente:
 
     <p><strong>O que este bloco faz no total:</strong> define os três níveis legais, os dois status possíveis e a entidade Cliente imutável. É o contrato entre as camadas; se ele mudar, o resto do sistema muda junto.</p>
 
-    <p><strong>Leitura de banca:</strong> o modelo é imutável e bem tipado, mas não tem <code>cpf</code> nem\n      <code>data_nascimento</code>. O status é um enum de dois valores, enquanto o banco tem quatro. O\n      <code>datetime.now()</code> é naive; o banco usa <code>TIMESTAMPTZ</code>. E a fábrica <code>criar()</code> gera um\n      <code>uuid4</code> que pode não ser o UUID do banco — o banco também tem <code>DEFAULT gen_random_uuid()</code>.</p>
+    <p><strong>Leitura de banca:</strong> o modelo é imutável e bem tipado, mas não tem <code>cpf</code> nem
+      <code>data_nascimento</code>. O status é um enum de dois valores, enquanto o banco tem quatro. O
+      <code>datetime.now()</code> é naive; o banco usa <code>TIMESTAMPTZ</code>. E a fábrica <code>criar()</code> gera um
+      <code>uuid4</code> que pode não ser o UUID do banco — o banco também tem <code>DEFAULT gen_random_uuid()</code>.</p>
 
     <h2 id="algoritmo-codigo">3. <code>aplicar_starvation()</code>: o coração</h2>
 <pre><code>def aplicar_starvation(
@@ -364,9 +382,15 @@ class Cliente:
 
     <p><strong>O que este bloco faz no total:</strong> chama o cliente correto, salva seus contadores e tenta persistir a chamada. Se a persistência falhar, desfaz o estado para não perder a senha.</p>
 
-    <p><strong>O que está bom:</strong> o rollback restaura etapa/contador e devolve o cliente à cabeça da fila se a\n      persistência falhar. Isso evita perder uma chamada. <strong>O que falta:</strong> não há transação com o banco, não\n      há atualização de status, não há gravação em <code>atendimentos</code>, e o cliente retornado continua\n      <code>AGUARDANDO</code>.</p>
+    <p><strong>O que está bom:</strong> o rollback restaura etapa/contador e devolve o cliente à cabeça da fila se a
+      persistência falhar. Isso evita perder uma chamada. <strong>O que falta:</strong> não há transação com o banco, não
+      há atualização de status, não há gravação em <code>atendimentos</code>, e o cliente retornado continua
+      <code>AGUARDANDO</code>.</p>
 
-    <p>Outro detalhe: <code>sincronizar_estado()</code> com repositório não ordena por <code>data_chegada</code>; ele confia\n      na ordem de <code>listar_aguardando()</code>. Se o repositório devolver fora de ordem, o FIFO quebra. E\n      <code>estado_contadores()</code> usa o literal <code>2</code> para “padrão concluído”, em vez de\n      <code>self._limites[0]</code>; se a cota mudar, o painel mente.</p>
+    <p>Outro detalhe: <code>sincronizar_estado()</code> com repositório não ordena por <code>data_chegada</code>; ele confia
+      na ordem de <code>listar_aguardando()</code>. Se o repositório devolver fora de ordem, o FIFO quebra. E
+      <code>estado_contadores()</code> usa o literal <code>2</code> para “padrão concluído”, em vez de
+      <code>self._limites[0]</code>; se a cota mudar, o painel mente.</p>
 
     <h2 id="extracao">5. <code>extracao.py</code>: a ponte com o Supabase</h2>
 <pre><code>class ExtratorFila:
@@ -414,7 +438,10 @@ class Cliente:
 
     <p><strong>O que este bloco faz no total:</strong> conecta ao Supabase e converte a resposta em tabela pandas, removendo colunas usadas no banco mas não no código.</p>
 
-    <p>O bug do <code>id</code> nasce aqui: ao remover a coluna <code>id</code>, o gerenciador passa a usar\n      <code>row.get("id") or row.get("cpf") or uuid4()</code>. Como <code>id</code> não existe, o CPF vira o identificador.\n      Além disso, <code>pd.read_json</code> não tem timeout, não valida status HTTP e não pagina. Para 500 clientes, o\n      Supabase devolve tudo de uma vez; para milhares, você precisa de <code>Range</code> ou de um endpoint paginado.</p>
+    <p>O bug do <code>id</code> nasce aqui: ao remover a coluna <code>id</code>, o gerenciador passa a usar
+      <code>row.get("id") or row.get("cpf") or uuid4()</code>. Como <code>id</code> não existe, o CPF vira o identificador.
+      Além disso, <code>pd.read_json</code> não tem timeout, não valida status HTTP e não pagina. Para 500 clientes, o
+      Supabase devolve tudo de uma vez; para milhares, você precisa de <code>Range</code> ou de um endpoint paginado.</p>
 
     <h2 id="gerador">6. <code>gerar_clientes.py</code>: dados sintéticos</h2>
 <pre><code>categoria = random.choices([0, 1, 2], weights=[0.15, 0.35, 0.50], k=1)[0]
@@ -443,9 +470,13 @@ else:
 
     <p><strong>O que este bloco faz no total:</strong> cria clientes sintéticos com prioridade, nome, CPF, idade e motivo, seguindo a distribuição definida no projeto.</p>
 
-    <p>O dicionário devolvido tem <code>nome</code>, <code>cpf</code>, <code>data_nascimento</code>,\n      <code>nivel_prioridade</code>, <code>motivo</code> e <code>status</code>. Não tem <code>data_chegada</code>; o banco\n      preenche. A inserção é em lotes de 25 com <code>client.table("clientes_fila").insert(lote).execute()</code>. Se um\n      lote falhar, a exceção interrompe o loop e os lotes anteriores ficam gravados — não há rollback global.</p>
+    <p>O dicionário devolvido tem <code>nome</code>, <code>cpf</code>, <code>data_nascimento</code>,
+      <code>nivel_prioridade</code>, <code>motivo</code> e <code>status</code>. Não tem <code>data_chegada</code>; o banco
+      preenche. A inserção é em lotes de 25 com <code>client.table("clientes_fila").insert(lote).execute()</code>. Se um
+      lote falhar, a exceção interrompe o loop e os lotes anteriores ficam gravados — não há rollback global.</p>
 
-    <p>O CPF do Faker é sintético e válido, mas o banco não tem <code>UNIQUE</code> em <code>cpf</code>. Rodar o gerador duas\n      vezes pode criar duplicatas. Para uma demo, tudo bem; para produção, é um problema de identidade e LGPD.</p>
+    <p>O CPF do Faker é sintético e válido, mas o banco não tem <code>UNIQUE</code> em <code>cpf</code>. Rodar o gerador duas
+      vezes pode criar duplicatas. Para uma demo, tudo bem; para produção, é um problema de identidade e LGPD.</p>
 
     <h2 id="streamlit">7. <code>streamlit.py</code>: o que ele realmente faz</h2>
 <pre><code>st.set_page_config(page_title="Fila Bancária", layout="wide")
@@ -481,7 +512,10 @@ except Exception as e:
 
     <p><strong>O que este bloco faz no total:</strong> é apenas um teste de conexão que exibe duas métricas; não implementa a fila de atendimento nem o gerenciador.</p>
 
-    <p>Não há <code>GerenciadorFilas</code>, não há <code>session_state</code>, não há botão, não há painel de senha.\n      É um <em>health check</em> com dois números. A interface prometida no PDF e nas tarefas não foi implementada. O\n      README manda rodar <code>app.py</code>, que não existe; o arquivo é <code>streamlit.py</code>, cujo nome pode sombrear\n      o pacote.</p>
+    <p>Não há <code>GerenciadorFilas</code>, não há <code>session_state</code>, não há botão, não há painel de senha.
+      É um <em>health check</em> com dois números. A interface prometida no PDF e nas tarefas não foi implementada. O
+      README manda rodar <code>app.py</code>, que não existe; o arquivo é <code>streamlit.py</code>, cujo nome pode sombrear
+      o pacote.</p>
 
     <h2 id="sql">8. SQL: quatro tabelas e uma RLS aberta</h2>
 <pre><code>CREATE TYPE status_senha AS ENUM (
@@ -580,7 +614,9 @@ CREATE TABLE IF NOT EXISTS atendimentos (
 
     <p><strong>O que esta parte faz no total:</strong> cria o histórico de atendimentos, ligado ao cliente e com guichê e datas.</p>
 
-    <p>O índice parcial é uma boa decisão: ele cobre a consulta “próximo aguardando, ordenado por nível e chegada”.\n      Mas o app não usa essa consulta: ele carrega todos os clientes e ordena no pandas. O índice serve para uma consulta\n      que o código ainda não faz.</p>
+    <p>O índice parcial é uma boa decisão: ele cobre a consulta “próximo aguardando, ordenado por nível e chegada”.
+      Mas o app não usa essa consulta: ele carrega todos os clientes e ordena no pandas. O índice serve para uma consulta
+      que o código ainda não faz.</p>
 
     <p>As políticas são o ponto mais grave:</p>
 <pre><code>ALTER TABLE clientes_fila ENABLE ROW LEVEL SECURITY;
@@ -595,7 +631,9 @@ CREATE POLICY "Permitir todas operacoes em clientes_fila"
 
     <p><strong>O que este bloco faz no total:</strong> cria uma política permissiva que permite leitura e escrita de qualquer pessoa com a chave pública.</p>
 
-    <p>Isso permite <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code> e <code>DELETE</code> para qualquer portador\n      da chave pública. Em um banco real, seria necessário separar leitura e escrita, usar autenticação e definir\n      políticas por papel. O README contém uma chave que parece real; não a reproduza.</p>
+    <p>Isso permite <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code> e <code>DELETE</code> para qualquer portador
+      da chave pública. Em um banco real, seria necessário separar leitura e escrita, usar autenticação e definir
+      políticas por papel. O README contém uma chave que parece real; não a reproduza.</p>
 
     <h2 id="testes">9. Os 15 testes, em detalhe</h2>
     <div class="table-wrap">
@@ -621,7 +659,9 @@ CREATE POLICY "Permitir todas operacoes em clientes_fila"
       </table>
     </div>
 
-    <p>O teste 15 é o único que toca a rede, e ele se auto-pula se faltar credencial. Isso é bom para CI sem segredo, mas\n      significa que a integração real não é obrigatória. Os testes 10–14 usam <code>ExtratorFalso</code>, um DataFrame em\n      memória com a mesma forma do extrator. É um fake, não um mock; testa o encaixe, não o SQL.</p>
+    <p>O teste 15 é o único que toca a rede, e ele se auto-pula se faltar credencial. Isso é bom para CI sem segredo, mas
+      significa que a integração real não é obrigatória. Os testes 10–14 usam <code>ExtratorFalso</code>, um DataFrame em
+      memória com a mesma forma do extrator. É um fake, não um mock; testa o encaixe, não o SQL.</p>
 
     <h2 id="bugs">10. Os bugs e as inconsistências que valem a banca</h2>
     <div class="table-wrap">
@@ -629,7 +669,7 @@ CREATE POLICY "Permitir todas operacoes em clientes_fila"
         <thead><tr><th>#</th><th>Problema</th><th>Onde</th><th>Efeito</th></tr></thead>
         <tbody>
           <tr><td>1</td><td>Documentação 3:2:1 × código 2:1</td><td>README, PDF, tarefas</td><td>resposta errada se você repetir o PDF</td></tr>
-          <tr><td>2</td><td>80+ absoluto × “dentre os idosos”</td><td><code>Alexandre.py</code> / lei</td><td>interpretação além da literalidade</td></tr>
+          <tr><td>2</td><td>80+ absoluto × “dentre os idosos”</td><td><code>Alexandre.py</code> / Estatuto × TSE</td><td>o Estatuto garante prioridade “entre os idosos”; o modelo 80+ absoluto vem da Res. TSE 23.759/2026, art. 14, §3º</td></tr>
           <tr><td>3</td><td><code>id</code> removido no extrator</td><td><code>extracao.py</code></td><td>CPF vira id; modelo não tem CPF</td></tr>
           <tr><td>4</td><td>Status nunca muda</td><td><code>chamar_proximo()</code></td><td>cliente pode ser chamado de novo</td></tr>
           <tr><td>5</td><td>Sem gravação em <code>atendimentos</code></td><td>gerenciador</td><td>não há histórico real</td></tr>
@@ -652,7 +692,8 @@ CREATE POLICY "Permitir todas operacoes em clientes_fila"
 
     <div class="callout danger">
       <div class="ct">A tríade que derruba candidato</div>
-      <p>Se você disser “o status é atualizado”, “a interface está pronta” ou “o ciclo é 3:2:1”, a banca encontra a\n        contradição em segundos. Diga o contrário: “o status não é atualizado; a UI é mínima; o ciclo real é 2:1”.</p>
+      <p>Se você disser “o status é atualizado”, “a interface está pronta” ou “o ciclo é 3:2:1”, a banca encontra a
+        contradição em segundos. Diga o contrário: “o status não é atualizado; a UI é mínima; o ciclo real é 2:1”.</p>
     </div>
 
     <h2 id="linha-a-linha">11. Como estudar o código em 40 minutos</h2>

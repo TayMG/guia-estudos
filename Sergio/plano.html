@@ -25,6 +25,7 @@
   <nav class="nav">
     <div class="nav-label">Comece aqui</div>
     <a href="index.html"><span class="n">00</span> Início</a>
+    <a href="contexto.html"><span class="n">◈</span> Contexto</a>
     <div class="nav-label">Fundamentos</div>
     <a href="teoria.html"><span class="n">01</span> Teoria</a>
     <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
@@ -50,11 +51,15 @@
   <div class="content">
     <div class="eyebrow">08 · Cronograma</div>
     <h1>Plano: 14 dias, 15 minutos e uma demo honesta</h1>
-    <p class="lead">Este plano assume que você já tem o repositório e precisa dominar o conteúdo, não reescrevê-lo. Se tiver\n      menos tempo, use a versão de 3 dias no fim. O objetivo é chegar na banca capaz de explicar, demonstrar e assumir\n      limitações sem gaguejar.</p>
+    <p class="lead">Este plano assume que você já tem o repositório e precisa dominar o conteúdo, não reescrevê-lo. Se tiver
+      menos tempo, use a versão de 3 dias no fim. O objetivo é chegar na banca capaz de explicar, demonstrar e assumir
+      limitações sem gaguejar.</p>
 
     <div class="callout tip">
       <div class="ct">Meta mensurável</div>
-      <p>Ao fim do plano, você deve conseguir: (1) desenhar o ciclo 2:1 de memória; (2) traçar 6 chamadas em 60 segundos;\n        (3) citar três leis e o artigo dos bancos; (4) apontar cinco limitações com correção; (5) rodar o núcleo e os\n        testes sem consultar o README.</p>
+      <p>Ao fim do plano, você deve conseguir: (1) desenhar o ciclo 2:1 de memória; (2) traçar 6 chamadas em 60 segundos;
+        (3) citar três leis, a norma do TSE e o artigo dos bancos; (4) apontar cinco limitações com correção; (5) rodar o núcleo e os
+        testes sem consultar o README.</p>
     </div>
 
     <h2 id="cronograma">1. Cronograma de 14 dias</h2>
@@ -62,7 +67,7 @@
       <table>
         <thead><tr><th>Dia</th><th>Foco</th><th>O que você produz</th><th>Tempo</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td>Leis e problema</td><td>uma página com 10.048, 10.741/13.466, 12.764, 13.146, 14.626</td><td>2 h</td></tr>
+          <tr><td>1</td><td>Contexto, leis e problema</td><td>uma página com 10.048, 10.741/13.466, 12.764, 13.146, 14.626 e Res. TSE 23.759/2026</td><td>2 h</td></tr>
           <tr><td>2</td><td>Fila, FIFO, multinível, starvation</td><td>desenho das três filas + definição de cada conceito</td><td>2 h</td></tr>
           <tr><td>3</td><td><code>modelos.py</code></td><td>explicação de <code>Cliente</code>, enums e status</td><td>1 h 30</td></tr>
           <tr><td>4</td><td><code>aplicar_starvation</code></td><td>traço de 6 chamadas no papel</td><td>2 h</td></tr>
@@ -80,7 +85,9 @@
       </table>
     </div>
 
-    <p>Se você tem <strong>3 dias</strong>: dia 1 = leis + algoritmo + traço; dia 2 = código + SQL + testes; dia 3 = banca +\n      simulado + demo. Se tem <strong>1 dia</strong>: use a página <a href="index.html#1hora">“Se só tiver 1 hora”</a> e o\n      roteiro abaixo.</p>
+    <p>Se você tem <strong>3 dias</strong>: dia 1 = leis + algoritmo + traço; dia 2 = código + SQL + testes; dia 3 = banca +
+      simulado + demo. Se tem <strong>1 dia</strong>: use a página <a href="index.html#1hora">“Se só tiver 1 hora”</a> e o
+      roteiro abaixo.</p>
 
     <h2 id="roteiro">2. Roteiro de 15 minutos</h2>
     <div class="table-wrap">
@@ -88,7 +95,7 @@
         <thead><tr><th>Tempo</th><th>Bloco</th><th>O que dizer</th><th>O que mostrar</th></tr></thead>
         <tbody>
           <tr><td>0:00–1:00</td><td>Abertura</td><td>“Quem já desistiu de uma fila de banco? O problema não é só esperar; é esperar sem saber se a lei está sendo cumprida.”</td><td>título</td></tr>
-          <tr><td>1:00–3:30</td><td>Problema e lei</td><td>três níveis; 10.048; 13.466; 12.764; a diferença “dentre os idosos”</td><td>tabela dos níveis</td></tr>
+          <tr><td>1:00–3:30</td><td>Contexto, problema e lei</td><td>três níveis; 10.048; 13.466; 12.764; Res. TSE 23.759/2026 e o recorte banco × eleição</td><td>tabela dos níveis</td></tr>
           <tr><td>3:30–5:30</td><td>Arquitetura</td><td>Faker → Supabase → pandas → gerenciador → algoritmo; UI é o próximo passo</td><td>diagrama de camadas</td></tr>
           <tr><td>5:30–9:00</td><td>Algoritmo</td><td>80+ absoluto; ciclo 2:1; fila vazia; super no meio; traço de 6</td><td>código + tabela do traço</td></tr>
           <tr><td>9:00–11:00</td><td>Prova</td><td>15 testes; 100P + 1C; P0, S0, P1, C0; por que o status não muda</td><td>testes</td></tr>
@@ -101,14 +108,15 @@
 
     <div class="callout warn">
       <div class="ct">Não tente mostrar tudo</div>
-      <p>15 minutos passam rápido. Se você tentar explicar cada arquivo, não sobra tempo para a parte mais forte: o traço e\n        a defesa das limitações. Escolha três provas: o ciclo 2:1, o 80+ no meio e a tabela de lacunas.</p>
+      <p>15 minutos passam rápido. Se você tentar explicar cada arquivo, não sobra tempo para a parte mais forte: o traço e
+        a defesa das limitações. Escolha três provas: o ciclo 2:1, o 80+ no meio e a tabela de lacunas.</p>
     </div>
 
     <h2 id="slides">3. Estrutura de slides</h2>
     <ol>
       <li><strong>Capa</strong> — título, integrantes, disciplina, data.</li>
       <li><strong>O problema</strong> — fila única vs prioridade; o risco de starvation.</li>
-      <li><strong>Base legal</strong> — tabela de 3 níveis + notas de interpretação.</li>
+      <li><strong>Base legal</strong> — tabela de 3 níveis + norma do TSE para o 80+ + notas de escopo.</li>
       <li><strong>Arquitetura</strong> — diagrama de camadas; destaque no que existe.</li>
       <li><strong>Estruturas</strong> — três deques; FIFO; complexidade.</li>
       <li><strong>Algoritmo</strong> — pseudocódigo ou código de 12 linhas.</li>
@@ -144,9 +152,9 @@
       <div class="check"><input type="checkbox" id="d3" data-study="dia-offline"><label for="d3">Plano B offline testado (DataFrame em memória).</label></div>
       <div class="check"><input type="checkbox" id="d4" data-study="dia-testes"><label for="d4">Testes rodados; você sabe o que é skip e por quê.</label></div>
       <div class="check"><input type="checkbox" id="d5" data-study="dia-traco"><label for="d5">Traço de 6 chamadas escrito à mão, sem consultar.</label></div>
-      <div class="check"><input type="checkbox" id="d6" data-study="dia-leis"><label for="d6">Três leis e o artigo dos bancos decorados.</label></div>
+      <div class="check"><input type="checkbox" id="d6" data-study="dia-leis"><label for="d6">Três leis, a norma do TSE e o artigo dos bancos decorados.</label></div>
       <div class="check"><input type="checkbox" id="d7" data-study="dia-3-2-1"><label for="d7">Resposta pronta para 3:2:1 × 2:1.</label></div>
-      <div class="check"><input type="checkbox" id="d8" data-study="dia-80"><label for="d8">Resposta pronta para “80+ é absoluto na lei?”.</label></div>
+      <div class="check"><input type="checkbox" id="d8" data-study="dia-80"><label for="d8">Resposta pronta para “80+ é absoluto na lei?” — Estatuto × norma do TSE × banco.</label></div>
       <div class="check"><input type="checkbox" id="d9" data-study="dia-ui"><label for="d9">Resposta pronta para “cadê a interface?”.</label></div>
       <div class="check"><input type="checkbox" id="d10" data-study="dia-rls"><label for="d10">Resposta pronta para RLS/LGPD.</label></div>
       <div class="check"><input type="checkbox" id="d11" data-study="dia-slides"><label for="d11">Slides em PDF e em pen drive/backup.</label></div>
@@ -161,7 +169,7 @@
           <tr><td>Não sabe a resposta</td><td>“Acho que…”</td><td>“Não tenho isso decorado; o dado está em <code>X</code>, e eu sei como chegar lá.”</td></tr>
           <tr><td>Pergunta sobre UI</td><td>“Está pronta”</td><td>“O núcleo está pronto; a UI ficou como trabalho futuro.”</td></tr>
           <tr><td>Pergunta sobre 3:2:1</td><td>“O PDF está certo”</td><td>“O código e os testes fazem 2:1; a documentação está desatualizada.”</td></tr>
-          <tr><td>Pergunta sobre 80+</td><td>“A lei manda absoluto”</td><td>“A lei fala ‘dentre os idosos’; o código escolheu uma proteção mais ampla.”</td></tr>
+          <tr><td>Pergunta sobre 80+</td><td>“A lei bancária manda absoluto”</td><td>“O Estatuto fala ‘dentre os idosos’; a norma do TSE dá preferência sobre todos no processo eleitoral, e o projeto adota esse modelo. No banco, a base é a 10.048 + Estatuto.”</td></tr>
           <tr><td>Pergunta sobre status</td><td>“Atualiza sim”</td><td>“Não atualiza; o teste confirma. A transação é o próximo passo.”</td></tr>
           <tr><td>Pergunta sobre segurança</td><td>“Está seguro”</td><td>“RLS está aberta e a chave aparece no README; em produção eu corrigiria.”</td></tr>
           <tr><td>Pergunta que você não entendeu</td><td>Responder outra coisa</td><td>“Pode reformular? Quero responder exatamente o que você perguntou.”</td></tr>
@@ -173,6 +181,7 @@
     <ul>
       <li><strong>Lei 10.048/2000</strong> — atendimento prioritário; art. 2º, parágrafo único (instituições financeiras).</li>
       <li><strong>Lei 10.741/2003</strong> — Estatuto da Pessoa Idosa; art. 3º, §2º, com a redação da Lei 13.466/2017.</li>
+      <li><strong>Resolução TSE 23.759/2026, art. 14, §3º</strong> — preferência do 80+ sobre todos, independentemente da chegada (modelo adotado); antes, Res. TSE 23.736/2024, art. 100, §3º.</li>
       <li><strong>Lei 12.764/2012</strong> — Política Nacional de Proteção dos Direitos da Pessoa com TEA.</li>
       <li><strong>Lei 13.146/2015</strong> — Lei Brasileira de Inclusão; definição de PCD e alterações na 10.048.</li>
       <li><strong>Lei 14.364/2022</strong> — acompanhantes e atendentes pessoais das pessoas com prioridade.</li>
@@ -188,7 +197,8 @@
       <code>planalto.gov.br/ccivil_03/leis/l10048.htm</code><br>
       <code>planalto.gov.br/ccivil_03/leis/2003/l10.741.htm</code><br>
       <code>planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12764.htm</code><br>
-      <code>planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13466.htm</code></p>
+      <code>planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13466.htm</code><br>
+      <code>tse.jus.br/legislacao/compilada/res/2026/resolucao-no-23-759-de-26-de-fevereiro-de-2026</code></p>
 
     <h2 id="ensaio">8. Ensaio: perguntas para um colega fazer</h2>
     <ol>

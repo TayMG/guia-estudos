@@ -25,6 +25,7 @@
   <nav class="nav">
     <div class="nav-label">Comece aqui</div>
     <a href="index.html"><span class="n">00</span> Início</a>
+    <a href="contexto.html"><span class="n">◈</span> Contexto</a>
     <div class="nav-label">Fundamentos</div>
     <a href="teoria.html"><span class="n">01</span> Teoria</a>
     <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
@@ -50,11 +51,14 @@
   <div class="content">
     <div class="eyebrow">05 · Provas</div>
     <h1>Evidências: o que o repositório realmente prova</h1>
-    <p class="lead">Uma apresentação forte não é a que tem mais slides; é a que consegue apontar a linha exata que sustenta\n      cada afirmação. Esta página organiza as provas disponíveis — e as que não existem.</p>
+    <p class="lead">Uma apresentação forte não é a que tem mais slides; é a que consegue apontar a linha exata que sustenta
+      cada afirmação. Esta página organiza as provas disponíveis — e as que não existem.</p>
 
     <div class="callout warn">
       <div class="ct">Sem screenshots inventados</div>
-      <p>O repositório não tem prints do painel, não tem deploy, não tem vídeo de demonstração. Este site não cria\n        “evidências” falsas. As provas abaixo são código, testes, SQL e o PDF. Se a banca pedir uma demo visual, a resposta\n        honesta é: “a UI não foi implementada; o núcleo e os testes estão prontos”.</p>
+      <p>O repositório não tem prints do painel, não tem deploy, não tem vídeo de demonstração. Este site não cria
+        “evidências” falsas. As provas abaixo são código, testes, SQL e o PDF. Se a banca pedir uma demo visual, a resposta
+        honesta é: “a UI não foi implementada; o núcleo e os testes estão prontos”.</p>
     </div>
 
     <h2 id="provas">1. O que cada arquivo prova</h2>
@@ -78,7 +82,8 @@
     </div>
 
     <h2 id="trace">2. A prova mais bonita: o traço dos testes</h2>
-    <p>O teste <code>test_regra_alexandre_com_dados_extrator</code> monta 2 super, 3 padrão e 2 convencionais e espera\n      exatamente:</p>
+    <p>O teste <code>test_regra_alexandre_com_dados_extrator</code> monta 2 super, 3 padrão e 2 convencionais e espera
+      exatamente:</p>
 
     <table>
       <thead><tr><th>#</th><th>Chamado</th><th>Nível</th><th>Etapa/contador depois</th><th>Por quê</th></tr></thead>
@@ -92,11 +97,14 @@
       </tbody>
     </table>
 
-    <p>O teste <code>test_fifo_super_e_intercalacao_21</code> prova o mesmo com outros nomes: 2S, 3P, 2C →\n      <code>S1, S2, P1, P2, C1</code>. E <code>test_super_nao_altera_contador_do_ciclo_21</code> prova o caso mais\n      sutil: P0, S0, P1, C0. Se você sabe reproduzir esses três, sabe o algoritmo.</p>
+    <p>O teste <code>test_fifo_super_e_intercalacao_21</code> prova o mesmo com outros nomes: 2S, 3P, 2C →
+      <code>S1, S2, P1, P2, C1</code>. E <code>test_super_nao_altera_contador_do_ciclo_21</code> prova o caso mais
+      sutil: P0, S0, P1, C0. Se você sabe reproduzir esses três, sabe o algoritmo.</p>
 
     <div class="callout tip">
       <div class="ct">Como usar isso na banca</div>
-      <p>Não leia o código inteiro. Abra o teste e diga: “a especificação executável está aqui; eu vou traçar o caso de\n        seis chamadas”. Em 40 segundos você mostra mais domínio do que lendo 200 linhas.</p>
+      <p>Não leia o código inteiro. Abra o teste e diga: “a especificação executável está aqui; eu vou traçar o caso de
+        seis chamadas”. Em 40 segundos você mostra mais domínio do que lendo 200 linhas.</p>
     </div>
 
     <h2 id="pdf-codigo">3. PDF × código: o confronto honesto</h2>
@@ -118,10 +126,13 @@
       </table>
     </div>
 
-    <p>O PDF é uma <strong>especificação arquitetural</strong>, não um relatório do que foi feito. Ele descreve uma arquitetura\n      maior do que o código. Isso é comum em trabalho acadêmico, mas precisa ser dito. A banca pode perguntar “o que do\n      documento está no repositório?”; a tabela acima é a resposta.</p>
+    <p>O PDF é uma <strong>especificação arquitetural</strong>, não um relatório do que foi feito. Ele descreve uma arquitetura
+      maior do que o código. Isso é comum em trabalho acadêmico, mas precisa ser dito. A banca pode perguntar “o que do
+      documento está no repositório?”; a tabela acima é a resposta.</p>
 
     <h2 id="testes">4. Como gerar sua própria evidência</h2>
-    <p>Você não precisa acreditar neste site: rode os comandos. A suíte está pronta e usa um extrator falso, então não\n      depende de rede para os 14 primeiros testes.</p>
+    <p>Você não precisa acreditar neste site: rode os comandos. A suíte está pronta e usa um extrator falso, então não
+      depende de rede para os 14 primeiros testes.</p>
 
 <pre><code>python -m venv .venv
 .venv\Scripts\activate
@@ -145,7 +156,9 @@ python -m unittest testes_frente2.py -v</code></pre>
 <span class="g">Ran 15 tests</span>
 <span class="g">OK (skipped=1)</span></div>
 
-    <p>Esse bloco é uma <strong>saída esperada</strong>, não uma captura de tela. O número de testes é 15; o único que pode\n      ser pulado é o de integração real. Se você rodar com <code>.env</code> válido, ele tenta conectar; sem rede ou sem\n      credencial, ele é skip.</p>
+    <p>Esse bloco é uma <strong>saída esperada</strong>, não uma captura de tela. O número de testes é 15; o único que pode
+      ser pulado é o de integração real. Se você rodar com <code>.env</code> válido, ele tenta conectar; sem rede ou sem
+      credencial, ele é skip.</p>
 
     <h2 id="falta">5. O que não há — e como dizer isso</h2>
     <div class="table-wrap">
@@ -176,7 +189,8 @@ python -m unittest testes_frente2.py -v</code></pre>
 
     <div class="callout ok">
       <div class="ct">A evidência que mais convence</div>
-      <p>Não é um print bonito: é você apontar a linha do teste e dizer o que ela prova. A banca vê que você entendeu o\n        contrato, não só a tela.</p>
+      <p>Não é um print bonito: é você apontar a linha do teste e dizer o que ela prova. A banca vê que você entendeu o
+        contrato, não só a tela.</p>
     </div>
 
   </div>

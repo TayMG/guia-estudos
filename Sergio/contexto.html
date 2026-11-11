@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("a3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Contexto · Base de Estudos A3 — Tema 2</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">A3</div>
+    <div class="brand-text"><strong>Base de Estudos</strong><span>Tema 2 · Fila + Leis</span></div>
+  </div>
+  <div class="study-switch" aria-label="Trocar de estudo">
+    <a href="../Euclerio/index.html">Euclerio</a>
+    <a href="../Sergio/index.html" class="active">Sergio</a>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
+    <div class="search-results"></div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Comece aqui</div>
+    <a href="index.html"><span class="n">00</span> Início</a>
+    <a href="contexto.html" class="active"><span class="n">◈</span> Contexto</a>
+    <div class="nav-label">Fundamentos</div>
+    <a href="teoria.html"><span class="n">01</span> Teoria</a>
+    <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
+    <div class="nav-label">O trabalho</div>
+    <a href="pratica.html"><span class="n">03</span> Prática</a>
+    <a href="codigo.html"><span class="n">04</span> Código</a>
+    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <div class="nav-label">Treino</div>
+    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">07</span> Quiz</a>
+    <a href="plano.html"><span class="n">08</span> Plano</a>
+    <a href="banca.html"><span class="n">09</span> Banca</a>
+  </nav>
+  <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" data-menu aria-label="Abrir menu">☰</button>
+    <span class="topbar-title">Contexto · Comece aqui</span>
+  </div>
+
+  <div class="content">
+    <div class="eyebrow">Contexto · Comece aqui</div>
+    <h1>O contexto antes do código:<br>uma fila que precisa ser justa</h1>
+    <p class="lead">Antes de discutir <code>deque</code>, SQL ou Streamlit, é preciso entender o cenário que dá sentido ao
+      projeto: uma agência bancária, clientes com direitos legais diferentes e uma decisão a ser tomada a cada chamada —
+      quem é o próximo? O contexto é o que transforma três filas em uma resposta defensável.</p>
+
+    <div class="callout">
+      <div class="ct">A pergunta que organiza tudo</div>
+      <p>Como atender primeiro quem a lei protege <strong>sem</strong> deixar a fila comum parada para sempre? O projeto
+        responde com três níveis, FIFO dentro de cada um e um ciclo 2:1 entre a prioridade padrão e a convencional. O 80+
+        fica em um nível próprio, com precedência sobre os demais.</p>
+    </div>
+
+    <h2 id="cenario">1. O cenário</h2>
+    <p>Imagine uma agência com um guichê e uma fila que não para de chegar. Algumas pessoas têm direito a atendimento
+      prioritário: idosos, gestantes, lactantes, pessoas com criança de colo, pessoas com deficiência, pessoas com
+      obesidade, pessoas com TEA e pessoas com mobilidade reduzida. Outras não se enquadram em nenhuma hipótese legal e
+      formam a fila convencional. Se o banco usar uma fila única, a prioridade desaparece na prática. Se criar uma fila
+      separada e chamar só ela, a convencional nunca anda.</p>
+
+    <div class="diagram">
+      <div class="diagram-title">O fluxo do contexto</div>
+      <div class="flow">
+        <div class="node acc2"><strong>Chegada</strong><small>cliente informa idade, condição ou motivo</small></div>
+        <div class="node"><strong>Classificação</strong><small>80+ · padrão · convencional</small></div>
+        <div class="node acc"><strong>Decisão</strong><small>qual fila chamar agora</small></div>
+      </div>
+      <div class="arrow" style="text-align:center;padding:10px 0">↓</div>
+      <div class="flow">
+        <div class="node acc"><strong>Chamada</strong><small>FIFO dentro do nível</small></div>
+        <div class="node acc2"><strong>Atendimento</strong><small>guichê, senha, status</small></div>
+        <div class="node"><strong>Registro</strong><small>histórico e indicadores</small></div>
+      </div>
+    </div>
+
+    <p>O projeto acadêmico implementa a parte mais importante desse fluxo: a <strong>decisão de quem chamar</strong>. A
+      camada de atendimento e o histórico completo ficaram como promessa — e o site separa uma coisa da outra em todas as
+      páginas.</p>
+
+    <h2 id="porque">2. Por que prioridade não é privilégio</h2>
+    <p>A lei não cria uma “fila VIP” por gosto. Ela reconhece que certos grupos enfrentam barreiras maiores para esperar e
+      para serem atendidos com dignidade. Uma pessoa de 80 anos pode não conseguir ficar de pé por uma hora; uma gestante
+      pode precisar de atenção médica; uma pessoa com TEA pode sofrer com fila, ruído e demora. O atendimento prioritário
+      é uma forma de <strong>igualar o acesso</strong>, não de criar uma vantagem arbitrária.</p>
+
+    <p>No ordenamento brasileiro, a base bancária está na <strong>Lei 10.048/2000</strong>: o art. 2º, parágrafo único,
+      assegura a prioridade de atendimento em todas as instituições financeiras às pessoas do art. 1º. O
+      <strong>Estatuto da Pessoa Idosa</strong> (Lei 10.741/2003) e a <strong>Lei 12.764/2012</strong> (TEA) completam o
+      quadro. O projeto usa essas normas para justificar os níveis 1 e 2.</p>
+
+    <h2 id="tse">3. O 80+ na norma do TSE</h2>
+    <p>Para o nível mais alto, o guia adota como referência a norma do Tribunal Superior Eleitoral. A
+      <strong>Resolução TSE nº 23.759/2026, art. 14, §3º</strong> (que consolida direitos do eleitorado; antes, a
+      Resolução TSE nº 23.736/2024, art. 100, §3º) diz:</p>
+
+    <div class="callout">
+      <div class="ct">Texto-chave</div>
+      <p>“A preferência garantida no §2º deste artigo considerará a ordem de chegada à fila de votação, observada a
+        prioridade das pessoas com mais de 80 (oitenta) anos, que terão preferência sobre as demais,
+        <strong>independentemente do momento de chegada à seção eleitoral</strong>.”</p>
+    </div>
+
+    <p>É exatamente esse desenho que o projeto implementa: o cliente de 80+ não entra na disputa de ordem de chegada com os
+      outros grupos; ele é chamado antes de todos, sempre. O acompanhante ou atendente pessoal também é alcançado pela
+      preferência na norma eleitoral (§4º), mas o projeto não modela acompanhante.</p>
+
+    <div class="callout warn">
+      <div class="ct">Cuidado de contexto: a norma é eleitoral, não bancária</div>
+      <p>A Resolução do TSE rege a fila de votação. No banco, a base legal continua sendo a Lei 10.048/2000, art. 2º,
+        parágrafo único, combinada com o Estatuto da Pessoa Idosa. A norma do TSE entra no projeto como
+        <strong>referência interpretativa e de desenho</strong>: ela mostra que o ordenamento admite tratar o 80+ como
+        prioridade sobre todos em um serviço de atendimento. Se a banca perguntar “isso está na lei bancária?”, a resposta
+        honesta é: “a literalidade do Estatuto fala ‘dentre os idosos’; a prioridade sobre todos vem do modelo da norma do
+        TSE, adotado como escolha de projeto e documentado”.</p>
+    </div>
+
+    <p>Há ainda uma diferença fina de idade: a norma fala em “mais de 80 anos” e o código trata <code>80+</code> como
+      <code>idade &gt;= 80</code>. Para o exercício, a aproximação é aceitável; em produção, o critério precisaria ser
+      alinhado com o jurídico e com o cadastro do cliente.</p>
+
+    <h2 id="modelo">4. Do contexto ao modelo de três filas</h2>
+    <p>A tradução do problema para o código é uma tabela de três níveis. Repare que o número menor é o mais prioritário:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Nível</th><th>Quem entra</th><th>Base usada no guia</th><th>Valor</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Superprioridade</strong></td><td>pessoa com 80 anos ou mais</td><td>Res. TSE 23.759/2026, art. 14, §3º (modelo adotado); Estatuto da Pessoa Idosa como base bancária</td><td><code>0</code></td></tr>
+          <tr><td><strong>Prioridade padrão</strong></td><td>idoso de 60–79, gestante, lactante, pessoa com criança de colo, PCD, pessoa com obesidade, pessoa com TEA e pessoa com mobilidade reduzida</td><td>Lei 10.048/2000 (com Lei 14.626/2023) e Lei 12.764/2012</td><td><code>1</code></td></tr>
+          <tr><td><strong>Convencional</strong></td><td>quem não se enquadra nas hipóteses legais</td><td>sem previsão legal de prioridade</td><td><code>2</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>O nível 0 é o único que não passa pelo ciclo 2:1. Ele é uma <strong>interrupção absoluta</strong>: se há 80+ na
+      fila, ele sai na hora. Os níveis 1 e 2 alternam duas chamadas da padrão para cada uma da convencional, para que a
+      fila comum não morra de fome.</p>
+
+    <h2 id="conflito">5. O conflito que o algoritmo resolve</h2>
+    <p>O problema central é <strong>starvation</strong>: se a fila padrão nunca esvazia e o algoritmo sempre a escolhe, a
+      convencional pode esperar para sempre. O ciclo 2:1 resolve a proporção entre padrão e convencional, mas não resolve
+      tudo: se a fila de 80+ nunca esvaziar, as outras duas esperam. Essa é uma limitação real do projeto e um ponto que a
+      banca pode explorar.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Situação</th><th>O que o código faz</th><th>O que ainda falta</th></tr></thead>
+        <tbody>
+          <tr><td>Só convencionais</td><td>chama todos em FIFO, sem desperdiçar chamada</td><td>nada, para esse caso</td></tr>
+          <tr><td>Padrão e convencional cheias</td><td>P, P, C, P, P, C…</td><td>limite por tempo (aging/SLA)</td></tr>
+          <tr><td>80+ chega no meio</td><td>chama na hora e preserva etapa/contador</td><td>limite de 80+ consecutivos</td></tr>
+          <tr><td>80+ nunca esvazia</td><td>as outras filas podem starvar</td><td>política de justiça para o caso extremo</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="entrega">6. O que o projeto entrega</h2>
+    <p>O contexto ajuda a entender por que o núcleo é a parte mais valiosa do repositório. A tabela abaixo é o resumo que
+      você deve ter na cabeça antes de abrir o código:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Peça</th><th>Estado</th><th>O que isso significa na banca</th></tr></thead>
+        <tbody>
+          <tr><td>Algoritmo e gerenciador</td><td><span class="tag ok">implementado e testado</span></td><td>você pode defender a política com prova</td></tr>
+          <tr><td>Banco, gerador e extração</td><td><span class="tag ok">implementado</span></td><td>há dados e persistência para demonstrar</td></tr>
+          <tr><td>UI Streamlit</td><td><span class="tag warn">parcial</span></td><td>não prometa painel pronto; prometa o núcleo</td></tr>
+          <tr><td>Status e atendimentos</td><td><span class="tag danger">pendente</span></td><td>é a maior lacuna de consistência</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="resumo">7. O contexto em 30 segundos</h2>
+    <div class="callout ok">
+      <div class="ct">Decore esta sequência</div>
+      <p>“O projeto é uma fila bancária com prioridades legais. A lei manda atender primeiro grupos vulneráveis; o risco é
+        a fila comum nunca andar. A solução tem três níveis: 80+ absoluto, prioridade padrão e convencional, com FIFO
+        dentro de cada um e ciclo 2:1 entre os dois últimos. Para o 80+, adotamos o modelo da norma do TSE: prioridade
+        sobre todos, independentemente da chegada. No banco, a base é a Lei 10.048/2000 com o Estatuto da Pessoa Idosa.
+        O núcleo está testado; a UI e a transação de status são o próximo passo.”</p>
+    </div>
+
+    <p>Se quiser aprofundar, siga para <a href="teoria.html">Teoria</a> (conceitos e leis), <a href="arquitetura.html">Arquitetura</a>
+      (decisões) ou <a href="banca.html">Banca</a> (as perguntas difíceis).</p>
+
+  </div>
+</div>
+
+<script src="assets/search-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

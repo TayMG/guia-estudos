@@ -1,13 +1,21 @@
 /* Índice de busca — Fila Bancária (A3 · Sergio). t = título, u = url#âncora, k = palavras-chave, p = página. */
 window.SEARCH_INDEX = [
+  /* Contexto */
+  { t: "Contexto: por que este projeto existe", u: "contexto.html#cenario", k: "contexto cenario problema fila banco prioridade historia", p: "Contexto" },
+  { t: "Contexto jurídico e ético", u: "contexto.html#porque", k: "contexto juridico etico lei 10048 estatuto pessoa idosa 13466 12764 13146 14626 tse", p: "Contexto" },
+  { t: "O modelo TSE para o 80+", u: "contexto.html#tse", k: "tse 23759 2026 23736 2024 artigo 14 artigo 100 80 anos preferencia ordem de chegada", p: "Contexto" },
+  { t: "O conflito com a starvation", u: "contexto.html#conflito", k: "conflito starvation 80 absoluto ciclo 2 1 inanicao idoso", p: "Contexto" },
+  { t: "Resumo de 30 segundos", u: "contexto.html#resumo", k: "resumo 30 segundos contexto defesa banca", p: "Contexto" },
+
   /* Início */
   { t: "O projeto em 30 segundos", u: "index.html#mapa", k: "resumo visao geral tres filas faker supabase pandas streamlit algoritmo", p: "Início" },
-  { t: "A lei em 60 segundos", u: "index.html#leis", k: "lei 10048 10741 13466 12764 13146 14626 niveis super padrao convencional", p: "Início" },
+  { t: "A lei em 60 segundos", u: "index.html#leis", k: "lei 10048 10741 13466 12764 13146 14626 tse 23759 2026 23736 2024 niveis super padrao convencional", p: "Início" },
+  { t: "Contexto do projeto", u: "index.html#contexto", k: "contexto problema banco fila prioridade justica social", p: "Início" },
   { t: "Cada recurso usado", u: "index.html#recursos", k: "python deque intenum dataclass faker pandas supabase postgrest dotenv streamlit unittest gitflow", p: "Início" },
   { t: "O que existe de verdade × o que é promessa", u: "index.html#status", k: "implementado prometido status ui repository factory streamlit rls", p: "Início" },
   { t: "Checklist de domínio", u: "index.html#edital", k: "checklist progresso estudo revisao 24 itens", p: "Início" },
   { t: "Números que você precisa saber de cor", u: "index.html#numeros", k: "3 filas 2 1 15 35 50 4 tabelas 15 testes 60 80", p: "Início" },
-  { t: "As páginas do site", u: "index.html#paginas", k: "mapa paginas navegacao teoria arquitetura pratica codigo evidencias perguntas quiz plano banca", p: "Início" },
+  { t: "As páginas do site", u: "index.html#paginas", k: "mapa paginas navegacao contexto teoria arquitetura pratica codigo evidencias perguntas quiz plano banca", p: "Início" },
   { t: "Se você só tiver 1 hora", u: "index.html#1hora", k: "revisao rapida ultima hora emergencia banca", p: "Início" },
 
   /* Teoria */
@@ -17,11 +25,11 @@ window.SEARCH_INDEX = [
   { t: "collections.deque", u: "teoria.html#deque", k: "deque append popleft complexidade O(1) lista duplamente encadeada blocos", p: "Teoria" },
   { t: "Weighted round-robin e quantum", u: "teoria.html#round-robin", k: "round-robin weighted quantum ciclo 2:1 cota revezamento", p: "Teoria" },
   { t: "Lei 10.048/2000", u: "teoria.html#lei-10048", k: "lei 10048 instituicoes financeiras banco atendimento prioritario artigo 2", p: "Teoria" },
-  { t: "Estatuto do Idoso e Lei 13.466/2017", u: "teoria.html#lei-10741", k: "lei 10741 13466 idoso 80 prioridade especial dentre os idosos", p: "Teoria" },
+  { t: "Estatuto do Idoso, Lei 13.466/2017 e modelo TSE", u: "teoria.html#lei-10741", k: "lei 10741 13466 idoso 80 prioridade especial dentre os idosos tse 23759 2026 23736 2024", p: "Teoria" },
   { t: "Lei 12.764/2012 e TEA", u: "teoria.html#lei-12764", k: "lei 12764 tea autismo pessoa com deficiencia ciptea", p: "Teoria" },
   { t: "Lei 13.146/2015 (LBI)", u: "teoria.html#lei-13146", k: "lei 13146 lbi pcd obesidade deficiencia acessibilidade", p: "Teoria" },
   { t: "Lei 14.626/2023", u: "teoria.html#lei-14626", k: "lei 14626 14364 mobilidade reduzida doador de sangue 120 dias acompanhante atualizacao", p: "Teoria" },
-  { t: "Hierarquia do código × hierarquia da lei", u: "teoria.html#hierarquia", k: "hierarquia 80 absoluto interpretacao juridica niveis", p: "Teoria" },
+  { t: "Hierarquia do código × hierarquia da lei", u: "teoria.html#hierarquia", k: "hierarquia 80 absoluto estatuto tse modelo juridico niveis", p: "Teoria" },
   { t: "Cliente: dataclass imutável", u: "teoria.html#dataclass", k: "dataclass frozen cliente modelo uuid datetime naive", p: "Teoria" },
   { t: "NivelPrioridade: IntEnum", u: "teoria.html#enum", k: "intenum enums 0 1 2 prioridade numeros magicos", p: "Teoria" },
   { t: "StatusCliente e transições", u: "teoria.html#status", k: "status aguardando atendido em_atendimento cancelado transicao", p: "Teoria" },
@@ -90,16 +98,16 @@ window.SEARCH_INDEX = [
 
   /* Perguntas */
   { t: "As 10 previsíveis", u: "perguntas.html#top10", k: "top10 perguntas resposta 30 segundos objetivo leis filas ciclo", p: "Perguntas" },
-  { t: "Perguntas de leis", u: "perguntas.html#leis", k: "leis 10048 10741 13466 12764 13146 14626 hierarquia", p: "Perguntas" },
+  { t: "Perguntas de leis", u: "perguntas.html#leis", k: "leis 10048 10741 13466 12764 13146 14626 tse 23759 2026 23736 2024 hierarquia", p: "Perguntas" },
   { t: "Perguntas de algoritmo", u: "perguntas.html#algoritmo", k: "algoritmo starvation aging quantum deque heap complexidade", p: "Perguntas" },
   { t: "Perguntas de código", u: "perguntas.html#codigo", k: "codigo frozen intenum status id cpf rollback duplicacao", p: "Perguntas" },
   { t: "Perguntas de SQL", u: "perguntas.html#sql", k: "sql tabelas indice rls seed view atendimentos", p: "Perguntas" },
   { t: "Perguntas de arquitetura", u: "perguntas.html#arquitetura", k: "arquitetura supabase postgrest streamlit session_state cache faker", p: "Perguntas" },
   { t: "Perguntas de segurança", u: "perguntas.html#seguranca", k: "seguranca lgpd rls service_role concorrencia idempotencia", p: "Perguntas" },
-  { t: "Pegadinhas e limitações", u: "perguntas.html#pegadinhas", k: "pegadinhas 3 2 1 80 absoluto streamlit nome contrato lei", p: "Perguntas" },
+  { t: "Pegadinhas e limitações", u: "perguntas.html#pegadinhas", k: "pegadinhas 3 2 1 80 absoluto modelo tse streamlit nome contrato lei", p: "Perguntas" },
 
   /* Quiz */
-  { t: "Quiz: 42 questões", u: "quiz.html#quiz", k: "quiz questoes multipla escolha correcao explicacao", p: "Quiz" },
+  { t: "Quiz: 43 questões", u: "quiz.html#quiz", k: "quiz 43 questoes multipla escolha correcao explicacao tse", p: "Quiz" },
   { t: "O que cada bloco cobra", u: "quiz.html#como", k: "quiz blocos algoritmo leis estruturas sql ui seguranca", p: "Quiz" },
 
   /* Plano */
@@ -109,18 +117,18 @@ window.SEARCH_INDEX = [
   { t: "Entregáveis e checklist", u: "plano.html#entregaveis", k: "entregaveis checklist slides roteiro demo plano b", p: "Plano" },
   { t: "Checklist do dia", u: "plano.html#dia", k: "checklist dia ambiente offline testes traco leis slides", p: "Plano" },
   { t: "Frases de emergência", u: "plano.html#frases", k: "frases emergencia banca nao sei ui 3 2 1 status seguranca", p: "Plano" },
-  { t: "Referências", u: "plano.html#referencias", k: "referencias leis planalto python supabase streamlit lgpd", p: "Plano" },
+  { t: "Referências", u: "plano.html#referencias", k: "referencias leis planalto tse 23759 2026 23736 2024 python supabase streamlit lgpd", p: "Plano" },
   { t: "Ensaio: perguntas para um colega", u: "plano.html#ensaio", k: "ensaio simulado perguntas colega treino", p: "Plano" },
 
   /* Banca */
   { t: "3:2:1 × 2:1 na banca", u: "banca.html#contradicoes", k: "banca contradicao 3 2 1 2 1 documentacao codigo testes", p: "Banca" },
-  { t: "Leis e interpretação na banca", u: "banca.html#leis", k: "banca leis 13466 10048 12764 13146 14626 80 absoluto", p: "Banca" },
+  { t: "Leis e interpretação na banca", u: "banca.html#leis", k: "banca leis 13466 10048 12764 13146 14626 80 absoluto tse 23759 2026", p: "Banca" },
   { t: "Algoritmo e justiça na banca", u: "banca.html#algoritmo", k: "banca algoritmo starvation aging heap complexidade trace", p: "Banca" },
   { t: "Código e modelagem na banca", u: "banca.html#codigo", k: "banca status id cpf frozen intenum duplicacao", p: "Banca" },
   { t: "Dados e SQL na banca", u: "banca.html#dados", k: "banca dados sql indice fifo lotes supabase", p: "Banca" },
   { t: "Arquitetura e UI na banca", u: "banca.html#arquitetura", k: "banca arquitetura streamlit session_state repository factory sqlite", p: "Banca" },
   { t: "Segurança e LGPD na banca", u: "banca.html#seguranca", k: "banca seguranca rls lgpd chave service_role", p: "Banca" },
   { t: "Limitações e prontidão", u: "banca.html#limites", k: "banca limites producao maior falha mais uma semana aprovacao", p: "Banca" },
-  { t: "A pergunta matadora", u: "banca.html#matadora", k: "banca pergunta matadora 80 absoluto ciclo nunca acontece", p: "Banca" },
+  { t: "A pergunta matadora", u: "banca.html#matadora", k: "banca pergunta matadora 80 absoluto modelo tse ciclo nunca acontece", p: "Banca" },
   { t: "Defesa em 30 segundos", u: "banca.html#defesa", k: "defesa 30 segundos resumo final banca", p: "Banca" }
 ];

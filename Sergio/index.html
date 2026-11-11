@@ -25,6 +25,7 @@
   <nav class="nav">
     <div class="nav-label">Comece aqui</div>
     <a href="index.html"><span class="n">00</span> Início</a>
+    <a href="contexto.html"><span class="n">◈</span> Contexto</a>
     <div class="nav-label">Fundamentos</div>
     <a href="teoria.html"><span class="n">01</span> Teoria</a>
     <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
@@ -51,13 +52,15 @@
     <div class="hero">
       <div class="eyebrow">A3 · Fila bancária com prioridades legais</div>
       <h1>Quem o banco chama primeiro —<br>e por que a lei manda assim</h1>
-      <p>Um guia completo para entender e defender o projeto: as três filas, o ciclo 2:1, o código linha a linha,
-         o banco Supabase, as leis que criam cada prioridade e — principalmente — as contradições que a banca vai encontrar.</p>
+      <p>Um guia completo para entender e defender o projeto: o contexto da fila, as três filas, o ciclo 2:1, o código
+         linha a linha, o banco Supabase, a norma do TSE que fundamenta o 80+ e — principalmente — as contradições que a
+         banca vai encontrar.</p>
     </div>
 
     <div class="callout tip">
       <div class="ct">Como usar este site</div>
-      <p>Leia <a href="teoria.html">Teoria</a> e <a href="arquitetura.html">Arquitetura</a> para entender o <em>porquê</em>.
+      <p>Comece pelo <a href="contexto.html">Contexto</a> para entender o cenário e a base legal. Depois leia
+         <a href="teoria.html">Teoria</a> e <a href="arquitetura.html">Arquitetura</a> para entender o <em>porquê</em>.
          Leia <a href="codigo.html">Código</a> e <a href="pratica.html">Prática</a> para saber o <em>como</em>.
          Depois treine em <a href="perguntas.html">Perguntas</a>, <a href="quiz.html">Quiz</a> e <a href="banca.html">Banca difícil</a>.
          A busca aceita <span class="kbd">/</span> como atalho. As abas no topo da barra trocam entre os estudos
@@ -70,6 +73,44 @@
          a interface Streamlit completa, o repositório de persistência e a atualização de status ficaram no papel.
          Este site separa o que existe do que foi especificado — e transforma essa diferença na sua melhor resposta de banca.</p>
     </div>
+
+    <h2 id="contexto">O contexto antes do código</h2>
+    <p class="lead">O projeto não começa com <code>deque</code>: começa com uma agência bancária, clientes com direitos
+      diferentes e a pergunta “quem deve ser chamado agora?”. Entender esse cenário é o que permite defender cada escolha
+      de implementação.</p>
+
+    <div class="grid two">
+      <div class="card">
+        <h3>O cenário</h3>
+        <p>Uma fila que não para de chegar. Idosos, gestantes, lactantes, pessoas com criança de colo, PCD, pessoas com
+          obesidade, pessoas com TEA e pessoas com mobilidade reduzida têm prioridade legal. As demais formam a fila
+          convencional. O sistema precisa decidir a ordem sem deixar ninguém esperando para sempre.</p>
+      </div>
+      <div class="card">
+        <h3>O conflito</h3>
+        <p>Se o banco atende só a prioridade, a fila comum morre. Se atende só por chegada, a lei é ignorada. O projeto
+          resolve com três níveis, FIFO dentro de cada um e um ciclo 2:1 entre padrão e convencional. O 80+ é uma
+          interrupção absoluta.</p>
+      </div>
+    </div>
+
+    <p>Para o 80+, o guia adota como referência a <strong>Resolução TSE nº 23.759/2026, art. 14, §3º</strong> (antes,
+      Resolução TSE nº 23.736/2024, art. 100, §3º): as pessoas com mais de 80 anos têm preferência sobre as demais,
+      <strong>independentemente do momento de chegada</strong>. É esse modelo que o código transforma no nível
+      <code>0</code>.</p>
+
+    <div class="callout warn">
+      <div class="ct">O contexto da norma importa</div>
+      <p>A Resolução do TSE rege a fila de votação, não a fila bancária. No banco, a base continua sendo a
+        <strong>Lei 10.048/2000, art. 2º, parágrafo único</strong>, combinada com o <strong>Estatuto da Pessoa Idosa</strong>.
+        A norma do TSE entra como referência interpretativa e de projeto: ela mostra que o ordenamento admite tratar o 80+
+        como prioridade sobre todos. Se a banca cobrar a diferença, assuma: “o Estatuto fala ‘dentre os idosos’; a
+        prioridade sobre todos segue o modelo da norma do TSE, adotado e documentado no projeto”.</p>
+    </div>
+
+    <p>Quer o texto completo dessa construção? A página <a href="contexto.html">Contexto</a> desenvolve o cenário, a
+      proteção legal, a norma do TSE e o conflito entre prioridade e starvation. A <a href="teoria.html#lei-10741">Teoria
+      §7</a> entra no detalhe jurídico.</p>
 
     <h2 id="mapa">O projeto em 30 segundos</h2>
     <p class="lead">Três filas independentes, uma regra de precedência e um ciclo para a fila comum não morrer de fome.
@@ -96,33 +137,35 @@
       é esse ciclo — desde que a fila de 80+ não esteja permanentemente cheia; nesse caso, nem o ciclo protege.</p>
 
     <h2 id="leis">A lei em 60 segundos</h2>
-    <p>O projeto usa três níveis, mas a legislação não é uma escada de três degraus tão simples. Esta é a tradução
-      que o código faz — e, logo abaixo, o que a lei realmente diz.</p>
+    <p>O projeto usa três níveis. A tradução jurídica tem duas camadas: a base bancária (Lei 10.048/2000 + Estatuto da
+      Pessoa Idosa) e a referência do TSE para o 80+, que explicita a precedência sobre todos os demais grupos.</p>
 
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Nível no código</th><th>Quem entra</th><th>Base legal usada no projeto</th><th>Valor</th></tr></thead>
+        <thead><tr><th>Nível no código</th><th>Quem entra</th><th>Base legal usada no guia</th><th>Valor</th></tr></thead>
         <tbody>
-          <tr><td><strong>Superprioridade</strong></td><td>pessoa com 80 anos ou mais</td><td>Lei 13.466/2017, que alterou o Estatuto do Idoso (Lei 10.741/2003)</td><td><code>0</code></td></tr>
-          <tr><td><strong>Prioridade padrão</strong></td><td>idoso de 60–79, gestante, lactante, pessoa com criança de colo, PCD, pessoa com obesidade e pessoa com TEA</td><td>Lei 10.048/2000 (com alterações da Lei 13.146/2015 e da Lei 14.626/2023) e Lei 12.764/2012</td><td><code>1</code></td></tr>
+          <tr><td><strong>Superprioridade</strong></td><td>pessoa com 80 anos ou mais</td><td><strong>Res. TSE 23.759/2026, art. 14, §3º</strong> (modelo adotado; antes, Res. 23.736/2024, art. 100, §3º) + Estatuto da Pessoa Idosa (Lei 10.741/2003) como base bancária</td><td><code>0</code></td></tr>
+          <tr><td><strong>Prioridade padrão</strong></td><td>idoso de 60–79, gestante, lactante, pessoa com criança de colo, PCD, pessoa com obesidade, pessoa com TEA e pessoa com mobilidade reduzida</td><td>Lei 10.048/2000 (com alterações da Lei 13.146/2015 e da Lei 14.626/2023) e Lei 12.764/2012</td><td><code>1</code></td></tr>
           <tr><td><strong>Convencional</strong></td><td>quem não se enquadra nas hipóteses legais</td><td>sem previsão legal de prioridade</td><td><code>2</code></td></tr>
         </tbody>
       </table>
     </div>
 
-    <div class="callout danger">
-      <div class="ct">A pegadinha jurídica que vale a apresentação</div>
-      <p>A Lei 13.466/2017 diz que, <strong>dentre os idosos</strong>, os maiores de 80 anos têm prioridade especial.
-         Ela não cria uma categoria acima de gestantes, PCDs ou autistas. O código chama esse grupo de “prioridade absoluta”
-         e o coloca acima de todos. Isso é uma <strong>decisão de projeto</strong>, defensável como política mais protetiva,
-         mas não é literalmente o que a lei manda. Se a banca perguntar, assuma a escolha — não invente que a lei criou um
-         “nível 0” universal.</p>
+    <div class="callout">
+      <div class="ct">O que a norma do TSE resolve — e o que ela não resolve</div>
+      <p>A Resolução TSE nº 23.759/2026, art. 14, §3º, diz que a preferência “observará a prioridade das pessoas com mais
+        de 80 anos, que terão preferência sobre as demais, independentemente do momento de chegada à seção eleitoral”.
+        É esse o modelo do nível <code>0</code>: 80+ não disputa ordem de chegada com ninguém.</p>
+      <p><strong>Cuidado de contexto:</strong> a norma é eleitoral, não bancária. No banco, a base é a Lei 10.048/2000,
+        art. 2º, parágrafo único, com o Estatuto da Pessoa Idosa. O guia usa a norma do TSE como referência interpretativa
+        e de projeto — e deixa essa diferença explícita. Assim, se a banca perguntar, você não inventa que a lei bancária
+        criou um “nível 0” universal: você mostra de onde veio o modelo e onde ele se aplica.</p>
     </div>
 
     <p>Além disso, a Lei 10.048/2000 foi atualizada pela Lei 14.626/2023 e hoje inclui também pessoas com mobilidade
       reduzida e <strong>doadores de sangue</strong> (estes últimos atendidos depois de todos os demais prioritários,
-      com comprovante válido por 120 dias). O projeto não modela esses dois casos. Em <a href="teoria.html#lei-14626">Teoria §10</a>
-      você vê o texto e a consequência prática.</p>
+      com comprovante válido por 120 dias). O projeto não modela doadores nem acompanhante; a mobilidade reduzida aparece
+      no rol, mas não no gerador. Em <a href="teoria.html#lei-14626">Teoria §10</a> você vê o texto e a consequência prática.</p>
 
     <h2 id="recursos">Cada recurso usado — o que é, por que está aqui e onde estudar</h2>
     <p>Não é “citado de passagem”: cada peça tem definição, papel no projeto, o arquivo correspondente e o ponto de treino.</p>
@@ -181,8 +224,8 @@
       <div class="check"><input type="checkbox" id="s1" data-study="fila-conceito"><label for="s1">Explicar por que uma fila bancária é <strong>multinível</strong> e não uma fila única.</label></div>
       <div class="check"><input type="checkbox" id="s2" data-study="fifo"><label for="s2">Definir <strong>FIFO</strong> e dizer por que a ordem de chegada ainda importa dentro de cada prioridade.</label></div>
       <div class="check"><input type="checkbox" id="s3" data-study="niveis"><label for="s3">Dizer os <strong>três níveis</strong>, seus valores e quem entra em cada um.</label></div>
-      <div class="check"><input type="checkbox" id="s4" data-study="leis"><label for="s4">Citar as leis e a frase exata que garante prioridade <strong>em instituições financeiras</strong>.</label></div>
-      <div class="check"><input type="checkbox" id="s5" data-study="oitenta"><label for="s5">Explicar a diferença entre “80+ absoluto no código” e “prioridade especial entre idosos na lei”.</label></div>
+      <div class="check"><input type="checkbox" id="s4" data-study="leis"><label for="s4">Citar as leis, a <strong>norma do TSE</strong> e a frase exata que garante prioridade <strong>em instituições financeiras</strong>.</label></div>
+      <div class="check"><input type="checkbox" id="s5" data-study="oitenta"><label for="s5">Explicar por que o 80+ é absoluto no código, o que diz a <strong>Res. TSE 23.759/2026</strong> e qual é a diferença de contexto em relação ao banco.</label></div>
       <div class="check"><input type="checkbox" id="s6" data-study="starvation"><label for="s6">Definir <strong>starvation</strong> e dizer quem pode sofrer no projeto.</label></div>
       <div class="check"><input type="checkbox" id="s7" data-study="ciclo21"><label for="s7">Desenhar o ciclo <strong>2:1</strong> e explicar por que ele não é 3:2:1.</label></div>
       <div class="check"><input type="checkbox" id="s8" data-study="super-contador"><label for="s8">Explicar por que um 80+ no meio do ciclo <strong>não reseta</strong> o contador.</label></div>
@@ -216,7 +259,7 @@
           <tr><td><strong>15 / 35 / 50</strong></td><td>pesos percentuais de super / padrão / convencional</td><td><code>gerar_clientes.py</code></td></tr>
           <tr><td><strong>4</strong></td><td>tabelas: tipo, motivo, clientes e atendimentos</td><td>schema SQL</td></tr>
           <tr><td><strong>15</strong></td><td>testes unitários e de integração</td><td><code>testes_frente2.py</code></td></tr>
-          <tr><td><strong>60 / 80</strong></td><td>idade mínima do idoso e idade da prioridade especial</td><td>leis e modelo</td></tr>
+          <tr><td><strong>60 / 80</strong></td><td>idade mínima do idoso e idade da prioridade absoluta</td><td>Estatuto, norma do TSE (23.759/2026) e modelo</td></tr>
           <tr><td><strong>7</strong></td><td>motivos de prioridade padrão no seed</td><td><code>seed.sql</code></td></tr>
           <tr><td><strong>2</strong></td><td>classes <code>GerenciadorFilas</code> duplicadas</td><td><code>Alexandre.py</code> e <code>gerenciador_filas.py</code></td></tr>
         </tbody>
@@ -225,10 +268,15 @@
 
     <h2 id="paginas">As páginas</h2>
     <div class="grid two">
+      <a class="card-link" href="contexto.html">
+        <span class="n">◈ · CONTEXTO</span>
+        <h3>Contexto</h3>
+        <p>O cenário da fila bancária, a proteção legal, a norma do TSE para o 80+, o conflito entre prioridade e starvation e o resumo em 30 segundos.</p>
+      </a>
       <a class="card-link" href="teoria.html">
         <span class="n">01 · FUNDAMENTOS</span>
         <h3>Teoria</h3>
-        <p>Fila, prioridade, FIFO, deque, starvation, weighted round-robin, cada lei, cada enum, cada tabela, Streamlit, testes e as limitações. Do conceito ao código.</p>
+        <p>Fila, prioridade, FIFO, deque, starvation, weighted round-robin, cada lei (incluindo a norma do TSE), cada enum, cada tabela, Streamlit, testes e as limitações. Do conceito ao código.</p>
       </a>
       <a class="card-link" href="arquitetura.html">
         <span class="n">02 · DESENHO</span>
@@ -258,7 +306,7 @@
       <a class="card-link" href="quiz.html">
         <span class="n">07 · FIXAÇÃO</span>
         <h3>Quiz</h3>
-        <p>42 questões de múltipla escolha com correção e explicação. Meta: fechar sem hesitar e saber apontar a linha do código.</p>
+        <p>43 questões de múltipla escolha com correção e explicação. Meta: fechar sem hesitar e saber apontar a linha do código.</p>
       </a>
       <a class="card-link" href="plano.html">
         <span class="n">08 · CRONOGRAMA</span>

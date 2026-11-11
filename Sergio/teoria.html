@@ -25,6 +25,7 @@
   <nav class="nav">
     <div class="nav-label">Comece aqui</div>
     <a href="index.html"><span class="n">00</span> Início</a>
+    <a href="contexto.html"><span class="n">◈</span> Contexto</a>
     <div class="nav-label">Fundamentos</div>
     <a href="teoria.html"><span class="n">01</span> Teoria</a>
     <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
@@ -229,22 +230,41 @@
       individualizado ou separar guichês. Ele só ordena a chamada.</p>
 
     <!-- ============================================================ -->
-    <h2 id="lei-10741">7. Estatuto do Idoso e Lei 13.466/2017: o 80+</h2>
+    <h2 id="lei-10741">7. Estatuto da Pessoa Idosa, Lei 13.466/2017 e a norma do TSE: o 80+</h2>
     <p>A Lei 10.741/2003 (Estatuto do Idoso, hoje Estatuto da Pessoa Idosa) define idoso como pessoa com 60 anos ou mais
       e estabelece, no art. 3º, §1º, I, o atendimento preferencial imediato e individualizado. A Lei 13.466/2017 acrescentou
       o §2º:</p>
 
     <div class="callout">
-      <div class="ct">Texto-chave</div>
+      <div class="ct">Texto-chave do Estatuto</div>
       <p>“Dentre os idosos, é assegurada prioridade especial aos maiores de oitenta anos, atendendo-se suas necessidades
         sempre preferencialmente em relação aos demais idosos.”</p>
     </div>
 
-    <p>Perceba a expressão <strong>“dentre os idosos”</strong>. A lei cria uma preferência dos 80+ sobre os idosos de 60 a
-      79, não uma categoria acima de gestantes, PCDs ou autistas. O projeto, porém, transforma os 80+ em
-      <code>SUPER_PRIORIDADE = 0</code> e os atende antes de todo mundo, sempre. Isso é uma decisão de modelagem: mais
-      protetiva em relação ao idoso de 80+, mas não é a leitura literal do dispositivo. Se a banca cobrar, a resposta
-      correta é separar as duas coisas.</p>
+    <p>Perceba a expressão <strong>“dentre os idosos”</strong>. No texto do Estatuto, a preferência é dos 80+ sobre os
+      idosos de 60 a 79; não é, literalmente, uma categoria acima de gestantes, PCDs ou autistas.</p>
+
+    <p>Para o desenho do nível <code>0</code>, o guia adota a norma do TSE, que explicita a precedência sobre todos no
+      âmbito eleitoral. A <strong>Resolução TSE nº 23.759/2026, art. 14, §3º</strong> (antes, Resolução TSE nº 23.736/2024,
+      art. 100, §3º) diz:</p>
+
+    <div class="callout">
+      <div class="ct">Texto-chave da norma do TSE</div>
+      <p>“A preferência garantida no §2º deste artigo considerará a ordem de chegada à fila de votação, observada a
+        prioridade das pessoas com mais de 80 (oitenta) anos, que terão preferência sobre as demais,
+        <strong>independentemente do momento de chegada à seção eleitoral</strong>.”</p>
+    </div>
+
+    <p>É esse modelo que o projeto transforma em <code>SUPER_PRIORIDADE = 0</code>: o 80+ não entra na disputa de ordem
+      de chegada com os outros grupos. <strong>A resolução é eleitoral, não bancária.</strong> No banco, a base legal
+      continua sendo a Lei 10.048/2000, art. 2º, parágrafo único, combinada com o Estatuto da Pessoa Idosa. O guia usa a
+      norma do TSE como referência interpretativa e de projeto — e deixa o escopo explícito. Se a banca cobrar, a resposta
+      é: “o Estatuto fala ‘dentre os idosos’; a prioridade sobre todos segue o modelo da norma do TSE, adotado como escolha
+      de projeto e documentado”.</p>
+
+    <p>Há um detalhe fino de idade: a norma fala em “mais de 80 anos” e o código trata <code>80+</code> como
+      <code>idade &gt;= 80</code>. Para o exercício, a aproximação é aceitável; em produção, o critério precisaria ser
+      alinhado com o jurídico e com o cadastro do cliente.</p>
 
     <p>Há ainda uma consequência prática: se você atende 80+ de forma absoluta, a fila de 80+ pode starvar as demais.
       Em um banco real, a política precisaria lidar com isso — por exemplo, limitar quantos 80+ consecutivos são chamados
@@ -307,15 +327,16 @@
 
     <!-- ============================================================ -->
     <h2 id="hierarquia">11. A hierarquia do código × a hierarquia da lei</h2>
-    <p>O código tem três níveis. A lei tem um conjunto de grupos prioritários e uma preferência especial dentro do grupo
-      dos idosos. A tradução não é automática:</p>
+    <p>O código tem três níveis. A lei tem um conjunto de grupos prioritários, uma preferência especial dentro do grupo
+      dos idosos e, na norma do TSE, uma precedência explícita do 80+ sobre todos. A tradução não é automática:</p>
 
     <div class="table-wrap">
       <table>
         <thead><tr><th>Pergunta</th><th>Resposta curta</th><th>Resposta de banca</th></tr></thead>
         <tbody>
-          <tr><td>80+ é uma categoria autônoma?</td><td>No código, sim (<code>0</code>).</td><td>Na lei, é prioridade especial <em>entre os idosos</em>. O código escolheu tratá-la como absoluta.</td></tr>
-          <tr><td>Todos os prioritários são iguais?</td><td>No código, os do nível 1 são iguais entre si.</td><td>A lei não cria subordem entre PCD, gestante, idoso etc.; o desempate é operacional.</td></tr>
+          <tr><td>80+ é uma categoria autônoma?</td><td>No código, sim (<code>0</code>).</td><td>No Estatuto, é prioridade especial <em>entre os idosos</em>; na norma do TSE, tem preferência sobre todos, independentemente da chegada. O projeto adota o modelo do TSE.</td></tr>
+          <tr><td>Onde está a base do 80+?</td><td>No nível <code>0</code> e no <code>if fila_super</code>.</td><td>Res. TSE 23.759/2026, art. 14, §3º (modelo); no banco, Lei 10.048/2000 + Estatuto da Pessoa Idosa.</td></tr>
+          <tr><td>Todos os prioritários são iguais?</td><td>No código, os do nível 1 são iguais entre si.</td><td>A lei não cria subordem entre PCD, gestante, idoso etc.; o desempate é operacional. O 80+ é a exceção explícita.</td></tr>
           <tr><td>Doador de sangue é prioridade?</td><td>Não está no código.</td><td>Sim, desde 2023, mas depois de todos os demais e com comprovante.</td></tr>
           <tr><td>O banco pode ter guichê exclusivo?</td><td>O código não modela guichê.</td><td>Sim; a lei permite postos, caixas, guichês ou linhas específicas.</td></tr>
           <tr><td>Existe tempo máximo federal de espera?</td><td>Não no projeto.</td><td>Não há regra federal geral; municípios e estados podem ter leis próprias. O projeto não controla tempo.</td></tr>
@@ -325,9 +346,11 @@
 
     <div class="callout tip">
       <div class="ct">Como defender a escolha</div>
-      <p>“Modelamos 80+ como prioridade absoluta para garantir a preferência especial do Estatuto. Reconheço que a lei diz
-        ‘dentre os idosos’; em produção, eu validaria a política com o jurídico e trabalharia com uma fila de prioridade
-        especial, não necessariamente acima de todos os grupos.” Essa resposta mostra domínio, não insegurança.</p>
+      <p>“Modelamos 80+ como prioridade absoluta seguindo o modelo da norma do TSE, que dá preferência aos maiores de 80
+        anos sobre todos os demais, independentemente da chegada. Reconheço que o Estatuto, no texto literal, fala ‘dentre
+        os idosos’; para o banco, a base é a Lei 10.048/2000 com o Estatuto. Em produção, eu validaria a política com o
+        jurídico e poderia trabalhar com limite de 80+ consecutivos para não starvar as outras filas.” Essa resposta mostra
+        domínio, não insegurança.</p>
     </div>
 
     <!-- ============================================================ -->
