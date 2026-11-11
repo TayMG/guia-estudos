@@ -15,7 +15,7 @@ window.SEARCH_INDEX = [
   { t: "Cada recurso usado", u: "index.html#recursos", k: "python deque intenum dataclass faker pandas supabase postgrest dotenv streamlit unittest gitflow", p: "Início" },
   { t: "O que existe de verdade × o que é promessa", u: "index.html#status", k: "implementado prometido status ui repository factory streamlit rls", p: "Início" },
   { t: "Checklist de domínio", u: "index.html#edital", k: "checklist progresso estudo revisao 24 itens", p: "Início" },
-  { t: "Números que você precisa saber de cor", u: "index.html#numeros", k: "3 filas 2 1 15 35 50 4 tabelas 15 testes 60 80", p: "Início" },
+  { t: "Números que você precisa saber de cor", u: "index.html#numeros", k: "3 filas 2 1 15 35 50 4 tabelas 18 testes 60 80", p: "Início" },
   { t: "As páginas do site", u: "index.html#paginas", k: "mapa paginas navegacao contexto teoria arquitetura pratica codigo evidencias perguntas quiz plano banca", p: "Início" },
   { t: "Se você só tiver 1 hora", u: "index.html#1hora", k: "revisao rapida ultima hora emergencia banca", p: "Início" },
 
@@ -85,7 +85,7 @@ window.SEARCH_INDEX = [
   { t: "gerar_clientes.py: dados sintéticos", u: "codigo.html#gerador", k: "gerador faker random weights lotes cpf", p: "Código" },
   { t: "streamlit.py: o que ele realmente faz", u: "codigo.html#streamlit", k: "streamlit conexao metricas cache_resource session_state", p: "Código" },
   { t: "SQL: quatro tabelas e RLS aberta", u: "codigo.html#sql", k: "sql tabelas tipo motivo clientes atendimentos indice rls", p: "Código" },
-  { t: "Os 15 testes, em detalhe", u: "codigo.html#testes", k: "testes 15 unidade integracao extrator falso", p: "Código" },
+  { t: "Os 18 testes, em detalhe", u: "codigo.html#testes", k: "testes 18 unidade integracao extrator falso", p: "Código" },
   { t: "Bugs e inconsistências", u: "codigo.html#bugs", k: "bugs id cpf status streamlit rls duplicacao 3 2 1", p: "Código" },
   { t: "Como estudar o código em 40 minutos", u: "codigo.html#linha-a-linha", k: "estudo codigo 40 minutos roteiro leitura", p: "Código" },
 

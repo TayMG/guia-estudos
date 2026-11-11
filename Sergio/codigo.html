@@ -72,7 +72,7 @@
           <tr><td><code>extracao.py</code></td><td>30</td><td>GET no Supabase + DataFrame</td><td><span class="tag warn">frágil</span></td></tr>
           <tr><td><code>gerar_clientes.py</code></td><td>92</td><td>Faker + random + inserção</td><td><span class="tag ok">funcional</span></td></tr>
           <tr><td><code>streamlit.py</code></td><td>50</td><td>teste de conexão e métricas</td><td><span class="tag danger">UI mínima</span></td></tr>
-          <tr><td><code>testes_frente2.py</code></td><td>265</td><td>15 testes unittest</td><td><span class="tag ok">núcleo coberto</span></td></tr>
+          <tr><td><code>testes_frente2.py</code></td><td>313</td><td>18 testes unittest</td><td><span class="tag ok">núcleo coberto</span></td></tr>
           <tr><td><code>supabase/setup_supabase.sql</code></td><td>98</td><td>schema, índices, RLS, seed</td><td><span class="tag ok">completo</span></td></tr>
           <tr><td><code>supabase/migrations/...</code></td><td>64</td><td>migração inicial (sem <code>IF NOT EXISTS</code>)</td><td><span class="tag warn">duplicada</span></td></tr>
           <tr><td><code>supabase/seed.sql</code></td><td>17</td><td>3 níveis + 9 motivos</td><td><span class="tag ok">completo</span></td></tr>
@@ -635,7 +635,7 @@ CREATE POLICY "Permitir todas operacoes em clientes_fila"
       da chave pública. Em um banco real, seria necessário separar leitura e escrita, usar autenticação e definir
       políticas por papel. O README contém uma chave que parece real; não a reproduza.</p>
 
-    <h2 id="testes">9. Os 15 testes, em detalhe</h2>
+    <h2 id="testes">9. Os 18 testes, em detalhe</h2>
     <div class="table-wrap">
       <table>
         <thead><tr><th>#</th><th>Teste</th><th>O que entra</th><th>O que espera</th></tr></thead>

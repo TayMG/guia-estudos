@@ -31,7 +31,7 @@ Elas apontam para `../Euclerio/index.html` e `../Sergio/index.html`. O tema clar
 | `teoria.html` | 32 seções: fila, FIFO, multinível, deque, starvation, round-robin, cada lei, hierarquia, dataclass, IntEnum, status, gerenciador, algoritmo, traço, filas vazias, 80+, 3:2:1, complexidade, Supabase, PostgREST, pandas, Faker, `.env`, Streamlit, `session_state`, POO, testes, Git Flow e limitações |
 | `arquitetura.html` | camadas, caminho de uma chamada, decisões e trade-offs, o que existe, limitações, números e arquitetura de produção |
 | `pratica.html` | do zero: instalação, `.env`, schema, 500 clientes, testes, execução, simulador interativo do ciclo 2:1, Streamlit, plano B sem Supabase, erros comuns e limpeza |
-| `codigo.html` | mapa dos arquivos, `modelos.py`, `aplicar_starvation`, `GerenciadorFilas`, `extracao.py`, gerador, `streamlit.py`, SQL, os 15 testes, 18 bugs e roteiro de leitura |
+| `codigo.html` | mapa dos arquivos, `modelos.py`, `aplicar_starvation`, `GerenciadorFilas`, `extracao.py`, gerador, `streamlit.py`, SQL, os 18 testes, 18 bugs e roteiro de leitura |
 | `evidencias.html` | o que cada arquivo prova, o traço dos testes, PDF × código, como gerar sua própria evidência, o que não existe e demo de 3 minutos |
 | `perguntas.html` | 75 perguntas com resposta de 30 segundos e aprofundamento |
 | `quiz.html` | 43 questões de múltipla escolha com correção e explicação |
