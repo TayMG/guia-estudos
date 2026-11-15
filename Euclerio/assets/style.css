@@ -356,6 +356,24 @@ figure.ev img {
   background: #0d1117; display: block;
 }
 figure.ev figcaption { font-size: 13px; color: var(--muted); padding: 8px 2px 0; }
+figure.ev figcaption strong { color: var(--text); }
+.ev-line { display: block; margin-top: 5px; line-height: 1.55; }
+.ev-line b { color: var(--text); font-weight: 650; }
+.ev-line.quem b { color: var(--accent); }
+.ev-slide-tag { margin-left: 6px; white-space: nowrap; }
+
+/* camada "sem jargão" das páginas densas */
+.plain {
+  background: var(--surface-2);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 10px 14px;
+  margin: 0 0 16px;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+.plain b { color: var(--accent); }
+.plain em { color: var(--text); font-style: normal; font-weight: 600; }
 
 /* ---------- progresso / checklist ---------- */
 .progress-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }

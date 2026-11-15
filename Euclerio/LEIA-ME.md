@@ -31,6 +31,7 @@ Elas apontam para `../Euclerio/index.html` e `../Sergio/index.html`. O tema clar
 |---|---|
 | `index.html` | visão geral, mapa do projeto, cobertura do edital, checklist de domínio (básico + avançado) e números que você precisa saber de cor |
 | `teoria.html` | todos os conceitos: processo, PID, sinais, daemon, namespaces, cgroups, container × VM, Docker, Kubernetes, Pod, Deployment, Service, HPA, self-healing, rede, REST, FastAPI, psutil, hostPID, probes, QoS, volumes, segurança de Pod e os demais controladores |
+| `passo-a-passo.html` | **a história do trabalho, do zero**: dicionário em linguagem simples, os 12 passos da construção (o que foi feito, qual arquivo nasceu, como testar), tabela mestra de arquivos e as 8 frases que resumem tudo |
 | `arquitetura.html` | arquitetura física e lógica, caminho de uma requisição, tabela de decisões, limitações e números medidos |
 | `pratica.html` | reproduzir o ambiente do zero: API local, build, teste no Docker local, `minikube image load`, apply, acesso, self-healing, scaling, limpeza, erros comuns e diagnóstico |
 | `codigo.html` | mapa de todos os arquivos, `api/main.py` e `requirements.txt`, ciclo de vida dos processos, segurança da API, os três Dockerfiles, a página do Nginx, os sete YAMLs e o que falta neles |
@@ -39,6 +40,12 @@ Elas apontam para `../Euclerio/index.html` e `../Sergio/index.html`. O tema clar
 | `quiz.html` | 38 questões de múltipla escolha com correção e explicação |
 | `plano.html` | cronograma de 21 dias, roteiro de 20 minutos, entregáveis, checklist do dia, frases de emergência e referências |
 | `banca.html` | perguntas difíceis: mecanismo, números, contrafactuais, cálculos na lousa, defesa de cada escolha, diagnóstico ao vivo e o que responder fora do escopo |
+
+## Para quem nunca viu nada disso
+
+Se você não sabe o que é um daemon, um container ou um Pod, comece em `passo-a-passo.html`.
+A página explica cada termo por comparação, conta a construção do trabalho em 12 passos e, em cada passo,
+responde: para que serve, o que o grupo fez, qual arquivo foi criado e como saber que funcionou.
 
 ## Recursos
 

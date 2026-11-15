@@ -22,21 +22,22 @@
     <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
     <div class="search-results"></div>
   </div>
-  <nav class="nav">
+    <nav class="nav">
     <div class="nav-label">Comece aqui</div>
     <a href="index.html"><span class="n">00</span> Início</a>
     <div class="nav-label">Fundamentos</div>
     <a href="teoria.html"><span class="n">01</span> Teoria</a>
     <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
     <div class="nav-label">O trabalho</div>
-    <a href="pratica.html"><span class="n">03</span> Prática</a>
-    <a href="codigo.html"><span class="n">04</span> Código</a>
-    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <a href="passo-a-passo.html"><span class="n">03</span> Como foi feito</a>
+    <a href="pratica.html"><span class="n">04</span> Prática</a>
+    <a href="codigo.html"><span class="n">05</span> Código</a>
+    <a href="evidencias.html"><span class="n">06</span> Evidências</a>
     <div class="nav-label">Treino</div>
-    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
-    <a href="quiz.html"><span class="n">07</span> Quiz</a>
-    <a href="plano.html"><span class="n">08</span> Plano</a>
-    <a href="banca.html"><span class="n">09</span> Banca</a>
+    <a href="perguntas.html"><span class="n">07</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">08</span> Quiz</a>
+    <a href="plano.html"><span class="n">09</span> Plano</a>
+    <a href="banca.html"><span class="n">10</span> Banca</a>
   </nav>
   <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
 </aside>
@@ -48,12 +49,22 @@
   </div>
 
   <div class="content">
-    <div class="eyebrow">04 · Implementação</div>
+    <div class="eyebrow">05 · Implementação</div>
     <h1>Código: cada arquivo, cada linha, cada campo</h1>
     <p class="lead">Aqui está tudo o que vocês escreveram, com a explicação do porquê. Se você entende esta página,
       nenhuma pergunta sobre "o que faz essa linha?" te derruba.</p>
 
+    <div class="callout tip">
+      <div class="ct">Se você está começando agora</div>
+      <p>Esta página é densa de propósito: é o material de profundidade. Se for a sua primeira leitura, comece por
+         <a href="passo-a-passo.html">Como foi feito</a> — lá o mesmo conteúdo é contado na ordem em que o trabalho aconteceu,
+         com dicionário de termos e analogias. Depois volte aqui, parágrafo por parágrafo. Cada seção começa com um bloco
+         <strong>“Em português simples”</strong>: se você entender só esse bloco, já entendeu a ideia central.</p>
+    </div>
+
     <h2 id="mapa-arquivos">Mapa: nenhum arquivo do repositório fica de fora</h2>
+
+    <p class="plain"><b>Em português simples:</b> Esta é a planta da casa: cada arquivo do repositório, para que serve e onde está explicado. Se você se perder no meio do site, volte aqui — nada ficou sem explicação.</p>
     <p>Esta é a cobertura completa do que existe no projeto. Se um arquivo não estivesse aqui, seria um ponto cego — não está.</p>
 
     <div class="table-wrap">
@@ -85,6 +96,8 @@
     </div>
 
     <h2 id="mainpy">1. <code>api/main.py</code> — a API</h2>
+
+    <p class="plain"><b>Em português simples:</b> Este é o coração do projeto: menos de 50 linhas que listam processos, mostram os detalhes de um, iniciam um comando e encerram um processo. São quatro rotas, uma para cada exigência do edital.</p>
 
 <pre><code><span class="k">from</span> fastapi <span class="k">import</span> FastAPI, HTTPException
 <span class="k">import</span> psutil
@@ -179,6 +192,8 @@ app = <span class="f">FastAPI</span>(title=<span class="s">"Process Manager API"
     </div>
 
     <h3 id="requirements">1.1 <code>api/requirements.txt</code> — por que as versões são fixas</h3>
+
+    <p class="plain"><b>Em português simples:</b> Estas três linhas travam as versões exatas das bibliotecas (com <code>==</code>). É o que garante que o projeto rode igual no seu computador, no do colega e no dia da apresentação — e não com uma versão nova que mudou de comportamento.</p>
 <pre><code>fastapi==0.104.1
 uvicorn==0.24.0
 psutil==5.9.6</code></pre>
@@ -204,6 +219,8 @@ psutil==5.9.6</code></pre>
       não reinstala as dependências.</p>
 
     <h3 id="ciclo-processo">1.2 O ciclo de vida de um processo criado pela API</h3>
+
+    <p class="plain"><b>Em português simples:</b> Quando a API recebe o pedido de iniciar um comando, ela clona a si mesma e troca o clone pelo programa pedido — e responde na hora, sem esperar o comando terminar. O detalhe honesto: o filho só é recolhido depois, então pode ficar alguns instantes como zumbi.</p>
 
     <p>Quando alguém chama <code>POST /processes/start?command=sleep%2060</code>, o FastAPI executa <code>subprocess.Popen(["sleep", "60"])</code>.
       O que acontece no kernel, em ordem:</p>
@@ -239,6 +256,8 @@ psutil==5.9.6</code></pre>
 
     <h3 id="seguranca-api">1.3 A parte que a banca vai apertar: segurança da API</h3>
 
+    <p class="plain"><b>Em português simples:</b> Aqui está o ponto mais frágil do trabalho: a API aceita qualquer PID e qualquer comando, sem senha. Isso bastava para o edital, mas com <code>hostPID</code> significa que quem alcançar a porta 30080 pode tentar matar processos do nó — e a resposta certa é assumir isso e listar as mitigações.</p>
+
     <p>A API foi feita para demonstrar controle de processos, não para produção. O código não tem autenticação, não valida o comando e aceita
       qualquer PID no <code>DELETE</code>. Com <code>hostPID: true</code>, isso significa que qualquer pessoa que alcance o NodePort 30080 pode
       listar os processos do nó e tentar encerrar <strong>qualquer</strong> um — inclusive o kubelet, o etcd ou o próprio uvicorn.</p>
@@ -267,6 +286,8 @@ psutil==5.9.6</code></pre>
     </div>
 
     <h2 id="endpoints">2. A API em uma tabela</h2>
+
+    <p class="plain"><b>Em português simples:</b> Quatro rotas, uma linha cada: listar, inspecionar, iniciar e encerrar. Ao lado de cada uma está a exigência do edital que ela cumpre — é a tabela que responde “onde está cada requisito?”.</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Método</th><th>Rota</th><th>Parâmetro</th><th>O que faz</th><th>Requisito do edital</th></tr></thead>
@@ -285,6 +306,8 @@ psutil==5.9.6</code></pre>
       <code>422</code> tipo inválido (ex.: <code>/processes/abc</code>) e <code>500</code> falha ao iniciar o comando.</p>
 
     <h2 id="dockerfile-api">3. <code>api/Dockerfile</code></h2>
+
+    <p class="plain"><b>Em português simples:</b> Receita da imagem da API: parte de um Python enxuto, instala as bibliotecas, copia o código e liga o uvicorn na porta 8000. A ordem das linhas foi escolhida para o build aproveitar o cache.</p>
 <pre><code><span class="k">FROM</span> python:3.11-slim
 <span class="k">WORKDIR</span> /app
 <span class="k">COPY</span> requirements.txt .
@@ -302,6 +325,8 @@ psutil==5.9.6</code></pre>
     </ul>
 
     <h2 id="dockerfile-nginx">4. <code>nginx/Dockerfile</code> — dois daemons em um container</h2>
+
+    <p class="plain"><b>Em português simples:</b> Esta imagem roda dois programas ao mesmo tempo: o nginx (o site) e o crond (que escreve a hora no arquivo a cada minuto). O script de entrada liga o cron em segundo plano e deixa o nginx na frente — se o nginx saísse da frente, o container morreria.</p>
 <pre><code><span class="k">FROM</span> nginx:alpine
 
 <span class="k">RUN</span> echo '#!/bin/sh' &gt; /entrypoint.sh &amp;&amp; \
@@ -338,6 +363,8 @@ psutil==5.9.6</code></pre>
     </div>
 
     <h2 id="dockerfile-cron">5. <code>cron/Dockerfile</code></h2>
+
+    <p class="plain"><b>Em português simples:</b> A imagem mais simples do projeto: Alpine mais uma linha de crontab. Aqui o cron é o único programa, então roda em primeiro plano (<code>-f</code>); se fosse para segundo plano, o container terminaria na hora.</p>
 <pre><code><span class="k">FROM</span> alpine:latest
 
 <span class="k">RUN</span> echo "* * * * * date &gt;&gt; /var/log/cron-task.log" &gt; /etc/crontabs/root
@@ -348,6 +375,8 @@ psutil==5.9.6</code></pre>
       então ele precisa ficar em primeiro plano — se fosse <code>-b</code>, o container terminaria imediatamente.</p>
 
     <h2 id="html">6. <code>nginx/html/index.html</code></h2>
+
+    <p class="plain"><b>Em português simples:</b> É a página que o Nginx serve: um título, um status e uma janela (<code>iframe</code>) mostrando o arquivo que o cron alimenta. Ela existe para provar, na tela, que os dois daemons do container estão funcionando juntos.</p>
     <p>Trecho essencial (o arquivo real também tem <code>&lt;style&gt;</code> com o CSS embutido da página):</p>
 <pre><code>&lt;h1&gt;Projeto A3 - Tema 1&lt;/h1&gt;
 &lt;h2&gt;Nginx + Cron Daemon&lt;/h2&gt;
@@ -369,6 +398,8 @@ psutil==5.9.6</code></pre>
     </div>
 
     <h2 id="yaml-namespace">7. <code>k8s/namespace.yaml</code></h2>
+
+    <p class="plain"><b>Em português simples:</b> Antes de criar qualquer coisa, criamos a pasta onde tudo vai morar: o namespace <code>daemon-lab</code>. É o primeiro arquivo aplicado porque todos os outros apontam para ele.</p>
 <pre><code>apiVersion: v1
 kind: Namespace
 metadata:
@@ -376,6 +407,8 @@ metadata:
     <p>Cria o namespace lógico. Aplicado primeiro porque todos os outros o referenciam.</p>
 
     <h2 id="yaml-api-deploy">8. <code>k8s/api-deployment.yaml</code></h2>
+
+    <p class="plain"><b>Em português simples:</b> É a ordem de serviço da API: 2 cópias, imagem local, <code>hostPID</code> ligado e um teto de CPU. Esse arquivo é o que transforma “um container” em “um serviço que se recupera sozinho e pode crescer”.</p>
 <pre><code>apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -438,6 +471,8 @@ spec:
       foi definido em contrato antes de escrever o YAML.</p>
 
     <h2 id="yaml-api-svc">9. <code>k8s/api-service.yaml</code></h2>
+
+    <p class="plain"><b>Em português simples:</b> Aqui a API ganha um endereço fixo e uma porta aberta no nó (30080). É o que permite o navegador do Windows chegar até o Pod.</p>
 <pre><code>apiVersion: v1
 kind: Service
 metadata:
@@ -456,6 +491,8 @@ spec:
       Os três podem ser diferentes — aqui são iguais por simplicidade (exceto o nodePort).</p>
 
     <h2 id="yaml-nginx-deploy">10. <code>k8s/nginx-deployment.yaml</code></h2>
+
+    <p class="plain"><b>Em português simples:</b> A mesma ordem de serviço, agora para o site: 2 cópias do container que tem nginx + cron. Duas cópias permitem mostrar o balanceamento — mas cada uma escreve o seu próprio <code>cron.txt</code>.</p>
 <pre><code>apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -479,6 +516,8 @@ spec:
         - containerPort: 80</code></pre>
 
     <h2 id="yaml-nginx-svc">11. <code>k8s/nginx-service.yaml</code></h2>
+
+    <p class="plain"><b>Em português simples:</b> O endereço fixo do site, na porta 30081 do nó. Foi criado depois, para provar o Nginx rodando dentro do cluster, e não só no Docker.</p>
 <pre><code>apiVersion: v1
 kind: Service
 metadata:
@@ -498,6 +537,8 @@ spec:
       requisição, dependendo de qual Pod o Service escolher.</p>
 
     <h2 id="yaml-cron">12. <code>k8s/cron-deployment.yaml</code></h2>
+
+    <p class="plain"><b>Em português simples:</b> O cron isolado: uma cópia só e sem porta, porque ele não atende ninguém — apenas executa a tarefa no horário. Duas cópias executariam a mesma tarefa em dobro.</p>
 <pre><code>apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -522,6 +563,8 @@ spec:
       tarefa agendada em duplicidade.</p>
 
     <h2 id="yaml-hpa">13. <code>k8s/hpa.yaml</code></h2>
+
+    <p class="plain"><b>Em português simples:</b> A regra do piloto automático: nunca menos de 2, nunca mais de 10, tentando manter a CPU média em 50% do que cada Pod pediu. É este arquivo que produz o 2 → 4 → 8 → 9 → 10 do print.</p>
 <pre><code>apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -561,6 +604,8 @@ spec:
     </div>
 
     <h2 id="yaml-faltando">14. O que os YAMLs <em>não</em> têm — e o que você responderia</h2>
+
+    <p class="plain"><b>Em português simples:</b> Esta é a lista do que ficou de fora — probes, segurança, recursos no Nginx, volume, PDB e NetworkPolicy — com o efeito de cada ausência. É praticamente o roteiro da resposta para “o que você melhoraria?”.</p>
 
     <p>Estes arquivos atendem ao edital, mas não estão prontos para produção. Saber exatamente o que falta — e o efeito de cada ausência —
       é o que separa "funciona na demo" de "entendi Kubernetes". A tabela abaixo é a sua resposta para "o que você melhoraria?".</p>

@@ -8,6 +8,31 @@ window.SEARCH_INDEX = [
   { t: "Números que você precisa saber de cor", u: "index.html#numeros", k: "9 segundos 2 a 10 replicas 204 cpu 83 processos 30080 30081", p: "Início" },
   { t: "Se você só tiver 1 hora antes da banca", u: "index.html#1hora", k: "revisao rapida ultima hora emergencia", p: "Início" },
 
+  /* ---------- Como foi feito ---------- */
+  { t: "Dicionário do zero: cada termo em linguagem simples", u: "passo-a-passo.html#dicionario", k: "dicionario do zero iniciante nunca viu analogia simples explicar termo", p: "Como foi feito" },
+  { t: "O problema que o trabalho resolve", u: "passo-a-passo.html#problema", k: "problema observabilidade recuperacao manual custo pico", p: "Como foi feito" },
+  { t: "A história em 12 passos", u: "passo-a-passo.html#resumo", k: "resumo historia 12 passos ordem construcao linha do tempo", p: "Como foi feito" },
+  { t: "Passo 1: combinar nomes, portas e etiquetas", u: "passo-a-passo.html#p1", k: "contrato interfaces nomes imagens portas labels namespace", p: "Como foi feito" },
+  { t: "Passo 2: escrever a API dos processos", u: "passo-a-passo.html#p2", k: "api main.py requirements fastapi psutil rotas endpoints listar inspecionar iniciar encerrar", p: "Como foi feito" },
+  { t: "Passo 3: empacotar a API numa imagem", u: "passo-a-passo.html#p3", k: "dockerfile imagem process-api build host 0000 slim camadas", p: "Como foi feito" },
+  { t: "Passo 4: montar o daemon de rede (Nginx)", u: "passo-a-passo.html#p4", k: "nginx daemon rede porta 80 index.html iframe cron.txt", p: "Como foi feito" },
+  { t: "Passo 5: colocar um cron dentro do Nginx", u: "passo-a-passo.html#p5", k: "nginx-cron entrypoint crond -b daemon off crontab todo minuto", p: "Como foi feito" },
+  { t: "Passo 6: criar o cron isolado", u: "passo-a-passo.html#p6", k: "cron-daemon alpine crond -f cron-task.log uma replica", p: "Como foi feito" },
+  { t: "Passo 7: preparar o cluster e carregar imagens", u: "passo-a-passo.html#p7", k: "minikube start driver docker image load imagePullPolicy never ErrImageNeverPull", p: "Como foi feito" },
+  { t: "Passo 8: escrever os 7 YAMLs", u: "passo-a-passo.html#p8", k: "yaml namespace deployment service hpa replicas selector hostpid requests limits nodeport", p: "Como foi feito" },
+  { t: "Passo 9: aplicar e conferir os 5 Pods", u: "passo-a-passo.html#p9", k: "kubectl apply ordem metrics-server 5 pods curl docs swagger", p: "Como foi feito" },
+  { t: "Passo 10: derrubar um Pod e ver o self-healing", u: "passo-a-passo.html#p10", k: "self-healing delete pod replicaset 9 segundos kubelet restartpolicy", p: "Como foi feito" },
+  { t: "Passo 11: gerar carga e ver o HPA escalar", u: "passo-a-passo.html#p11", k: "hpa scaling carga 204 por cento 2 a 10 scale down estabilizacao", p: "Como foi feito" },
+  { t: "Passo 12: registrar as provas e documentar", u: "passo-a-passo.html#p12", k: "evidencias prints descricao resultados.md documentacao video", p: "Como foi feito" },
+  { t: "Tabela mestra: cada arquivo e para que serve", u: "passo-a-passo.html#arquivos", k: "arquivo funcao para que serve se faltar quebra", p: "Como foi feito" },
+  { t: "As 8 frases que resumem tudo", u: "passo-a-passo.html#frases", k: "resumo frases decorar resposta 20 segundos", p: "Como foi feito" },
+  { t: "Se você só entendeu metade", u: "passo-a-passo.html#entendeu", k: "resumo 30 segundos versao simples explicar rapido", p: "Como foi feito" },
+
+  /* ---------- Em português simples ---------- */
+  { t: "Explicação sem jargão: Teoria", u: "teoria.html", k: "portugues simples sem jargao explicacao facil analogia comecar do zero", p: "Teoria" },
+  { t: "Explicação sem jargão: Código", u: "codigo.html", k: "portugues simples sem jargao explicacao facil codigo arquivo yaml", p: "Código" },
+  { t: "Explicação sem jargão: Arquitetura", u: "arquitetura.html", k: "portugues simples sem jargao explicacao facil desenho fluxo decisoes", p: "Arquitetura" },
+
   /* ---------- Teoria ---------- */
   { t: "Processo, PID e o ciclo de vida", u: "teoria.html#processo", k: "processo pid ppid fork exec estados r s d z t /proc", p: "Teoria" },
   { t: "Zumbi e órfão", u: "teoria.html#zumbi", k: "zumbi zombie orfao wait reap chld", p: "Teoria" },
@@ -83,6 +108,8 @@ window.SEARCH_INDEX = [
   { t: "O que falta nos YAMLs: probes, securityContext, volume", u: "codigo.html#yaml-faltando", k: "falta yaml probe securitycontext resources volume pdb networkpolicy strategy termination", p: "Código" },
 
   /* ---------- Evidências ---------- */
+  { t: "Quais prints estão nos slides", u: "evidencias.html#noslides", k: "slide apresentacao pdf area de trabalho quais prints aparecem foco", p: "Evidências" },
+  { t: "Resumo: o que cada print prova", u: "evidencias.html#resumo", k: "resumo tabela print prova slide", p: "Evidências" },
   { t: "Evidências da Tarefa 1 (API)", u: "evidencias.html#t1", k: "prints api curl swagger docker ps", p: "Evidências" },
   { t: "Evidências da Tarefa 2 (Nginx e Cron)", u: "evidencias.html#t2", k: "prints nginx cron imagens log site", p: "Evidências" },
   { t: "Evidências da Tarefa 3 (Kubernetes)", u: "evidencias.html#t3", k: "prints pods hostpid self-healing hpa nginx k8s", p: "Evidências" },

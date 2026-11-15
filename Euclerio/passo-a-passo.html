@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("a3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Como foi feito · Base de Estudos A3 — Tema 1</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">A3</div>
+    <div class="brand-text"><strong>Base de Estudos</strong><span>Tema 1 · Kubernetes + API</span></div>
+  </div>
+  <div class="study-switch" aria-label="Trocar de estudo">
+    <a href="../Euclerio/index.html" class="active">Euclerio</a>
+    <a href="../Sergio/index.html">Sergio</a>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
+    <div class="search-results"></div>
+  </div>
+    <nav class="nav">
+    <div class="nav-label">Comece aqui</div>
+    <a href="index.html"><span class="n">00</span> Início</a>
+    <div class="nav-label">Fundamentos</div>
+    <a href="teoria.html"><span class="n">01</span> Teoria</a>
+    <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
+    <div class="nav-label">O trabalho</div>
+    <a href="passo-a-passo.html"><span class="n">03</span> Como foi feito</a>
+    <a href="pratica.html"><span class="n">04</span> Prática</a>
+    <a href="codigo.html"><span class="n">05</span> Código</a>
+    <a href="evidencias.html"><span class="n">06</span> Evidências</a>
+    <div class="nav-label">Treino</div>
+    <a href="perguntas.html"><span class="n">07</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">08</span> Quiz</a>
+    <a href="plano.html"><span class="n">09</span> Plano</a>
+    <a href="banca.html"><span class="n">10</span> Banca</a>
+  </nav>
+  <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" data-menu aria-label="Abrir menu">☰</button>
+    <span class="topbar-title">Como foi feito</span>
+  </div>
+
+  <div class="content">
+    <div class="eyebrow">03 · A história do trabalho</div>
+    <h1>Como o trabalho foi feito — do zero e sem pressa</h1>
+    <p class="lead">Esta é a página para quem <strong>nunca viu Linux, Docker ou Kubernetes na vida</strong>.
+      Ela conta o trabalho na ordem em que ele foi construído: para que serve cada peça, o que o grupo fez,
+      qual arquivo foi criado, o que tem dentro dele e como saber que funcionou.</p>
+
+    <div class="callout tip">
+      <div class="ct">Como ler esta página</div>
+      <p>Cada passo tem sempre os mesmos cinco blocos: <strong>para que serve</strong> · <strong>o que o grupo fez</strong> ·
+         <strong>arquivo criado</strong> · <strong>como saber que funcionou</strong> · <strong>se te perguntarem</strong>.
+         Se você ler os 12 passos na ordem, no fim vai conseguir contar o trabalho inteiro em voz alta.</p>
+    </div>
+
+    <div class="callout warn">
+      <div class="ct">Se você está com pressa</div>
+      <p>Vá direto para <a href="#resumo">A história em 12 passos</a> e depois para <a href="#frases">As 8 frases que resumem tudo</a>.
+         Em 10 minutos você tem o esqueleto. O resto da página é o detalhe que a banca cobra.</p>
+    </div>
+
+    <h2 id="dicionario">1. O dicionário do zero</h2>
+    <p>Antes de qualquer coisa, estas palavras. Não precisa decorar: leia uma vez pensando na comparação do meio.
+      O resto da página usa esses termos o tempo todo.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Palavra</th><th>Pense assim</th><th>No projeto</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Programa</strong></td><td>a receita escrita no papel</td><td>o arquivo <code>main.py</code>, o binário do Nginx</td></tr>
+          <tr><td><strong>Processo</strong></td><td>a receita sendo executada na cozinha: tem começo, meio e fim</td><td>cada programa rodando dentro dos containers</td></tr>
+          <tr><td><strong>PID</strong></td><td>o número de crachá do processo</td><td>o <code>{pid}</code> das rotas da API</td></tr>
+          <tr><td><strong>Daemon</strong></td><td>funcionário que trabalha sozinho, em segundo plano, sem ninguém mandar — tipo a portaria 24 h</td><td>Nginx, <code>crond</code> e o <code>uvicorn</code> da API</td></tr>
+          <tr><td><strong>Sinal</strong></td><td>uma cutucada para avisar o processo de algo</td><td><code>SIGTERM</code> (pedido educado) e <code>SIGKILL</code> (corte de energia)</td></tr>
+          <tr><td><strong>Terminal / CLI</strong></td><td>a conversa com o computador por texto, em vez de clicar</td><td>onde rodamos <code>docker</code>, <code>minikube</code> e <code>kubectl</code></td></tr>
+          <tr><td><strong>Imagem</strong></td><td>o molde congelado do aplicativo, com tudo que ele precisa dentro</td><td><code>process-api</code>, <code>nginx-cron</code>, <code>cron-daemon</code></td></tr>
+          <tr><td><strong>Container</strong></td><td>o molde "descongelado" e rodando — uma marmita lacrada com o app dentro</td><td>cada Pod tem um container; a API roda em 2</td></tr>
+          <tr><td><strong>Dockerfile</strong></td><td>a receita que ensina a montar a imagem, linha por linha</td><td><code>api/Dockerfile</code>, <code>nginx/Dockerfile</code>, <code>cron/Dockerfile</code></td></tr>
+          <tr><td><strong>Docker</strong></td><td>a cozinha que monta e guarda as imagens</td><td>usado no build e como driver do Minikube</td></tr>
+          <tr><td><strong>Cluster</strong></td><td>um condomínio de máquinas trabalhando juntas</td><td>o Minikube, com 1 nó só</td></tr>
+          <tr><td><strong>Nó (node)</strong></td><td>um apartamento do condomínio: a máquina onde os containers rodam</td><td>o único nó do Minikube</td></tr>
+          <tr><td><strong>Pod</strong></td><td>o envelope onde o container mora — a menor unidade do Kubernetes</td><td>5 Pods: 2 API, 2 Nginx, 1 cron</td></tr>
+          <tr><td><strong>Deployment</strong></td><td>o gerente que garante "quero sempre 2 cópias rodando"</td><td><code>api-deployment</code>, <code>nginx-deployment</code>, <code>cron-deployment</code></td></tr>
+          <tr><td><strong>Service</strong></td><td>a recepção com um número fixo: você liga sempre no mesmo número e ela transfere para um Pod livre</td><td><code>api-service</code> e <code>nginx-service</code></td></tr>
+          <tr><td><strong>NodePort</strong></td><td>a porta na fachada do prédio, aberta para a rua</td><td>30080 (API) e 30081 (Nginx)</td></tr>
+          <tr><td><strong>Namespace</strong></td><td>uma ala ou pasta com nome, para não misturar coisas</td><td><code>daemon-lab</code></td></tr>
+          <tr><td><strong>YAML</strong></td><td>a lista de pedidos escrita em texto, do jeito que o Kubernetes entende</td><td>os 7 arquivos de <code>k8s/</code></td></tr>
+          <tr><td><strong>kubectl</strong></td><td>o controle remoto do cluster</td><td><code>kubectl get pods</code>, <code>apply</code>, <code>delete</code></td></tr>
+          <tr><td><strong>Minikube</strong></td><td>um Kubernetes de brinquedo, de uma máquina só, para estudar</td><td>o cluster local do projeto</td></tr>
+          <tr><td><strong>API</strong></td><td>um balcão de atendimento: você faz um pedido, ele responde</td><td>a Process Manager API em Python</td></tr>
+          <tr><td><strong>Endpoint</strong></td><td>uma janela específica do balcão</td><td>as 4 rotas: listar, inspecionar, iniciar, encerrar</td></tr>
+          <tr><td><strong>JSON</strong></td><td>a resposta do balcão numa lista organizada, fácil de ler</td><td>o que a API devolve em <code>/processes</code></td></tr>
+          <tr><td><strong>cron</strong></td><td>o despertador que toca no horário marcado e executa uma tarefa</td><td>escreve a data num arquivo a cada minuto</td></tr>
+          <tr><td><strong>hostPID</strong></td><td>dar ao funcionário a chave do prédio inteiro, e não só da sala dele</td><td>faz a API enxergar os processos do nó</td></tr>
+          <tr><td><strong>HPA</strong></td><td>o gerente que contrata mais atendentes quando a fila cresce — e dispensa quando esvazia</td><td>2 → 10 réplicas da API por CPU</td></tr>
+          <tr><td><strong>Self-healing</strong></td><td>o sistema se conserta sozinho quando algo cai</td><td>Pod apagado e recriado em 9 segundos</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="problema">2. O problema que o trabalho resolve</h2>
+    <p>Hoje um sistema grande não roda numa máquina só: ele é dividido em vários pedacinhos espalhados.
+      Isso cria três dores:</p>
+    <ol>
+      <li><strong>Não dá para ver o que está acontecendo.</strong> Se o problema está em outra máquina, como saber qual processo está comendo a CPU?</li>
+      <li><strong>Quando algo cai, alguém precisa levantar.</strong> Sem automação, é gente abrindo terminal de madrugada.</li>
+      <li><strong>Pico de acesso custa caro.</strong> Ou você compra máquina demais e desperdiça, ou de menos e o site cai.</li>
+    </ol>
+
+    <p>O trabalho ataca as três: uma <strong>API</strong> que mostra e controla processos do sistema operacional,
+       um <strong>orquestrador</strong> (Kubernetes) que recria o que cai, e um <strong>escalonador automático</strong> (HPA)
+       que cria cópias quando a carga sobe. Tudo com três <strong>daemons</strong> diferentes, que é o que o edital pede.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>O edital pediu</th><th>O que o grupo entregou</th></tr></thead>
+        <tbody>
+          <tr><td>Mínimo de 3 containers com daemons diferentes</td><td>API (uvicorn), Nginx (nginx) e cron isolado (crond). O container do Nginx roda <em>dois</em> daemons: nginx + crond.</td></tr>
+          <tr><td>API em Python que lista, inspeciona, inicia e encerra processos</td><td>4 rotas em FastAPI + psutil, com Swagger pronto em <code>/docs</code></td></tr>
+          <tr><td>Deploy orquestrado pelo Kubernetes</td><td>3 Deployments, 5 Pods, 2 Services e 1 HPA, tudo no namespace <code>daemon-lab</code></td></tr>
+          <tr><td>Demonstrar self-healing</td><td>Pod apagado e recriado automaticamente em 9 s, com print</td></tr>
+          <tr><td>Demonstrar scaling</td><td>HPA levou a API de 2 para 10 réplicas sob 204% de CPU</td></tr>
+          <tr><td>YAMLs versionados</td><td>7 manifestos na pasta <code>k8s/</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="resumo">3. A história em 12 passos</h2>
+    <p>Esta é a ordem real de construção. Cada linha leva ao passo detalhado logo abaixo.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>O que foi feito</th><th>O que nasceu daí</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><a href="#p1">Combinar quem faz o quê e com que nomes</a></td><td><code>docs/interfaces.md</code></td></tr>
+          <tr><td>2</td><td><a href="#p2">Escrever a API que fala com os processos</a></td><td><code>api/main.py</code> + <code>requirements.txt</code></td></tr>
+          <tr><td>3</td><td><a href="#p3">Empacotar a API numa imagem</a></td><td><code>api/Dockerfile</code> → <code>process-api:latest</code></td></tr>
+          <tr><td>4</td><td><a href="#p4">Montar o daemon de rede (Nginx)</a></td><td><code>nginx/Dockerfile</code> + <code>nginx/html/</code></td></tr>
+          <tr><td>5</td><td><a href="#p5">Colocar um cron dentro do Nginx</a></td><td><code>nginx-cron:latest</code></td></tr>
+          <tr><td>6</td><td><a href="#p6">Criar o cron isolado</a></td><td><code>cron/Dockerfile</code> → <code>cron-daemon:latest</code></td></tr>
+          <tr><td>7</td><td><a href="#p7">Preparar o cluster e carregar as imagens</a></td><td>Minikube pronto</td></tr>
+          <tr><td>8</td><td><a href="#p8">Escrever os 7 YAMLs</a></td><td>a pasta <code>k8s/</code> inteira</td></tr>
+          <tr><td>9</td><td><a href="#p9">Aplicar e conferir os 5 Pods</a></td><td>o sistema no ar</td></tr>
+          <tr><td>10</td><td><a href="#p10">Derrubar um Pod e ver o self-healing</a></td><td>print de 9 s</td></tr>
+          <tr><td>11</td><td><a href="#p11">Gerar carga e ver o HPA escalar</a></td><td>print de 2 → 10</td></tr>
+          <tr><td>12</td><td><a href="#p12">Registrar as provas e documentar</a></td><td>21 prints, <code>resultados.md</code>, README</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="p1">Passo 1 — Combinar quem faz o quê e com que nomes</h2>
+    <div class="card">
+      <p><strong>Para que serve:</strong> o trabalho tem partes feitas por pessoas diferentes (API, containers, Kubernetes, documentação).
+        Se cada um inventar um nome de imagem ou uma porta, as partes não se encaixam no fim.</p>
+      <p><strong>O que o grupo fez:</strong> escreveu um "contrato" antes de codar. Ficou decidido: imagens com nome exato
+        (<code>process-api:latest</code>, <code>nginx-cron:latest</code>, <code>cron-daemon:latest</code>),
+        portas internas 8000 (API) e 80 (Nginx), NodePorts 30080 e 30081, namespace <code>daemon-lab</code>
+        e as etiquetas <code>app: process-api</code>, <code>app: nginx</code> e <code>app: cron</code>.</p>
+      <p><strong>Arquivo criado:</strong> <code>docs/interfaces.md</code> (o contrato) e <code>docs/tarefas.md</code> (quem faz o quê).</p>
+      <p><strong>Como saber que funcionou:</strong> os 7 YAMLs usam exatamente esses nomes. Se um nome estivesse diferente,
+        o Pod ficaria em <code>ImagePullBackOff</code> — e foi justamente isso que o contrato evitou.</p>
+      <p><strong>Se te perguntarem "por que um contrato?":</strong> porque Kubernetes não adivinha. Ele procura a imagem pelo nome
+        escrito no YAML. Nome diferente = imagem não encontrada.</p>
+    </div>
+
+    <h2 id="p2">Passo 2 — Escrever a API que fala com os processos</h2>
+    <div class="card">
+      <p><strong>Para que serve:</strong> é o "balcão de atendimento" do trabalho. O edital pede quatro operações:
+        <strong>listar</strong>, <strong>inspecionar</strong>, <strong>iniciar</strong> e <strong>encerrar</strong> processos.</p>
+      <p><strong>Pense assim:</strong> o sistema operacional tem uma lista de funcionários (processos) trabalhando.
+        A API é a recepcionista que consulta essa lista pra você, sem você precisar entrar na sala.</p>
+      <p><strong>O que o grupo fez:</strong> criou dois arquivos.</p>
+      <ul>
+        <li><code>requirements.txt</code> — a lista de bibliotecas, com versão travada: <code>fastapi==0.104.1</code>,
+          <code>uvicorn==0.24.0</code>, <code>psutil==5.9.6</code>.</li>
+        <li><code>main.py</code> — o código: cria o app e declara as 4 rotas.</li>
+      </ul>
+    </div>
+
+    <p>As quatro rotas, em português:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Rota</th><th>O que ela faz</th><th>Ferramenta usada</th></tr></thead>
+        <tbody>
+          <tr><td><code>GET /processes</code></td><td>"me mostra todos os processos que estão rodando"</td><td><code>psutil.process_iter</code></td></tr>
+          <tr><td><code>GET /processes/{pid}</code></td><td>"me mostra os detalhes do processo de crachá número X"</td><td><code>psutil.Process(pid)</code></td></tr>
+          <tr><td><code>POST /processes/start?command=...</code></td><td>"começa a rodar este comando pra mim"</td><td><code>subprocess.Popen</code></td></tr>
+          <tr><td><code>DELETE /processes/{pid}?force=true</code></td><td>"encerra o processo X" (educado, ou à força)</td><td><code>proc.terminate()</code> / <code>proc.kill()</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>O miolo de cada rota é pequeno. A de listar, por exemplo, é só isto:</p>
+<pre><code><span class="k">@app.get</span>(<span class="s">"/processes"</span>)
+<span class="k">def</span> <span class="f">list_processes</span>():
+    processes = []
+    <span class="k">for</span> proc <span class="k">in</span> psutil.<span class="f">process_iter</span>([<span class="s">'pid'</span>, <span class="s">'name'</span>, <span class="s">'username'</span>, <span class="s">'status'</span>]):
+        processes.<span class="f">append</span>(proc.info)
+    <span class="k">return</span> {<span class="s">"total"</span>: <span class="f">len</span>(processes), <span class="s">"processes"</span>: processes}</code></pre>
+
+    <div class="card">
+      <p><strong>Como saber que funcionou:</strong> antes de colocar em container, o grupo subiu a API no Python puro
+        (<code>uvicorn main:app --reload --port 8000</code>) e testou com <code>curl</code>.
+        Os prints <code>APIrodandoTerminal.png</code> e <code>testesCurl.png</code> são exatamente essa prova:
+        se a API falhasse ali, o problema era o código, não o Docker.</p>
+      <p><strong>Se te perguntarem "por que psutil e não o comando <code>ps</code>?":</strong> porque o <code>ps</code> devolve
+        texto, e você teria que ficar cortando pedaços de texto. O psutil lê direto a pasta <code>/proc</code> do Linux e entrega
+        os dados organizados em Python.</p>
+      <p><strong>E "por que <code>Popen</code>?":</strong> porque ele inicia o processo e devolve o PID na hora, sem prender a requisição
+        esperando o comando terminar.</p>
+    </div>
+
+    <h2 id="p3">Passo 3 — Empacotar a API numa imagem</h2>
+    <div class="card">
+      <p><strong>Para que serve:</strong> a API precisa rodar igual em qualquer máquina. A imagem cola o código + o Python + as bibliotecas
+        num pacote fechado. Aí não existe "na minha máquina funciona".</p>
+      <p><strong>Pense assim:</strong> a imagem é a marmita já montada e lacrada. O container é a marmita aberta e sendo comida.</p>
+      <p><strong>Arquivo criado:</strong> <code>api/Dockerfile</code>. Cada linha tem um motivo:</p>
+    </div>
+
+<pre><code><span class="c"># 1. começa de uma imagem oficial que já tem Python 3.11 (versão enxuta)</span>
+<span class="k">FROM</span> python:3.11-slim
+<span class="c"># 2. define a pasta de trabalho dentro do container</span>
+<span class="k">WORKDIR</span> /app
+<span class="c"># 3. copia só a lista de bibliotecas primeiro (para o cache funcionar)</span>
+<span class="k">COPY</span> requirements.txt .
+<span class="c"># 4. instala as bibliotecas sem guardar cache de download</span>
+<span class="k">RUN</span> pip install --no-cache-dir -r requirements.txt
+<span class="c"># 5. agora sim copia o código</span>
+<span class="k">COPY</span> main.py .
+<span class="c"># 6. documenta que a API escuta na 8000 (não abre a porta sozinho)</span>
+<span class="k">EXPOSE</span> 8000
+<span class="c"># 7. o comando que roda quando o container sobe</span>
+<span class="k">CMD</span> [<span class="s">"uvicorn"</span>, <span class="s">"main:app"</span>, <span class="s">"--host"</span>, <span class="s">"0.0.0.0"</span>, <span class="s">"--port"</span>, <span class="s">"8000"</span>]</code></pre>
+
+    <div class="card">
+      <p><strong>Por que <code>--host 0.0.0.0</code> e não <code>127.0.0.1</code>:</strong> o <code>127.0.0.1</code> significa
+        "só aceito conexão de dentro da minha própria casa". Dentro do container, quem chama a API é o Service, que vem de fora —
+        então a API tem que escutar em todas as interfaces (<code>0.0.0.0</code>).</p>
+      <p><strong>Por que copiar <code>requirements.txt</code> antes de <code>main.py</code>:</strong> o Docker guarda o resultado de cada
+        linha. Se só o código mudou, ele reaproveita a instalação das bibliotecas e o build fica rápido.</p>
+      <p><strong>Como saber que funcionou:</strong> <code>docker build -t process-api:latest .</code> e depois
+        <code>docker run -p 8000:8000 process-api:latest</code>. O print <code>imagemDocker.png</code> mostra a imagem criada.</p>
+      <p><strong>Se te perguntarem "por que <code>slim</code>?":</strong> porque a imagem completa do Python traz compilador e ferramentas
+        que não são usadas em produção. A slim é menor, sobe mais rápido e tem menos coisa para dar errado.</p>
+    </div>
+
+    <h2 id="p4">Passo 4 — Montar o daemon de rede (Nginx)</h2>
+    <div class="card">
+      <p><strong>Para que serve:</strong> o edital pede <em>daemons</em>. Nginx é o exemplo clássico de daemon de rede:
+        ele fica ligado o tempo todo, escutando a porta 80, e responde quando alguém pede uma página.</p>
+      <p><strong>Pense assim:</strong> se a API é a recepcionista, o Nginx é o letreiro da loja: qualquer um que chegue vê
+        a página e sabe que o serviço está no ar.</p>
+      <p><strong>O que o grupo fez:</strong> partiu da imagem oficial <code>nginx:alpine</code> (Alpine é uma distribuição Linux
+        minúscula, ótima para container) e copiou uma página HTML para a pasta pública do servidor.</p>
+      <p><strong>Arquivos criados:</strong> <code>nginx/Dockerfile</code> (começo) e <code>nginx/html/index.html</code>.</p>
+    </div>
+
+    <p>A página é simples de propósito: um título, um aviso de que o servidor está no ar e um <code>iframe</code> que exibe o arquivo
+      <code>cron.txt</code> — a "prova visível" de que o cron está trabalhando.</p>
+
+<pre><code>&lt;<span class="k">iframe</span> src=<span class="s">"cron.txt"</span> title=<span class="s">"Log do Cron"</span>&gt;&lt;/<span class="k">iframe</span>&gt;</code></pre>
+
+    <div class="card">
+      <p><strong>Como saber que funcionou:</strong> <code>docker run -p 8080:80 nginx-cron:latest</code> e abrir
+        <code>http://localhost:8080</code>. Os prints <code>verificandoDockerNginx.png</code>, <code>teste-conteinerNginx.png</code>
+        e <code>sitedemostracao.png</code> mostram essa etapa, ainda no Docker puro.</p>
+      <p><strong>Se te perguntarem "o que é um daemon?":</strong> é um processo que roda em segundo plano, sem terminal e sem
+        ninguém digitando nada, normalmente esperando um evento (uma conexão, um horário). O Nginx espera conexões; o cron espera o relógio.</p>
+    </div>
+
+    <h2 id="p5">Passo 5 — Colocar um cron dentro do Nginx</h2>
+    <div class="card">
+      <p><strong>Para que serve:</strong> provar que um mesmo container pode ter mais de um daemon trabalhando junto —
+        e gerar uma atividade contínua (o log a cada minuto) que a banca consegue ver.</p>
+      <p><strong>O que o grupo fez:</strong> escreveu um pequeno script de entrada que sobe <strong>dois</strong> programas:
+        o cron em segundo plano e o Nginx em primeiro plano.</p>
+      <p><strong>Arquivo criado:</strong> <code>nginx/Dockerfile</code> (o restante).</p>
+    </div>
+
+<pre><code><span class="c"># cria o script /entrypoint.sh com duas linhas:</span>
+<span class="c">#   busybox crond -b -l 8 -c /etc/crontabs   → sobe o cron em segundo plano</span>
+<span class="c">#   nginx -g "daemon off;"                   → sobe o Nginx em primeiro plano</span>
+<span class="k">RUN</span> echo <span class="s">'#!/bin/sh'</span> &gt; /entrypoint.sh &amp;&amp; \
+    echo <span class="s">'busybox crond -b -l 8 -c /etc/crontabs'</span> &gt;&gt; /entrypoint.sh &amp;&amp; \
+    echo <span class="s">'nginx -g "daemon off;"'</span> &gt;&gt; /entrypoint.sh &amp;&amp; \
+    chmod +x /entrypoint.sh
+
+<span class="c"># a tarefa agendada: a cada minuto, grava a data no arquivo público</span>
+<span class="k">RUN</span> echo <span class="s">"* * * * * date &gt;&gt; /usr/share/nginx/html/cron.txt"</span> &gt; /etc/crontabs/root
+
+<span class="c"># copia a página HTML para a pasta pública do Nginx</span>
+<span class="k">COPY</span> html /usr/share/nginx/html
+
+<span class="c"># o container começa rodando o script</span>
+<span class="k">CMD</span> [<span class="s">"/entrypoint.sh"</span>]</code></pre>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Detalhe</th><th>Por que está assim</th></tr></thead>
+        <tbody>
+          <tr><td><code>* * * * *</code></td><td>são cinco campos (minuto, hora, dia, mês, dia da semana). Cinco asteriscos = "todo minuto de todo dia".</td></tr>
+          <tr><td><code>date &gt;&gt; cron.txt</code></td><td><code>date</code> imprime a data/hora; <code>&gt;&gt;</code> acrescenta no fim do arquivo, sem apagar o que já estava lá.</td></tr>
+          <tr><td><code>cron.txt</code> na pasta do Nginx</td><td>porque essa pasta é pública: o navegador consegue baixar o arquivo direto, sem a API no meio.</td></tr>
+          <tr><td><code>crond -b</code></td><td><code>-b</code> = background. O cron não pode ser o "dono" do container aqui, porque o dono é o Nginx.</td></tr>
+          <tr><td><code>nginx -g "daemon off;"</code></td><td>por padrão o Nginx se manda para segundo plano e "solta" o terminal. Em container isso faria o container morrer. <code>daemon off</code> obriga o Nginx a ficar em primeiro plano.</td></tr>
+          <tr><td><code>-l 8</code></td><td>nível de log do cron (quanto detalhe ele registra).</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <p><strong>Como saber que funcionou:</strong> abrir a página e ver as linhas de data aparecendo dentro do quadro.
+        O print <code>cronNginxfuncionando.png</code> é essa prova.</p>
+      <p><strong>Detalhe que a banca pode cobrar:</strong> o <strong>arquivo</strong> é atualizado a cada minuto, mas o
+        <code>iframe</code> não se recarrega sozinho. Para ver as linhas novas é preciso atualizar a página. O slide diz
+        "atualiza em tempo real" no sentido de que o log é contínuo — se perguntarem, explique essa diferença com tranquilidade.</p>
+    </div>
+
+    <h2 id="p6">Passo 6 — Criar o cron isolado</h2>
+    <div class="card">
+      <p><strong>Para que serve:</strong> completar os três containers com daemons diferentes. Aqui o cron é o único morador,
+        então ele pode ser o processo principal.</p>
+      <p><strong>Arquivo criado:</strong> <code>cron/Dockerfile</code> — o menor do projeto, com 5 linhas.</p>
+    </div>
+
+<pre><code><span class="k">FROM</span> alpine:latest
+
+<span class="c"># a cada minuto, grava a data num arquivo de log</span>
+<span class="k">RUN</span> echo <span class="s">"* * * * * date &gt;&gt; /var/log/cron-task.log"</span> &gt; /etc/crontabs/root
+
+<span class="c"># roda o cron em PRIMEIRO plano (-f), porque aqui ele é o único processo</span>
+<span class="k">CMD</span> [<span class="s">"busybox"</span>, <span class="s">"crond"</span>, <span class="s">"-f"</span>, <span class="s">"-l"</span>, <span class="s">"8"</span>, <span class="s">"-c"</span>, <span class="s">"/etc/crontabs"</span>]</code></pre>
+
+    <div class="card">
+      <p><strong>A diferença que importa:</strong> no Nginx o cron usou <code>-b</code> (segundo plano) porque o Nginx era o dono
+        do container. Aqui o cron usa <code>-f</code> (primeiro plano) porque ele é o dono. Errar isso faz o container morrer sozinho.</p>
+      <p><strong>Como saber que funcionou:</strong> o log fica <em>dentro</em> do container, num arquivo. Para ver:
+        <code>docker exec &lt;container&gt; cat /var/log/cron-task.log</code>. No Kubernetes é o mesmo raciocínio, com
+        <code>kubectl exec</code> — <code>kubectl logs</code> mostra as mensagens do próprio cron, não as linhas de data.</p>
+      <p><strong>Se te perguntarem "por que só 1 réplica?":</strong> porque dois crons fariam a mesma tarefa duas vezes. A API e o
+        Nginx têm 2 réplicas para dar disponibilidade; o cron, não.</p>
+    </div>
+
+    <h2 id="p7">Passo 7 — Preparar o cluster e carregar as imagens</h2>
+    <div class="card">
+      <p><strong>Para que serve:</strong> até aqui tudo rodou no Docker "solto". Agora entra o orquestrador: ele decide onde cada
+        container roda, recria o que cai e escala o que enche.</p>
+      <p><strong>Pense assim:</strong> o Docker sozinho é um cozinheiro. O Kubernetes é o gerente do restaurante inteiro.</p>
+      <p><strong>O que o grupo fez:</strong> subiu o Minikube (Kubernetes de uma máquina só) usando o Docker como motor,
+        e carregou as três imagens para dentro do nó.</p>
+    </div>
+
+<pre><code><span class="c"># 1. sobe o cluster local</span>
+minikube start --driver=docker
+
+<span class="c"># 2. leva as imagens construídas na sua máquina para dentro do nó</span>
+minikube image load process-api:latest
+minikube image load nginx-cron:latest
+minikube image load cron-daemon:latest</code></pre>
+
+    <div class="card">
+      <p><strong>Por que o <code>image load</code> é obrigatório:</strong> essas imagens <strong>não existem no Docker Hub</strong> —
+        foram construídas na máquina do grupo. E os YAMLs dizem <code>imagePullPolicy: Never</code>, ou seja, "não tente baixar;
+        use o que já está aqui". Sem o load, o Pod fica travado em <code>ErrImageNeverPull</code>.</p>
+      <p><strong>Como saber que funcionou:</strong> <code>kubectl get nodes</code> mostra o nó como <code>Ready</code>, e
+        <code>minikube image ls</code> lista as três imagens.</p>
+    </div>
+
+    <h2 id="p8">Passo 8 — Escrever os 7 YAMLs</h2>
+    <p>YAML é a "lista de pedidos" do Kubernetes: você descreve o que quer e ele faz. São sete arquivos, cada um com uma
+      responsabilidade. Esta tabela é o coração do passo:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Arquivo</th><th>O que ele cria</th><th>O que tem dentro (e por quê)</th></tr></thead>
+        <tbody>
+          <tr><td><code>k8s/namespace.yaml</code></td><td>a "ala" <code>daemon-lab</code></td><td>só o nome. Serve para agrupar e poder apagar tudo com um comando.</td></tr>
+          <tr><td><code>k8s/api-deployment.yaml</code></td><td>2 Pods da API</td><td><code>replicas: 2</code>, <code>hostPID: true</code>, <code>requests.cpu: 100m</code> e <code>limits.cpu: 500m</code>.</td></tr>
+          <tr><td><code>k8s/api-service.yaml</code></td><td>o endereço fixo da API</td><td>NodePort <strong>30080</strong> apontando para a porta 8000 dos Pods.</td></tr>
+          <tr><td><code>k8s/nginx-deployment.yaml</code></td><td>2 Pods do Nginx</td><td><code>replicas: 2</code>, imagem <code>nginx-cron</code>, porta 80.</td></tr>
+          <tr><td><code>k8s/nginx-service.yaml</code></td><td>o endereço fixo do Nginx</td><td>NodePort <strong>30081</strong> apontando para a porta 80.</td></tr>
+          <tr><td><code>k8s/cron-deployment.yaml</code></td><td>1 Pod do cron</td><td><code>replicas: 1</code> e mais nada — o cron não expõe porta.</td></tr>
+          <tr><td><code>k8s/hpa.yaml</code></td><td>o "gerente" que escala</td><td>mínimo 2, máximo 10, alvo de <strong>50%</strong> de CPU.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Os campos que a banca vai pedir para explicar</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Campo</th><th>Em português</th></tr></thead>
+        <tbody>
+          <tr><td><code>replicas: 2</code></td><td>"quero sempre 2 cópias rodando". Se uma cair, o Kubernetes repõe.</td></tr>
+          <tr><td><code>selector.matchLabels</code> + <code>template.labels</code></td><td>a etiqueta do Pod e o ímã que o Service usa para encontrá-lo. Precisam ser iguais, senão o Service não acha ninguém.</td></tr>
+          <tr><td><code>hostPID: true</code></td><td>"deixe este Pod ver os processos do nó inteiro", não só os dele. É o que dá sentido à API.</td></tr>
+          <tr><td><code>imagePullPolicy: Never</code></td><td>"não baixe imagem, use a que está no nó". Obrigatório aqui, porque as imagens são locais.</td></tr>
+          <tr><td><code>requests.cpu: 100m</code></td><td>"reserve 0,1 núcleo para este Pod". O HPA calcula a porcentagem em cima disso.</td></tr>
+          <tr><td><code>limits.cpu: 500m</code></td><td>"nunca deixe passar de 0,5 núcleo". É o teto.</td></tr>
+          <tr><td><code>nodePort: 30080</code></td><td>a porta aberta na fachada do nó, para você acessar de fora do cluster.</td></tr>
+          <tr><td><code>averageUtilization: 50</code></td><td>"quero a média de CPU em 50% do que foi reservado". Acima disso, ele cria mais réplicas.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Um pedaço do <code>api-deployment.yaml</code> para você ver o formato:</p>
+<pre><code><span class="k">spec</span>:
+  <span class="k">replicas</span>: 2
+  <span class="k">selector</span>:
+    <span class="k">matchLabels</span>:
+      <span class="k">app</span>: process-api
+  <span class="k">template</span>:
+    <span class="k">metadata</span>:
+      <span class="k">labels</span>:
+        <span class="k">app</span>: process-api
+    <span class="k">spec</span>:
+      <span class="k">hostPID</span>: true
+      <span class="k">containers</span>:
+      - <span class="k">name</span>: api
+        <span class="k">image</span>: process-api:latest
+        <span class="k">imagePullPolicy</span>: Never</code></pre>
+
+    <div class="card">
+      <p><strong>Como saber que funcionou:</strong> <code>kubectl apply --dry-run=client -f arquivo.yaml</code> valida o texto
+        sem criar nada. Depois do apply, <code>kubectl get pods -n daemon-lab</code> mostra os Pods nascendo.</p>
+      <p><strong>Se te perguntarem "por que 2 réplicas de API e Nginx?":</strong> disponibilidade — se uma cair, a outra atende, e o
+        Service divide as requisições entre as duas.</p>
+    </div>
+
+    <h2 id="p9">Passo 9 — Aplicar e conferir</h2>
+    <p>A ordem importa: o namespace precisa existir antes de qualquer coisa morar nele.</p>
+<pre><code>kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/api-deployment.yaml
+kubectl apply -f k8s/api-service.yaml
+kubectl apply -f k8s/nginx-deployment.yaml
+kubectl apply -f k8s/nginx-service.yaml
+kubectl apply -f k8s/cron-deployment.yaml
+
+<span class="c"># o HPA precisa do metrics-server, que é um addon do Minikube</span>
+minikube addons enable metrics-server
+kubectl apply -f k8s/hpa.yaml
+
+<span class="c"># conferindo</span>
+kubectl get pods -n daemon-lab
+kubectl get svc  -n daemon-lab
+kubectl get hpa  -n daemon-lab</code></pre>
+
+    <div class="card">
+      <p><strong>O que se espera ver:</strong> 5 Pods <code>Running</code> (2 API + 2 Nginx + 1 cron), dois Services com
+        NodePort 30080 e 30081, e o HPA mostrando o alvo de 50%.</p>
+      <p><strong>Como acessar:</strong> <code>curl http://$(minikube ip):30080/processes</code> devolve o JSON com a lista de processos.
+        Abrir <code>/docs</code> no navegador mostra o Swagger, onde dá para testar as rotas clicando. Para o site do Nginx:
+        <code>minikube service nginx-service -n daemon-lab</code>.</p>
+      <p><strong>Provas:</strong> <code>5pods.png</code>, <code>ProcessManagerAPI.png</code>, <code>nginx-k8s.png</code> e
+        <code>nginx-k8s-terminal.png</code>.</p>
+      <p><strong>Se der errado:</strong> <code>Pending</code> = falta recurso ou imagem; <code>ErrImageNeverPull</code> = faltou o
+        <code>minikube image load</code>; <code>CrashLoopBackOff</code> = o processo dentro do container morre — veja com
+        <code>kubectl logs</code>.</p>
+    </div>
+
+    <h2 id="p10">Passo 10 — Derrubar um Pod e ver o self-healing</h2>
+    <div class="card">
+      <p><strong>Para que serve:</strong> provar que o Kubernetes mantém o estado desejado. O YAML diz "2 réplicas";
+        se uma sumir, ele repõe sem ninguém pedir.</p>
+      <p><strong>Pense assim:</strong> é um gerente que faz a contagem de funcionários a cada instante. Faltou um? Ele já chama outro.</p>
+    </div>
+
+<pre><code><span class="c"># 1. veja os Pods e copie o nome de um da API</span>
+kubectl get pods -n daemon-lab
+
+<span class="c"># 2. apague esse Pod</span>
+kubectl delete pod api-deployment-7487485766-2chk4 -n daemon-lab
+
+<span class="c"># 3. assista a recriação acontecer</span>
+kubectl get pods -n daemon-lab -w</code></pre>
+
+    <div class="card">
+      <p><strong>O que acontece, em ordem:</strong> o Pod é apagado → o <strong>ReplicaSet</strong> percebe que só há 1 em vez de 2 →
+        cria outro com nome novo e a mesma etiqueta → em <strong>9 segundos</strong> o novo está <code>Running</code> → o Service
+        já começa a mandar requisições para ele.</p>
+      <p><strong>A prova:</strong> <code>RecriacaoPod.png</code>.</p>
+      <p><strong>Se te perguntarem "e se eu matar o container em vez do Pod?":</strong> aí é outro mecanismo. O <strong>kubelet</strong>
+        reinicia o container <em>dentro do mesmo Pod</em> (por causa do <code>restartPolicy: Always</code>). O nome do Pod não muda,
+        só a coluna <code>RESTARTS</code> aumenta. Dois níveis: container reiniciado pelo kubelet, Pod recriado pelo ReplicaSet.</p>
+    </div>
+
+    <h2 id="p11">Passo 11 — Gerar carga e ver o HPA escalar</h2>
+    <div class="card">
+      <p><strong>Para que serve:</strong> provar o scaling automático. O HPA observa a CPU média dos Pods da API;
+        se passar de 50% do que foi reservado, ele cria mais réplicas — até o limite de 10.</p>
+      <p><strong>Pense assim:</strong> é o gerente que olha a fila e chama mais atendentes. Quando a fila acaba,
+        ele dispensa os extras (mas com calma, para não ficar contratando e demitindo toda hora).</p>
+    </div>
+
+<pre><code><span class="c"># terminal 1 — gera carga contínua na API (vai parecer travado, é normal)</span>
+while true; do curl -s http://127.0.0.1:&lt;PORTA&gt;/processes &gt; /dev/null; done
+
+<span class="c"># terminal 2 — acompanha o HPA</span>
+kubectl get hpa -n daemon-lab -w
+
+<span class="c"># terminal 3 — acompanha os Pods nascendo</span>
+kubectl get pods -n daemon-lab -w</code></pre>
+
+    <div class="card">
+      <p><strong>O que o grupo mediu:</strong> a CPU saiu de <strong>2%</strong> em repouso para <strong>204%</strong> sob carga,
+        e as réplicas foram de <strong>2 para 10</strong> — em degraus (2 → 4 → 8 → 9 → 10), porque o HPA não pula direto para o
+        máximo: ele recalcula a cada rodada. Parando a carga, a CPU caiu para 2% e, depois de uns <strong>5 minutos</strong>
+        (janela de estabilização), voltou para 2 réplicas.</p>
+      <p><strong>A prova:</strong> <code>hpa.png</code>, <code>replicas.png</code> e <code>replicasVoltando2.png</code>.</p>
+      <p><strong>Se te perguntarem "por que 204% e não 100%?":</strong> porque a porcentagem é relativa ao <code>requests.cpu</code>
+        (100m). Se o Pod usou 204m, isso é 204% do pedido. Sem <code>requests</code>, o HPA não teria base de cálculo e ficaria em
+        <code>&lt;unknown&gt;</code> — foi por isso que esse campo entrou no YAML.</p>
+    </div>
+
+    <h2 id="p12">Passo 12 — Registrar as provas e documentar</h2>
+    <div class="card">
+      <p><strong>Para que serve:</strong> o edital não pede só "funcionou", pede <strong>prova</strong>. Print ou vídeo é o que
+        transforma "confia" em nota.</p>
+      <p><strong>O que o grupo fez:</strong> salvou 21 prints em três pastas (<code>tarefa-1</code>, <code>tarefa-2</code>,
+        <code>tarefa-3</code>), escreveu <code>descricao-prints.md</code> explicando cada um e <code>resultados.md</code> com a tabela
+        de antes/depois do self-healing e do scaling. Depois veio o README com a visão geral.</p>
+      <p><strong>Onde ver:</strong> a página <a href="evidencias.html">Evidências</a> mostra os 21 prints e o que cada um prova.</p>
+      <p><strong>Ponto de atenção honesto:</strong> o repositório tem prints, mas <strong>não tem vídeo</strong> de demonstração,
+        e os entregáveis da Tarefa 4 (<code>artigo.md</code>, <code>slides.pdf</code>, roteiro) ainda não estão no repositório.
+        Se a banca pedir vídeo, é melhor gravar antes.</p>
+    </div>
+
+    <h2 id="arquivos">4. Tabela mestra: cada arquivo, para que serve</h2>
+    <p>Se te mostrarem o repositório e perguntarem "para que serve este arquivo?", a resposta está aqui.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Arquivo</th><th>Para que serve</th><th>Se faltar, o que quebra</th></tr></thead>
+        <tbody>
+          <tr><td><code>api/requirements.txt</code></td><td>lista as bibliotecas e as versões exatas</td><td>o build instala nada e a API não sobe</td></tr>
+          <tr><td><code>api/main.py</code></td><td>as 4 rotas que conversam com os processos</td><td>não existe API</td></tr>
+          <tr><td><code>api/Dockerfile</code></td><td>monta a imagem <code>process-api</code></td><td>não há imagem para o Kubernetes rodar</td></tr>
+          <tr><td><code>nginx/Dockerfile</code></td><td>monta <code>nginx-cron</code>: Nginx + cron juntos</td><td>não existe o daemon de rede nem o log</td></tr>
+          <tr><td><code>nginx/html/index.html</code></td><td>a página que mostra o log do cron</td><td>o Nginx serve uma página padrão, sem prova visual</td></tr>
+          <tr><td><code>cron/Dockerfile</code></td><td>monta <code>cron-daemon</code>: só o cron</td><td>faltam os 3 daemons exigidos</td></tr>
+          <tr><td><code>k8s/namespace.yaml</code></td><td>cria a ala <code>daemon-lab</code></td><td>o apply falha com "namespace not found"</td></tr>
+          <tr><td><code>k8s/api-deployment.yaml</code></td><td>2 Pods da API, com <code>hostPID</code> e recursos</td><td>a API não roda e o HPA não tem o que escalar</td></tr>
+          <tr><td><code>k8s/api-service.yaml</code></td><td>dá um endereço fixo à API (30080)</td><td>não dá para acessar a API de fora</td></tr>
+          <tr><td><code>k8s/nginx-deployment.yaml</code></td><td>2 Pods do Nginx</td><td>o site não sobe</td></tr>
+          <tr><td><code>k8s/nginx-service.yaml</code></td><td>dá um endereço fixo ao Nginx (30081)</td><td>o site não abre no navegador</td></tr>
+          <tr><td><code>k8s/cron-deployment.yaml</code></td><td>1 Pod do cron isolado</td><td>faltam os 3 daemons exigidos</td></tr>
+          <tr><td><code>k8s/hpa.yaml</code></td><td>escala a API de 2 a 10 por CPU</td><td>não há demonstração de scaling</td></tr>
+          <tr><td><code>docs/interfaces.md</code></td><td>o contrato de nomes, portas e etiquetas</td><td>as partes não se encaixam</td></tr>
+          <tr><td><code>docs/guia-integracao.md</code></td><td>a ordem de montar tudo e os testes de fumaça</td><td>cada um faz do seu jeito e a integração trava</td></tr>
+          <tr><td><code>docs/evidencias/</code></td><td>os 21 prints e a explicação de cada um</td><td>não há prova para a nota de implementação</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="frases">5. As 8 frases que resumem tudo</h2>
+    <p>Se você decorar só isto, já consegue contar o trabalho. Cada frase é uma resposta de 20 segundos.</p>
+
+    <div class="card">
+      <ol>
+        <li><strong>"O daemon serve para rodar em segundo plano, sem ninguém digitando."</strong> Nginx espera conexões, o cron espera o relógio.</li>
+        <li><strong>"Usamos três daemons diferentes porque o edital exige três containers com daemons distintos."</strong> API (uvicorn), Nginx (nginx + crond) e cron isolado.</li>
+        <li><strong>"A API é a ponte entre quem pergunta e o sistema operacional."</strong> Ela usa psutil para ler os processos e subprocess para iniciar.</li>
+        <li><strong>"O <code>hostPID: true</code> é o que faz a API enxergar o nó inteiro."</strong> Sem ele, ela só veria os processos do próprio container.</li>
+        <li><strong>"O Docker empacota; o Kubernetes mantém o estado desejado."</strong> Docker constrói a imagem; o Deployment garante as réplicas.</li>
+        <li><strong>"O self-healing é o ReplicaSet repondo o que caiu."</strong> Apagamos um Pod e em 9 s havia outro no lugar.</li>
+        <li><strong>"O HPA é o gerente que contrata mais quando a fila cresce."</strong> Com CPU em 204% do pedido, foi de 2 para 10 réplicas.</li>
+        <li><strong>"As provas são os prints; a explicação está na documentação."</strong> 21 prints, três tarefas, um README.</li>
+      </ol>
+    </div>
+
+    <h2 id="entendeu">6. Se você só entendeu metade</h2>
+    <div class="callout ok">
+      <div class="ct">Versão de 30 segundos</div>
+      <p>Fizemos três programas que ficam rodando sozinhos (API, Nginx e cron). Empacotamos cada um num container.
+         Colocamos os três dentro do Kubernetes, que é o gerente: ele mantém as cópias no ar e cria mais quando a carga sobe.
+         A API é a única que mexe nos processos do sistema — e ela só consegue isso porque pedimos ao Kubernetes para dar a ela
+         visão dos processos do nó. Testamos derrubando um Pod (voltou em 9 s) e gerando carga (foi de 2 para 10 cópias).</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="ct">O que responder se travar</div>
+      <p>Respire e use a estrutura: <strong>"isto serve para…"</strong>, <strong>"nós usamos … porque…"</strong>,
+         <strong>"o arquivo … faz…"</strong>. Você não precisa lembrar de comando; precisa lembrar do motivo.
+         E se for algo que não estudamos: <em>"não implementamos isso; o mais próximo que temos é X, e para resolver eu faria Y"</em>.</p>
+    </div>
+
+    <h2 id="proximo">7. Para onde ir agora</h2>
+    <div class="grid two">
+      <a class="card-link" href="teoria.html">
+        <span class="n">01 · FUNDAMENTOS</span>
+        <h3>Teoria</h3>
+        <p>Se alguma palavra desta página ainda pareceu mágica, é aqui que ela é explicada do zero: processo, PID, sinal, daemon, namespace, cgroup, Pod, Service, HPA.</p>
+      </a>
+      <a class="card-link" href="codigo.html">
+        <span class="n">05 · IMPLEMENTAÇÃO</span>
+        <h3>Código</h3>
+        <p>Cada arquivo citado aqui, linha por linha, com o porquê de cada escolha e os detalhes que a banca costuma cobrar.</p>
+      </a>
+      <a class="card-link" href="pratica.html">
+        <span class="n">04 · EXECUÇÃO</span>
+        <h3>Prática</h3>
+        <p>Os mesmos passos, na forma de comando: build, load, apply, acesso, self-healing, scaling e limpeza.</p>
+      </a>
+      <a class="card-link" href="evidencias.html">
+        <span class="n">06 · PROVAS</span>
+        <h3>Evidências</h3>
+        <p>Os 21 prints e o que cada um comprova — para você saber qual mostrar em cada momento da apresentação.</p>
+      </a>
+    </div>
+
+    <div class="footer">
+      <span>Base de estudos local · A3 · Tema 1</span>
+      <span>Feito a partir do repositório <span class="mono">TayMG/A3-Euclerio</span></span>
+    </div>
+  </div>
+</div>
+
+<script src="assets/search-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

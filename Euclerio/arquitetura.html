@@ -22,21 +22,22 @@
     <input class="search-input" type="search" placeholder="Buscar no site…  ( / )" aria-label="Buscar no site">
     <div class="search-results"></div>
   </div>
-  <nav class="nav">
+    <nav class="nav">
     <div class="nav-label">Comece aqui</div>
     <a href="index.html"><span class="n">00</span> Início</a>
     <div class="nav-label">Fundamentos</div>
     <a href="teoria.html"><span class="n">01</span> Teoria</a>
     <a href="arquitetura.html"><span class="n">02</span> Arquitetura</a>
     <div class="nav-label">O trabalho</div>
-    <a href="pratica.html"><span class="n">03</span> Prática</a>
-    <a href="codigo.html"><span class="n">04</span> Código</a>
-    <a href="evidencias.html"><span class="n">05</span> Evidências</a>
+    <a href="passo-a-passo.html"><span class="n">03</span> Como foi feito</a>
+    <a href="pratica.html"><span class="n">04</span> Prática</a>
+    <a href="codigo.html"><span class="n">05</span> Código</a>
+    <a href="evidencias.html"><span class="n">06</span> Evidências</a>
     <div class="nav-label">Treino</div>
-    <a href="perguntas.html"><span class="n">06</span> Perguntas</a>
-    <a href="quiz.html"><span class="n">07</span> Quiz</a>
-    <a href="plano.html"><span class="n">08</span> Plano</a>
-    <a href="banca.html"><span class="n">09</span> Banca</a>
+    <a href="perguntas.html"><span class="n">07</span> Perguntas</a>
+    <a href="quiz.html"><span class="n">08</span> Quiz</a>
+    <a href="plano.html"><span class="n">09</span> Plano</a>
+    <a href="banca.html"><span class="n">10</span> Banca</a>
   </nav>
   <div class="sidebar-foot"><button class="theme-toggle" data-theme-toggle>☀ Tema claro</button></div>
 </aside>
@@ -54,6 +55,8 @@
       o caminho completo de uma requisição e a justificativa de cada decisão — inclusive as que você deve assumir como limitação.</p>
 
     <h2 id="diagrama">Arquitetura física</h2>
+
+    <p class="plain"><b>Em português simples:</b> Este desenho responde “onde cada coisa roda”: Windows → WSL → Minikube (que é um container) → namespace <code>daemon-lab</code>. O detalhe que confunde: o nó tem um IP que o Windows não alcança, então o navegador só chega pelo túnel do <code>minikube service</code>.</p>
     <p>A visão física mostra <em>onde</em> cada coisa roda. O ponto que confunde: no Windows, o cluster inteiro vive dentro de um
       container Docker, e o "nó" tem um IP que o Windows não alcança diretamente.</p>
 
@@ -106,6 +109,8 @@
     </div>
 
     <h2 id="fluxo">O caminho completo de uma requisição</h2>
+
+    <p class="plain"><b>Em português simples:</b> Estes oito passos são a viagem de um clique até o JSON: navegador, túnel, porta do nó, kube-proxy, Service, Pod, uvicorn, psutil. Se você conseguir contar essa história sem olhar, já domina a arquitetura.</p>
     <p>Saber narrar isso em sequência é uma das melhores formas de mostrar domínio. São oito passos:</p>
 
     <div class="diagram">
@@ -158,6 +163,8 @@
     </ol>
 
     <h2 id="decisoes">Tabela de decisões (o que a banca vai cobrar)</h2>
+
+    <p class="plain"><b>Em português simples:</b> Cada linha é uma escolha do grupo, com a alternativa que foi descartada e o motivo. É a tabela que responde “por que assim e não de outro jeito?” — a pergunta que mais aparece na banca.</p>
     <p>Cada linha é uma pergunta em potencial. A coluna "por quê" é a resposta que ganha ponto.</p>
 
     <div class="table-wrap">
@@ -181,6 +188,8 @@
     </div>
 
     <h2 id="limitacoes">Limitações conscientes</h2>
+
+    <p class="plain"><b>Em português simples:</b> Estas são as fraquezas reais do projeto, ditas antes de alguém apontar: sem volume, sem senha, sem probes, <code>hostPID</code>, um nó só. Assumir cada uma com a correção possível vale mais ponto do que esconder.</p>
     <p>Assumir antes de ser apontado é uma jogada forte: transforma uma fraqueza em demonstração de maturidade. Estas são as reais:</p>
 
     <div class="table-wrap">
@@ -207,6 +216,8 @@
     </div>
 
     <h2 id="numeros">Números medidos (o que citar de memória)</h2>
+
+    <p class="plain"><b>Em português simples:</b> Os sete números que você deve saber de cor: 5 Pods, 9 segundos, 2→10 réplicas, 204% de CPU, 2% em repouso, 83 processos e ~5 minutos de scale-down. Cada um tem um print que comprova.</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Métrica</th><th>Valor</th><th>Origem</th></tr></thead>
