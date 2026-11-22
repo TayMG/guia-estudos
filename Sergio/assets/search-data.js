@@ -131,5 +131,23 @@ window.SEARCH_INDEX = [
   { t: "Segurança e LGPD na banca", u: "banca.html#seguranca", k: "banca seguranca rls lgpd chave service_role", p: "Banca" },
   { t: "Limitações e prontidão", u: "banca.html#limites", k: "banca limites producao maior falha mais uma semana aprovacao", p: "Banca" },
   { t: "A pergunta matadora", u: "banca.html#matadora", k: "banca pergunta matadora 80 absoluto modelo tse ciclo nunca acontece", p: "Banca" },
-  { t: "Defesa em 30 segundos", u: "banca.html#defesa", k: "defesa 30 segundos resumo final banca", p: "Banca" }
+  { t: "Defesa em 30 segundos", u: "banca.html#defesa", k: "defesa 30 segundos resumo final banca", p: "Banca" },
+
+  /* Apresentação */
+  { t: "Apresentação: mapa dos 9 slides", u: "apresentacao.html#mapa", k: "apresentacao pptx slides mapa tempo roteiro 9 slides capa problema banco extracao starvation gerenciador interface testes obrigado", p: "Slides" },
+  { t: "Regras de palco", u: "apresentacao.html#palco", k: "palco apresentacao nao ler slide uma ideia apontar numeros de cor tempo", p: "Slides" },
+  { t: "Transições prontas entre slides", u: "apresentacao.html#transicoes", k: "transicao frase slides apresentacao passagem", p: "Slides" },
+  { t: "Slide 1: capa", u: "apresentacao.html#slide-1", k: "slide 1 capa titulo equipe abertura 40 segundos", p: "Slides" },
+  { t: "Slide 2: introdução e objetivo", u: "apresentacao.html#slide-2", k: "slide 2 problema desafio lei 10048 13466 12764 starvation objetivo", p: "Slides" },
+  { t: "Slide 3: banco de dados", u: "apresentacao.html#slide-3", k: "slide 3 banco supabase postgresql tabelas rls rpc chamar_cliente finalizar_atendimento", p: "Slides" },
+  { t: "Slide 4: extração de dados", u: "apresentacao.html#slide-4", k: "slide 4 extracao rest pandas dataframe gerenciador deques fluxo", p: "Slides" },
+  { t: "Slide 5: starvation e ciclo 2:1", u: "apresentacao.html#slide-5", k: "slide 5 starvation inanicao 80 absoluto ciclo 2 1 traco P0 P1 C0 S0", p: "Slides" },
+  { t: "Slide 6: gerenciador de fila", u: "apresentacao.html#slide-6", k: "slide 6 gerenciador tres filas lock threading rollback appendleft", p: "Slides" },
+  { t: "Slide 7: interface do usuário", u: "apresentacao.html#slide-7", k: "slide 7 interface dashboard painel iframe tv banco 5 segundos cores senha", p: "Slides" },
+  { t: "Slide 8: testes e conclusão", u: "apresentacao.html#slide-8", k: "slide 8 testes 18 faker 15 35 50 conclusao producao hardening", p: "Slides" },
+  { t: "Slide 9: obrigado e perguntas", u: "apresentacao.html#slide-9", k: "slide 9 obrigado fechamento frase final perguntas banca", p: "Slides" },
+  { t: "Ensaio cronometrado da apresentação", u: "apresentacao.html#ensaio", k: "ensaio cronometrado checklist apresentacao 13 minutos treino", p: "Slides" },
+  { t: "Perguntas que o deck convida", u: "apresentacao.html#perguntas", k: "perguntas deck apresentacao 2 1 3 2 1 80 absoluto producao supabase", p: "Slides" },
+  { t: "Armadilhas de fala na apresentação", u: "apresentacao.html#armadilhas", k: "armadilhas fala slide dizer evitar pronto producao integral inanicao iframe", p: "Slides" },
+  { t: "Se você decorar só isto", u: "apresentacao.html#cola", k: "cola resumo uma linha por slide decorar apresentacao", p: "Slides" }
 ];
