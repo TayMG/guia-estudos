@@ -69,7 +69,8 @@
 
     <div class="callout warn">
       <div class="ct">O deck descreve o código de hoje</div>
-      <p>O PPTX 2.0 corresponde à versão atual do repositório: painel em <code>views/painel.py</code> com
+      <p>O PPTX 2.0 corresponde à versão atual do repositório (commit <code>fcec82f</code>, de 07/11/2026):
+         painel em <code>views/painel.py</code> com
          <code>st.iframe</code>, funções SQL <code>chamar_cliente</code> / <code>finalizar_atendimento</code>,
          <code>threading.Lock</code> em <code>conexao.py</code> e rollback no gerenciador. Algumas páginas antigas
          deste guia foram escritas sobre uma auditoria anterior e falam de UI “não implementada”. Para a banca,
@@ -204,7 +205,7 @@
           <tr><td><strong>Risco de starvation</strong></td><td>Defina em uma frase: “é quando uma categoria nunca é chamada porque sempre existe alguém de prioridade maior na frente”.</td><td>use as mãos: uma fila alta que nunca esvazia e uma baixa parada</td></tr>
           <tr><td><strong>Solução integrada</strong></td><td>Python decide, Streamlit mostra, Supabase guarda. Três camadas, uma regra só.</td><td>conte nos dedos: regra, tela, banco</td></tr>
           <tr><td><strong>Lei 13.466/2017</strong></td><td>Criou a prioridade especial dos maiores de 80 <em>dentre os idosos</em>. O projeto adota, para o nível 0, o modelo do TSE: preferência sobre todos, independentemente da chegada.</td><td>“no banco, a base é 10.048 + Estatuto; o modelo de precedência absoluta vem da norma do TSE”</td></tr>
-          <tr><td><strong>Leis 10.048/2000 e 12.764/2012</strong></td><td>Quem entra na prioridade padrão: 60–79, gestantes, lactantes, pessoa com criança de colo, PCD, TEA e mobilidade reduzida.</td><td>não leia a lista inteira: cite três e diga “e o rol completo da lei”</td></tr>
+          <tr><td><strong>Leis 10.048/2000 e 12.764/2012</strong></td><td>O rol da lei inclui 60+, gestantes, lactantes, criança de colo, PCD, obesidade, TEA, mobilidade reduzida e doadores (estes por último). O seed do projeto cobre 7 motivos: 60–79, gestante, lactante, criança de colo, PCD, obesidade e TEA — não modela mobilidade reduzida nem doadores.</td><td>não leia a lista inteira: cite três e diga “o seed cobre sete motivos; mobilidade e doadores ficaram fora”</td></tr>
           <tr><td><strong>Ciclo anti-inanição</strong></td><td>O convencional tem uma chamada garantida a cada três, quando a fila 80+ está vazia.</td><td>“duas padrão, uma convencional” com dois dedos e um dedo</td></tr>
         </tbody>
       </table>
@@ -237,8 +238,10 @@
       <strong>Fala pronta (1:20)</strong>
       “A persistência é o Supabase, que é PostgreSQL gerenciado com uma API REST pronta. O modelo tem quatro tabelas:
       <code>clientes_fila</code>, <code>atendimentos</code> e as tabelas de domínio <code>tipo_prioridade</code> e
-      <code>motivo_prioridade</code>. A segurança não depende do cliente: o RLS está fechado — sem policy, a chave
-      pública não lê nem escreve; o app usa a chave secreta <code>service_role</code> no servidor. E as operações
+      <code>motivo_prioridade</code>. A segurança não depende do cliente: o RLS está fechado nas tabelas da fila —
+      sem policy, a chave pública não lê nem escreve <code>clientes_fila</code> nem <code>atendimentos</code>; as
+      tabelas de domínio continuam com leitura pública. O app usa a chave secreta <code>service_role</code> no
+      servidor. E as operações
       críticas são funções SQL atômicas: <code>chamar_cliente</code> e <code>finalizar_atendimento</code>. Se dois
       guichês tentarem chamar o mesmo cliente, uma falha; se o guichê já tem atendimento aberto, a função recusa.”
     </div>
@@ -248,9 +251,9 @@
       <table>
         <thead><tr><th>Cartão</th><th>O que explicar</th><th>Como apresentar</th></tr></thead>
         <tbody>
-          <tr><td><strong>Supabase / PostgreSQL</strong></td><td>PostgreSQL gerenciado, alta disponibilidade e API REST gerada pelo PostgREST. Vantagem: não manter servidor de banco; trade-off: dependência de fornecedor.</td><td>“não é um banco local: é um Postgres na nuvem com API pronta”</td></tr>
-          <tr><td><strong>Tabelas principais</strong></td><td><code>clientes_fila</code> guarda quem espera (id UUID, nome, CPF, nível, motivo, status, chegada). <code>atendimentos</code> guarda cada chamada (cliente, guichê, chamada, finalização). As duas de domínio normalizam tipo e motivo.</td><td>desenhe no ar: duas tabelas grandes e duas pequenas de apoio</td></tr>
-          <tr><td><strong>Segurança RLS</strong></td><td>Row Level Security: sem policy, a chave anônima é negada. As views usam <code>security_invoker</code> e o <code>EXECUTE</code> das funções foi revogado de <code>anon</code>. Só a <code>service_role</code>, que fica no servidor, opera.</td><td>“a chave que o navegador vê não abre a porta”</td></tr>
+          <tr><td><strong>Supabase / PostgreSQL</strong></td><td>PostgreSQL gerenciado, com API REST gerada pelo PostgREST; a disponibilidade é do fornecedor. Vantagem: não manter servidor de banco; trade-off: dependência de fornecedor.</td><td>“não é um banco local: é um Postgres na nuvem com API pronta”</td></tr>
+          <tr><td><strong>Tabelas principais</strong></td><td><code>clientes_fila</code> guarda quem espera (id UUID, nome, CPF, nascimento, nível, motivo, status, chegada). <code>atendimentos</code> guarda cada chamada (cliente, guichê, chamada, finalização). As duas de domínio normalizam tipo e motivo.</td><td>desenhe no ar: duas tabelas grandes e duas pequenas de apoio</td></tr>
+          <tr><td><strong>Segurança RLS</strong></td><td>Row Level Security: nas tabelas da fila, as policies foram removidas; sem policy, a chave anônima é negada. As tabelas de domínio (tipo e motivo) mantêm <code>SELECT</code> público. As views usam <code>security_invoker</code> e o <code>EXECUTE</code> das funções foi revogado de <code>anon</code>. Só a <code>service_role</code>, que fica no servidor, opera a fila.</td><td>“a chave que o navegador vê não abre a fila”</td></tr>
           <tr><td><strong>Transações RPC</strong></td><td>As funções PL/pgSQL rodam em uma transação: marcar <code>em_atendimento</code> + inserir o atendimento acontece junto ou não acontece. A função também barra guichê ocupado e cliente que já saiu de <code>aguardando</code>.</td><td>“ou tudo, ou nada” — abra e feche as mãos</td></tr>
         </tbody>
       </table>
@@ -346,8 +349,8 @@
           <tr><td><strong>FIFO estrita</strong></td><td>Dentro dos 80+, vale a ordem de chegada. Não é “o mais idoso primeiro”: é quem chegou primeiro entre os 80+.</td><td>“a lei cria o grupo; a fila resolve o empate”</td></tr>
           <tr><td><strong>Preserva contadores</strong></td><td>O 80+ é uma interrupção, não parte do ciclo. Ele não zera o 2:1; o ciclo retoma de onde parou.</td><td>faça uma pausa e diga “pausa, não reset”</td></tr>
           <tr><td><strong>Ciclo ponderado 2:1</strong></td><td>Quando não há 80+, a sequência é Padrão → Padrão → Convencional. É um weighted round-robin com cotas (2, 1).</td><td>dois dedos, um dedo, repita no ar</td></tr>
-          <tr><td><strong>Sequência padrão</strong></td><td>Não é 3:2:1. O README e o PDF antigos falam 3:2:1, mas o código e os testes fazem 2:1. Assuma a divergência antes que a banca aponte.</td><td>“a documentação estava desatualizada; a verdade está no teste”</td></tr>
-          <tr><td><strong>Avanço automático</strong></td><td>Se a fila da etapa está vazia, o algoritmo troca de etapa sem devolver <code>None</code> e sem desperdiçar chamada.</td><td>“fila vazia não trava a esteira”</td></tr>
+          <tr><td><strong>Sequência padrão</strong></td><td>Não é 3:2:1. O PDF e as tarefas antigas falam 3:2:1; o README já foi corrigido, e o código e os testes fazem 2:1. Assuma a divergência antes que a banca aponte.</td><td>“a documentação antiga dizia 3:2:1; a verdade está no teste”</td></tr>
+          <tr><td><strong>Avanço automático</strong></td><td>Se a fila da etapa está vazia e há alguém na outra, o algoritmo troca de etapa sem devolver <code>None</code> e sem desperdiçar chamada.</td><td>“fila vazia não trava a esteira”</td></tr>
         </tbody>
       </table>
     </div>
@@ -432,7 +435,7 @@
       <strong>Fala pronta (1:30)</strong>
       “A interface tem três páginas. O Início mostra as métricas da agência: quantos aguardando em cada nível e quantas
       chamadas. O Painel de atendimento é a ‘TV de banco’: um HTML isolado em iframe, atualizado a cada 5 segundos, com
-      a senha atual, o guichê e as três filas. As cores são semânticas: vermelho para 80+, âmbar para padrão, verde para
+      o ticket chamado, o guichê e as três filas. As cores são semânticas: vermelho para 80+, âmbar para padrão, verde para
       convencional. Os controles ficam acima: escolher guichê, chamar próximo e finalizar — os dois últimos exigem a
       senha do operador.”
     </div>
@@ -476,7 +479,8 @@
       “Para validar, geramos dados sintéticos com Faker na proporção do projeto: 15% 80+, 35% padrão, 50% convencional.
       Os 18 testes cobrem prioridade absoluta, FIFO, ciclo 2:1, filas vazias, preservação do contador, rollback e o
       caminho de integração — o teste real do Supabase é pulado quando não há credenciais. O teste de falha simula o
-      banco recusando a chamada: o cliente volta para a fila e o contador volta ao valor anterior. O resultado é uma
+      banco recusando a chamada: o cliente volta para a fila; o código também restaura o contador ao valor anterior.
+      O resultado é uma
       solução integrada: regra, banco e interface. As pendências para produção são de hardening: login por operador,
       observabilidade, teste de carga e política de retenção/LGPD.”
     </div>
@@ -489,7 +493,7 @@
           <tr><td><strong>Faker 15/35/50</strong></td><td><code>gerar_clientes.py</code> usa <code>random.choices</code> com pesos 0,15 / 0,35 / 0,50. A idade 80+ é garantida no nível 0; os motivos padrão têm faixas de idade próprias.</td><td>“os dados imitam a demanda, não são aleatórios sem critério”</td></tr>
           <tr><td><strong>Prioridade absoluta validada</strong></td><td>Teste com <code>S0</code>, <code>S1</code> e padrão: os 80+ saem primeiro, em FIFO.</td><td>“o teste não testa a intenção; testa a ordem de saída”</td></tr>
           <tr><td><strong>Ciclo 2:1 confirmado</strong></td><td>Testes verificam a sequência <code>P0, P1, C0, P2</code> e que um super no meio não reinicia o ciclo.</td><td>repita o traço de cor</td></tr>
-          <tr><td><strong>Concorrência e transações</strong></td><td>O teste de rollback simula falha do repositório. A atomicidade real fica no RPC: guichê ocupado e cliente já chamado são recusados na mesma transação. O teste de integração real é <em>skip</em> sem credenciais.</td><td>“teste + função SQL, duas camadas”</td></tr>
+          <tr><td><strong>Concorrência e transações</strong></td><td>O teste de rollback simula falha do repositório e confirma o cliente de volta na fila; o código também restaura o contador. A atomicidade real fica no RPC: guichê ocupado e cliente já chamado são recusados na mesma transação. O teste de integração real é <em>skip</em> sem credenciais.</td><td>“teste + função SQL, duas camadas”</td></tr>
           <tr><td><strong>Conclusão e impacto</strong></td><td>Integração das três camadas, regras legais implementadas e fim da inanição no cenário normal. Não diga “pronto para produção”.</td><td>“arquitetura preparada; hardening pendente”</td></tr>
         </tbody>
       </table>
@@ -588,6 +592,42 @@
           <tr><td>“Testes de concorrência”</td><td>“Teste de rollback e RPC transacional; o lock cobre o processo, o banco cobre a disputa.”</td><td>não houve teste de carga com duas instâncias</td></tr>
         </tbody>
       </table>
+    </div>
+
+    <h2 id="conferencia">Conferência com o repositório original</h2>
+    <p class="lead">Este roteiro foi conferido contra o commit <code>fcec82f</code>, de 07/11/2026, do repositório
+      <code>Cauapm/A3---Sergio</code>. O repositório original foi apenas lido — nenhum arquivo, branch, issue ou push
+      foi criado nele.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Afirmação usada no roteiro</th><th>Onde está no projeto</th><th>Situação</th></tr></thead>
+        <tbody>
+          <tr><td>3 filas e ciclo 2:1</td><td><code>Alexandre.py</code>, <code>gerenciador_filas.py</code></td><td><span class="tag ok">confere</span></td></tr>
+          <tr><td>80+ absoluto e contador preservado</td><td><code>Alexandre.py</code>; teste <code>test_super_nao_altera_contador_do_ciclo_21</code></td><td><span class="tag ok">confere</span></td></tr>
+          <tr><td>4 tabelas</td><td><code>supabase/setup_supabase.sql</code></td><td><span class="tag ok">confere</span></td></tr>
+          <tr><td>RLS fechado nas tabelas da fila</td><td>migration <code>20261107150000_seguranca_e_atendimentos.sql</code></td><td><span class="tag ok">confere</span> — tipo e motivo mantêm leitura pública</td></tr>
+          <tr><td>2 RPCs atômicas</td><td><code>chamar_cliente</code> / <code>finalizar_atendimento</code></td><td><span class="tag ok">confere</span></td></tr>
+          <tr><td>Extração REST + pandas</td><td><code>extracao.py</code></td><td><span class="tag ok">confere</span></td></tr>
+          <tr><td><code>threading.Lock</code></td><td><code>conexao.py</code></td><td><span class="tag ok">confere</span> — por processo</td></tr>
+          <tr><td>Rollback com <code>appendleft</code></td><td><code>gerenciador_filas.py</code></td><td><span class="tag ok">confere</span> — o teste confirma a fila; o contador é restaurado no código</td></tr>
+          <tr><td>Iframe de 5 s e cores</td><td><code>views/painel.py</code>, <code>views/painel.html</code></td><td><span class="tag ok">confere</span></td></tr>
+          <tr><td>Senha de operador</td><td><code>conexao.py</code>, <code>app.py</code></td><td><span class="tag warn">senha única</span> — não é login individual</td></tr>
+          <tr><td>18 testes</td><td><code>testes_frente2.py</code></td><td><span class="tag ok">confere</span></td></tr>
+          <tr><td>Distribuição 15/35/50</td><td><code>gerar_clientes.py</code></td><td><span class="tag ok">confere</span></td></tr>
+          <tr><td>README em 2:1</td><td><code>README.md</code></td><td><span class="tag ok">confere</span></td></tr>
+          <tr><td>PDF em 3:2:1</td><td><code>Documentação/A3 - sergio.pdf</code></td><td><span class="tag warn">divergência</span> — documentação antiga</td></tr>
+          <tr><td>80+ sobre todos (modelo TSE)</td><td>Res. TSE 23.759/2026, art. 14, §3º</td><td><span class="tag warn">referência externa</span> — não é a lei bancária</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="ct">O que o projeto não tem — e o roteiro assume</div>
+      <p>O seed não modela <strong>mobilidade reduzida</strong> nem <strong>doadores de sangue</strong>; não há teste de
+        carga com duas instâncias; a senha é única, não há login individual com auditoria; e a precedência do 80+ sobre
+        todos vem do <strong>modelo do TSE</strong>, adotado como referência de projeto — no banco, a base é a Lei
+        10.048/2000 com o Estatuto da Pessoa Idosa.</p>
     </div>
 
     <h2 id="cola">Se você decorar só isto</h2>
