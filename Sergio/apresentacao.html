@@ -204,7 +204,7 @@
           <tr><td><strong>Cumprimento rigoroso da legislação</strong></td><td>Prioridade não é cortesia: é dever legal. A Lei 10.048/2000 cita instituições financeiras no art. 2º, parágrafo único.</td><td>aponte para o bullet e diga “o banco está explicitamente no texto da lei”</td></tr>
           <tr><td><strong>Risco de starvation</strong></td><td>Defina em uma frase: “é quando uma categoria nunca é chamada porque sempre existe alguém de prioridade maior na frente”.</td><td>use as mãos: uma fila alta que nunca esvazia e uma baixa parada</td></tr>
           <tr><td><strong>Solução integrada</strong></td><td>Python decide, Streamlit mostra, Supabase guarda. Três camadas, uma regra só.</td><td>conte nos dedos: regra, tela, banco</td></tr>
-          <tr><td><strong>Lei 13.466/2017</strong></td><td>Criou a prioridade especial dos maiores de 80 <em>dentre os idosos</em>. O projeto adota, para o nível 0, o modelo do TSE: preferência sobre todos, independentemente da chegada.</td><td>“no banco, a base é 10.048 + Estatuto; o modelo de precedência absoluta vem da norma do TSE”</td></tr>
+          <tr><td><strong>Lei 13.466/2017</strong></td><td>Criou a prioridade especial dos maiores de 80 <em>dentre os idosos</em>. O código implementa precedência absoluta no nível 0; a referência externa para defender essa escolha é o modelo do TSE (preferência sobre todos, independentemente da chegada) — o repositório não cita o TSE.</td><td>“no banco, a base é 10.048 + Estatuto; para defender a precedência absoluta, uso o modelo do TSE como referência externa”</td></tr>
           <tr><td><strong>Leis 10.048/2000 e 12.764/2012</strong></td><td>O rol da lei inclui 60+, gestantes, lactantes, criança de colo, PCD, obesidade, TEA, mobilidade reduzida e doadores (estes por último). O seed do projeto cobre 7 motivos: 60–79, gestante, lactante, criança de colo, PCD, obesidade e TEA — não modela mobilidade reduzida nem doadores.</td><td>não leia a lista inteira: cite três e diga “o seed cobre sete motivos; mobilidade e doadores ficaram fora”</td></tr>
           <tr><td><strong>Ciclo anti-inanição</strong></td><td>O convencional tem uma chamada garantida a cada três, quando a fila 80+ está vazia.</td><td>“duas padrão, uma convencional” com dois dedos e um dedo</td></tr>
         </tbody>
@@ -215,9 +215,11 @@
       <div class="ct">Cuidado jurídico que a banca vai testar</div>
       <p>Não diga “a Lei 13.466 garante que o 80+ passa na frente de todos”. O texto legal fala em prioridade especial
         <strong>dentre os idosos</strong>. A precedência sobre todos os demais grupos é o modelo da
-        <strong>Resolução TSE 23.759/2026, art. 14, §3º</strong> (antes, 23.736/2024, art. 100, §3º), adotado no projeto.
-        A frase segura é: “a 13.466 cria a prioridade especial entre os idosos; o nível 0 do sistema segue o modelo do
-        TSE, que dá preferência sobre todos, e essa escolha está documentada”.</p>
+        <strong>Resolução TSE 23.759/2026, art. 14, §3º</strong> (antes, 23.736/2024, art. 100, §3º). Essa é a
+        referência externa que uso para defender a escolha do projeto — o repositório não cita o TSE.
+        A frase segura é: “a 13.466 cria a prioridade especial entre os idosos; o nível 0 do sistema implementa
+        precedência absoluta, e a referência externa para defender isso é o modelo do TSE, que dá preferência sobre
+        todos”.</p>
     </div>
 
     <details>
@@ -584,7 +586,7 @@
       <table>
         <thead><tr><th>O slide diz</th><th>Diga</th><th>Por quê</th></tr></thead>
         <tbody>
-          <tr><td>“Superprioridade absoluta para 80+ (Lei 13.466)”</td><td>“A 13.466 cria a prioridade especial entre os idosos; o nível 0 segue o modelo do TSE, que dá precedência sobre todos.”</td><td>o texto da 13.466 não diz “sobre todos”</td></tr>
+          <tr><td>“Superprioridade absoluta para 80+ (Lei 13.466)”</td><td>“A 13.466 cria a prioridade especial entre os idosos; para a precedência sobre todos, uso o modelo do TSE como referência externa.”</td><td>o texto da 13.466 não diz “sobre todos”</td></tr>
           <tr><td>“Cumprimento integral da legislação”</td><td>“As regras de prioridade estão implementadas e testadas.”</td><td>“integral” é conclusão jurídica, não resultado de teste</td></tr>
           <tr><td>“Pronto para produção”</td><td>“Arquitetura preparada; faltam autenticação individual, observabilidade e carga.”</td><td>a banca adora perguntar o que falta</td></tr>
           <tr><td>“Eliminação matemática da inanição”</td><td>“Eliminação quando a fila 80+ esvazia; se ela é infinita, a prioridade legal prevalece.”</td><td>a premissa importa</td></tr>
@@ -626,8 +628,8 @@
       <div class="ct">O que o projeto não tem — e o roteiro assume</div>
       <p>O seed não modela <strong>mobilidade reduzida</strong> nem <strong>doadores de sangue</strong>; não há teste de
         carga com duas instâncias; a senha é única, não há login individual com auditoria; e a precedência do 80+ sobre
-        todos vem do <strong>modelo do TSE</strong>, adotado como referência de projeto — no banco, a base é a Lei
-        10.048/2000 com o Estatuto da Pessoa Idosa.</p>
+        todos é uma escolha de implementação; a referência externa para defendê-la é o <strong>modelo do TSE</strong>,
+        não a Lei 13.466 — no banco, a base é a Lei 10.048/2000 com o Estatuto da Pessoa Idosa.</p>
     </div>
 
     <h2 id="cola">Se você decorar só isto</h2>
