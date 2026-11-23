@@ -37,7 +37,7 @@ Elas apontam para `../Euclerio/index.html` e `../Sergio/index.html`. O tema clar
 | `quiz.html` | 43 questões de múltipla escolha com correção e explicação |
 | `plano.html` | cronograma de 14 dias, roteiro de 15 minutos, slides, entregáveis, checklist do dia, frases de emergência, referências e ensaio |
 | `banca.html` | 3:2:1 × 2:1, 80+ absoluto e o modelo TSE, starvation real, status, id/CPF, UI, SQL, LGPD, concorrência, pergunta matadora e defesa em 30 segundos |
-| `apresentacao.html` | o PPTX 2.0 slide por slide: mapa dos 9 slides, fala pronta, explicação de cada bloco, gesto, transições, tempos, perguntas prováveis, armadilhas de fala e ensaio cronometrado |
+| `apresentacao.html` | o PPTX 2.0 slide por slide: texto exato do slide, mapa dos 9 slides, fala contínua e cronometrada, explicação de cada bloco, gesto, transição, perguntas prováveis, armadilhas de fala, conferência com o repositório e ensaio cronometrado |
 
 ## Recursos
 

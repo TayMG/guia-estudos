@@ -55,8 +55,9 @@
       <div class="eyebrow">10 · Apresentação · PPTX 2.0</div>
       <h1>Slide por slide:<br>o que dizer, o que apontar e o que evitar</h1>
       <p>O roteiro completo do deck “Sistema de Gerenciamento de Filas Bancárias”. Para cada um dos 9 slides:
-         a ideia central, a fala pronta, a explicação de cada bloco, o gesto e a pergunta que ele convida.
-         Tempo total: cerca de 12 minutos.</p>
+         o texto exato que está no PPTX, a ideia central, uma fala contínua e cronometrada, a explicação de cada
+         bloco, o gesto, a transição e a pergunta que ele convida. Tempo total: 11:40 de fala; cerca de 12:30 com
+         as transições.</p>
     </div>
 
     <div class="callout tip">
@@ -78,6 +79,17 @@
          “está especificado” e mostre a lacuna.</p>
     </div>
 
+    <div class="callout danger">
+      <div class="ct">O que esta versão corrige — leia antes de ensaiar</div>
+      <p><strong>2:1, não 3:2:1:</strong> o PDF e as tarefas antigas falam 3:2:1; o código, o README e os testes fazem 2:1.<br>
+         <strong>13.466 não diz “sobre todos”:</strong> a lei cria a prioridade especial <em>dentre os idosos</em>; a
+         precedência absoluta é a regra do projeto, defendida pelo modelo do TSE como referência externa.<br>
+         <strong>O painel existe:</strong> é HTML em <code>st.iframe</code>, com polling de 5 s — não é “tempo real” por push.<br>
+         <strong>Faker gera dados; unittest testa:</strong> são 18 métodos, e o teste de integração real pode ser pulado sem credenciais.<br>
+         <strong>Concorrência tem limites:</strong> o lock é por processo e não há teste de carga com duas instâncias; a checagem de guichê ocupado não é à prova de corrida.<br>
+         <strong>“Pronto para produção” é falso:</strong> faltam login individual, observabilidade, carga e retenção/LGPD; totens e aplicativos não existem.</p>
+    </div>
+
     <h2 id="mapa">Mapa dos 9 slides</h2>
     <p class="lead">Cada slide responde a uma pergunta. Se você perder o fio, volte para a coluna “ideia em uma frase”.</p>
 
@@ -91,8 +103,8 @@
           <tr><td>4</td><td><a href="#slide-4">Extração de Dados</a></td><td>Banco → REST → pandas → três deques.</td><td>1:20</td><td>o fluxo de 4 caixas</td></tr>
           <tr><td>5</td><td><a href="#slide-5">Starvation</a></td><td>80+ absoluto; ciclo 2:1 para o convencional não morrer.</td><td>2:00</td><td>as duas colunas + traço</td></tr>
           <tr><td>6</td><td><a href="#slide-6">Gerenciador de Fila</a></td><td>Três filas, um lock e rollback se o banco falhar.</td><td>1:20</td><td>os quatro cartões</td></tr>
-          <tr><td>7</td><td><a href="#slide-7">Interface</a></td><td>Dashboard, TV de banco em iframe e controles com senha.</td><td>1:30</td><td>os quatro cartões</td></tr>
-          <tr><td>8</td><td><a href="#slide-8">Testes e Conclusão</a></td><td>18 testes provam as regras; o que falta é hardening.</td><td>1:30</td><td>as duas colunas</td></tr>
+          <tr><td>7</td><td><a href="#slide-7">Interface</a></td><td>Dashboard, TV de banco em iframe com polling de 5 s e controles com senha.</td><td>1:30</td><td>os quatro cartões</td></tr>
+          <tr><td>8</td><td><a href="#slide-8">Testes e Conclusão</a></td><td>18 métodos testam as regras; um é condicional; o que falta é hardening.</td><td>1:30</td><td>as duas colunas</td></tr>
           <tr><td>9</td><td><a href="#slide-9">Obrigado</a></td><td>Prioridade legal verificável, não só fila organizada.</td><td>0:30</td><td>a frase final</td></tr>
         </tbody>
       </table>
@@ -119,8 +131,9 @@
       <div class="card" style="grid-column:1/-1">
         <h3>Números de cor</h3>
         <p><strong>3</strong> filas · <strong>0/1/2</strong> níveis · <strong>2:1</strong> ciclo · <strong>15/35/50</strong>
-           distribuição · <strong>18</strong> testes · <strong>4</strong> tabelas · <strong>5 s</strong> de atualização.
-           Números errados destroem a credibilidade mais rápido que uma resposta incompleta.</p>
+           probabilidades · <strong>18</strong> métodos de teste (17 + 1 condicional) · <strong>4</strong> tabelas ·
+           <strong>7</strong> motivos padrão no seed · <strong>5 s</strong> de polling. Números errados destroem a
+           credibilidade mais rápido que uma resposta incompleta.</p>
       </div>
     </div>
 
@@ -143,20 +156,31 @@
     </div>
 
     <h2 id="slides">Slide por slide</h2>
-    <p class="lead">Em cada seção: a fala pronta, a explicação de cada bloco do slide, o gesto e a pergunta que a
-      banca tende a fazer. Os tempos somam 11:40; com as transições, cerca de 12:30.</p>
+    <p class="lead">Em cada seção: o texto exato do slide, a fala pronta, a explicação de cada bloco, o gesto, a
+      transição e a pergunta que a banca tende a fazer. Os tempos somam 11:40; com as transições, cerca de 12:30.</p>
 
     <!-- ================= SLIDE 1 ================= -->
     <h2 id="slide-1">Slide 1 · Capa</h2>
     <p class="lead">Objetivo: dizer o que é o projeto, quem fez e qual pergunta ele responde. Não gaste mais que 40 segundos.</p>
 
+    <details>
+      <summary>Texto exato do slide</summary>
+      <div class="body">
+        <p><strong>Sistema de Gerenciamento de Filas Bancárias</strong><br>
+          Projeto A3 — Engenharia de Software</p>
+        <p>Equipe: Cauã Praxedes, Bruno Gomes, Alexandre Mascarenhas, Gustavo Ventura, Diogo Messias, Tayná Muniz,
+          Bruno Da Silva.</p>
+      </div>
+    </details>
+
     <div class="ans">
       <strong>Fala pronta (40 s)</strong>
-      “Bom dia. Somos [diga só os nomes de quem está presente] e este é o nosso Projeto A3 de Engenharia de Software:
-      um Sistema de Gerenciamento de Filas Bancárias. O problema que escolhemos é simples de enunciar e difícil de
-      resolver: como organizar a fila de uma agência para cumprir a lei de prioridades sem transformar a fila comum
-      em uma fila que nunca anda? Em cerca de doze minutos vamos mostrar a base legal, a arquitetura, o algoritmo
-      anti-inanição, a interface e as provas.”
+      <p>“Bom dia. Nós somos [diga apenas os nomes de quem está presente] e este é o nosso Projeto A3 de Engenharia de
+        Software: um Sistema de Gerenciamento de Filas Bancárias. A pergunta que organiza o trabalho é simples de
+        enunciar e difícil de responder: como decidir a ordem de chamada de uma agência para cumprir as prioridades
+        legais sem deixar a fila convencional parar? Em cerca de doze minutos, vamos mostrar o problema e a base legal,
+        o banco, o caminho do dado, o algoritmo anti-inanição, o gerenciador, a interface e as provas. O código que
+        vocês vão ver é o do repositório <code>Cauapm/A3---Sergio</code>, e o roteiro segue o deck 2.0.”</p>
     </div>
 
     <h3>Como explicar cada parte</h3>
@@ -166,17 +190,20 @@
         <tbody>
           <tr><td><strong>Título</strong></td><td>“Sistema de Gerenciamento de Filas Bancárias” — não é um app de senha: é um sistema que decide a ordem de chamada.</td><td>mão aberta sobre o título, sem ler palavra por palavra</td></tr>
           <tr><td><strong>Subtítulo</strong></td><td>“Projeto A3 — Engenharia de Software”: disciplina, entrega acadêmica, mas com restrição real de lei.</td><td>uma frase e siga</td></tr>
-          <tr><td><strong>Equipe</strong></td><td>Quem fez o quê em uma frase: “o núcleo e os testes ficaram com [X], a interface com [Y], o banco com [Z]”.</td><td>aponte para os nomes presentes; não leia a lista inteira</td></tr>
+          <tr><td><strong>Equipe</strong></td><td>Cite os nomes presentes e diga que o trabalho foi dividido entre núcleo e algoritmo, banco, interface e testes. Não invente a divisão nominal se você não tem certeza.</td><td>aponte para os nomes presentes; não leia a lista inteira</td></tr>
         </tbody>
       </table>
     </div>
+
+    <p><strong>Transição:</strong> “A pergunta central é: quem deve ser chamado agora?”</p>
 
     <details>
       <summary>Pergunta provável: “Por que fila bancária?”</summary>
       <div class="body">
         <p>“Porque é um problema real, com uma restrição legal objetiva e uma propriedade de justiça que dá para
-          provar: nenhum cliente convencional pode esperar para sempre enquanto a fila de prioridade não para de
-          chegar. Isso conecta estrutura de dados, banco e interface em um caso concreto.”</p>
+          demonstrar: quando a fila 80+ esvazia, o ciclo 2:1 garante que o convencional avance. Isso conecta estrutura
+          de dados, banco e interface em um caso concreto — e também obriga a assumir o limite: se a fila 80+ nunca
+          esvaziar, a prioridade absoluta prevalece e a solução é operacional, não uma mudança no ciclo.”</p>
       </div>
     </details>
 
@@ -185,14 +212,42 @@
     <p class="lead">Objetivo: justificar o projeto e apresentar a base legal. É o slide em que a banca decide se você
       domina o problema ou só o código.</p>
 
+    <details>
+      <summary>Texto exato do slide</summary>
+      <div class="body">
+        <p><strong>1. Introdução e Objetivo</strong><br>
+          Contextualização e alinhamento com a legislação brasileira de atendimento</p>
+        <p><strong>O Problema &amp; Desafio</strong></p>
+        <ul>
+          <li>Dificuldade na gestão de filas físicas em agências bancárias.</li>
+          <li>Necessidade crítica de cumprimento rigoroso da legislação brasileira.</li>
+          <li>Risco de inanição (starvation) em clientes convencionais sob alta demanda prioritária.</li>
+        </ul>
+        <p><strong>Objetivos e Base Legal</strong></p>
+        <ul>
+          <li>Desenvolver solução automatizada integrada (Python, Streamlit e Supabase).</li>
+          <li>Lei 13.466/2017: Superprioridade absoluta para idosos com 80+ anos.</li>
+          <li>Leis 10.048/2000 &amp; 12.764/2012: Prioridade Padrão (idosos 60-79, gestantes, PCD, TEA).</li>
+          <li>Atendimento Convencional equilibrado por ciclo anti-inanição.</li>
+        </ul>
+      </div>
+    </details>
+
     <div class="ans">
       <strong>Fala pronta (1:30)</strong>
-      “O ponto de partida é uma agência com três grupos de direitos diferentes. A dificuldade não é só a fila física:
-      é provar que a ordem de chamada respeita a lei. Se o sistema atende só prioridades, a fila convencional pode
-      nunca ser chamada — é o starvation. Se atende só por chegada, descumpre a lei. Nosso objetivo foi automatizar
-      essa decisão com Python, Streamlit e Supabase. A base legal tem duas camadas: a Lei 13.466/2017 criou a
-      prioridade especial dos 80+ entre os idosos; as Leis 10.048/2000 e 12.764/2012 definem a prioridade padrão —
-      idosos de 60 a 79, gestantes, PCD e TEA. E o ciclo 2:1 garante que o convencional não fique para sempre.”
+      <p>“O ponto de partida é uma agência em que três grupos têm direitos diferentes. O primeiro problema é
+        operacional: a fila física não deixa claro quem chegou quando, quem tem prioridade e quanto tempo cada pessoa
+        esperou. O segundo é jurídico: prioridade não é cortesia. A Lei 10.048/2000, no art. 2º, parágrafo único,
+        inclui expressamente as instituições financeiras entre as obrigadas ao atendimento prioritário. O terceiro é
+        algorítmico: se o sistema chamar só quem tem prioridade, a fila convencional pode nunca andar — é a inanição,
+        ou starvation; se chamar só por chegada, descumpre a lei. Nosso objetivo foi automatizar essa decisão com
+        Python, Streamlit e Supabase.”</p>
+      <p>“A base legal tem duas camadas. A Lei 13.466/2017 criou a prioridade especial dos 80+ <em>dentre os idosos</em>;
+        o projeto implementa precedência absoluta no nível 0 e usa o modelo do TSE como referência externa para
+        defendê-la. As Leis 10.048/2000 e 12.764/2012 definem a prioridade padrão; o slide cita idosos de 60 a 79,
+        gestantes, PCD e TEA como exemplos. O texto legal é mais amplo — inclui lactantes, criança de colo, obesidade e
+        mobilidade reduzida — e o seed cobre sete motivos. E o ciclo 2:1, duas chamadas da padrão para uma da
+        convencional quando não há 80+, é o que impede a fila comum de morrer.”</p>
     </div>
 
     <h3>Como explicar cada parte</h3>
@@ -205,11 +260,13 @@
           <tr><td><strong>Risco de starvation</strong></td><td>Defina em uma frase: “é quando uma categoria nunca é chamada porque sempre existe alguém de prioridade maior na frente”.</td><td>use as mãos: uma fila alta que nunca esvazia e uma baixa parada</td></tr>
           <tr><td><strong>Solução integrada</strong></td><td>Python decide, Streamlit mostra, Supabase guarda. Três camadas, uma regra só.</td><td>conte nos dedos: regra, tela, banco</td></tr>
           <tr><td><strong>Lei 13.466/2017</strong></td><td>Criou a prioridade especial dos maiores de 80 <em>dentre os idosos</em>. O código implementa precedência absoluta no nível 0; a referência externa para defender essa escolha é o modelo do TSE (preferência sobre todos, independentemente da chegada) — o repositório não cita o TSE.</td><td>“no banco, a base é 10.048 + Estatuto; para defender a precedência absoluta, uso o modelo do TSE como referência externa”</td></tr>
-          <tr><td><strong>Leis 10.048/2000 e 12.764/2012</strong></td><td>O rol da lei inclui 60+, gestantes, lactantes, criança de colo, PCD, obesidade, TEA, mobilidade reduzida e doadores (estes por último). O seed do projeto cobre 7 motivos: 60–79, gestante, lactante, criança de colo, PCD, obesidade e TEA — não modela mobilidade reduzida nem doadores.</td><td>não leia a lista inteira: cite três e diga “o seed cobre sete motivos; mobilidade e doadores ficaram fora”</td></tr>
-          <tr><td><strong>Ciclo anti-inanição</strong></td><td>O convencional tem uma chamada garantida a cada três, quando a fila 80+ está vazia.</td><td>“duas padrão, uma convencional” com dois dedos e um dedo</td></tr>
+          <tr><td><strong>Leis 10.048/2000 e 12.764/2012</strong></td><td>O rol da lei é mais amplo que os quatro exemplos do slide: inclui 60+, gestantes, lactantes, criança de colo, PCD, obesidade, TEA, mobilidade reduzida e doadores. O seed do projeto cobre 7 motivos: 60–79, gestante, lactante, criança de colo, PCD, obesidade e TEA — não modela mobilidade reduzida nem doadores.</td><td>não leia a lista inteira: cite três e diga “o seed cobre sete motivos; mobilidade e doadores ficaram fora”</td></tr>
+          <tr><td><strong>Ciclo anti-inanição</strong></td><td>Quando a fila 80+ está vazia, o convencional tem uma chamada a cada três do ciclo: padrão, padrão, convencional. Se a fila da etapa está vazia, a etapa avança. Não é garantia de progresso se a fila 80+ nunca esvaziar.</td><td>“duas padrão, uma convencional” com dois dedos e um dedo</td></tr>
         </tbody>
       </table>
     </div>
+
+    <p><strong>Transição:</strong> “Para responder isso, precisamos de estado confiável. É o banco.”</p>
 
     <div class="callout warn">
       <div class="ct">Cuidado jurídico que a banca vai testar</div>
@@ -236,16 +293,37 @@
     <h2 id="slide-3">Slide 3 · Banco de Dados</h2>
     <p class="lead">Objetivo: mostrar que a persistência não é um detalhe — ela garante integridade e segurança.</p>
 
+    <details>
+      <summary>Texto exato do slide</summary>
+      <div class="body">
+        <p><strong>2. Banco de Dados</strong><br>
+          Arquitetura relacional, integridade transacional e segurança no Supabase</p>
+        <p><strong>Supabase / PostgreSQL</strong> — Infraestrutura robusta em nuvem com alta disponibilidade e APIs
+          REST instantâneas.</p>
+        <p><strong>Tabelas Principais</strong> — Estrutura relacional composta por <code>clientes_fila</code>,
+          <code>atendimentos</code>, <code>tipo_prioridade</code> e <code>motivo_prioridade</code>.</p>
+        <p><strong>Segurança RLS</strong> — Row Level Security ativado para impedir acessos diretos públicos,
+          operando via <code>service_role</code>.</p>
+        <p><strong>Transações RPC</strong> — Funções SQL atômicas (<code>chamar_cliente</code> /
+          <code>finalizar_atendimento</code>) que evitam concorrência entre guichês.</p>
+      </div>
+    </details>
+
     <div class="ans">
       <strong>Fala pronta (1:20)</strong>
-      “A persistência é o Supabase, que é PostgreSQL gerenciado com uma API REST pronta. O modelo tem quatro tabelas:
-      <code>clientes_fila</code>, <code>atendimentos</code> e as tabelas de domínio <code>tipo_prioridade</code> e
-      <code>motivo_prioridade</code>. A segurança não depende do cliente: o RLS está fechado nas tabelas da fila —
-      sem policy, a chave pública não lê nem escreve <code>clientes_fila</code> nem <code>atendimentos</code>; as
-      tabelas de domínio continuam com leitura pública. O app usa a chave secreta <code>service_role</code> no
-      servidor. E as operações
-      críticas são funções SQL atômicas: <code>chamar_cliente</code> e <code>finalizar_atendimento</code>. Se dois
-      guichês tentarem chamar o mesmo cliente, uma falha; se o guichê já tem atendimento aberto, a função recusa.”
+      <p>“A persistência é o Supabase, que é PostgreSQL gerenciado e expõe uma API REST sobre as tabelas. O modelo tem
+        quatro tabelas: <code>clientes_fila</code>, que guarda quem espera; <code>atendimentos</code>, que registra cada
+        chamada; e duas tabelas de domínio, <code>tipo_prioridade</code> e <code>motivo_prioridade</code>. A segurança
+        está no banco, não no cliente. O RLS está habilitado nas quatro tabelas; nas duas tabelas da fila as policies
+        foram removidas, então a chave pública não lê nem escreve; tipo e motivo continuam com leitura pública. As
+        views de compatibilidade usam <code>security_invoker</code>, e o <code>EXECUTE</code> das funções foi revogado
+        de <code>anon</code> e <code>authenticated</code>. Quem opera a fila é a <code>service_role</code>, uma chave
+        secreta que fica no servidor.”</p>
+      <p>“As duas operações críticas são funções SQL atômicas: <code>chamar_cliente</code> marca o cliente como
+        <code>em_atendimento</code> e insere a linha em <code>atendimentos</code> na mesma transação;
+        <code>finalizar_atendimento</code> fecha o atendimento aberto e marca o cliente como <code>atendido</code>. Se
+        o cliente já não está aguardando, <code>chamar_cliente</code> falha. A função também verifica se o guichê já
+        tem atendimento aberto. É essa atomicidade que impede dois guichês de chamarem o mesmo cliente.”</p>
     </div>
 
     <h3>Como explicar cada parte</h3>
@@ -256,9 +334,22 @@
           <tr><td><strong>Supabase / PostgreSQL</strong></td><td>PostgreSQL gerenciado, com API REST gerada pelo PostgREST; a disponibilidade é do fornecedor. Vantagem: não manter servidor de banco; trade-off: dependência de fornecedor.</td><td>“não é um banco local: é um Postgres na nuvem com API pronta”</td></tr>
           <tr><td><strong>Tabelas principais</strong></td><td><code>clientes_fila</code> guarda quem espera (id UUID, nome, CPF, nascimento, nível, motivo, status, chegada). <code>atendimentos</code> guarda cada chamada (cliente, guichê, chamada, finalização). As duas de domínio normalizam tipo e motivo.</td><td>desenhe no ar: duas tabelas grandes e duas pequenas de apoio</td></tr>
           <tr><td><strong>Segurança RLS</strong></td><td>Row Level Security: nas tabelas da fila, as policies foram removidas; sem policy, a chave anônima é negada. As tabelas de domínio (tipo e motivo) mantêm <code>SELECT</code> público. As views usam <code>security_invoker</code> e o <code>EXECUTE</code> das funções foi revogado de <code>anon</code>. Só a <code>service_role</code>, que fica no servidor, opera a fila.</td><td>“a chave que o navegador vê não abre a fila”</td></tr>
-          <tr><td><strong>Transações RPC</strong></td><td>As funções PL/pgSQL rodam em uma transação: marcar <code>em_atendimento</code> + inserir o atendimento acontece junto ou não acontece. A função também barra guichê ocupado e cliente que já saiu de <code>aguardando</code>.</td><td>“ou tudo, ou nada” — abra e feche as mãos</td></tr>
+          <tr><td><strong>Transações RPC</strong></td><td>As funções PL/pgSQL rodam em uma transação: marcar <code>em_atendimento</code> + inserir o atendimento acontece junto ou não acontece. A função barra cliente que já saiu de <code>aguardando</code> e tem uma checagem de guichê ocupado. A checagem de guichê é um <code>EXISTS</code> seguido de <code>INSERT</code>: no caso normal funciona; sob duas transações simultâneas, não é à prova de corrida.</td><td>“ou tudo, ou nada” — abra e feche as mãos</td></tr>
         </tbody>
       </table>
+    </div>
+
+    <p><strong>Transição:</strong> “Mas o banco não é a fila: é a fonte da verdade. O próximo passo é extrair.”</p>
+
+    <div class="callout warn">
+      <div class="ct">A corrida que o slide não mostra</div>
+      <p>Dois guichês chamando o <strong>mesmo cliente</strong> são bloqueados: o <code>UPDATE ... WHERE status =
+        'aguardando'</code> deixa apenas uma transação encontrar a linha; a outra falha. O caso do <strong>mesmo
+        guichê</strong> é diferente: a checagem de atendimento aberto é um <code>EXISTS</code> antes do
+        <code>INSERT</code>, e duas transações simultâneas podem passar pelas duas etapas. Não há índice parcial único
+        para “um atendimento aberto por guichê”. O lock do Streamlit reduz o problema dentro de um processo, mas não
+        entre duas instâncias. A resposta honesta: “a atomicidade cobre o cliente; para o guichê, o próximo passo é um
+        índice parcial único ou <code>SELECT ... FOR UPDATE</code>”.</p>
     </div>
 
     <details>
@@ -282,13 +373,38 @@
     <h2 id="slide-4">Slide 4 · Extração de Dados</h2>
     <p class="lead">Objetivo: mostrar o caminho do dado, do banco até a memória, e por que a ordem de chegada é confiável.</p>
 
+    <details>
+      <summary>Texto exato do slide</summary>
+      <div class="body">
+        <p><strong>3. Extração de Dados</strong><br>
+          Fluxo eficiente de sincronização entre persistência e lógica de filas</p>
+        <p><strong>1. Banco de Dados</strong><br>
+          Supabase / PostgreSQL<br>
+          Tabelas de clientes aguardando</p>
+        <p><strong>2. Extração REST</strong><br>
+          <code>extracao.py</code><br>
+          Requisições seguras via headers</p>
+        <p><strong>3. DataFrame Pandas</strong><br>
+          Conversão e filtragem<br>
+          Ordenação server-side (FIFO)</p>
+        <p><strong>4. Gerenciador</strong><br>
+          Alimentação das filas<br>
+          Processamento em memória</p>
+      </div>
+    </details>
+
     <div class="ans">
       <strong>Fala pronta (1:20)</strong>
-      “A cada atualização, o sistema não confia só na memória: ele relê o estado do banco. O <code>extracao.py</code>
-      monta a URL REST já filtrando <code>status=aguardando</code> e ordenando por <code>data_chegada</code>. A chave
-      vai no header, não na URL. O pandas converte o JSON em DataFrame e o gerenciador distribui cada linha para o
-      deque do nível certo. Isso garante que a ordem dentro de cada prioridade seja a do banco — não a ordem em que
-      o Python lembrou de carregar.”
+      <p>“O banco é a fonte da verdade, mas não é a fila em memória. A cada sincronização, o <code>extracao.py</code>
+        monta a URL REST já com dois parâmetros: <code>status=eq.aguardando</code> e
+        <code>order=data_chegada.asc</code>. A chave vai nos headers <code>apikey</code> e <code>Authorization</code>,
+        não na URL. O pandas lê o JSON e devolve um DataFrame; a coluna <code>id_motivo</code> é descartada, mas o
+        <code>id</code> UUID é preservado, porque é ele que o atendimento referencia. O gerenciador limpa os três
+        deques, garante a ordenação por <code>data_chegada</code>, converte cada linha em <code>Cliente</code> e faz
+        <code>append</code> no deque do nível 0, 1 ou 2.”</p>
+      <p>“Nas atualizações periódicas do painel, a sincronização usa <code>preservar_ciclo=True</code>; sem isso, cada
+        leitura do banco reiniciaria o ciclo 2:1. Assim, a ordem dentro de cada prioridade vem do banco, e o ciclo
+        continua de onde parou. A extração só lê: quem muda status é o RPC, não o pandas.”</p>
     </div>
 
     <h3>Como explicar cada parte</h3>
@@ -302,6 +418,15 @@
           <tr><td><strong>4. Gerenciador</strong></td><td>Cada linha vira um <code>Cliente</code> e entra no deque do nível 0, 1 ou 2. A fila é reconstruída em memória, preservando o ciclo 2:1 quando a atualização é periódica.</td><td>“aqui termina o dado e começa a decisão”</td></tr>
         </tbody>
       </table>
+    </div>
+
+    <p><strong>Transição:</strong> “Com as filas carregadas, a decisão fica no algoritmo.”</p>
+
+    <div class="callout ok">
+      <div class="ct">O que a extração não faz</div>
+      <p>Ela não chama ninguém, não altera status e não grava atendimento. É leitura: <code>status=eq.aguardando</code>
+        no servidor e uma segunda filtragem de status no gerenciador. Quem transiciona o cliente é
+        <code>chamar_cliente</code> / <code>finalizar_atendimento</code>.</p>
     </div>
 
     <div class="diagram">
@@ -332,14 +457,41 @@
     <p class="lead">Objetivo: este é o slide mais importante. Se a banca só entender uma coisa, que seja esta: 80+ é
       absoluto; o ciclo 2:1 é o que impede o convencional de morrer.</p>
 
+    <details>
+      <summary>Texto exato do slide</summary>
+      <div class="body">
+        <p><strong>4. Starvation: Algoritmo Anti-Inanição</strong><br>
+          Garantia matemática de equidade para o atendimento convencional</p>
+        <p><strong>Prioridade Absoluta (80+)</strong></p>
+        <ul>
+          <li>Superprioridade (Lei 13.466/2017) possui precedência total.</li>
+          <li>Sempre atendidos primeiro em ordem FIFO estrita.</li>
+          <li>Preserva contadores do ciclo ponderado das demais filas.</li>
+        </ul>
+        <p><strong>Ciclo Ponderado 2:1</strong></p>
+        <ul>
+          <li>Ativado quando a fila Superprioridade está vazia.</li>
+          <li>Sequência padrão de atendimento: Padrão → Padrão → Convencional.</li>
+          <li>Evita que clientes convencionais fiquem indefinidamente esperando.</li>
+          <li>Avanço automático de etapa caso uma fila específica esteja vazia.</li>
+        </ul>
+      </div>
+    </details>
+
     <div class="ans">
       <strong>Fala pronta (2:00)</strong>
-      “Este é o coração do projeto. Existem duas regras. A primeira: se há alguém com 80 anos ou mais, ele é chamado
-      agora, em FIFO, e isso não altera o contador do ciclo. A segunda: quando a fila 80+ está vazia, o sistema atende
-      duas vezes a prioridade padrão e uma vez a convencional. O contador não reinicia quando um 80+ chega no meio:
-      ele pausa. Se a fila da vez está vazia, a etapa avança sem gastar chamada. Com isso, o convencional tem uma
-      garantia de progresso a cada três chamadas — desde que a fila 80+ não esteja permanentemente cheia; nesse caso,
-      a prioridade absoluta continua valendo, e isso é uma escolha legal, não um bug.”
+      <p>“Este é o coração do projeto, e eu quero separar duas regras que às vezes são confundidas. A primeira é a
+        prioridade absoluta: se existe alguém na fila de 80+, essa pessoa é a próxima, em ordem de chegada entre os
+        80+. A função retira do deque super e devolve etapa e contador exatamente como estavam; o 80+ não reinicia o
+        ciclo, ele apenas interrompe. A segunda regra vale quando a fila 80+ está vazia: o sistema faz duas chamadas da
+        prioridade padrão e uma da convencional. A etapa começa em padrão; depois de duas chamadas, ou antes, se a fila
+        padrão esvaziar, passa para convencional; depois de uma, volta para padrão. Se a fila da vez está vazia, a
+        etapa avança sem consumir chamada.”</p>
+      <p>“Isso é um weighted round-robin com cotas 2 e 1, implementado em <code>aplicar_starvation</code>, no
+        <code>Alexandre.py</code>. O efeito é que o convencional tem progresso garantido no cenário normal, quando a
+        fila 80+ esvazia. Se a fila 80+ nunca esvaziar, a prioridade absoluta continua prevalecendo; nesse caso, o
+        problema é operacional — mais guichês ou uma fila separada —, não um bug do ciclo. E atenção: o ciclo é 2:1,
+        não 3:2:1. O PDF e as tarefas antigas falam 3:2:1; o README foi corrigido, e o código e os testes fazem 2:1.”</p>
     </div>
 
     <h3>Como explicar cada parte</h3>
@@ -366,8 +518,18 @@
           <tr><td>80+ chega no meio</td><td><code>P0 · S0 · P1 · C0</code></td><td>o super não reinicia o ciclo; ele pausa</td></tr>
           <tr><td>80+ desde o início</td><td><code>S0 · S1 · P0 · P1 · C0 · P2</code></td><td>super em FIFO e, depois, o 2:1 normal</td></tr>
           <tr><td>Padrão vazia</td><td><code>C0 · C1 · C2…</code></td><td>a etapa avança sem chamada perdida</td></tr>
+          <tr><td>Convencional vazia</td><td><code>P0 · P1 · P2 · P3…</code></td><td>a etapa avança e a padrão continua sendo chamada</td></tr>
         </tbody>
       </table>
+    </div>
+
+    <p><strong>Transição:</strong> “O algoritmo é puro; quem o executa com segurança é o gerenciador.”</p>
+
+    <div class="callout warn">
+      <div class="ct">“Garantia matemática” precisa de uma premissa</div>
+      <p>A frase do slide só é verdadeira no cenário em que a fila 80+ esvazia. Com a fila 80+ permanentemente cheia,
+        não existe cota que faça o convencional passar: a prioridade absoluta é a regra. Diga “garantia de progresso
+        quando a fila 80+ esvazia” — e não “eliminação matemática da inanição em qualquer cenário”.</p>
     </div>
 
     <div class="callout warn">
@@ -392,13 +554,34 @@
     <h2 id="slide-6">Slide 6 · Gerenciador de Fila</h2>
     <p class="lead">Objetivo: mostrar quem executa a regra e como o sistema se protege de concorrência e falha.</p>
 
+    <details>
+      <summary>Texto exato do slide</summary>
+      <div class="body">
+        <p><strong>5. Gerenciador de Fila</strong><br>
+          Orquestração central da lógica de negócios e estado em memória</p>
+        <p><strong>Estrutura em Três Filas</strong> — Separação física em deques independentes para Super, Padrão e
+          Convencional.</p>
+        <p><strong>Regras de Escalonamento</strong> — Integração direta com o algoritmo anti-starvation para escolha do
+          próximo cliente.</p>
+        <p><strong>Controle de Concorrência</strong> — Utilização de <code>threading.Lock</code> para garantir segurança
+          em operações simultâneas.</p>
+        <p><strong>Resiliência e Rollback</strong> — Mecanismo de restauração de contadores locais em caso de falhas de
+          persistência.</p>
+      </div>
+    </details>
+
     <div class="ans">
       <strong>Fala pronta (1:20)</strong>
-      “O <code>GerenciadorFilas</code> é o orquestrador. Ele mantém três deques independentes. O escalonamento é
-      delegado para <code>aplicar_starvation</code>, que recebe as três filas e devolve o cliente e a fila de origem.
-      O acesso é protegido por um <code>threading.Lock</code> compartilhado por todos os guichês — um gerenciador por
-      servidor, para o ciclo valer para a agência inteira. E há rollback: se o banco recusar a chamada, o cliente volta
-      para a frente da fila e os contadores voltam ao valor anterior.”
+      <p>“O <code>GerenciadorFilas</code> é a camada que dá estado e segurança ao algoritmo. Ele mantém três deques
+        independentes — super, padrão e convencional — e dois contadores, etapa e contador, que representam a posição do
+        ciclo 2:1. O <code>chamar_proximo</code> guarda os valores anteriores, chama <code>aplicar_starvation</code>,
+        grava o novo estado e, se houver repositório, registra a chamada. O acesso é protegido por um
+        <code>threading.Lock</code> compartilhado por todos os guichês. O <code>get_gerenciador</code> é
+        <code>cache_resource</code>: ele cria um gerenciador por processo do servidor Streamlit, não um por sessão.
+        Isso faz o ciclo valer para a agência inteira dentro daquele processo.”</p>
+      <p>“E há rollback: se o repositório lançar erro, o gerenciador restaura etapa e contador e faz
+        <code>appendleft</code> do cliente, devolvendo-o à frente da fila. O lock resolve a concorrência dentro do
+        processo; a garantia entre processos fica no RPC do banco, que confere se o cliente ainda está aguardando.”</p>
     </div>
 
     <h3>Como explicar cada parte</h3>
@@ -408,19 +591,32 @@
         <tbody>
           <tr><td><strong>Estrutura em três filas</strong></td><td>Três <code>deque</code>: super, padrão e convencional. Separação física evita comparar níveis a cada chamada e deixa a política legível.</td><td>desenhe três caixas lado a lado</td></tr>
           <tr><td><strong>Regras de escalonamento</strong></td><td><code>chamar_proximo()</code> chama a função pura e atualiza etapa/contador com o que ela devolve. A regra não fica espalhada pelo gerenciador.</td><td>“o gerenciador não decide a ordem; ele executa a decisão”</td></tr>
-          <tr><td><strong>Controle de concorrência</strong></td><td><code>conexao.get_gerenciador()</code> é <code>cache_resource</code>: um gerenciador por servidor, com um <code>threading.Lock</code>. As páginas usam <code>with lock:</code> em volta de sincronizar + chamar.</td><td>“um guichê por vez entra na seção crítica”</td></tr>
+          <tr><td><strong>Controle de concorrência</strong></td><td><code>conexao.get_gerenciador()</code> é <code>cache_resource</code>: um gerenciador por <em>processo</em> do servidor Streamlit, com um <code>threading.Lock</code>. As páginas usam <code>with lock:</code> em volta de sincronizar + chamar.</td><td>“um guichê por vez entra na seção crítica”</td></tr>
           <tr><td><strong>Resiliência e rollback</strong></td><td>Antes da chamada, o gerenciador guarda etapa e contador. Se o repositório lançar erro, restaura os dois e faz <code>appendleft</code> do cliente.</td><td>“o cliente não desaparece nem pula a vez por causa de uma falha de rede”</td></tr>
         </tbody>
       </table>
+    </div>
+
+    <p><strong>Transição:</strong> “E como isso chega ao operador? Na interface.”</p>
+
+    <div class="callout warn">
+      <div class="ct">O que o lock não faz</div>
+      <p>Ele não é um lock distribuído. Duas instâncias do Streamlit têm dois locks e dois gerenciadores; cada uma tem
+        seu próprio ciclo 2:1 e suas próprias filas em memória. O RPC protege o cliente contra chamada dupla, mas a
+        checagem de guichê ocupado não é atômica entre transações. Para várias instâncias, o caminho é persistir o ciclo
+        ou serializar a decisão no banco — <code>SELECT ... FOR UPDATE</code>, índice parcial único ou uma fila no
+        próprio banco.</p>
     </div>
 
     <details>
       <summary>Pergunta provável: “O lock resolve concorrência em produção?”</summary>
       <div class="body">
         <p>“Resolve dentro de um processo. Se houver duas instâncias do Streamlit, cada uma tem seu lock; por isso a
-          garantia final é o RPC no banco, que checa se o cliente ainda está <code>aguardando</code> e se o guichê está
-          livre. Para várias instâncias, o próximo passo seria uma transação com <code>SELECT ... FOR UPDATE</code> ou
-          uma fila no próprio banco. O lock é a primeira camada, não a única.”</p>
+          garantia final é o RPC no banco, que confere se o cliente ainda está <code>aguardando</code>. A checagem de
+          guichê ocupado, porém, é um <code>EXISTS</code> antes do <code>INSERT</code>: duas transações simultâneas
+          podem passar pelas duas etapas. Para várias instâncias, o próximo passo seria um índice parcial único para
+          atendimento aberto por guichê ou uma transação com <code>SELECT ... FOR UPDATE</code>. O lock é a primeira
+          camada, não a única.”</p>
       </div>
     </details>
 
@@ -433,13 +629,35 @@
     <h2 id="slide-7">Slide 7 · Interface do Usuário</h2>
     <p class="lead">Objetivo: mostrar que a interface é operacional — não é um dashboard bonito, é a tela que o guichê usa.</p>
 
+    <details>
+      <summary>Texto exato do slide</summary>
+      <div class="body">
+        <p><strong>6. Interface do Usuário</strong><br>
+          Painel web interativo desenvolvido em Streamlit com atualização em tempo real</p>
+        <p><strong>Dashboard Inicial</strong> — Métricas gerais de atendimento e visualização das três filas ativas.</p>
+        <p><strong>Painel do Operador</strong> — Interface estilo “TV de banco” isolada em iframe com atualização
+          automática a cada 5s.</p>
+        <p><strong>Cores Semânticas</strong> — Vermelho (Super), Âmbar (Padrão) e Verde (Convencional) para identificação
+          visual imediata.</p>
+        <p><strong>Controles de Guichê</strong> — Seleção de guichê, chamadas atômicas e botões de finalização protegidos
+          por senha segura.</p>
+      </div>
+    </details>
+
     <div class="ans">
       <strong>Fala pronta (1:30)</strong>
-      “A interface tem três páginas. O Início mostra as métricas da agência: quantos aguardando em cada nível e quantas
-      chamadas. O Painel de atendimento é a ‘TV de banco’: um HTML isolado em iframe, atualizado a cada 5 segundos, com
-      o ticket chamado, o guichê e as três filas. As cores são semânticas: vermelho para 80+, âmbar para padrão, verde para
-      convencional. Os controles ficam acima: escolher guichê, chamar próximo e finalizar — os dois últimos exigem a
-      senha do operador.”
+      <p>“A interface é a parte operacional. O app tem três páginas montadas com <code>st.navigation</code>: Início,
+        Painel de atendimento e Banco de dados. O Início lê do Supabase quatro métricas — total aguardando e a contagem
+        por nível — e, como legenda, o total de chamadas registradas; ele mostra contagens, não as listas. O Painel é a
+        ‘TV de banco’: o Streamlit monta um payload JSON, injeta em <code>painel.html</code> e renderiza esse HTML
+        dentro de um iframe. O fragmento roda a cada 5 segundos; se o payload não muda, o HTML é idêntico e o iframe
+        não é recriado. O painel mostra o ticket atual, o guichê, o nome, o motivo e as três filas, com as cores
+        semânticas: vermelho para 80+, âmbar para padrão e verde para convencional.”</p>
+      <p>“Acima do painel ficam os controles: iniciar atendimento, escolher o guichê, chamar próximo e finalizar. As
+        duas ações que alteram o banco exigem a senha do operador; a comparação é feita no servidor com
+        <code>hmac.compare_digest</code>, e a senha fica no <code>.env</code> ou nos Secrets. Sem a senha correta, os
+        botões ficam desabilitados. O botão ‘Iniciar atendimento’ é um estado de sessão: ele libera a tela naquela
+        sessão, não é um estado global da agência.”</p>
     </div>
 
     <h3>Como explicar cada parte</h3>
@@ -447,13 +665,15 @@
       <table>
         <thead><tr><th>Cartão</th><th>O que explicar</th><th>Como apresentar</th></tr></thead>
         <tbody>
-          <tr><td><strong>Dashboard inicial</strong></td><td><code>views/inicio.py</code>: quatro métricas (aguardando, super, padrão, convencional) e o total de chamadas, lidos do Supabase.</td><td>“é o painel de situação da agência”</td></tr>
-          <tr><td><strong>Painel do operador</strong></td><td><code>views/painel.py</code> monta um payload JSON e injeta em <code>painel.html</code> via <code>st.iframe</code>. <code>@st.fragment(run_every=5)</code> atualiza sem recarregar a página inteira.</td><td>“a TV é um HTML próprio; o Streamlit só alimenta os dados”</td></tr>
+          <tr><td><strong>Dashboard inicial</strong></td><td><code>views/inicio.py</code>: quatro métricas (aguardando, super, padrão, convencional) e o total de chamadas como legenda, lidos do Supabase. Ele mostra contagens; as três listas aparecem no painel.</td><td>“é o painel de situação da agência”</td></tr>
+          <tr><td><strong>Painel do operador</strong></td><td><code>views/painel.py</code> monta um payload JSON e injeta em <code>painel.html</code> via <code>st.iframe</code>. <code>@st.fragment(run_every=5)</code> atualiza sem recarregar a página inteira. É polling de 5 s, não push em tempo real.</td><td>“a TV é um HTML próprio; o Streamlit só alimenta os dados”</td></tr>
           <tr><td><strong>Cores semânticas</strong></td><td>Vermelho <code>#B42318</code> (super), âmbar <code>#A15C07</code> (padrão), verde <code>#2F6F5E</code> (convencional). A cor vem acompanhada do rótulo, não é o único sinal.</td><td>aponte para as três cores e diga “cor + texto”</td></tr>
-          <tr><td><strong>Controles de guichê</strong></td><td>Número do guichê, “Chamar próximo” e “Finalizar atendimento”. <code>operador_autorizado()</code> compara a senha com <code>hmac.compare_digest</code>; a senha fica em <code>.env</code>/Secrets.</td><td>“sem senha, os botões ficam desabilitados”</td></tr>
+          <tr><td><strong>Controles de guichê</strong></td><td>Número do guichê, “Chamar próximo” e “Finalizar atendimento”. <code>operador_autorizado()</code> compara a senha com <code>hmac.compare_digest</code>; a senha fica em <code>.env</code>/Secrets. “Iniciar atendimento” é estado de sessão.</td><td>“sem senha, os botões ficam desabilitados”</td></tr>
         </tbody>
       </table>
     </div>
+
+    <p><strong>Transição:</strong> “Agora, as provas.”</p>
 
     <details>
       <summary>Pergunta provável: “Por que iframe e não componentes do Streamlit?”</summary>
@@ -472,19 +692,53 @@
         é autenticação por operador com registro de quem chamou o quê”.</p>
     </div>
 
+    <div class="callout warn">
+      <div class="ct">O painel é visível para quem tem o link</div>
+      <p>A senha protege as <strong>ações</strong>, não a leitura. O painel é renderizado no servidor com a chave
+        secreta e mostra nomes e motivos para qualquer pessoa que abrir a página. Para produção, isso é uma decisão de
+        LGPD: ou o painel exige autenticação, ou exibe dados minimizados/anonimizados. O botão “Iniciar atendimento”
+        também é por sessão; não é um estado global da agência.</p>
+    </div>
+
     <!-- ================= SLIDE 8 ================= -->
     <h2 id="slide-8">Slide 8 · Testes, Resultados e Conclusão</h2>
     <p class="lead">Objetivo: provar que a regra funciona e fechar com honestidade sobre o que falta.</p>
 
+    <details>
+      <summary>Texto exato do slide</summary>
+      <div class="body">
+        <p><strong>7. Testes, Resultados e Conclusão</strong><br>
+          Validação rigorosa e entrega de uma solução robusta para o Projeto A3</p>
+        <p><strong>Validação e Cenários Testados</strong></p>
+        <ul>
+          <li>Geração estocástica de testes via Faker (15% Super, 35% Padrão, 50% Convencional).</li>
+          <li>Validação bem-sucedida da prioridade absoluta para 80+ anos.</li>
+          <li>Confirmação do funcionamento correto do ciclo anti-inanição 2:1.</li>
+          <li>Testes de concorrência com guichês ocupados e transações atômicas.</li>
+        </ul>
+        <p><strong>Conclusão &amp; Impacto</strong></p>
+        <ul>
+          <li>Integração perfeita entre interface web, lógica em Python e banco PostgreSQL.</li>
+          <li>Cumprimento integral da legislação brasileira de prioridades.</li>
+          <li>Eliminação matemática da inanição na fila convencional.</li>
+          <li>Pronto para produção e expansão para totens e aplicativos móveis.</li>
+        </ul>
+      </div>
+    </details>
+
     <div class="ans">
       <strong>Fala pronta (1:30)</strong>
-      “Para validar, geramos dados sintéticos com Faker na proporção do projeto: 15% 80+, 35% padrão, 50% convencional.
-      Os 18 testes cobrem prioridade absoluta, FIFO, ciclo 2:1, filas vazias, preservação do contador, rollback e o
-      caminho de integração — o teste real do Supabase é pulado quando não há credenciais. O teste de falha simula o
-      banco recusando a chamada: o cliente volta para a fila; o código também restaura o contador ao valor anterior.
-      O resultado é uma
-      solução integrada: regra, banco e interface. As pendências para produção são de hardening: login por operador,
-      observabilidade, teste de carga e política de retenção/LGPD.”
+      <p>“Para gerar massa de dados, usamos Faker com <code>random.choices</code> e pesos 0,15, 0,35 e 0,50. Esses
+        números são probabilidades, não cotas: uma amostra de 20 pode não dar exatamente 3, 7 e 10. A validação é feita
+        com <code>unittest</code>: são 18 métodos. Dezessete não dependem de rede; o teste de integração real com o
+        Supabase é pulado quando faltam <code>SUPABASE_URL</code> e <code>SUPABASE_KEY</code>, e também se a rede
+        falhar. Os testes cobrem prioridade absoluta, FIFO dentro de cada nível, o ciclo 2:1, filas vazias, preservação
+        do contador quando um 80+ chega no meio, filtro de status, ordenação por chegada, repasse de UUID e guichê, e o
+        rollback.”</p>
+      <p>“No rollback, o teste simula o repositório falhando e confirma que o cliente volta para a fila; o código também
+        restaura etapa e contador, embora esse ponto específico não tenha um assert próprio. O que existe é uma solução
+        integrada de regra, banco e interface. O que não existe é teste de carga com duas instâncias, login individual,
+        observabilidade e política de retenção/LGPD; por isso eu não digo ‘pronto para produção’.”</p>
     </div>
 
     <h3>Como explicar cada parte</h3>
@@ -492,23 +746,35 @@
       <table>
         <thead><tr><th>Bloco</th><th>O que explicar</th><th>Como apresentar</th></tr></thead>
         <tbody>
-          <tr><td><strong>Faker 15/35/50</strong></td><td><code>gerar_clientes.py</code> usa <code>random.choices</code> com pesos 0,15 / 0,35 / 0,50. A idade 80+ é garantida no nível 0; os motivos padrão têm faixas de idade próprias.</td><td>“os dados imitam a demanda, não são aleatórios sem critério”</td></tr>
+          <tr><td><strong>Faker 15/35/50</strong></td><td><code>gerar_clientes.py</code> usa <code>random.choices</code> com pesos 0,15 / 0,35 / 0,50. São probabilidades, não cotas exatas. A idade 80+ é garantida no nível 0; os motivos padrão têm faixas de idade próprias.</td><td>“os dados imitam a demanda, não são uma cota fixa”</td></tr>
           <tr><td><strong>Prioridade absoluta validada</strong></td><td>Teste com <code>S0</code>, <code>S1</code> e padrão: os 80+ saem primeiro, em FIFO.</td><td>“o teste não testa a intenção; testa a ordem de saída”</td></tr>
           <tr><td><strong>Ciclo 2:1 confirmado</strong></td><td>Testes verificam a sequência <code>P0, P1, C0, P2</code> e que um super no meio não reinicia o ciclo.</td><td>repita o traço de cor</td></tr>
-          <tr><td><strong>Concorrência e transações</strong></td><td>O teste de rollback simula falha do repositório e confirma o cliente de volta na fila; o código também restaura o contador. A atomicidade real fica no RPC: guichê ocupado e cliente já chamado são recusados na mesma transação. O teste de integração real é <em>skip</em> sem credenciais.</td><td>“teste + função SQL, duas camadas”</td></tr>
+          <tr><td><strong>Concorrência e transações</strong></td><td>O teste de rollback simula falha do repositório e confirma o cliente de volta na fila; o código também restaura o contador. A atomicidade real fica no RPC: cliente já chamado é recusado; guichê ocupado tem checagem, mas não é à prova de corrida. Não há teste automatizado de concorrência nem de carga. O teste de integração real é <em>skip</em> sem credenciais.</td><td>“teste de rollback + lógica do RPC; não é teste de carga”</td></tr>
           <tr><td><strong>Conclusão e impacto</strong></td><td>Integração das três camadas, regras legais implementadas e fim da inanição no cenário normal. Não diga “pronto para produção”.</td><td>“arquitetura preparada; hardening pendente”</td></tr>
         </tbody>
       </table>
     </div>
 
+    <p><strong>Transição:</strong> “Conclusão: o que isso muda no atendimento.”</p>
+
     <div class="callout warn">
-      <div class="ct">Três frases do slide que você deve suavizar</div>
+      <div class="ct">Faker não é o test runner</div>
+      <p>O slide diz “geração estocástica de testes via Faker”. Precisão: o Faker gera <strong>dados</strong>
+        (nomes, CPFs, datas); quem executa e verifica as regras é o <code>unittest</code>. São 18 métodos, sendo 17 sem
+        dependência de rede e 1 de integração real que pode ser pulado. Além disso, 15/35/50 são pesos de
+        <code>random.choices</code>: a amostra varia.</p>
+    </div>
+
+    <div class="callout warn">
+      <div class="ct">Cinco frases do slide que você deve suavizar</div>
       <p><strong>“Cumprimento integral da legislação”</strong> → “as regras de prioridade estão implementadas e testadas;
         a operação depende do cadastro correto”.<br>
         <strong>“Eliminação matemática da inanição”</strong> → “eliminação no cenário em que a fila 80+ esvazia; se ela
-        nunca esvazia, a prioridade legal prevalece”.<br>
+        nunca esvazia, a prioridade absoluta prevalece”.<br>
         <strong>“Pronto para produção”</strong> → “arquitetura preparada para produção, com pendências de autenticação,
-        observabilidade, carga e LGPD”.</p>
+        observabilidade, carga e LGPD”.<br>
+        <strong>“Integração perfeita”</strong> → “as três camadas estão integradas; faltam hardening e operação”.<br>
+        <strong>“Expansão para totens e aplicativos móveis”</strong> → “não implementado; é uma possibilidade futura”.</p>
     </div>
 
     <details>
@@ -525,11 +791,22 @@
     <h2 id="slide-9">Slide 9 · Muito obrigado</h2>
     <p class="lead">Objetivo: fechar com uma ideia, não com “era isso”. Trinta segundos.</p>
 
+    <details>
+      <summary>Texto exato do slide</summary>
+      <div class="body">
+        <p><strong>Muito obrigado!</strong></p>
+        <p>“Mais do que organizar filas, desenvolvemos uma solução que busca tornar o atendimento bancário mais
+          organizado, justo e eficiente.”</p>
+        <p>Aberto a perguntas da banca.</p>
+      </div>
+    </details>
+
     <div class="ans">
       <strong>Fala pronta (30 s)</strong>
-      “Mais do que organizar filas, o sistema torna a prioridade legal verificável: cada chamada fica registrada com
-      guichê, horário e nível. O núcleo está testado e a interface está integrada. Obrigado — ficamos à disposição
-      para as perguntas da banca.”
+      <p>“Mais do que organizar filas, o sistema torna a prioridade legal verificável: cada chamada fica registrada em
+        <code>atendimentos</code> com o cliente, o guichê e o horário; o nível e o motivo vêm do cadastro do cliente.
+        O núcleo está testado e a interface está integrada. Obrigado — ficamos à disposição para as perguntas da
+        banca.”</p>
     </div>
 
     <h3>Como explicar cada parte</h3>
@@ -538,9 +815,17 @@
         <thead><tr><th>Elemento</th><th>O que explicar</th><th>Como apresentar</th></tr></thead>
         <tbody>
           <tr><td><strong>A frase de impacto</strong></td><td>“Organizar fila” é o meio; o fim é tornar a prioridade legal auditável.</td><td>leia a frase devagar, sem pedir desculpa</td></tr>
+          <tr><td><strong>“Cada chamada registrada”</strong></td><td><code>atendimentos</code> guarda <code>cliente_id</code>, <code>guiche</code>, <code>data_chamada</code> e <code>data_finalizado</code>. O nível e o motivo não são colunas dessa tabela: vêm do cadastro em <code>clientes_fila</code>, por join.</td><td>“a chamada fica auditável; o nível vem do cliente”</td></tr>
           <tr><td><strong>“Aberto a perguntas”</strong></td><td>Pausa, contato visual, mãos visíveis. Não continue falando por cima da banca.</td><td>conte três segundos de silêncio antes de abrir</td></tr>
         </tbody>
       </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="ct">Precisão na frase final</div>
+      <p>Não diga que a tabela de atendimentos guarda o nível. Ela guarda o cliente, o guichê e os horários; o nível e o
+        motivo são recuperados de <code>clientes_fila</code>. O ticket exibido no painel usa a letra do nível e um
+        prefixo do UUID — não é uma senha sequencial.</p>
     </div>
 
     <div class="callout ok">
@@ -555,12 +840,12 @@
     <div class="card">
       <div class="check"><input type="checkbox" id="ap1" data-study="apr-capa"><label for="ap1">Capa em 40 s, sem ler a lista de nomes.</label></div>
       <div class="check"><input type="checkbox" id="ap2" data-study="apr-problema"><label for="ap2">Slide 2: explicar problema, lei e starvation sem consultar.</label></div>
-      <div class="check"><input type="checkbox" id="ap3" data-study="apr-banco"><label for="ap3">Slide 3: dizer as 4 tabelas, o RLS e as 2 RPCs.</label></div>
+      <div class="check"><input type="checkbox" id="ap3" data-study="apr-banco"><label for="ap3">Slide 3: dizer as 4 tabelas, o RLS e as 2 RPCs, com a ressalva da corrida no guichê.</label></div>
       <div class="check"><input type="checkbox" id="ap4" data-study="apr-extracao"><label for="ap4">Slide 4: contar o fluxo banco → REST → pandas → deques em 60 s.</label></div>
       <div class="check"><input type="checkbox" id="ap5" data-study="apr-ciclo"><label for="ap5">Slide 5: desenhar <code>P0 · P1 · C0</code> e <code>P0 · S0 · P1 · C0</code> no papel.</label></div>
-      <div class="check"><input type="checkbox" id="ap6" data-study="apr-gerenciador"><label for="ap6">Slide 6: explicar lock e rollback com as palavras “seção crítica” e “appendleft”.</label></div>
-      <div class="check"><input type="checkbox" id="ap7" data-study="apr-ui"><label for="ap7">Slide 7: justificar o iframe e as cores sem dizer “ficou bonito”.</label></div>
-      <div class="check"><input type="checkbox" id="ap8" data-study="apr-testes"><label for="ap8">Slide 8: citar 18 testes e suavizar “pronto para produção”.</label></div>
+      <div class="check"><input type="checkbox" id="ap6" data-study="apr-gerenciador"><label for="ap6">Slide 6: explicar lock, processo e rollback com as palavras “seção crítica” e “appendleft”.</label></div>
+      <div class="check"><input type="checkbox" id="ap7" data-study="apr-ui"><label for="ap7">Slide 7: justificar o iframe, o polling de 5 s e as cores sem dizer “ficou bonito”.</label></div>
+      <div class="check"><input type="checkbox" id="ap8" data-study="apr-testes"><label for="ap8">Slide 8: citar 18 métodos, o skip condicional e suavizar “pronto para produção”.</label></div>
       <div class="check"><input type="checkbox" id="ap9" data-study="apr-fechamento"><label for="ap9">Slide 9: fechar em 30 s e fazer a pausa antes das perguntas.</label></div>
       <div class="check"><input type="checkbox" id="ap10" data-study="apr-tempo"><label for="ap10">Apresentação inteira abaixo de 13 minutos, com transições.</label></div>
     </div>
@@ -570,11 +855,14 @@
       <table>
         <thead><tr><th>Pergunta</th><th>Resposta curta</th><th>Onde aprofundar</th></tr></thead>
         <tbody>
-          <tr><td>O ciclo é 2:1 ou 3:2:1?</td><td>“O código e os 18 testes fazem 2:1. O 3:2:1 era a documentação antiga; o README foi corrigido.”</td><td><a href="teoria.html#3-2-1">Teoria §3:2:1</a></td></tr>
+          <tr><td>O ciclo é 2:1 ou 3:2:1?</td><td>“O código, o README e os testes fazem 2:1. O 3:2:1 era a documentação antiga; o PDF e as tarefas não foram atualizados.”</td><td><a href="teoria.html#3-2-1">Teoria §3:2:1</a></td></tr>
           <tr><td>Por que o 80+ não reinicia o contador?</td><td>“Porque ele é uma interrupção fora do ciclo. Reiniciar daria vantagem extra ao padrão e atrasaria o convencional.”</td><td><a href="teoria.html#super">Teoria §80+ no meio</a></td></tr>
-          <tr><td>E se a fila 80+ nunca esvaziar?</td><td>“O convencional espera por prioridade legal. O ciclo garante progresso quando ela esvazia; o cenário extremo se resolve com operação, não mudando a regra.”</td><td><a href="banca.html#matadora">Banca §matadora</a></td></tr>
-          <tr><td>Onde está a prova de que funciona?</td><td>“18 testes, a migration com as funções atômicas e o painel rodando. O teste de rollback devolve o cliente à fila.”</td><td><a href="evidencias.html#provas">Evidências</a></td></tr>
-          <tr><td>O que falta para produção?</td><td>“Login individual, observabilidade, teste de carga e retenção/LGPD. O núcleo e a UI já estão integrados.”</td><td><a href="banca.html#limites">Banca §limitações</a></td></tr>
+          <tr><td>E se a fila 80+ nunca esvaziar?</td><td>“O convencional espera por prioridade absoluta. O ciclo garante progresso quando ela esvazia; o cenário extremo se resolve com operação, não mudando a regra.”</td><td><a href="banca.html#matadora">Banca §matadora</a></td></tr>
+          <tr><td>A Lei 13.466 garante o 80+ na frente de todos?</td><td>“Ela cria a prioridade especial <em>dentre os idosos</em>. O nível 0 do sistema implementa precedência absoluta; a referência externa para defender isso é o modelo do TSE, não o texto da 13.466.”</td><td><a href="contexto.html#tse">Contexto §TSE</a></td></tr>
+          <tr><td>Onde está a prova de que funciona?</td><td>“18 métodos de teste, a migration com as funções atômicas e o painel rodando. O teste de rollback devolve o cliente à fila; o contador é restaurado no código, sem assert próprio.”</td><td><a href="evidencias.html#provas">Evidências</a></td></tr>
+          <tr><td>O lock resolve concorrência em produção?</td><td>“Dentro de um processo, sim. Entre instâncias, não: cada uma tem seu lock e seu ciclo. O RPC bloqueia chamada dupla do mesmo cliente; a checagem de guichê ocupado ainda não é atômica.”</td><td><a href="banca.html#seguranca">Banca §segurança</a></td></tr>
+          <tr><td>O painel é tempo real?</td><td>“É polling de 5 segundos. O fragmento relê o banco e só recria o iframe se o payload mudar; o relógio dentro do HTML anda a cada segundo.”</td><td><a href="teoria.html#streamlit">Teoria §Streamlit</a></td></tr>
+          <tr><td>O que falta para produção?</td><td>“Login individual, observabilidade, teste de carga, retenção/LGPD e hardening da concorrência. O núcleo e a UI já estão integrados.”</td><td><a href="banca.html#limites">Banca §limitações</a></td></tr>
           <tr><td>Por que Supabase?</td><td>“Postgres gerenciado, API REST e RLS sem manter servidor. O trade-off é dependência de fornecedor.”</td><td><a href="teoria.html#supabase">Teoria §Supabase</a></td></tr>
         </tbody>
       </table>
@@ -588,10 +876,16 @@
         <tbody>
           <tr><td>“Superprioridade absoluta para 80+ (Lei 13.466)”</td><td>“A 13.466 cria a prioridade especial entre os idosos; para a precedência sobre todos, uso o modelo do TSE como referência externa.”</td><td>o texto da 13.466 não diz “sobre todos”</td></tr>
           <tr><td>“Cumprimento integral da legislação”</td><td>“As regras de prioridade estão implementadas e testadas.”</td><td>“integral” é conclusão jurídica, não resultado de teste</td></tr>
-          <tr><td>“Pronto para produção”</td><td>“Arquitetura preparada; faltam autenticação individual, observabilidade e carga.”</td><td>a banca adora perguntar o que falta</td></tr>
+          <tr><td>“Pronto para produção”</td><td>“Arquitetura preparada; faltam autenticação individual, observabilidade, carga e retenção/LGPD.”</td><td>a banca adora perguntar o que falta</td></tr>
           <tr><td>“Eliminação matemática da inanição”</td><td>“Eliminação quando a fila 80+ esvazia; se ela é infinita, a prioridade legal prevalece.”</td><td>a premissa importa</td></tr>
           <tr><td>“A interface é toda Streamlit”</td><td>“A navegação é Streamlit; o painel é um HTML isolado em iframe, alimentado por JSON.”</td><td>precisão técnica</td></tr>
-          <tr><td>“Testes de concorrência”</td><td>“Teste de rollback e RPC transacional; o lock cobre o processo, o banco cobre a disputa.”</td><td>não houve teste de carga com duas instâncias</td></tr>
+          <tr><td>“Atualização em tempo real”</td><td>“Polling de 5 segundos: o fragmento relê o banco e só recria o iframe se o payload mudar.”</td><td>não é push/WebSocket; há latência de até 5 s</td></tr>
+          <tr><td>“Testes de concorrência”</td><td>“Teste de rollback e RPC transacional; o lock cobre o processo, o banco cobre a disputa pelo mesmo cliente.”</td><td>não houve teste de carga com duas instâncias; a checagem de guichê não é à prova de corrida</td></tr>
+          <tr><td>“Geração estocástica de testes via Faker”</td><td>“O Faker gera os dados; o unittest executa e verifica as regras.”</td><td>Faker não é test runner</td></tr>
+          <tr><td>“15% Super, 35% Padrão, 50% Convencional”</td><td>“Pesos probabilísticos do gerador: a amostra varia.”</td><td><code>random.choices</code> não garante cotas exatas</td></tr>
+          <tr><td>“Integração perfeita”</td><td>“As três camadas estão integradas; faltam hardening e operação.”</td><td>“perfeita” é adjetivo, não resultado</td></tr>
+          <tr><td>“Expansão para totens e aplicativos móveis”</td><td>“Não implementado; é uma possibilidade futura.”</td><td>não existe totem nem app no repositório</td></tr>
+          <tr><td>“O lock garante segurança em operações simultâneas”</td><td>“O lock serializa a seção crítica dentro de um processo; entre instâncias, a garantia é o RPC.”</td><td><code>threading.Lock</code> não é distribuído</td></tr>
         </tbody>
       </table>
     </div>
@@ -615,8 +909,14 @@
           <tr><td>Rollback com <code>appendleft</code></td><td><code>gerenciador_filas.py</code></td><td><span class="tag ok">confere</span> — o teste confirma a fila; o contador é restaurado no código</td></tr>
           <tr><td>Iframe de 5 s e cores</td><td><code>views/painel.py</code>, <code>views/painel.html</code></td><td><span class="tag ok">confere</span></td></tr>
           <tr><td>Senha de operador</td><td><code>conexao.py</code>, <code>app.py</code></td><td><span class="tag warn">senha única</span> — não é login individual</td></tr>
-          <tr><td>18 testes</td><td><code>testes_frente2.py</code></td><td><span class="tag ok">confere</span></td></tr>
-          <tr><td>Distribuição 15/35/50</td><td><code>gerar_clientes.py</code></td><td><span class="tag ok">confere</span></td></tr>
+          <tr><td>18 métodos de teste</td><td><code>testes_frente2.py</code></td><td><span class="tag ok">confere</span> — 17 sem rede + 1 de integração condicional</td></tr>
+          <tr><td>Distribuição 15/35/50</td><td><code>gerar_clientes.py</code></td><td><span class="tag ok">confere</span> — são pesos de <code>random.choices</code>, não cotas</td></tr>
+          <tr><td>Painel “em tempo real”</td><td><code>views/painel.py</code></td><td><span class="tag warn">polling de 5 s</span> — não é push</td></tr>
+          <tr><td>Dashboard com as três filas</td><td><code>views/inicio.py</code></td><td><span class="tag warn">contagens</span> — as listas ficam no painel</td></tr>
+          <tr><td>“Testes de concorrência”</td><td><code>testes_frente2.py</code></td><td><span class="tag warn">não confere</span> — rollback simulado; sem teste de carga</td></tr>
+          <tr><td>500 clientes na geração</td><td>Meta do plano e <code>gerar_clientes.py</code></td><td><span class="tag warn">contexto</span> — a CLI aceita 500; a UI limita a 200 por lote</td></tr>
+          <tr><td>“Pronto para produção”</td><td>—</td><td><span class="tag warn">não confere</span> — faltam login, observabilidade, carga e LGPD</td></tr>
+          <tr><td>Totens e aplicativos móveis</td><td>—</td><td><span class="tag warn">não existe</span> — possibilidade futura</td></tr>
           <tr><td>README em 2:1</td><td><code>README.md</code></td><td><span class="tag ok">confere</span></td></tr>
           <tr><td>PDF em 3:2:1</td><td><code>Documentação/A3 - sergio.pdf</code></td><td><span class="tag warn">divergência</span> — documentação antiga</td></tr>
           <tr><td>80+ sobre todos (modelo TSE)</td><td>Res. TSE 23.759/2026, art. 14, §3º</td><td><span class="tag warn">referência externa</span> — não é a lei bancária</td></tr>
@@ -626,23 +926,29 @@
 
     <div class="callout warn">
       <div class="ct">O que o projeto não tem — e o roteiro assume</div>
-      <p>O seed não modela <strong>mobilidade reduzida</strong> nem <strong>doadores de sangue</strong>; não há teste de
-        carga com duas instâncias; a senha é única, não há login individual com auditoria; e a precedência do 80+ sobre
-        todos é uma escolha de implementação; a referência externa para defendê-la é o <strong>modelo do TSE</strong>,
-        não a Lei 13.466 — no banco, a base é a Lei 10.048/2000 com o Estatuto da Pessoa Idosa.</p>
+      <p><strong>Dados:</strong> o seed cobre sete motivos, mas não modela mobilidade reduzida nem doadores de sangue;
+        a geração da UI é limitada a 200 clientes por lote.<br>
+        <strong>Concorrência:</strong> não há teste de carga com duas instâncias; o lock é por processo, e a checagem de
+        guichê ocupado não é atômica entre transações.<br>
+        <strong>Acesso:</strong> a senha é única, não há login individual com auditoria; o painel é legível por quem tem
+        o link.<br>
+        <strong>Operação:</strong> não há observabilidade, política de retenção/LGPD nem totens/apps.<br>
+        <strong>Base legal:</strong> a precedência do 80+ sobre todos é escolha de implementação; a referência externa
+        para defendê-la é o <strong>modelo do TSE</strong>, não a Lei 13.466 — no banco, a base é a Lei 10.048/2000 com
+        o Estatuto da Pessoa Idosa.</p>
     </div>
 
     <h2 id="cola">Se você decorar só isto</h2>
     <ol>
       <li><strong>Capa:</strong> “um sistema que decide a ordem da fila com base na lei”.</li>
-      <li><strong>Problema:</strong> prioridade sem starvation; lei + fila comum.</li>
-      <li><strong>Banco:</strong> 4 tabelas, RLS fechado, 2 RPCs atômicas.</li>
-      <li><strong>Extração:</strong> banco → REST → pandas → 3 deques.</li>
-      <li><strong>Algoritmo:</strong> 80+ absoluto; ciclo 2:1; contador pausa, não reinicia.</li>
-      <li><strong>Gerenciador:</strong> 3 deques, lock, rollback com <code>appendleft</code>.</li>
-      <li><strong>Interface:</strong> dashboard, TV em iframe 5 s, cores, senha.</li>
-      <li><strong>Prova:</strong> 18 testes, 15/35/50, RPC; hardening pendente.</li>
-      <li><strong>Fecho:</strong> prioridade legal verificável.</li>
+      <li><strong>Problema:</strong> prioridade sem inanição; Lei 10.048/2000 + fila comum; starvation é o risco.</li>
+      <li><strong>Banco:</strong> 4 tabelas, RLS fechado nas tabelas da fila, 2 RPCs atômicas; a checagem de guichê tem ressalva.</li>
+      <li><strong>Extração:</strong> banco → REST com <code>status=aguardando</code> → pandas → 3 deques; <code>preservar_ciclo=True</code> no polling.</li>
+      <li><strong>Algoritmo:</strong> 80+ absoluto; ciclo 2:1; contador pausa, não reinicia; 3:2:1 é documentação antiga.</li>
+      <li><strong>Gerenciador:</strong> 3 deques, lock por processo, rollback com <code>appendleft</code>.</li>
+      <li><strong>Interface:</strong> dashboard com contagens, TV em iframe com polling de 5 s, cores semânticas, senha única.</li>
+      <li><strong>Prova:</strong> 18 métodos (17 + 1 condicional), 15/35/50 são pesos, RPC; hardening pendente.</li>
+      <li><strong>Fecho:</strong> prioridade legal verificável, com cada chamada registrada.</li>
     </ol>
 
     <div class="callout tip">
