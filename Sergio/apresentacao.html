@@ -571,20 +571,70 @@
     </details>
 
     <div class="ans">
-      <strong>Fala pronta (1:20)</strong>
-      <p>“O <code>GerenciadorFilas</code> é a camada que dá estado e segurança ao algoritmo. Ele mantém três deques
-        independentes — super, padrão e convencional — e dois contadores, etapa e contador, que representam a posição do
-        ciclo 2:1. O <code>chamar_proximo</code> guarda os valores anteriores, chama <code>aplicar_starvation</code>,
-        grava o novo estado e, se houver repositório, registra a chamada. O acesso é protegido por um
-        <code>threading.Lock</code> compartilhado por todos os guichês. O <code>get_gerenciador</code> é
-        <code>cache_resource</code>: ele cria um gerenciador por processo do servidor Streamlit, não um por sessão.
-        Isso faz o ciclo valer para a agência inteira dentro daquele processo.”</p>
+      <strong>Fala pronta (1:20) — contínua; os números são apenas âncoras de leitura</strong>
+      <p>“O <code>GerenciadorFilas</code> é a camada que dá estado e segurança ao algoritmo<sup class="muted">1</sup>.
+        Ele mantém três deques independentes — super, padrão e convencional — e dois contadores, etapa e contador, que
+        representam a posição do ciclo 2:1<sup class="muted">1</sup>. O <code>chamar_proximo</code> guarda os valores
+        anteriores, chama <code>aplicar_starvation</code>, grava o novo estado e, se houver repositório, registra a
+        chamada<sup class="muted">2</sup>. O acesso é protegido por um <code>threading.Lock</code> compartilhado por
+        todos os guichês<sup class="muted">3</sup>. O <code>get_gerenciador</code> é <code>cache_resource</code>: ele cria
+        um gerenciador por processo do servidor Streamlit, não um por sessão<sup class="muted">3</sup>. Isso faz o ciclo
+        valer para a agência inteira dentro daquele processo<sup class="muted">3</sup>.”</p>
       <p>“E há rollback: se o repositório lançar erro, o gerenciador restaura etapa e contador e faz
-        <code>appendleft</code> do cliente, devolvendo-o à frente da fila. O lock resolve a concorrência dentro do
-        processo; a garantia entre processos fica no RPC do banco, que confere se o cliente ainda está aguardando.”</p>
+        <code>appendleft</code> do cliente, devolvendo-o à frente da fila<sup class="muted">4</sup>. O lock resolve a
+        concorrência dentro do processo; a garantia entre processos fica no RPC do banco, que confere se o cliente ainda
+        está aguardando<sup class="muted">5</sup>.”</p>
     </div>
 
-    <h3>Como explicar cada parte</h3>
+    <div class="callout tip">
+      <div class="ct">A fala é uma só</div>
+      <p>Não leia os números em voz alta e não transforme a fala em blocos. Eles existem para você saber de qual cartão
+        do slide está falando e para a tabela abaixo provar que nenhum cartão ficou sem explicação.</p>
+    </div>
+
+    <h3>Mapa: que trecho da fala explica cada parte do slide</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Parte do slide (cartão)</th><th>Trecho contínuo que cobre essa parte</th><th>O que o trecho explica</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1</strong></td><td><strong>Estrutura em Três Filas</strong></td><td>“Ele mantém três deques independentes — super, padrão e convencional — e dois contadores, etapa e contador, que representam a posição do ciclo 2:1.”</td><td>Quem guarda o estado e por que separar fisicamente as filas: cada nível tem seu deque, e a etapa/contador registram onde o ciclo 2:1 está.</td></tr>
+          <tr><td><strong>2</strong></td><td><strong>Regras de Escalonamento</strong></td><td>“O <code>chamar_proximo</code> guarda os valores anteriores, chama <code>aplicar_starvation</code>, grava o novo estado e, se houver repositório, registra a chamada.”</td><td>O gerenciador não decide a ordem: ele executa a função pura, grava o estado devolvido e persiste a chamada. Guardar os valores anteriores é o que permite o rollback.</td></tr>
+          <tr><td><strong>3</strong></td><td><strong>Controle de Concorrência</strong></td><td>“O acesso é protegido por um <code>threading.Lock</code> compartilhado por todos os guichês. O <code>get_gerenciador</code> é <code>cache_resource</code>: ele cria um gerenciador por processo do servidor Streamlit, não um por sessão. Isso faz o ciclo valer para a agência inteira dentro daquele processo.”</td><td>Um guichê por vez entra na seção crítica; o lock e o gerenciador são compartilhados por processo, não por sessão. É por isso que o ciclo vale para a agência inteira, mas só dentro daquele processo.</td></tr>
+          <tr><td><strong>4</strong></td><td><strong>Resiliência e Rollback</strong></td><td>“E há rollback: se o repositório lançar erro, o gerenciador restaura etapa e contador e faz <code>appendleft</code> do cliente, devolvendo-o à frente da fila.”</td><td>Falha de persistência não faz o cliente desaparecer nem pula a vez: o estado local volta ao valor anterior e o cliente retorna à cabeça da fila.</td></tr>
+          <tr><td><strong>5</strong></td><td><strong>Fecho — limite do lock</strong> <span class="tag warn">não é cartão</span></td><td>“O lock resolve a concorrência dentro do processo; a garantia entre processos fica no RPC do banco, que confere se o cliente ainda está aguardando.”</td><td>Delimita o alcance da solução: o lock não é distribuído; a proteção entre instâncias vem da RPC. Essa frase prepara a pergunta “e em produção?”.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Termos do slide que você precisa traduzir</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Termo</th><th>O que é, em uma frase</th><th>Como dizer sem jargão</th></tr></thead>
+        <tbody>
+          <tr><td><code>GerenciadorFilas</code></td><td>Classe que mantém as três filas, a etapa e o contador do ciclo.</td><td>“o cérebro que guarda o estado da fila”</td></tr>
+          <tr><td>Orquestração central</td><td>Concentrar em um só lugar a decisão de estado e a coordenação das chamadas.</td><td>“um maestro só, em vez de cada guichê decidir por conta própria”</td></tr>
+          <tr><td>Estado em memória</td><td>Filas e contadores vivem no processo enquanto o app está rodando; não são lidos do banco a cada chamada.</td><td>“a fila fica na memória do servidor; o banco guarda o status”</td></tr>
+          <tr><td><code>deque</code></td><td>Fila de duas pontas com inserção e remoção O(1) nas extremidades.</td><td>“fila em que entrar no fim e sair do começo é barato”</td></tr>
+          <tr><td>Super, Padrão e Convencional</td><td>Os três níveis: 80+ (super), prioridade legal (padrão) e sem prioridade legal (convencional).</td><td>“três filas: 80+, quem tem lei e quem não tem”</td></tr>
+          <tr><td>Escalonamento</td><td>Decisão de qual cliente é chamado agora.</td><td>“a regra de quem passa primeiro”</td></tr>
+          <tr><td>Anti-starvation / inanição</td><td>Regra que impede uma fila de nunca ser atendida porque outra sempre tem gente.</td><td>“o convencional não pode morrer esperando”</td></tr>
+          <tr><td><code>threading.Lock</code></td><td>Trava que permite a apenas uma thread executar o trecho protegido por vez.</td><td>“a chave de um corredor de uma pessoa só”</td></tr>
+          <tr><td>Operações simultâneas / concorrência</td><td>Dois guichês tentando chamar ou alterar o mesmo estado ao mesmo tempo.</td><td>“dois caixas clicando juntos no mesmo cliente”</td></tr>
+          <tr><td>Seção crítica</td><td>Trecho que não pode rodar em paralelo com outro, sob pena de corromper o estado.</td><td>“a parte que não pode ser feita por dois guichês ao mesmo tempo”</td></tr>
+          <tr><td><code>cache_resource</code></td><td>Decorator do Streamlit que cria o objeto uma vez por processo e o compartilha entre sessões.</td><td>“um gerenciador por servidor, não um por clique”</td></tr>
+          <tr><td>Processo × sessão</td><td>Processo é a instância do servidor; sessão é a aba/navegador de cada operador.</td><td>“o processo é o servidor; a sessão é a aba de cada caixa”</td></tr>
+          <tr><td><code>chamar_proximo</code></td><td>Método que retira o próximo cliente e coordena estado, rollback e persistência.</td><td>“o botão que efetivamente tira o próximo da fila”</td></tr>
+          <tr><td><code>aplicar_starvation</code></td><td>Função pura que recebe as três filas, a etapa e o contador e devolve o cliente, a fila de origem e o novo estado do ciclo.</td><td>“a calculadora da regra: entra estado, sai próximo cliente”</td></tr>
+          <tr><td>RPC</td><td>Função que roda dentro do banco e executa a chamada numa transação.</td><td>“a operação acontece no banco, não no meio do caminho”</td></tr>
+          <tr><td>Rollback</td><td>Desfazer o efeito local de uma chamada que falhou na persistência.</td><td>“se o banco recusar, eu devolvo o cliente e o placar”</td></tr>
+          <tr><td><code>appendleft</code></td><td>Inserir de volta na cabeça do deque.</td><td>“devolver ao início da fila, não ao fim”</td></tr>
+          <tr><td>Etapa / contador / contadores locais</td><td>Estado do ciclo 2:1: em qual fila está e quantas chamadas já fez naquela etapa.</td><td>“o placar de duas padrão para uma convencional”</td></tr>
+          <tr><td>Persistência</td><td>Gravar status e atendimento no Supabase, fora da memória do processo.</td><td>“o que fica salvo no banco, não só na memória”</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Como enfatizar cada cartão (gesto e frase)</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Cartão</th><th>O que explicar</th><th>Como apresentar</th></tr></thead>
