@@ -618,7 +618,8 @@
           <tr><td>Super, Padrão e Convencional</td><td>Os três níveis: 80+ (super), prioridade legal (padrão) e sem prioridade legal (convencional).</td><td>“três filas: 80+, quem tem lei e quem não tem”</td></tr>
           <tr><td>Escalonamento</td><td>Decisão de qual cliente é chamado agora.</td><td>“a regra de quem passa primeiro”</td></tr>
           <tr><td>Anti-starvation / inanição</td><td>Regra que impede uma fila de nunca ser atendida porque outra sempre tem gente.</td><td>“o convencional não pode morrer esperando”</td></tr>
-          <tr><td><code>threading.Lock</code></td><td>Trava que permite a apenas uma thread executar o trecho protegido por vez.</td><td>“a chave de um corredor de uma pessoa só”</td></tr>
+          <tr><td>Thread</td><td>Menor linha de execução dentro de um processo; várias threads compartilham a mesma memória e podem rodar trechos ao mesmo tempo.</td><td>“uma linha de execução dentro do mesmo servidor”</td></tr>
+          <tr><td><code>threading.Lock</code></td><td>Trava que permite a apenas uma thread por vez entrar no trecho protegido; as outras esperam.</td><td>“a chave de um corredor de uma pessoa só”</td></tr>
           <tr><td>Operações simultâneas / concorrência</td><td>Dois guichês tentando chamar ou alterar o mesmo estado ao mesmo tempo.</td><td>“dois caixas clicando juntos no mesmo cliente”</td></tr>
           <tr><td>Seção crítica</td><td>Trecho que não pode rodar em paralelo com outro, sob pena de corromper o estado.</td><td>“a parte que não pode ser feita por dois guichês ao mesmo tempo”</td></tr>
           <tr><td><code>cache_resource</code></td><td>Decorator do Streamlit que cria o objeto uma vez por processo e o compartilha entre sessões.</td><td>“um gerenciador por servidor, não um por clique”</td></tr>
@@ -632,6 +633,14 @@
           <tr><td>Persistência</td><td>Gravar status e atendimento no Supabase, fora da memória do processo.</td><td>“o que fica salvo no banco, não só na memória”</td></tr>
         </tbody>
       </table>
+    </div>
+
+    <div class="callout tip">
+      <div class="ct">Thread, processo e sessão em 20 segundos</div>
+      <p><strong>Processo</strong> é o servidor do Streamlit rodando. <strong>Thread</strong> é uma linha de execução
+        dentro desse processo — cada sessão/script pode rodar em uma. <strong>Sessão</strong> é a aba de cada operador.
+        Várias threads e sessões compartilham o mesmo processo; por isso o lock protege as filas e os contadores, que
+        ficam na memória desse processo.</p>
     </div>
 
     <h3>Como enfatizar cada cartão (gesto e frase)</h3>
